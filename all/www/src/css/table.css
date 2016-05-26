@@ -1,0 +1,19 @@
+@charset "utf-8";
+table.table {
+	width: 1160px;
+	margin: 5px 0px 10px 20px;
+	border-collapse: collapse;
+}
+table.table th {
+	width: 150px;
+	padding: 10px 10px 5px 10px;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #c4a17f;
+	border-bottom: dotted #666666 1px;
+}
+table.table td {
+	padding: 10px 10px 5px 10px;
+	background-color: #cfb69e;
+	border-bottom: dotted #666666 1px;
+}
