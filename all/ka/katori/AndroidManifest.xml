@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.gr.java_conf.koni.katori"
+    android:versionCode="2"
+    android:versionName="2.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Start"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Play"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Over"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Preparation"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Help"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Clear"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Clear2"
+            android:launchMode="singleTask" />
+    </application>
+
+</manifest>
