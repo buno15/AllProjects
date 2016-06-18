@@ -75,7 +75,6 @@ public class CORE extends Activity {
 		console = (TextView) findViewById(R.id.console);
 		console.setTextSize(8 * setScaleSize(getApplicationContext()));
 		console.setTextColor(Color.BLACK);
-		console.setShadowLayer(5, 0, 0, Color.BLACK);
 
 		status = (TextView) findViewById(R.id.status);
 		status.setTextSize(7 * setScaleSize(getApplicationContext()));

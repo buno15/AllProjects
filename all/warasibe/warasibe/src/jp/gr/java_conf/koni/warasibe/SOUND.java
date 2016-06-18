@@ -9,8 +9,7 @@ public class SOUND {
 	public static Context		context;
 	public static MediaPlayer	mediaPlayer1, mediaPlayer2;
 	public static SoundPool		soundPool;
-	public static int			start, death, getmoney, powerup, itemup, itemget, no, attack,
-			damage, knock_down, revive, escape, scam, kill, recovery;
+	public static int			start, death, getmoney, powerup, itemup, itemget, no, attack, damage, knock_down, revive, escape, scam, kill, recovery;
 	public static int			evid;
 
 	@SuppressWarnings("deprecation")
