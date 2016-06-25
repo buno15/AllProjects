@@ -3,7 +3,10 @@ package jp.gr.java_conf.bunooboi.every30minutes;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.SoundPool;
 import android.os.Handler;
@@ -11,14 +14,18 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class MainService extends Service {
-	Timer		t;
-	Handler		handler	= new Handler();
-	SoundPool	soundpool;
-	int			tk		= 0;
-	boolean		maintf	= true;
+	Timer					t;
+	Handler					handler	= new Handler();
+	SoundPool				soundpool;
 
-	int			start;
-	int			end;
+	Notification.Builder	nb;
+	NotificationManager		manager;
+
+	int						tk		= 0;
+	boolean					maintf	= true;
+
+	int						start;
+	int						end;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -33,6 +40,10 @@ public class MainService extends Service {
 		soundpool = builder.build();
 		start = soundpool.load(getApplicationContext(), R.raw.start, 1);
 		end = soundpool.load(getApplicationContext(), R.raw.end, 1);
+
+		nb = new Notification.Builder(this);
+		manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		nb.setSmallIcon(R.drawable.ic_launcher);
 	}
 
 	@Override
@@ -49,18 +60,24 @@ public class MainService extends Service {
 								soundpool.play(start, 1.0f, 1.0f, 0, 0, 1);
 								Toast.makeText(getApplicationContext(), "30分経過", Toast.LENGTH_SHORT).show();
 								maintf = false;
+								nb.setContentTitle("30分経過");
+								nb.setContentText("体を動かしましょう");
+								manager.notify(1, nb.build());
 							}
 						} else {
 							if (++tk % 5 == 0) {
 								soundpool.play(end, 1.0f, 1.0f, 0, 0, 1);
 								Toast.makeText(getApplicationContext(), "5分経過", Toast.LENGTH_SHORT).show();
 								maintf = true;
+								nb.setContentTitle("5分経過");
+								nb.setContentText("休憩終了");
+								manager.notify(1, nb.build());
 							}
 						}
 					}
 				});
 			}
-		}, 0, 600000);
+		}, 0, 60000);
 		return START_STICKY;
 	}
 
