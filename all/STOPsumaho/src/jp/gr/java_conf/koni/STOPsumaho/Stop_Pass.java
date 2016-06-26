@@ -16,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Stop_Pass extends Activity {
-	EditText	edittext;
-	public int	backcount	= 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +25,16 @@ public class Stop_Pass extends Activity {
 		setRequestedOrientation((ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 		setContentView(R.layout.stop_pass);
 
-		Main.passcount = true;
-		Main.IO_passcount(true);
+		Values.passtf = true;
+		IO.passtf(true);
 
-		edittext = (EditText) findViewById(R.id.edittext1);
+		TextView textview = (TextView) findViewById(R.id.textview);
+		textview.setText("停止中");
+		textview.setTextSize(20 * Main.setScaleSize(getApplicationContext()));
+		textview.setTextColor(Color.RED);
+		
+		final EditText edittext = (EditText) findViewById(R.id.edittext);
 		edittext.setTextSize(20 * Main.setScaleSize(getApplicationContext()));
-
-		TextView textview1 = (TextView) findViewById(R.id.textview1);
-		textview1.setText("停止中");
-		textview1.setTextSize(30 * Main.setScaleSize(getApplicationContext()));
-		textview1.setTextColor(Color.RED);
 
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
@@ -46,13 +44,13 @@ public class Stop_Pass extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					if (Integer.parseInt(edittext.getText().toString()) == Setting_Pass.pass) {
+					if (Integer.parseInt(edittext.getText().toString()) == Values.pass) {
 						Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 						vibrator.vibrate(1000);
 						Toast.makeText(getApplicationContext(), "解除します", Toast.LENGTH_SHORT).show();
 						startActivity(new Intent(getApplicationContext(), Main.class));
-						Main.passcount = false;
-						Main.IO_passcount(true);
+						Values.passtf = false;
+						IO.passtf(true);
 						finish();
 					} else {
 						edittext.setText("");
@@ -71,12 +69,8 @@ public class Stop_Pass extends Activity {
 		button2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					Intent i = new Intent(Intent.ACTION_DIAL);
-					startActivity(i);
-				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), "電話がありません", Toast.LENGTH_SHORT).show();
-				}
+				Intent i = new Intent(Intent.ACTION_DIAL);
+				startActivity(i);
 			}
 		});
 
@@ -85,14 +79,15 @@ public class Stop_Pass extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			backcount += 1;
-			if (backcount == Main.releasecount) {
+			Values.stopreleasecount += 1;
+			if (Values.stopreleasecount == Values.releasecount) {
+				Values.stopreleasecount = 0;
 				Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 				vibrator.vibrate(1000);
 				Toast.makeText(getApplicationContext(), "強制解除します", Toast.LENGTH_SHORT).show();
 				startActivity(new Intent(getApplicationContext(), Main.class));
-				Main.passcount = false;
-				Main.IO_passcount(true);
+				Values.passtf = false;
+				IO.passtf(true);
 				finish();
 			}
 			return true;

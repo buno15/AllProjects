@@ -34,11 +34,11 @@ public class Detail extends Activity {
 		textview3.setTextSize(8 * Main.setScaleSize(getApplicationContext()));
 		textview3.setText("5.スマホ停止の緊急解除設定\n\n" + "あらかじめ、BACKキー入力回数を設定しておくことで、強制解除を設定することが可能です。緊急の場合、BACKキーにより、スマホ制限を解除できます。\n\n\n" + "6.終了の手順\n\n"
 				+ "「終了」ボタンを押下し、ホームアプリケーションの選択で、通常利用するホーム画      面を選択し、「毎回」を押下し、ホーム画面のご自身の元の設定をもとに戻してください。\n\n");
-		Button button1 = (Button) findViewById(R.id.button1);
-		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button1.setText("戻る");
-		button1.setTextColor(Color.WHITE);
-		button1.setOnClickListener(new OnClickListener() {
+		Button button = (Button) findViewById(R.id.button);
+		button.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
+		button.setText("戻る");
+		button.setTextColor(Color.WHITE);
+		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Help.class));

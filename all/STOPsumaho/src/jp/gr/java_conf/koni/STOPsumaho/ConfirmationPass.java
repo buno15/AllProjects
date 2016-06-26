@@ -14,22 +14,22 @@ import android.widget.Toast;
 
 public class ConfirmationPass extends Activity {
 	EditText edittext;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation((ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 		setContentView(R.layout.confirmationpass);
 		setTitle("パスワード確認");
-		
-		TextView textview1 = (TextView) findViewById(R.id.textview1);
-		textview1.setTextSize(10 * Main.setScaleSize(getApplicationContext()));
-		textview1.setText("パスワードを入力してください");
-		textview1.setTextColor(Color.BLACK);
-		
-		edittext = (EditText) findViewById(R.id.edittext1);
+
+		TextView textview = (TextView) findViewById(R.id.textview);
+		textview.setTextSize(10 * Main.setScaleSize(getApplicationContext()));
+		textview.setText("パスワードを入力してください");
+		textview.setTextColor(Color.BLACK);
+
+		edittext = (EditText) findViewById(R.id.edittext);
 		edittext.setTextSize(20 * Main.setScaleSize(getApplicationContext()));
-		
+
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
 		button1.setText("決定");
@@ -37,17 +37,12 @@ public class ConfirmationPass extends Activity {
 		button1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					if (Integer.parseInt(edittext.getText().toString()) == Setting_Pass.pass) {
-						startActivity(new Intent(getApplicationContext(), Setting_Pass.class));
-						finish();
-					} else {
-						edittext.setText("");
-						edittext.requestFocus();
-						Toast.makeText(getApplicationContext(), "パスワードが違います", Toast.LENGTH_SHORT).show();
-					}
-				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), "正しく入力してください", Toast.LENGTH_SHORT).show();
+				if (Integer.parseInt(edittext.getText().toString()) == Values.pass) {
+					startActivity(new Intent(getApplicationContext(), Setting_Pass.class));
+					finish();
+				} else {
+					edittext.setText("");
+					Toast.makeText(getApplicationContext(), "パスワードが違います", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -58,11 +53,12 @@ public class ConfirmationPass extends Activity {
 		button2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(), Main.class));
 				finish();
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

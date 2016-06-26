@@ -15,14 +15,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class Help extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setRequestedOrientation((ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 		setContentView(R.layout.help);
 		setTitle("ヘルプ");
-		
+
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
 		button1.setText("ヘルプ");
@@ -34,7 +34,7 @@ public class Help extends Activity {
 				finish();
 			}
 		});
-		
+
 		Button button2 = (Button) findViewById(R.id.button2);
 		button2.setTextSize(10 * Main.setScaleSize(getApplicationContext()));
 		button2.setText("現在のデフォルトホームアプリ");
@@ -55,7 +55,7 @@ public class Help extends Activity {
 				startActivity(i);
 			}
 		});
-		
+
 		Button button3 = (Button) findViewById(R.id.button3);
 		button3.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
 		button3.setText("利用規約");
@@ -67,7 +67,7 @@ public class Help extends Activity {
 				finish();
 			}
 		});
-		
+
 		Button button4 = (Button) findViewById(R.id.button4);
 		button4.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
 		button4.setText("戻る");
@@ -79,9 +79,9 @@ public class Help extends Activity {
 				finish();
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

@@ -11,60 +11,75 @@ public class IO {
 		IO.context = context;
 	}
 
-	public void loadzikan() {
+	public static void termstf(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		Setting_TImesOfDay.zikan = sp.getInt("Savezikan", Setting_TImesOfDay.zikan);
+		if (save)
+			sp.edit().putBoolean("termstf", Values.termstf).commit();
+		else
+			Values.termstf = sp.getBoolean("termstf", Values.termstf);
 	}
 
-	public void loadhunn() {
+	public static void passtf(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		Setting_TImesOfDay.hunn = sp.getInt("Savehunn", Setting_TImesOfDay.hunn);
-	}
-
-	public void loadp() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		Setting_Pass.pass = sp.getInt("Savep", Setting_Pass.pass);
+		if (save)
+			sp.edit().putBoolean("passtf", Values.passtf).commit();
+		else
+			Values.passtf = sp.getBoolean("passtf", Values.passtf);
 	}
 
 	public static void sstime(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		if (save)
-			sp.edit().putLong("Savezikantime", Values.sstime).commit();
+			sp.edit().putLong("sstime", Values.sstime).commit();
 		else
-			Values.sstime = sp.getLong("Savezikantime", Values.sstime);
+			Values.sstime = sp.getLong("sstime", Values.sstime);
 	}
 
 	public static void displaytime(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		if (save)
-			sp.edit().putLong("Savezikanhyouzitime", Values.displaytime).commit();
+			sp.edit().putLong("displaytime", Values.displaytime).commit();
 		else
-			Values.displaytime = sp.getLong("Savezikanhyouzitime", Values.displaytime);
+			Values.displaytime = sp.getLong("displaytime", Values.displaytime);
 	}
 
 	public static void timeword(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		if (save)
-			sp.edit().putString("Savezikanzi", Values.timeword).commit();
+			sp.edit().putString("timeword", Values.timeword).commit();
 		else
-			Values.timeword = sp.getString("Savezikanzi", Values.timeword);
+			Values.timeword = sp.getString("timeword", Values.timeword);
 	}
 
-	public void loadkaizyocount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		Values.releasecount = sp.getInt("Savekaizyocount", Values.releasecount);
-	}
-
-	public static void termstf() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		Values.termstf = sp.getBoolean("Savekiyakucount", Values.termstf);
-	}
-
-	public static void passcount(boolean save) {
+	public static void hour(boolean save) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		if (save)
-			sp.edit().putBoolean("Savepasucount", Values.passcount).commit();
+			sp.edit().putInt("hour", Values.hour).commit();
 		else
-			Values.passcount = sp.getBoolean("Savepasucount", Values.passcount);
+			Values.hour = sp.getInt("hour", Values.hour);
+	}
+
+	public static void minute(boolean save) {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+		if (save)
+			sp.edit().putInt("minute", Values.minute).commit();
+		else
+			Values.minute = sp.getInt("minute", Values.minute);
+	}
+
+	public static void pass(boolean save) {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+		if (save)
+			sp.edit().putInt("pass", Values.pass).commit();
+		else
+			Values.pass = sp.getInt("pass", Values.pass);
+	}
+
+	public static void releasecount(boolean save) {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+		if (save)
+			sp.edit().putInt("releasecount", Values.releasecount).commit();
+		else
+			Values.releasecount = sp.getInt("releasecount", Values.releasecount);
 	}
 }

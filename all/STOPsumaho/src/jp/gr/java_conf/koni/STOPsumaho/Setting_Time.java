@@ -20,88 +20,77 @@ public class Setting_Time extends Activity {
 		setContentView(R.layout.setting_time);
 		setTitle("時間設定");
 
-		Button button1 = (Button) findViewById(R.id.button1);// 1分
-		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button1.setText("1分");
-		button1.setTextColor(Color.WHITE);
-		button1.setOnClickListener(new View.OnClickListener() {
+		Button button[] = new Button[8];
+		button[0] = (Button) findViewById(R.id.button1);// 1分
+		button[1] = (Button) findViewById(R.id.button2);// 45分
+		button[2] = (Button) findViewById(R.id.button3);// 90分
+		button[3] = (Button) findViewById(R.id.button4);// 1時間
+		button[4] = (Button) findViewById(R.id.button5);// 5時間
+		button[5] = (Button) findViewById(R.id.button6);// 10時間
+		button[6] = (Button) findViewById(R.id.button7);// 決定
+		button[7] = (Button) findViewById(R.id.button8);// 戻る
+
+		for (int i = 0; i < button.length; i++) {
+			button[i].setTextSize(16 * Main.setScaleSize(getApplicationContext()));
+			button[i].setTextColor(Color.WHITE);
+		}
+
+		button[0].setText("1分");
+		button[0].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(0);
 			}
 		});
-		Button button2 = (Button) findViewById(R.id.button2);// 45分
-		button2.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button2.setText("45分");
-		button2.setTextColor(Color.WHITE);
-		button2.setOnClickListener(new View.OnClickListener() {
+		button[1].setText("45分");
+		button[1].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(1);
 			}
 		});
-		Button button3 = (Button) findViewById(R.id.button3);// 90分
-		button3.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button3.setText("90分");
-		button3.setTextColor(Color.WHITE);
-		button3.setOnClickListener(new View.OnClickListener() {
+		button[2].setText("90分");
+		button[2].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(2);
 			}
 		});
-		Button button4 = (Button) findViewById(R.id.button4);// 1時間
-		button4.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button4.setText("1時間");
-		button4.setTextColor(Color.WHITE);
-		button4.setOnClickListener(new View.OnClickListener() {
+		button[3].setText("1時間");
+		button[3].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(3);
 			}
 		});
-		Button button5 = (Button) findViewById(R.id.button5);// 5時間
-		button5.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button5.setText("5時間");
-		button5.setTextColor(Color.WHITE);
-		button5.setOnClickListener(new View.OnClickListener() {
+		button[4].setText("5時間");
+		button[4].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(4);
 			}
 		});
-		Button button6 = (Button) findViewById(R.id.button6);// 10時間
-		button6.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button6.setText("10時間");
-		button6.setTextColor(Color.WHITE);
-		button6.setOnClickListener(new View.OnClickListener() {
+		button[5].setText("10時間");
+		button[5].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setClick(5);
 			}
 		});
-		Button button7 = (Button) findViewById(R.id.button7);// 決定
-		button7.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button7.setText("決定");
-		button7.setTextColor(Color.WHITE);
-		button7.setOnClickListener(new View.OnClickListener() {
+		button[6].setText("決定");
+		button[6].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				IO.sstime(true);
 				IO.displaytime(true);
 				IO.timeword(true);
-				Toast.makeText(getApplicationContext(), Values.displaytime + Values.timeword + "に設定しました",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), Values.displaytime + Values.timeword + "に設定しました", Toast.LENGTH_SHORT).show();
 				startActivity(new Intent(getApplicationContext(), Main.class));
 				finish();
 			}
 		});
-
-		Button button8 = (Button) findViewById(R.id.button8);// 戻る
-		button8.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		button8.setText("戻る");
-		button8.setTextColor(Color.WHITE);
-		button8.setOnClickListener(new View.OnClickListener() {
+		button[7].setText("戻る");
+		button[7].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Main.class));
@@ -109,10 +98,10 @@ public class Setting_Time extends Activity {
 			}
 		});
 
-		TextView textview1 = (TextView) findViewById(R.id.textview1);
-		textview1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
-		textview1.setText("設定時間:" + Values.displaytime + Values.timeword);
-		textview1.setTextColor(Color.BLACK);
+		TextView textview = (TextView) findViewById(R.id.textview);
+		textview.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
+		textview.setText("設定時間：" + Values.displaytime + Values.timeword);
+		textview.setTextColor(Color.BLACK);
 
 	}
 

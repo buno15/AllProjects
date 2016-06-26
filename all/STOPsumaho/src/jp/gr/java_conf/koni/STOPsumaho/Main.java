@@ -33,15 +33,13 @@ public class Main extends Activity {
 		setContentView(R.layout.main);
 
 		IO.init(getApplicationContext());
+		Values.init();
 
-		IO.termstf();
-		IO.passcount(false);
-		IO.timeword(false);
 		if (Values.termstf) {
 			startActivity(new Intent(getApplicationContext(), TermsStart.class));
 			finish();
 		}
-		if (Values.passcount) {
+		if (Values.passtf) {
 			startActivity(new Intent(getApplicationContext(), Stop_Pass.class));
 			finish();
 		}
@@ -49,75 +47,60 @@ public class Main extends Activity {
 			Values.timeword = "分";
 		}
 
-		loadzikan();
-		loadhunn();
-		loadp();
-		loadzikantime();
-		loadzikanhyouzitime();
-		loadkaizyocount();
-
-		Button button1 = (Button) findViewById(R.id.button1);
-		button1.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button1.setText("時間で停止");
-		button1.setTextColor(Color.WHITE);
-		button1.setOnClickListener(new View.OnClickListener() {
+		Button button[] = new Button[7];
+		button[0] = (Button) findViewById(R.id.button1);
+		button[1] = (Button) findViewById(R.id.button2);
+		button[2] = (Button) findViewById(R.id.button3);
+		button[3] = (Button) findViewById(R.id.button4);
+		button[4] = (Button) findViewById(R.id.button5);
+		button[5] = (Button) findViewById(R.id.button6);
+		button[6] = (Button) findViewById(R.id.button7);
+		for (int i = 0; i < button.length; i++) {
+			button[i].setTextSize(12 * setScaleSize(getApplicationContext()));
+			button[i].setTextColor(Color.WHITE);
+		}
+		button[0].setText("時間で停止");
+		button[0].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				kaisi(Select_Time.class);
 			}
 		});
-
-		Button button2 = (Button) findViewById(R.id.button2);
-		button2.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button2.setText("時刻で停止");
-		button2.setTextColor(Color.WHITE);
-		button2.setOnClickListener(new View.OnClickListener() {
+		button[1].setText("時刻で停止");
+		button[1].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				kaisi(Select_TimesOfDay.class);
 			}
 		});
-
-		Button button3 = (Button) findViewById(R.id.button3);
-		button3.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button3.setText("パスワード\nで停止");
-		button3.setTextColor(Color.WHITE);
-		button3.setOnClickListener(new View.OnClickListener() {
+		button[2].setText("パスワード\nで停止");
+		button[2].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				kaisi(Select_Pass.class);
 			}
 		});
-		Button button4 = (Button) findViewById(R.id.button4);
-		button4.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button4.setText("時間の設定");
-		button4.setTextColor(Color.WHITE);
-		button4.setOnClickListener(new View.OnClickListener() {
+		button[3].setText("時間の設定");
+		button[3].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Setting_Time.class));
 				finish();
 			}
 		});
-		Button button5 = (Button) findViewById(R.id.button5);
-		button5.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button5.setText("時刻の設定");
-		button5.setTextColor(Color.WHITE);
-		button5.setOnClickListener(new View.OnClickListener() {
+		button[4].setText("時刻の設定");
+		button[4].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Setting_TImesOfDay.class));
 				finish();
 			}
 		});
-		Button button6 = (Button) findViewById(R.id.button6);
-		button6.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button6.setText("パスワード\nの設定");
-		button6.setTextColor(Color.WHITE);
-		button6.setOnClickListener(new View.OnClickListener() {
+		button[5].setText("パスワード\nの設定");
+		button[5].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (Setting_Pass.pass == 0) {
+				if (Values.pass == 0) {
 					startActivity(new Intent(getApplicationContext(), Setting_Pass.class));
 					finish();
 				} else {
@@ -127,11 +110,8 @@ public class Main extends Activity {
 			}
 
 		});
-		Button button7 = (Button) findViewById(R.id.button7);
-		button7.setTextSize(12 * setScaleSize(getApplicationContext()));
-		button7.setText("強制解除\nの設定");
-		button7.setTextColor(Color.WHITE);
-		button7.setOnClickListener(new View.OnClickListener() {
+		button[6].setText("強制解除\nの設定");
+		button[6].setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Setting.class));
@@ -146,8 +126,7 @@ public class Main extends Activity {
 
 		TextView textview2 = (TextView) findViewById(R.id.textview2);
 		textview2.setTextSize(7 * setScaleSize(getApplicationContext()));
-		textview2.setText(" 設定時間:" + Values.displaytime + Values.timeword + " \n 設定時刻:" + Setting_TImesOfDay.zikan + "時"
-				+ Setting_TImesOfDay.hunn + "分" + "\n BACKキー回数:" + Values.releasecount + "回");
+		textview2.setText(" 設定時間：" + Values.displaytime + Values.timeword + " \n 設定時刻：" + Values.hour + "時" + Values.minute + "分" + "\n BACKキー回数：" + Values.releasecount + "回");
 		textview2.setTextColor(Color.BLACK);
 
 		TextView textview3 = (TextView) findViewById(R.id.textview3);
@@ -212,8 +191,7 @@ public class Main extends Activity {
 		String mypackagename = getPackageName();
 		if (currentpackagename.equals("android")) {
 			if (Build.VERSION.SDK_INT <= 16) {
-				Toast.makeText(getApplicationContext(), "[常にこの操作で使用]にチェックを入れ[STOPスマホ]を選択してください。", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getApplicationContext(), "[常にこの操作で使用]にチェックを入れ[STOPスマホ]を選択してください。", Toast.LENGTH_LONG).show();
 			} else if (Build.VERSION.SDK_INT >= 17) {
 				Toast.makeText(getApplicationContext(), "[STOPスマホ]を[常時]で選択してください。", Toast.LENGTH_LONG).show();
 			}
