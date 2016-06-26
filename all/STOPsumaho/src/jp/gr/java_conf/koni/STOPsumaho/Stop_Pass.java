@@ -2,12 +2,10 @@ package jp.gr.java_conf.koni.STOPsumaho;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,9 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Stop_Pass extends Activity {
-	EditText edittext;
-	public int backcount = 0;
-	
+	EditText	edittext;
+	public int	backcount	= 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,18 +26,18 @@ public class Stop_Pass extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation((ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 		setContentView(R.layout.stop_pass);
-		
-		Main.passcount = 1;
-		savepasucount();
-		
+
+		Main.passcount = true;
+		Main.IO_passcount(true);
+
 		edittext = (EditText) findViewById(R.id.edittext1);
 		edittext.setTextSize(20 * Main.setScaleSize(getApplicationContext()));
-		
+
 		TextView textview1 = (TextView) findViewById(R.id.textview1);
 		textview1.setText("停止中");
 		textview1.setTextSize(30 * Main.setScaleSize(getApplicationContext()));
 		textview1.setTextColor(Color.RED);
-		
+
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setTextSize(16 * Main.setScaleSize(getApplicationContext()));
 		button1.setText("決定");
@@ -53,8 +51,8 @@ public class Stop_Pass extends Activity {
 						vibrator.vibrate(1000);
 						Toast.makeText(getApplicationContext(), "解除します", Toast.LENGTH_SHORT).show();
 						startActivity(new Intent(getApplicationContext(), Main.class));
-						Main.passcount = 0;
-						savepasucount();
+						Main.passcount = false;
+						Main.IO_passcount(true);
 						finish();
 					} else {
 						edittext.setText("");
@@ -81,9 +79,9 @@ public class Stop_Pass extends Activity {
 				}
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -93,17 +91,12 @@ public class Stop_Pass extends Activity {
 				vibrator.vibrate(1000);
 				Toast.makeText(getApplicationContext(), "強制解除します", Toast.LENGTH_SHORT).show();
 				startActivity(new Intent(getApplicationContext(), Main.class));
-				Main.passcount = 0;
-				savepasucount();
+				Main.passcount = false;
+				Main.IO_passcount(true);
 				finish();
 			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-	
-	public void savepasucount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		sp.edit().putInt("Savepasucount", Main.passcount).commit();
 	}
 }

@@ -47,7 +47,7 @@ public class Stop_Time extends Activity {
 		textview1.setTextColor(Color.RED);
 		textview2.setTextColor(Color.BLACK);
 		textview1.setText("停止中");
-		textview2.setText("残り:" + Setting_Time.ZIKANTIME + "秒");
+		textview2.setText("残り:" + Setting_Time.sstime + "秒");
 		
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
 		WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag");
@@ -57,7 +57,7 @@ public class Stop_Time extends Activity {
 			public void run() {
 				handler.post(new Runnable() {
 					public void run() {
-						remainedTime = Setting_Time.ZIKANTIME - (System.currentTimeMillis() - startTime) / 1000;
+						remainedTime = Setting_Time.sstime - (System.currentTimeMillis() - startTime) / 1000;
 						textview2.setText("残り:" + remainedTime + "秒");
 						if (remainedTime <= 0) {
 							Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);

@@ -47,7 +47,7 @@ public class Select_Time extends Activity {
 		
 		TextView textview6 = (TextView) findViewById(R.id.textview6);
 		textview6.setTextSize(12 * Main.setScaleSize(getApplicationContext()));
-		textview6.setText("指定時間:" + Setting_Time.ZIKANHYOUZITIME + Setting_Time.ZIKANZI);
+		textview6.setText("指定時間:" + Setting_Time.displaytime + Setting_Time.timeword);
 		textview6.setTextColor(Color.BLACK);
 		
 		Button button1 = (Button) findViewById(R.id.button1);// はい

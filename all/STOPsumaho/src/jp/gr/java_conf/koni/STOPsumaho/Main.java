@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,7 +14,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -27,40 +25,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Main extends Activity {
-	static int releasecount; // 強制解除タッチ回数
-	static int passcount; // パスワード停止時に電源を切ったかカウント
-	static boolean termstf; // 初回起動か調べる
-	String currentpackagename;
-	String mypackagename;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation((ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 		setContentView(R.layout.main);
-		
-		loadkiyakucount();
-		if (termstf) {
+
+		IO.init(getApplicationContext());
+
+		IO.termstf();
+		IO.passcount(false);
+		IO.timeword(false);
+		if (Values.termstf) {
 			startActivity(new Intent(getApplicationContext(), TermsStart.class));
 			finish();
 		}
-		loadpasucount();
-		if (passcount == 1) {
+		if (Values.passcount) {
 			startActivity(new Intent(getApplicationContext(), Stop_Pass.class));
 			finish();
 		}
-		if (Setting_Time.ZIKANZI.equals("") || Setting_Time.ZIKANZI == null) {
-			Setting_Time.ZIKANZI = "分";
+		if (Values.timeword == null || Values.timeword.equals("")) {
+			Values.timeword = "分";
 		}
-		
+
 		loadzikan();
 		loadhunn();
 		loadp();
 		loadzikantime();
 		loadzikanhyouzitime();
-		loadzikanzi();
 		loadkaizyocount();
-		
+
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setTextSize(12 * setScaleSize(getApplicationContext()));
 		button1.setText("時間で停止");
@@ -71,7 +66,7 @@ public class Main extends Activity {
 				kaisi(Select_Time.class);
 			}
 		});
-		
+
 		Button button2 = (Button) findViewById(R.id.button2);
 		button2.setTextSize(12 * setScaleSize(getApplicationContext()));
 		button2.setText("時刻で停止");
@@ -82,7 +77,7 @@ public class Main extends Activity {
 				kaisi(Select_TimesOfDay.class);
 			}
 		});
-		
+
 		Button button3 = (Button) findViewById(R.id.button3);
 		button3.setTextSize(12 * setScaleSize(getApplicationContext()));
 		button3.setText("パスワード\nで停止");
@@ -130,7 +125,7 @@ public class Main extends Activity {
 					finish();
 				}
 			}
-			
+
 		});
 		Button button7 = (Button) findViewById(R.id.button7);
 		button7.setTextSize(12 * setScaleSize(getApplicationContext()));
@@ -143,31 +138,31 @@ public class Main extends Activity {
 				finish();
 			}
 		});
-		
+
 		TextView textview1 = (TextView) findViewById(R.id.textview1);
 		textview1.setTextSize(8 * setScaleSize(getApplicationContext()));
 		textview1.setText(" ---開始-----------------------------------------------------------");
 		textview1.setTextColor(Color.BLACK);
-		
+
 		TextView textview2 = (TextView) findViewById(R.id.textview2);
 		textview2.setTextSize(7 * setScaleSize(getApplicationContext()));
-		textview2.setText(" 設定時間:" + Setting_Time.ZIKANHYOUZITIME + Setting_Time.ZIKANZI + " \n 設定時刻:" + Setting_TImesOfDay.zikan + "時" + Setting_TImesOfDay.hunn + "分" + "\n BACKキー回数:"
-				+ releasecount + "回");
+		textview2.setText(" 設定時間:" + Values.displaytime + Values.timeword + " \n 設定時刻:" + Setting_TImesOfDay.zikan + "時"
+				+ Setting_TImesOfDay.hunn + "分" + "\n BACKキー回数:" + Values.releasecount + "回");
 		textview2.setTextColor(Color.BLACK);
-		
+
 		TextView textview3 = (TextView) findViewById(R.id.textview3);
 		textview3.setTextSize(8 * setScaleSize(getApplicationContext()));
 		textview3.setText(" ---設定-----------------------------------------------------------");
 		textview3.setTextColor(Color.BLACK);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, 0, Menu.NONE, "ヘルプ");
 		menu.add(Menu.NONE, 1, Menu.NONE, "終了");
 		return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case 0:
@@ -180,7 +175,7 @@ public class Main extends Activity {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -189,71 +184,19 @@ public class Main extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	public void loadzikan() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_TImesOfDay.zikan = sp.getInt("Savezikan", Setting_TImesOfDay.zikan);
-	}
-	
-	public void loadhunn() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_TImesOfDay.hunn = sp.getInt("Savehunn", Setting_TImesOfDay.hunn);
-	}
-	
-	public void loadp() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_Pass.pass = sp.getInt("Savep", Setting_Pass.pass);
-	}
-	
-	public void loadzikantime() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_Time.ZIKANTIME = sp.getLong("Savezikantime", Setting_Time.ZIKANTIME);
-	}
-	
-	public void loadzikanhyouzitime() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_Time.ZIKANHYOUZITIME = sp.getLong("Savezikanhyouzitime", Setting_Time.ZIKANHYOUZITIME);
-	}
-	
-	public void loadzikanzi() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Setting_Time.ZIKANZI = sp.getString("Savezikanzi", Setting_Time.ZIKANZI);
-	}
-	
-	public void loadkaizyocount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		releasecount = sp.getInt("Savekaizyocount", releasecount);
-	}
-	
-	public void loadkiyakucount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		termstf = sp.getBoolean("Savekiyakucount", termstf);
-	}
-	
-	public void loadpasucount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		passcount = sp.getInt("Savepasucount", passcount);
-	}
-	
-	public void savepasucount() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = sp.edit();
-		editor.putInt("Savepasucount", passcount);
-		editor.commit();
-	}
-	
+
 	public static float setScaleSize(Context context) {
 		Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.saizu);
-		
+
 		WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
-		
+
 		Point size = new Point();
 		disp.getSize(size);
-		
+
 		return (float) size.x / (float) bm.getWidth();
 	}
-	
+
 	public void kaisi(Class<?> cls) {
 		PackageManager pm = getPackageManager();
 		Intent i = new Intent(Intent.ACTION_MAIN);
@@ -265,11 +208,12 @@ public class Main extends Activity {
 		i.setData(uri);
 		ComponentName cn = ComponentName.unflattenFromString("com.android.settings/.applications.InstalledAppDetails");
 		i.setComponent(cn);
-		currentpackagename = activityInfo.packageName;
-		mypackagename = getPackageName();
+		String currentpackagename = activityInfo.packageName;
+		String mypackagename = getPackageName();
 		if (currentpackagename.equals("android")) {
 			if (Build.VERSION.SDK_INT <= 16) {
-				Toast.makeText(getApplicationContext(), "[常にこの操作で使用]にチェックを入れ[STOPスマホ]を選択してください。", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "[常にこの操作で使用]にチェックを入れ[STOPスマホ]を選択してください。", Toast.LENGTH_LONG)
+						.show();
 			} else if (Build.VERSION.SDK_INT >= 17) {
 				Toast.makeText(getApplicationContext(), "[STOPスマホ]を[常時]で選択してください。", Toast.LENGTH_LONG).show();
 			}
