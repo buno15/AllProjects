@@ -21,11 +21,17 @@ public class MainService extends Service {
 	Notification.Builder	nb;
 	NotificationManager		manager;
 
-	int						tk		= 0;
+	int						tk1		= 0;
+	int tk2=0;
 	boolean					maintf	= true;
+	int flashcount=0;
+	Random rnd=new Random();
 
 	int						start;
 	int						end;
+	int flash1;
+	int flash2;
+	int flash3;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -41,6 +47,8 @@ public class MainService extends Service {
 		start = soundpool.load(getApplicationContext(), R.raw.start, 1);
 		end = soundpool.load(getApplicationContext(), R.raw.end, 1);
 
+		flashcount=rnd.nextInt(60)+1;
+
 		nb = new Notification.Builder(this);
 		manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nb.setSmallIcon(R.drawable.ic_launcher);
@@ -55,23 +63,29 @@ public class MainService extends Service {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
+						if(++tk2%flashcount==0){
+							flashount=rnd.nextInt(60)+1;
+							tk2=0;
+						}
 						if (maintf) {
-							if (++tk % 30 == 0) {
+							if (++tk1 % 30 == 0) {
 								soundpool.play(start, 1.0f, 1.0f, 0, 0, 1);
 								Toast.makeText(getApplicationContext(), "30分経過", Toast.LENGTH_SHORT).show();
 								maintf = false;
 								nb.setContentTitle("30分経過");
 								nb.setContentText("体を動かしましょう");
 								manager.notify(1, nb.build());
+								tk1=0;
 							}
 						} else {
-							if (++tk % 5 == 0) {
+							if (++tk1 % 5 == 0) {
 								soundpool.play(end, 1.0f, 1.0f, 0, 0, 1);
 								Toast.makeText(getApplicationContext(), "5分経過", Toast.LENGTH_SHORT).show();
 								maintf = true;
 								nb.setContentTitle("5分経過");
 								nb.setContentText("休憩終了");
 								manager.notify(1, nb.build());
+								tk1=0;
 							}
 						}
 					}
