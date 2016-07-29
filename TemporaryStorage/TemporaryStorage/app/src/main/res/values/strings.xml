@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TemporaryStorage</string>
+    <string name="questionhint">Your Answer</string>
+</resources>
