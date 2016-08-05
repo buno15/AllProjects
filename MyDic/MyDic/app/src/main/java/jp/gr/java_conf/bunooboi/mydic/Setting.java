@@ -33,13 +33,14 @@ public class Setting extends AppCompatActivity {
         TextView textview5 = (TextView) findViewById(R.id.textview5);
         textview1.setText("音声スピード");
         textview2.setText("音声ピッチ");
-        textview3.setText("PC版の画面を使用");
+        textview3.setText("画面を広げる");
         textview4.setText("オフラインでの音声認識");
         textview5.setText("通知へのアクセス");
         textview1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview3.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview4.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        textview5.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
 
         Button button1 = (Button) findViewById(R.id.button1);
         Button button2 = (Button) findViewById(R.id.button2);

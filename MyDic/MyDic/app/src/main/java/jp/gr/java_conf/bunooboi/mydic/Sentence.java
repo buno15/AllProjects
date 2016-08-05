@@ -1,19 +1,21 @@
 package jp.gr.java_conf.bunooboi.mydic;
 
+import java.io.Serializable;
+
 /**
  * Created by hiro on 2016/08/04.
  */
-public class Sentence {
+public class Sentence implements Serializable {
     private String title;
     private String key[];
-    private String text;
     private String link;
+    private String text;
 
-    public Sentence(String title, String key[], String text, String link) {
+    public Sentence(String title, String key[], String link, String text) {
         this.title = title;
         this.key = key;
-        this.text = text;
         this.link = link;
+        this.text = text;
     }
 
     public String getTitle() {
@@ -22,6 +24,14 @@ public class Sentence {
 
     public String[] getKey() {
         return key;
+    }
+
+    public String getKeytoString() {
+        StringBuilder sb = new StringBuilder();
+        for (String s : key) {
+            sb.append(s + " ");
+        }
+        return new String(sb);
     }
 
     public boolean serchKey(String serch) {
