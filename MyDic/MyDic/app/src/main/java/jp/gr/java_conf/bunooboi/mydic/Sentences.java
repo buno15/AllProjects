@@ -50,7 +50,7 @@ public class Sentences {
             }
         }
         text = "検索結果はありません";
-        link = "none";
+        link = "/none";
         return false;
     }
 }

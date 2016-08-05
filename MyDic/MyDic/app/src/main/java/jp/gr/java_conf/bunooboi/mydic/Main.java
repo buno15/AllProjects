@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -41,14 +43,16 @@ import java.util.Locale;
 
 public class Main extends AppCompatActivity {
     WebView webview;
+    EditText edittext;
+    TextView textview;
     TextToSpeech tts;
     SpeechRecognizer recognizer;
-    static boolean fromService;//サービスからの起動か
     String beforeKey = "none";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
 
         Values.init(getApplicationContext());
@@ -100,14 +104,12 @@ public class Main extends AppCompatActivity {
                 }
             }
         });
-        webview.loadUrl("file:///" + Values.RootPath + "/java_se_8_api/api/overview-summary.html");
 
-        final EditText edittext = (EditText) findViewById(R.id.edittext);
+        edittext = (EditText) findViewById(R.id.edittext);
         edittext.setTextSize(20 * getScaleSize(getApplicationContext()));
         edittext.setTextColor(Color.BLACK);
         final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         edittext.setOnKeyListener(new View.OnKeyListener() {
-
             //コールバックとしてonKey()メソッドを定義
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -116,13 +118,8 @@ public class Main extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
                             .RESULT_UNCHANGED_SHOWN);
                     if (Sentences.serch(edittext.getText().toString())) {
-                        if (Sentences.link.startsWith("http")) {
-                            webview.loadUrl(Sentences.link);
-                        } else {
-                            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
-                        }
-                    }
-                    if (Sentences.text.equals("検索結果はありません")) {
+                        setView();
+                    } else {
                         textSpeech(Sentences.text);
                     }
                     return true;
@@ -138,14 +135,11 @@ public class Main extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
+                        .RESULT_UNCHANGED_SHOWN);
                 if (Sentences.serch(edittext.getText().toString())) {
-                    if (Sentences.link.startsWith("http")) {
-                        webview.loadUrl(Sentences.link);
-                    } else {
-                        webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
-                    }
-                }
-                if (Sentences.text.equals("検索結果はありません")) {
+                    setView();
+                } else {
                     textSpeech(Sentences.text);
                 }
             }
@@ -157,6 +151,9 @@ public class Main extends AppCompatActivity {
                 finish();
             }
         });
+        textview = (TextView) findViewById(R.id.textview);
+        textview.setTextSize(20 * getScaleSize(getApplicationContext()));
+        textview.setTextColor(Color.WHITE);
     }
 
     @Override
@@ -179,15 +176,20 @@ public class Main extends AppCompatActivity {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotificationManager.cancel(R.string.app_name);
         }
-        if (fromService) {
-            if (Sentences.link.startsWith("http")) {
-                webview.loadUrl(Sentences.link);
-            } else {
-                webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
-            }
-            fromService = false;
+        setView();
+    }
+
+    void setView() {
+        if (Sentences.link.startsWith("http")) {
+            webview.loadUrl(Sentences.link);
+            textview.setText(Sentences.link);
+        } else if (Sentences.link.endsWith("/none")) {
+            webview.loadUrl("file:///" + Values.RootPath + "/java_se_8_api/api/overview-summary.html");
+        } else {
+            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+            textview.setText(webview.getUrl());
         }
-        if (!Sentences.text.equals("検索結果はありません")) {
+        if (!Sentences.text.equals("none")) {
             if (tts.isSpeaking() == false)
                 textSpeech(Sentences.text);
         }
@@ -200,7 +202,6 @@ public class Main extends AppCompatActivity {
         }
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

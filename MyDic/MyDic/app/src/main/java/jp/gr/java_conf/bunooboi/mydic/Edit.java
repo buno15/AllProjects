@@ -81,7 +81,8 @@ public class Edit extends AppCompatActivity {
                     if (link.equals("")) {
                         link = "none";
                     } else if (link.startsWith("http")) {
-                    } else if (!link.startsWith("/")) {
+                    }
+                    if (!link.startsWith("/")) {
                         link = "/" + link;
                     }
                     if (text.equals("")) {

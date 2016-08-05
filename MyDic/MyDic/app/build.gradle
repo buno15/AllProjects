@@ -17,6 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.each { output ->
+                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                    def Name = "MyDic.apk"
+                    output.outputFile = new File(output.outputFile.parent, Name)
+                }
+            }
+        }
+    }
 }
 
 dependencies {

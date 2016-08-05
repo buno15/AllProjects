@@ -156,15 +156,12 @@ public class BackService extends Service {
                     if (Sentences.serch(recData.get(1)) == false) {
                         if (Sentences.serch(recData.get(2))) {
                             startActivity(new Intent(getApplicationContext(), Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                            Main.fromService = true;
                         }
                     } else {
                         startActivity(new Intent(getApplicationContext(), Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        Main.fromService = true;
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    Main.fromService = true;
                 }
                 Toast.makeText(BackService.this, recData.toString(), Toast.LENGTH_SHORT).show();
                 stopSelf();
