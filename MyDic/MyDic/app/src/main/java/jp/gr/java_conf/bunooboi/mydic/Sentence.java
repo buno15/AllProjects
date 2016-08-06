@@ -28,14 +28,19 @@ public class Sentence implements Serializable {
 
     public String getKeytoString() {
         StringBuilder sb = new StringBuilder();
-        for (String s : key) {
-            sb.append(s + " ");
+        for (int i = 0; i < key.length; i++) {
+            if (i == key.length - 1) {
+                sb.append(key[i]);
+            } else {
+                sb.append(key[i] + "%");
+            }
         }
         return new String(sb);
     }
 
     public boolean serchKey(String serch) {
         for (int i = 0; i < key.length; i++) {
+            System.out.println(key[i]);
             if (key[i].equals(serch)) {
                 return true;
             }

@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 public class Values {
     static float pitch;//音声読み上げ高さ
     static float speechrate;//音声読み上げ速さ
+    static int time;//音声検索長さ
     static boolean display;//html表示形式
     static boolean recognition;//音声認識オフラインか
     static boolean notification;//通知へのアクセス
@@ -23,6 +24,7 @@ public class Values {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         pitch = sp.getFloat("pitch", pitch);
         speechrate = sp.getFloat("speechrate", speechrate);
+        time = sp.getInt("time", time);
         display = sp.getBoolean("display", display);
         recognition = sp.getBoolean("recognition", recognition);
         notification = sp.getBoolean("notification", notification);
@@ -38,6 +40,12 @@ public class Values {
         Values.speechrate = speechrate;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putFloat("speechrate", speechrate).commit();
+    }
+
+    public static void setTime(int time) {
+        Values.time = time;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt("time", time).commit();
     }
 
     public static void setDisplay(boolean display) {

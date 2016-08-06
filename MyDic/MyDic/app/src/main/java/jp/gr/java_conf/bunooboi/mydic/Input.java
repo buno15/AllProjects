@@ -35,7 +35,7 @@ public class Input {
             while ((line = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, ",");
                 String title = st.nextToken();
-                String key[] = st.nextToken().split(" ");
+                String key[] = st.nextToken().split("%");
                 String link = st.nextToken();
                 String text = st.nextToken();
                 text = text.replaceAll("&&", "\n");

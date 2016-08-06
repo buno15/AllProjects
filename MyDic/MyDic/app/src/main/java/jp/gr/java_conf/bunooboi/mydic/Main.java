@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -39,9 +40,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements RecognitionListener {
     WebView webview;
     EditText edittext;
     TextView textview;
@@ -101,6 +104,11 @@ public class Main extends AppCompatActivity {
                             }
                         }
                     }
+                }
+                if (Sentences.link.startsWith("http")) {
+                    textview.setText(Sentences.link);
+                } else {
+                    textview.setText(webview.getUrl());
                 }
             }
         });
@@ -215,7 +223,6 @@ public class Main extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_rec:
                 if (recognizer != null) {
-                    recognizer.cancel();
                     recognizer.destroy();
                 }
                 startSpeech();
@@ -263,105 +270,120 @@ public class Main extends AppCompatActivity {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
-        if (jp.gr.java_conf.bunooboi.mydic.Values.recognition)
+        if (Values.recognition)
             intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
         recognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        recognizer.setRecognitionListener(new RecognitionListener() {
+        recognizer.setRecognitionListener(this);
+        recognizer.startListening(intent);
+        Timer t = new Timer();
+        final Handler h = new Handler();
+        t.schedule(new TimerTask() {
             @Override
-            public void onReadyForSpeech(Bundle params) {
+            public void run() {
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recognizer.stopListening();
+                    }
+                });
             }
+        }, Values.time);
+    }
 
-            // 音声入力開始
-            @Override
-            public void onBeginningOfSpeech() {
-                Toast.makeText(getApplicationContext(), "入力開始", Toast.LENGTH_SHORT).show();
-            }
+    @Override
+    public void onReadyForSpeech(Bundle params) {
+    }
 
-            // 録音データのフィードバック用
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-            }
+    // 音声入力開始
+    @Override
+    public void onBeginningOfSpeech() {
+        Toast.makeText(getApplicationContext(), "入力開始", Toast.LENGTH_SHORT).show();
+    }
 
-            // 入力音声のdBが変化した
-            @Override
-            public void onRmsChanged(float rmsdB) {
-            }
+    // 録音データのフィードバック用
+    @Override
+    public void onBufferReceived(byte[] buffer) {
+    }
 
-            // 音声入力終了
-            @Override
-            public void onEndOfSpeech() {
-            }
+    // 入力音声のdBが変化した
+    @Override
+    public void onRmsChanged(float rmsdB) {
+    }
 
-            // ネットワークエラー又は、音声認識エラー
-            @Override
-            public void onError(int error) {
-                switch (error) {
-                    case SpeechRecognizer.ERROR_AUDIO:
-                        // 音声データ保存失敗
-                        break;
-                    case SpeechRecognizer.ERROR_CLIENT:
-                        // Android端末内のエラー(その他)
-                        break;
-                    case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                        // 権限無し
-                        break;
-                    case SpeechRecognizer.ERROR_NETWORK:
-                        // ネットワークエラー(その他)
-                        break;
-                    case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
-                        // ネットワークタイムアウトエラー
-                        break;
-                    case SpeechRecognizer.ERROR_NO_MATCH:
-                        // 音声認識結果無し
-                        Toast.makeText(getApplicationContext(), "認識結果なし", Toast.LENGTH_SHORT).show();
-                        textSpeech("認識結果がありません");
-                        break;
-                    case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
-                        // RecognitionServiceへ要求出せず
-                        break;
-                    case SpeechRecognizer.ERROR_SERVER:
-                        // Server側からエラー通知
-                        break;
-                    case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                        // 音声入力無し
-                        Toast.makeText(getApplicationContext(), "入力なし", Toast.LENGTH_SHORT).show();
-                        textSpeech("おんせい入力がされていません");
-                        break;
-                    default:
-                }
-            }
+    // 音声入力終了
+    @Override
+    public void onEndOfSpeech() {
+    }
 
-            // イベント発生時に呼び出される
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-            }
+    // ネットワークエラー又は、音声認識エラー
+    @Override
+    public void onError(int error) {
+        switch (error) {
+            case SpeechRecognizer.ERROR_AUDIO:
+                // 音声データ保存失敗
+                break;
+            case SpeechRecognizer.ERROR_CLIENT:
+                // Android端末内のエラー(その他)
+                break;
+            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                // 権限無し
+                break;
+            case SpeechRecognizer.ERROR_NETWORK:
+                // ネットワークエラー(その他)
+                break;
+            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                // ネットワークタイムアウトエラー
+                break;
+            case SpeechRecognizer.ERROR_NO_MATCH:
+                // 音声認識結果無し
+                Toast.makeText(getApplicationContext(), "認識結果なし", Toast.LENGTH_SHORT).show();
+                textSpeech("認識結果がありません");
+                break;
+            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                // RecognitionServiceへ要求出せず
+                break;
+            case SpeechRecognizer.ERROR_SERVER:
+                // Server側からエラー通知
+                break;
+            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                // 音声入力無し
+                Toast.makeText(getApplicationContext(), "入力なし", Toast.LENGTH_SHORT).show();
+                textSpeech("おんせい入力がされていません");
+                break;
+            default:
+        }
+    }
 
-            // 部分的な認識結果が得られる場合に呼び出される
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-            }
+    // イベント発生時に呼び出される
+    @Override
+    public void onEvent(int eventType, Bundle params) {
+    }
 
-            // 認識結果
-            @Override
-            public void onResults(Bundle results) {
-                ArrayList<String> recData = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if (Sentences.serch(recData.get(0)) == false) {
-                    if (Sentences.serch(recData.get(1)) == false) {
+    // 部分的な認識結果が得られる場合に呼び出される
+    @Override
+    public void onPartialResults(Bundle partialResults) {
+    }
+
+    // 認識結果
+    @Override
+    public void onResults(Bundle results) {
+        ArrayList<String> recData = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (Sentences.serch(recData.get(0)) == false) {
+            if (recData.size() > 1)
+                if (Sentences.serch(recData.get(1)) == false) {
+                    if (recData.size() > 2)
                         if (Sentences.serch(recData.get(2))) {
                             webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
                         }
-                    } else {
-                        webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
-                    }
                 } else {
                     webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
                 }
-                textSpeech(Sentences.text);
-                Toast.makeText(Main.this, recData.toString(), Toast.LENGTH_SHORT).show();
-                recognizer.destroy();
-            }
-        });
-        recognizer.startListening(intent);
+        } else {
+            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+        }
+        textSpeech(Sentences.text);
+        Toast.makeText(Main.this, recData.toString(), Toast.LENGTH_SHORT).show();
+        recognizer.destroy();
     }
 
     public static float getScaleSize(Context context) {// 文字サイズ調整
@@ -379,7 +401,6 @@ public class Main extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (tts != null) {
             tts.stop();
             tts.shutdown();
@@ -390,5 +411,6 @@ public class Main extends AppCompatActivity {
             recognizer.destroy();
             recognizer = null;
         }
+        super.onDestroy();
     }
 }

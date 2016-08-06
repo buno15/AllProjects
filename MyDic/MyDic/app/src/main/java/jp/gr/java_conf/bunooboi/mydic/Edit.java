@@ -81,9 +81,10 @@ public class Edit extends AppCompatActivity {
                     if (link.equals("")) {
                         link = "none";
                     } else if (link.startsWith("http")) {
-                    }
-                    if (!link.startsWith("/")) {
-                        link = "/" + link;
+                    } else {
+                        if (!link.startsWith("/")) {
+                            link = "/" + link;
+                        }
                     }
                     if (text.equals("")) {
                         text = "none";
@@ -119,15 +120,19 @@ public class Edit extends AppCompatActivity {
             return "";
         } else {
             StringBuilder sb = new StringBuilder();
-            for (String s : key) {
-                sb.append(s + " ");
+            for (int i = 0; i < key.length; i++) {
+                if (i == key.length - 1) {
+                    sb.append(key[i]);
+                } else {
+                    sb.append(key[i] + "%");
+                }
             }
             return new String(sb);
         }
     }
 
     public String[] setKey(String key) {
-        return key.split(" ");
+        return key.split("$");
     }
 
     @Override

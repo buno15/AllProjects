@@ -31,16 +31,19 @@ public class Setting extends AppCompatActivity {
         TextView textview3 = (TextView) findViewById(R.id.textview3);
         TextView textview4 = (TextView) findViewById(R.id.textview4);
         TextView textview5 = (TextView) findViewById(R.id.textview5);
+        TextView textview6 = (TextView) findViewById(R.id.textview6);
         textview1.setText("音声スピード");
         textview2.setText("音声ピッチ");
-        textview3.setText("画面を広げる");
-        textview4.setText("オフラインでの音声認識");
-        textview5.setText("通知へのアクセス");
+        textview3.setText("音声検索時間");
+        textview4.setText("画面を広げる");
+        textview5.setText("オフラインでの音声認識");
+        textview6.setText("通知へのアクセス");
         textview1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview3.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview4.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         textview5.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        textview6.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
 
         Button button1 = (Button) findViewById(R.id.button1);
         Button button2 = (Button) findViewById(R.id.button2);
@@ -64,16 +67,22 @@ public class Setting extends AppCompatActivity {
 
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
         Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+        Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter1.add("遅い");
         adapter1.add("普通");
         adapter1.add("速い");
         adapter2.add("低い");
         adapter2.add("普通");
         adapter2.add("高い");
+        adapter3.add("短い");
+        adapter3.add("普通");
+        adapter3.add("長い");
         spinner1.setAdapter(adapter1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -109,6 +118,28 @@ public class Setting extends AppCompatActivity {
                         break;
                     case 2:
                         Values.setSpeechrate(1.5f);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spinner3.setAdapter(adapter3);
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        Values.setTime(3000);
+                        break;
+                    case 1:
+                        Values.setTime(4000);
+                        break;
+                    case 2:
+                        Values.setTime(6000);
                         break;
                 }
             }
@@ -164,6 +195,13 @@ public class Setting extends AppCompatActivity {
             spinner2.setSelection(1);
         } else if (jp.gr.java_conf.bunooboi.mydic.Values.speechrate == 1.5f) {
             spinner2.setSelection(2);
+        }
+        if (Values.time == 3000) {
+            spinner3.setSelection(0);
+        } else if (Values.time == 4000) {
+            spinner3.setSelection(1);
+        } else if (Values.time == 6000) {
+            spinner3.setSelection(2);
         }
         if (jp.gr.java_conf.bunooboi.mydic.Values.display) {
             switch1.setChecked(true);
