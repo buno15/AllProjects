@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -15,6 +16,8 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by hiro on 2016/08/05.
@@ -168,5 +171,18 @@ public class BackService extends Service {
             }
         });
         recognizer.startListening(intent);
+        Timer t = new Timer();
+        final Handler h = new Handler();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recognizer.stopListening();
+                    }
+                });
+            }
+        }, Values.time);
     }
 }

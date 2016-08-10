@@ -1,10 +1,14 @@
 package jp.gr.java_conf.bunooboi.mydic;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,15 +23,12 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -38,23 +39,26 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Main extends AppCompatActivity implements RecognitionListener {
+public class Main extends Activity implements RecognitionListener {
     WebView webview;
     EditText edittext;
     TextView textview;
-    TextToSpeech tts;
+    static TextToSpeech tts;
     SpeechRecognizer recognizer;
-    String beforeKey = "none";
+    HashMap<String, String> params = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
 
@@ -69,6 +73,7 @@ public class Main extends AppCompatActivity implements RecognitionListener {
                         tts.setLanguage(locale);
                         tts.setPitch(Values.pitch);
                         tts.setSpeechRate(Values.speechrate);
+                        params.put(TextToSpeech.Engine.KEY_PARAM_VOLUME, String.valueOf(Values.volume));
                     } else {
                         System.out.println("Error Language");
                     }
@@ -95,20 +100,10 @@ public class Main extends AppCompatActivity implements RecognitionListener {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.v("URL", webview.getUrl());
-                if (!Sentences.text.equals("検索結果はありません")) {
-                    if (!Sentences.text.equals("none")) {
-                        if (tts.isSpeaking() == false) {
-                            if (!beforeKey.equals(Sentences.key)) {
-                                beforeKey = Sentences.key;
-                                textSpeech(Sentences.text);
-                            }
-                        }
-                    }
-                }
-                if (Sentences.link.startsWith("http")) {
-                    textview.setText(Sentences.link);
+                if (webview.getUrl().startsWith("http")) {
+                    textview.setText(url);
                 } else {
-                    textview.setText(webview.getUrl());
+                    textview.setText(url.replaceAll("file://" + Values.RootPath, ""));
                 }
             }
         });
@@ -125,9 +120,17 @@ public class Main extends AppCompatActivity implements RecognitionListener {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
                             .RESULT_UNCHANGED_SHOWN);
-                    if (Sentences.serch(edittext.getText().toString())) {
-                        setView();
+                    String text = edittext.getText().toString();
+                    if (Sentences.serch(text)) {
+                        setView(false);
                     } else {
+                        if (text.startsWith("http")) {
+                            webview.loadUrl(text);
+                            Sentences.link = text;
+                        } else if (new File(Values.RootPath + "/" + text).exists()) {
+                            webview.loadUrl("file:///" + Values.RootPath + "/" + text);
+                            Sentences.link = text;
+                        }
                         textSpeech(Sentences.text);
                     }
                     return true;
@@ -135,9 +138,14 @@ public class Main extends AppCompatActivity implements RecognitionListener {
                 return false;
             }
         });
-
+        textview = (TextView) findViewById(R.id.textview);
+        textview.setTextSize(20 * getScaleSize(getApplicationContext()));
+        textview.setTextColor(Color.WHITE);
         Button button1 = (Button) findViewById(R.id.button1);
         ImageButton button2 = (ImageButton) findViewById(R.id.button2);
+        ImageButton button3 = (ImageButton) findViewById(R.id.button3);
+        ImageButton button4 = (ImageButton) findViewById(R.id.button4);
+        ImageButton button5 = (ImageButton) findViewById(R.id.button5);
         button1.setText("検索");
         button1.setTextSize(20 * getScaleSize(getApplicationContext()));
         button1.setOnClickListener(new View.OnClickListener() {
@@ -145,9 +153,17 @@ public class Main extends AppCompatActivity implements RecognitionListener {
             public void onClick(View view) {
                 inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
                         .RESULT_UNCHANGED_SHOWN);
-                if (Sentences.serch(edittext.getText().toString())) {
-                    setView();
+                String text = edittext.getText().toString();
+                if (Sentences.serch(text)) {
+                    setView(false);
                 } else {
+                    if (text.startsWith("http")) {
+                        webview.loadUrl(text);
+                        Sentences.link = text;
+                    } else if (new File(Values.RootPath + "/" + text).exists()) {
+                        webview.loadUrl("file:///" + Values.RootPath + "/" + text);
+                        Sentences.link = text;
+                    }
                     textSpeech(Sentences.text);
                 }
             }
@@ -159,9 +175,75 @@ public class Main extends AppCompatActivity implements RecognitionListener {
                 finish();
             }
         });
-        textview = (TextView) findViewById(R.id.textview);
-        textview.setTextSize(20 * getScaleSize(getApplicationContext()));
-        textview.setTextColor(Color.WHITE);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipData.Item item = new ClipData.Item(textview.getText().toString());
+                String[] mimeType = new String[1];
+                mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
+                ClipData cd = new ClipData(new ClipDescription("text_data", mimeType), item);
+                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(cd);
+                Toast.makeText(getApplicationContext(), "コピーしました", Toast.LENGTH_SHORT).show();
+            }
+        });
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Edit.title = "";
+                Edit.key = new String[0];
+                Edit.link = textview.getText().toString();
+                Edit.text = "";
+                Edit.index = -1;
+                startActivity(new Intent(getApplicationContext(), Edit.class));
+                finish();
+            }
+        });
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LinkList.class));
+            }
+        });
+        ImageButton actionbutton1 = (ImageButton) findViewById(R.id.actionbutton1);
+        final ImageButton actionbutton2 = (ImageButton) findViewById(R.id.actionbutton2);
+        ImageButton actionbutton3 = (ImageButton) findViewById(R.id.actionbutton3);
+        ImageButton actionbutton4 = (ImageButton) findViewById(R.id.actionbutton4);
+        actionbutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (recognizer != null) {
+                    recognizer.destroy();
+                }
+                startSpeech();
+            }
+        });
+        actionbutton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tts.isSpeaking()) {
+                    tts.stop();
+                    actionbutton2.setImageResource(R.drawable.play);
+                } else {
+                    if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
+                        textSpeech(Sentences.text);
+                    }
+                    actionbutton2.setImageResource(R.drawable.stop);
+                }
+            }
+        });
+        actionbutton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                webview.goBack();
+            }
+        });
+        actionbutton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                webview.goForward();
+            }
+        });
     }
 
     @Override
@@ -184,23 +266,38 @@ public class Main extends AppCompatActivity implements RecognitionListener {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotificationManager.cancel(R.string.app_name);
         }
-        setView();
+        resumeView();
     }
 
-    void setView() {
+    void setView(boolean speek) {
+        invalidateView();
+        if (!Sentences.text.equals("none")) {
+            if (speek) {
+                if (tts.isSpeaking() == false)
+                    textSpeech(Sentences.text);
+            } else {
+                textSpeech(Sentences.text);
+            }
+        }
+    }
+
+    void resumeView() {
+        invalidateView();
+        if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
+            if (!tts.isSpeaking())
+                textSpeech(Sentences.text);
+        }
+    }
+
+    void invalidateView() {
         if (Sentences.link.startsWith("http")) {
             webview.loadUrl(Sentences.link);
-            textview.setText(Sentences.link);
         } else if (Sentences.link.endsWith("/none")) {
             webview.loadUrl("file:///" + Values.RootPath + "/java_se_8_api/api/overview-summary.html");
         } else {
             webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
-            textview.setText(webview.getUrl());
         }
-        if (!Sentences.text.equals("none")) {
-            if (tts.isSpeaking() == false)
-                textSpeech(Sentences.text);
-        }
+        textview.setText(Sentences.link);
     }
 
     @SuppressWarnings("deprecation")
@@ -208,33 +305,7 @@ public class Main extends AppCompatActivity implements RecognitionListener {
         if (tts.isSpeaking()) {
             tts.stop();
         }
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_rec:
-                if (recognizer != null) {
-                    recognizer.destroy();
-                }
-                startSpeech();
-                break;
-            case R.id.action_left:
-                webview.goBack();
-                break;
-            case R.id.action_right:
-                webview.goForward();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, params);
     }
 
     @Override
@@ -373,15 +444,14 @@ public class Main extends AppCompatActivity implements RecognitionListener {
                 if (Sentences.serch(recData.get(1)) == false) {
                     if (recData.size() > 2)
                         if (Sentences.serch(recData.get(2))) {
-                            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+                            setView(false);
                         }
                 } else {
-                    webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+                    setView(false);
                 }
         } else {
-            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+            setView(false);
         }
-        textSpeech(Sentences.text);
         Toast.makeText(Main.this, recData.toString(), Toast.LENGTH_SHORT).show();
         recognizer.destroy();
     }
@@ -401,13 +471,12 @@ public class Main extends AppCompatActivity implements RecognitionListener {
 
     @Override
     public void onDestroy() {
+        System.out.println("dest");
         if (tts != null) {
-            tts.stop();
+            textSpeech("");
             tts.shutdown();
-            tts = null;
         }
         if (recognizer != null) {
-            recognizer.cancel();
             recognizer.destroy();
             recognizer = null;
         }

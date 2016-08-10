@@ -1,6 +1,7 @@
 package jp.gr.java_conf.bunooboi.mydic;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,26 +26,44 @@ public class Setting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.setting);
 
-        TextView textview1 = (TextView) findViewById(R.id.textview1);
-        TextView textview2 = (TextView) findViewById(R.id.textview2);
-        TextView textview3 = (TextView) findViewById(R.id.textview3);
-        TextView textview4 = (TextView) findViewById(R.id.textview4);
-        TextView textview5 = (TextView) findViewById(R.id.textview5);
-        TextView textview6 = (TextView) findViewById(R.id.textview6);
-        textview1.setText("音声スピード");
-        textview2.setText("音声ピッチ");
-        textview3.setText("音声検索時間");
-        textview4.setText("画面を広げる");
-        textview5.setText("オフラインでの音声認識");
-        textview6.setText("通知へのアクセス");
-        textview1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        textview2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        textview3.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        textview4.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        textview5.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        textview6.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        final TextView textview[] = new TextView[7];
+        textview[0] = (TextView) findViewById(R.id.textview1);
+        textview[1] = (TextView) findViewById(R.id.textview2);
+        textview[2] = (TextView) findViewById(R.id.textview3);
+        textview[3] = (TextView) findViewById(R.id.textview4);
+        textview[4] = (TextView) findViewById(R.id.textview5);
+        textview[5] = (TextView) findViewById(R.id.textview6);
+        textview[6] = (TextView) findViewById(R.id.textview7);
+        textview[0].setText("音声スピード");
+        textview[1].setText("音声ピッチ");
+        textview[2].setText("音声検索時間");
+        textview[3].setText("");
+        textview[4].setText("画面を広げる");
+        textview[5].setText("オフラインでの音声認識");
+        textview[6].setText("通知へのアクセス");
+        for (TextView text : textview)
+            text.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+
+        final SeekBar seekbar = (SeekBar) findViewById(R.id.seekbar);
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textview[3].setText("音量：" + seekbar.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Values.setVolume((float) seekbar.getProgress() / 10);
+            }
+        });
 
         Button button1 = (Button) findViewById(R.id.button1);
         Button button2 = (Button) findViewById(R.id.button2);
@@ -203,6 +223,7 @@ public class Setting extends AppCompatActivity {
         } else if (Values.time == 6000) {
             spinner3.setSelection(2);
         }
+        seekbar.setProgress((int) (Values.volume * 10));
         if (jp.gr.java_conf.bunooboi.mydic.Values.display) {
             switch1.setChecked(true);
         } else {
@@ -218,6 +239,7 @@ public class Setting extends AppCompatActivity {
         } else {
             switch3.setChecked(false);
         }
+        textview[3].setText("音量：" + seekbar.getProgress());
     }
 
     @Override

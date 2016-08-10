@@ -37,29 +37,60 @@
             android:src="@drawable/setting"/>
     </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:fillViewport="true"
-        android:background="#0078c4">
+        android:layout_weight="0.8"
+        android:background="#0078c4"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_weight="6"
+            android:fillViewport="true">
 
-            <TextView
-                android:id="@+id/textview"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="left|center"
-                android:inputType="text"
-                android:textIsSelectable="true"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="left|center"
+                    android:inputType="text"
+                    android:textIsSelectable="true"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageButton
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/copy"/>
+
+        <ImageButton
+            android:id="@+id/button4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/goedit"/>
+
+        <ImageButton
+            android:id="@+id/button5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/list"/>
+    </LinearLayout>
 
     <WebView
         android:id="@+id/webview"
@@ -68,4 +99,53 @@
         android:layout_weight="10"
         android:focusable="true"
         android:focusableInTouchMode="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#3f51b5"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/actionbutton1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/actionbutton_custom"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rec"/>
+
+        <ImageButton
+            android:id="@+id/actionbutton2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/actionbutton_custom"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/stop"/>
+
+        <ImageButton
+            android:id="@+id/actionbutton3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/actionbutton_custom"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/left"/>
+
+
+        <ImageButton
+            android:id="@+id/actionbutton4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/actionbutton_custom"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/right"/>
+    </LinearLayout>
 </LinearLayout>

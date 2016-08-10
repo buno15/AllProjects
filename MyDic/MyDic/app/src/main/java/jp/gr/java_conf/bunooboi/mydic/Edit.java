@@ -54,7 +54,7 @@ public class Edit extends AppCompatActivity {
         for (EditText edit : edittext) {
             edit.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         }
-        if (link.equals("none")) {
+        if (link.equals("/none")) {
             edittext[2].setText("");
         }
         if (text.equals("none")) {
@@ -80,7 +80,8 @@ public class Edit extends AppCompatActivity {
                 } else {
                     if (link.equals("")) {
                         link = "none";
-                    } else if (link.startsWith("http")) {
+                    }
+                    if (link.startsWith("http")) {
                     } else {
                         if (!link.startsWith("/")) {
                             link = "/" + link;
@@ -102,8 +103,12 @@ public class Edit extends AppCompatActivity {
                         Sentences.init();
                         edittext[0].setText(title);
                         edittext[1].setText(getKey(key));
-                        edittext[2].setText(link);
-                        edittext[3].setText(text);
+                        if (link.equals("/none")) {
+                            edittext[2].setText("");
+                        }
+                        if (text.equals("none")) {
+                            edittext[3].setText("");
+                        }
                     }
                     edittext[0].requestFocus();
                     if (index == -1)
