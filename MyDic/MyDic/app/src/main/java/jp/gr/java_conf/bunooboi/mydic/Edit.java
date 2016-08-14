@@ -27,7 +27,9 @@ public class Edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit);
 
+        DetectableKeyboardEventLayout root = (DetectableKeyboardEventLayout) findViewById(R.id.root);
         final EditText edittext[] = new EditText[4];
+        final Button button = (Button) findViewById(R.id.button);
         edittext[0] = (EditText) findViewById(R.id.edittext1);
         edittext[1] = (EditText) findViewById(R.id.edittext2);
         edittext[2] = (EditText) findViewById(R.id.edittext3);
@@ -60,12 +62,11 @@ public class Edit extends AppCompatActivity {
         if (text.equals("none")) {
             edittext[3].setText("");
         }
-        Button button = (Button) findViewById(R.id.button);
         if (index == -1)
             button.setText("作成");
         else
             button.setText("編集");
-        button.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        button.setTextSize(24 * Main.getScaleSize(getApplicationContext()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +117,43 @@ public class Edit extends AppCompatActivity {
                     else
                         Toast.makeText(getApplicationContext(), "データを編集しました", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        for (int i = 0; i < 3; i++) {
+            edittext[i].setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (b) {//フォーカスがあたっている
+                        edittext[3].setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+        edittext[3].setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {//フォーカスがあたっている
+                    edittext[0].setVisibility(View.GONE);
+                    edittext[1].setVisibility(View.GONE);
+                    edittext[2].setVisibility(View.GONE);
+                    button.setVisibility(View.GONE);
+                }
+            }
+        });
+        root.setKeyboardListener(new DetectableKeyboardEventLayout.KeyboardListener() {
+
+            @Override
+            public void onKeyboardShown() {
+            }
+
+            @Override
+            public void onKeyboardHidden() {
+                edittext[0].setVisibility(View.VISIBLE);
+                edittext[1].setVisibility(View.VISIBLE);
+                edittext[2].setVisibility(View.VISIBLE);
+                edittext[3].setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
+                findViewById(R.id.view).requestFocus();
             }
         });
     }
