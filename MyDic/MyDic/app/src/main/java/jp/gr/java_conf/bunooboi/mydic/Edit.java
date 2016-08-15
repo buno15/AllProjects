@@ -111,7 +111,7 @@ public class Edit extends AppCompatActivity {
                             edittext[3].setText("");
                         }
                     }
-                    edittext[0].requestFocus();
+                    view.requestFocus();
                     if (index == -1)
                         Toast.makeText(getApplicationContext(), "データを作成しました", Toast.LENGTH_SHORT).show();
                     else
@@ -181,7 +181,7 @@ public class Edit extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.setting, menu);
+        inflater.inflate(R.menu.base, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
