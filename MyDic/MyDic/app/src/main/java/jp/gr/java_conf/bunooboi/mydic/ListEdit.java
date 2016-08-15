@@ -20,13 +20,13 @@ import android.widget.ListView;
 /**
  * Created by hiro on 2016/08/04.
  */
-public class List extends AppCompatActivity {
+public class ListEdit extends AppCompatActivity {
     ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list);
+        setContentView(R.layout.listedit);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         adapter.addAll(Sentences.getList());
@@ -50,7 +50,7 @@ public class List extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 ListView listview = (ListView) adapterView;
                 String item = (String) listview.getItemAtPosition(i);
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(List.this);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListEdit.this);
                 alertDlg.setMessage(item + "を削除しますか？");
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -68,10 +68,10 @@ public class List extends AppCompatActivity {
                 return true;
             }
         });
-        Button button = (Button) findViewById(R.id.button);
-        button.setText("新規データ作成");
-        button.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        button.setOnClickListener(new View.OnClickListener() {
+        Button button1 = (Button) findViewById(R.id.button1);
+        button1.setText("新規データ作成");
+        button1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Edit.title = "";
@@ -80,6 +80,16 @@ public class List extends AppCompatActivity {
                 Edit.text = "";
                 Edit.index = -1;
                 startActivity(new Intent(getApplicationContext(), Edit.class));
+                finish();
+            }
+        });
+        Button button2 = (Button) findViewById(R.id.button2);
+        button2.setText("並び替え");
+        button2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Sort.class));
                 finish();
             }
         });

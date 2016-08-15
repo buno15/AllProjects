@@ -53,7 +53,10 @@ public class Main extends Activity implements RecognitionListener {
     TextView textview;
     static TextToSpeech tts;
     SpeechRecognizer recognizer;
-    HashMap<String, String> params = new HashMap<String, String>();
+    HashMap<String, String> params = new HashMap<String, String>();//音量
+    static boolean all = false;
+    static int allCount = 0;
+    Timer t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +125,7 @@ public class Main extends Activity implements RecognitionListener {
                             .RESULT_UNCHANGED_SHOWN);
                     String text = edittext.getText().toString();
                     if (Sentences.serch(text)) {
-                        setView(false);
+                        setView();
                     } else {
                         if (text.startsWith("http")) {
                             webview.loadUrl(text);
@@ -132,6 +135,12 @@ public class Main extends Activity implements RecognitionListener {
                             Sentences.link = text;
                         }
                         textSpeech(Sentences.text);
+                        all = false;
+                        allCount = 0;
+                        if (t != null) {
+                            t.cancel();
+                            t = null;
+                        }
                     }
                     return true;
                 }
@@ -155,7 +164,7 @@ public class Main extends Activity implements RecognitionListener {
                         .RESULT_UNCHANGED_SHOWN);
                 String text = edittext.getText().toString();
                 if (Sentences.serch(text)) {
-                    setView(false);
+                    setView();
                 } else {
                     if (text.startsWith("http")) {
                         webview.loadUrl(text);
@@ -165,6 +174,12 @@ public class Main extends Activity implements RecognitionListener {
                         Sentences.link = text;
                     }
                     textSpeech(Sentences.text);
+                    all = false;
+                    allCount = 0;
+                    if (t != null) {
+                        t.cancel();
+                        t = null;
+                    }
                 }
             }
         });
@@ -202,7 +217,7 @@ public class Main extends Activity implements RecognitionListener {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LinkList.class));
+                startActivity(new Intent(getApplicationContext(), ListLink.class));
             }
         });
         ImageButton actionbutton1 = (ImageButton) findViewById(R.id.actionbutton1);
@@ -224,9 +239,23 @@ public class Main extends Activity implements RecognitionListener {
                 if (tts.isSpeaking()) {
                     tts.stop();
                     actionbutton2.setImageResource(R.drawable.play);
+                    if (t != null) {
+                        t.cancel();
+                        t = null;
+                    }
                 } else {
-                    if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
-                        textSpeech(Sentences.text);
+                    if (all) {
+                        if (allCount > 0)
+                            allCount--;
+                        allView();
+                    } else {
+                        if (t != null) {
+                            t.cancel();
+                            t = null;
+                        }
+                        if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
+                            textSpeech(Sentences.text);
+                        }
                     }
                     actionbutton2.setImageResource(R.drawable.stop);
                 }
@@ -266,22 +295,68 @@ public class Main extends Activity implements RecognitionListener {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotificationManager.cancel(R.string.app_name);
         }
-        resumeView();
+        if (all) {
+            allView();
+        } else
+            resumeView();
     }
 
-    void setView(boolean speek) {
+    void setView() {
+        all = false;
+        allCount = 0;
+        if (t != null) {
+            t.cancel();
+            t = null;
+        }
         invalidateView();
         if (!Sentences.text.equals("none")) {
-            if (speek) {
-                if (tts.isSpeaking() == false)
-                    textSpeech(Sentences.text);
-            } else {
-                textSpeech(Sentences.text);
-            }
+            textSpeech(Sentences.text);
         }
     }
 
+    void allView() {
+        final Handler h = new Handler();
+        System.out.println("allView");
+        t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (all && !(tts.isSpeaking())) {
+                            if (allCount < Sentences.sentences.size()) {
+                                System.out.println("speek");
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(Sentences.sentences.get(allCount).getTitle() + "。\n");
+                                if (!Sentences.sentences.get(allCount).getText().equals("none"))
+                                    sb.append(Sentences.sentences.get(allCount).getText() + "。\n");
+                                textSpeech(new String(sb));
+                                Sentences.link = Sentences.sentences.get(allCount).getLink();
+                                invalidateView();
+                                allCount++;
+                            } else {
+                                all = false;
+                                allCount = 0;
+                                if (t != null) {
+                                    t.cancel();
+                                    t = null;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }, 0, 1000);
+    }
+
     void resumeView() {
+        all = false;
+        allCount = 0;
+        if (t != null) {
+            t.cancel();
+            t = null;
+        }
         invalidateView();
         if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
             if (!tts.isSpeaking())
@@ -444,13 +519,13 @@ public class Main extends Activity implements RecognitionListener {
                 if (Sentences.serch(recData.get(1)) == false) {
                     if (recData.size() > 2)
                         if (Sentences.serch(recData.get(2))) {
-                            setView(false);
+                            setView();
                         }
                 } else {
-                    setView(false);
+                    setView();
                 }
         } else {
-            setView(false);
+            setView();
         }
         Toast.makeText(Main.this, recData.toString(), Toast.LENGTH_SHORT).show();
         recognizer.destroy();
@@ -472,6 +547,12 @@ public class Main extends Activity implements RecognitionListener {
     @Override
     public void onDestroy() {
         System.out.println("dest");
+        all = false;
+        allCount = 0;
+        if (t != null) {
+            t.cancel();
+            t = null;
+        }
         if (tts != null) {
             textSpeech("");
             tts.shutdown();

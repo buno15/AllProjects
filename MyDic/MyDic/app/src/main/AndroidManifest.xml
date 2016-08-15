@@ -28,13 +28,16 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"/>
         <activity
-            android:name=".LinkList"
+            android:name=".ListLink"
             android:launchMode="singleTask"/>
         <activity
             android:name=".Setting"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".List"
+            android:name=".ListEdit"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Sort"
             android:launchMode="singleTask"/>
         <activity
             android:name=".Edit"
