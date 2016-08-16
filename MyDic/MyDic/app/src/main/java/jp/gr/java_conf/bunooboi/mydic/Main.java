@@ -24,6 +24,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.NotificationCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -36,10 +37,16 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -48,15 +55,27 @@ import java.util.TimerTask;
 
 
 public class Main extends Activity implements RecognitionListener {
+    LinearLayout main;
+    LinearLayout.LayoutParams lp;
     WebView webview;
-    EditText edittext;
     TextView textview;
+    ImageView imageview;
+
+    EditText serch;
+    TextView urltext;
     static TextToSpeech tts;
     SpeechRecognizer recognizer;
     HashMap<String, String> params = new HashMap<String, String>();//音量
     static boolean all = false;
     static int allCount = 0;
     Timer t;
+
+    enum Extension {
+        NONE,
+        HTML,
+        IMG,
+        TXT,
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +104,18 @@ public class Main extends Activity implements RecognitionListener {
                 }
             }
         });
+        main = (LinearLayout) findViewById(R.id.main);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        textview = new TextView(this);
+        imageview = new ImageView(this);
+        textview.setLayoutParams(lp);
+        imageview.setLayoutParams(lp);
+        textview.setPadding(10, 10, 10, 10);
+        textview.setMovementMethod(ScrollingMovementMethod.getInstance());
+        textview.setTextIsSelectable(true);
+        imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+        main.addView(textview);
+        main.addView(imageview);
 
         webview = (WebView) findViewById(R.id.webview);
         webview.setWebViewClient(new WebViewClient());
@@ -104,26 +135,26 @@ public class Main extends Activity implements RecognitionListener {
                 super.onPageFinished(view, url);
                 Log.v("URL", webview.getUrl());
                 if (webview.getUrl().startsWith("http")) {
-                    textview.setText(url);
+                    urltext.setText(url);
                 } else {
-                    textview.setText(url.replaceAll("file://" + Values.RootPath, ""));
+                    urltext.setText(url.replaceAll("file://" + Values.RootPath, ""));
                 }
             }
         });
 
-        edittext = (EditText) findViewById(R.id.edittext);
-        edittext.setTextSize(20 * getScaleSize(getApplicationContext()));
-        edittext.setTextColor(Color.BLACK);
+        serch = (EditText) findViewById(R.id.edittext);
+        serch.setTextSize(20 * getScaleSize(getApplicationContext()));
+        serch.setTextColor(Color.BLACK);
         final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        edittext.setOnKeyListener(new View.OnKeyListener() {
+        serch.setOnKeyListener(new View.OnKeyListener() {
             //コールバックとしてonKey()メソッドを定義
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(serch.getWindowToken(), InputMethodManager
                             .RESULT_UNCHANGED_SHOWN);
-                    String text = edittext.getText().toString();
+                    String text = serch.getText().toString();
                     if (Sentences.serch(text)) {
                         setView();
                     } else {
@@ -147,9 +178,9 @@ public class Main extends Activity implements RecognitionListener {
                 return false;
             }
         });
-        textview = (TextView) findViewById(R.id.textview);
-        textview.setTextSize(20 * getScaleSize(getApplicationContext()));
-        textview.setTextColor(Color.WHITE);
+        urltext = (TextView) findViewById(R.id.textview);
+        urltext.setTextSize(20 * getScaleSize(getApplicationContext()));
+        urltext.setTextColor(Color.WHITE);
         Button button1 = (Button) findViewById(R.id.button1);
         ImageButton button2 = (ImageButton) findViewById(R.id.button2);
         ImageButton button3 = (ImageButton) findViewById(R.id.button3);
@@ -160,9 +191,9 @@ public class Main extends Activity implements RecognitionListener {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(serch.getWindowToken(), InputMethodManager
                         .RESULT_UNCHANGED_SHOWN);
-                String text = edittext.getText().toString();
+                String text = serch.getText().toString();
                 if (Sentences.serch(text)) {
                     setView();
                 } else {
@@ -193,7 +224,7 @@ public class Main extends Activity implements RecognitionListener {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClipData.Item item = new ClipData.Item(textview.getText().toString());
+                ClipData.Item item = new ClipData.Item(urltext.getText().toString());
                 String[] mimeType = new String[1];
                 mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
                 ClipData cd = new ClipData(new ClipDescription("text_data", mimeType), item);
@@ -207,7 +238,7 @@ public class Main extends Activity implements RecognitionListener {
             public void onClick(View view) {
                 Edit.title = "";
                 Edit.key = new String[0];
-                Edit.link = textview.getText().toString();
+                Edit.link = urltext.getText().toString();
                 Edit.text = "";
                 Edit.index = -1;
                 startActivity(new Intent(getApplicationContext(), Edit.class));
@@ -365,14 +396,67 @@ public class Main extends Activity implements RecognitionListener {
     }
 
     void invalidateView() {
-        if (Sentences.link.startsWith("http")) {
-            webview.loadUrl(Sentences.link);
-        } else if (Sentences.link.endsWith("/none")) {
-            webview.loadUrl("file:///" + Values.RootPath + "/java_se_8_api/api/overview-summary.html");
-        } else {
-            webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+        if (Sentences.link.endsWith("/none")) {
+            changeView(Extension.NONE);
+        } else if (Sentences.link.endsWith(".html")) {
+            changeView(Extension.HTML);
+        } else if (Sentences.link.endsWith(".png") || Sentences.link.endsWith(".jpg")|| Sentences.link.endsWith(".jpeg")|| Sentences.link.endsWith(".gif")) {
+            changeView(Extension.IMG);
+        } else if (Sentences.link.endsWith(".txt")) {
+            changeView(Extension.TXT);
         }
-        textview.setText(Sentences.link);
+        urltext.setText(Sentences.link);
+    }
+
+    void changeView(Extension extension) {
+        switch (extension) {
+            case NONE:
+                webview.setVisibility(View.GONE);
+                imageview.setVisibility(View.GONE);
+                textview.setVisibility(View.VISIBLE);
+                textview.setText("none");
+                break;
+            case HTML:
+                webview.setVisibility(View.VISIBLE);
+                imageview.setVisibility(View.GONE);
+                textview.setVisibility(View.GONE);
+                if (Sentences.link.startsWith("http")) {
+                    webview.loadUrl(Sentences.link);
+                } else {
+                    webview.loadUrl("file:///" + Values.RootPath + Sentences.link);
+                }
+                break;
+            case IMG:
+                webview.setVisibility(View.GONE);
+                imageview.setVisibility(View.VISIBLE);
+                textview.setVisibility(View.GONE);
+                try {
+                    FileInputStream is = new FileInputStream(Values.RootPath + Sentences.link);
+                    Bitmap bm = BitmapFactory.decodeStream(is);
+                    imageview.setImageBitmap(bm);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case TXT:
+                webview.setVisibility(View.GONE);
+                imageview.setVisibility(View.GONE);
+                textview.setVisibility(View.VISIBLE);
+                BufferedReader br;
+                try {
+                    br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.RootPath + Sentences.link), "UTF-8"));
+                    String line;
+                    StringBuilder sb = new StringBuilder();
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    textview.setText(new String(sb));
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
     @SuppressWarnings("deprecation")
