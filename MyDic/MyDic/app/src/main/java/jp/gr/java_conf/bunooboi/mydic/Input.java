@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
  * Created by hiro on 2016/08/04.
  */
 public class Input {
-    String configPath = Values.ConfigPath + "/config.csv";
+    private static String configPath = Values.ConfigPath;
     private static final Input input = new Input();
 
     private Input() {
@@ -24,6 +24,24 @@ public class Input {
             file.mkdirs();
         }
         return input;
+    }
+
+    public static Input getInput(String configName) {
+        configPath = Values.ConfigPath + configName;
+        File file = new File(configPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return input;
+    }
+
+    public synchronized ArrayList<String> readConfig() {
+        File file[] = new File(Values.ConfigPath).listFiles();
+        ArrayList<String> list = new ArrayList<>();
+        for (File f : file) {
+            list.add("/"+f.getName());
+        }
+        return list;
     }
 
     public synchronized ArrayList<Sentence> read() {

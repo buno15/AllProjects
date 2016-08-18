@@ -248,13 +248,14 @@ public class Main extends Activity implements RecognitionListener {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ListLink.class));
+                startActivity(new Intent(getApplicationContext(), ListLinkConfig.class));
             }
         });
         ImageButton actionbutton1 = (ImageButton) findViewById(R.id.actionbutton1);
         final ImageButton actionbutton2 = (ImageButton) findViewById(R.id.actionbutton2);
         ImageButton actionbutton3 = (ImageButton) findViewById(R.id.actionbutton3);
         ImageButton actionbutton4 = (ImageButton) findViewById(R.id.actionbutton4);
+        ImageButton actionbutton5 = (ImageButton) findViewById(R.id.actionbutton5);
         actionbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,11 +295,18 @@ public class Main extends Activity implements RecognitionListener {
         });
         actionbutton3.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), GameStart.class));
+                finish();
+            }
+        });
+        actionbutton4.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 webview.goBack();
             }
         });
-        actionbutton4.setOnClickListener(new View.OnClickListener() {
+        actionbutton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 webview.goForward();
@@ -356,14 +364,13 @@ public class Main extends Activity implements RecognitionListener {
                     @Override
                     public void run() {
                         if (all && !(tts.isSpeaking())) {
-                            if (allCount < Sentences.sentences.size()) {
-                                System.out.println("speek");
+                            if (allCount < Sentences.sentences.get(Sentences.ConfigIndex).size()) {
                                 StringBuilder sb = new StringBuilder();
-                                sb.append(Sentences.sentences.get(allCount).getTitle() + "。\n");
-                                if (!Sentences.sentences.get(allCount).getText().equals("none"))
-                                    sb.append(Sentences.sentences.get(allCount).getText() + "。\n");
+                                sb.append(Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getTitle() + "。\n");
+                                if (!Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getText().equals("none"))
+                                    sb.append(Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getText() + "。\n");
                                 textSpeech(new String(sb));
-                                Sentences.link = Sentences.sentences.get(allCount).getLink();
+                                Sentences.link = Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getLink();
                                 invalidateView();
                                 allCount++;
                             } else {
@@ -400,7 +407,7 @@ public class Main extends Activity implements RecognitionListener {
             changeView(Extension.NONE);
         } else if (Sentences.link.endsWith(".html")) {
             changeView(Extension.HTML);
-        } else if (Sentences.link.endsWith(".png") || Sentences.link.endsWith(".jpg")|| Sentences.link.endsWith(".jpeg")|| Sentences.link.endsWith(".gif")) {
+        } else if (Sentences.link.endsWith(".png") || Sentences.link.endsWith(".jpg") || Sentences.link.endsWith(".jpeg") || Sentences.link.endsWith(".gif")) {
             changeView(Extension.IMG);
         } else if (Sentences.link.endsWith(".txt")) {
             changeView(Extension.TXT);
@@ -626,6 +633,22 @@ public class Main extends Activity implements RecognitionListener {
         width = size.x;
         scale = (float) width / (float) bm.getWidth();
         return scale;
+    }
+
+    public static int getPctX(Context context, int value) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+        Point size = new Point();
+        disp.getSize(size);
+        return size.x / 100 * value;
+    }
+
+    public static int getPctY(Context context, int value) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+        Point size = new Point();
+        disp.getSize(size);
+        return size.y / 100 * value;
     }
 
     @Override

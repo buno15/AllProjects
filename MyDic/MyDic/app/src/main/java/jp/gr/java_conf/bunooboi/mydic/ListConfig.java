@@ -1,6 +1,7 @@
 package jp.gr.java_conf.bunooboi.mydic;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,38 +12,63 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.File;
 
 /**
- * Created by hiro on 2016/08/04.
+ * Created by hiro on 2016/08/18.
  */
-public class ListEdit extends AppCompatActivity {
+public class ListConfig extends AppCompatActivity {
     ListView listview;
+    EditText edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("データ一覧");
-        setContentView(R.layout.listedit);
+        setTitle("辞書一覧");
+        setContentView(R.layout.listconfig);
 
+        edittext = (EditText) findViewById(R.id.edittext);
+        edittext.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        edittext.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                    GO();
+                    return true;
+                }
+                return false;
+            }
+        });
+        Button button = (Button) findViewById(R.id.button);
+        button.setText("作成");
+        button.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GO();
+            }
+        });
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        adapter.addAll(Sentences.getSentencesList(Sentences.ConfigIndex));
+        adapter.addAll(Sentences.getConfigList());
 
         listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Edit.title = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getTitle();
-                Edit.key = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getKey();
-                Edit.link = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLink();
-                Edit.text = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getText();
-                Edit.index = i;
-                startActivity(new Intent(getApplicationContext(), Edit.class));
+                Sentences.ConfigIndex = i;
+                startActivity(new Intent(getApplicationContext(), ListEdit.class));
                 finish();
             }
         });
@@ -51,12 +77,13 @@ public class ListEdit extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 ListView listview = (ListView) adapterView;
                 String item = (String) listview.getItemAtPosition(i);
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListEdit.this);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListConfig.this);
                 alertDlg.setMessage(item + "を削除しますか？");
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Sentences.sentences.get(Sentences.ConfigIndex).remove(i);
-                        Output.getOutput().write(false, Sentences.ConfigIndex);
+                        new File(Values.ConfigPath + Sentences.config.get(i)).delete();
+                        Sentences.config.remove(i);
+                        Sentences.sentences.remove(i);
                         reload();
                     }
                 });
@@ -69,32 +96,19 @@ public class ListEdit extends AppCompatActivity {
                 return true;
             }
         });
-        Button button1 = (Button) findViewById(R.id.button1);
-        button1.setText("新規データ作成");
-        button1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Edit.title = "";
-                Edit.key = new String[0];
-                Edit.link = "";
-                Edit.text = "";
-                Edit.index = -1;
-                startActivity(new Intent(getApplicationContext(), Edit.class));
-                finish();
-            }
-        });
-        Button button2 = (Button) findViewById(R.id.button2);
-        button2.setText("並び替え");
-        button2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Sort.class));
-                finish();
-            }
-        });
         listheight();
+
+    }
+
+    void GO() {
+        if (edittext.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "名前が入力されていません", Toast.LENGTH_SHORT).show();
+        } else if (Sentences.serchDic(edittext.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "既に存在します", Toast.LENGTH_SHORT).show();
+        } else {
+            Output.getOutput().createDic(edittext.getText().toString());
+            reload();
+        }
     }
 
     @Override
@@ -108,7 +122,7 @@ public class ListEdit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_back:
-                startActivity(new Intent(getApplicationContext(), ListConfig.class));
+                startActivity(new Intent(getApplicationContext(), Setting.class));
                 finish();
                 break;
         }
@@ -148,10 +162,11 @@ public class ListEdit extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(getApplicationContext(), ListConfig.class));
+            startActivity(new Intent(getApplicationContext(), Setting.class));
             finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 }
+

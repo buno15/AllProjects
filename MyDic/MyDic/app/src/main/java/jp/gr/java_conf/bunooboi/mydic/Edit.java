@@ -25,6 +25,10 @@ public class Edit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (index == -1)
+            setTitle("データ作成");
+        else
+            setTitle("データ編集");
         setContentView(R.layout.edit);
 
         DetectableKeyboardEventLayout root = (DetectableKeyboardEventLayout) findViewById(R.id.root);
@@ -76,7 +80,7 @@ public class Edit extends AppCompatActivity {
                 text = edittext[3].getText().toString();
                 if (title.equals("") || edittext[1].getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "未入力の必須項目があります", Toast.LENGTH_SHORT).show();
-                } else if (Sentences.serch(title, index)) {
+                } else if (Sentences.serch(title, Sentences.ConfigIndex, index)) {
                     Toast.makeText(getApplicationContext(), "タイトルが重複しています", Toast.LENGTH_SHORT).show();
                 } else {
                     if (link.equals("")) {
@@ -92,15 +96,15 @@ public class Edit extends AppCompatActivity {
                         text = "none";
                     }
                     if (index == -1) {
-                        Sentences.sentences.add(new Sentence(title, key, link, text));
-                        Output.getOutput().write(false);
+                        Sentences.sentences.get(Sentences.ConfigIndex).add(new Sentence(title, key, link, text));
+                        Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         for (EditText edit : edittext) {
                             edit.setText("");
                         }
                         Sentences.init();
                     } else {
-                        Sentences.sentences.set(index, new Sentence(title, key, link, text));
-                        Output.getOutput().write(false);
+                        Sentences.sentences.get(Sentences.ConfigIndex).set(index, new Sentence(title, key, link, text));
+                        Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         Sentences.init();
                         edittext[0].setText(title);
                         edittext[1].setText(getKey(key));

@@ -27,6 +27,7 @@ public class Setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setTitle("設定");
         setContentView(R.layout.setting);
 
         final TextView textview[] = new TextView[7];
@@ -81,7 +82,7 @@ public class Setting extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ListEdit.class));
+                startActivity(new Intent(getApplicationContext(), ListConfig.class));
             }
         });
 

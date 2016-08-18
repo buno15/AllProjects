@@ -7,30 +7,58 @@ import java.util.ArrayList;
  * Created by hiro on 2016/08/04.
  */
 public class Sentences {
-    static ArrayList<Sentence> sentences = new ArrayList<>();
-    static String text = "検索結果はありません";
-    static String link = "";
-    static String key = "";
+    static ArrayList<String> config = new ArrayList<>();//ファイルの名前
+    static ArrayList<ArrayList<Sentence>> sentences = new ArrayList<>();//各データ
+    static int ConfigIndex = 0;//アクセスファイル番号
+    static String text = "検索結果はありません";//読み上げテキスト
+    static String link = "";//resリンク
+    static String key = "";//検索キー
 
     public static void init() {
-        sentences = Input.getInput().read();
+        config = Input.getInput().readConfig();
+        sentences = new ArrayList<>();
+        for (int i = 0; i < config.size(); i++) {
+            sentences.add(Input.getInput(config.get(i)).read());
+            System.out.println(sentences.get(i));
+        }
     }
 
-    public static ArrayList<String> getList() {
+    public static ArrayList<String> getConfigList() {
         ArrayList<String> list = new ArrayList<>();
-        for (Sentence s : sentences) {
+        for (String s : config) {
+            s = s.replace("/", "");
+            s = s.replace(".csv", "");
+            list.add(s);
+        }
+        return list;
+    }
+
+    public static ArrayList<String> getSentencesList(int index) {
+        ArrayList<String> list = new ArrayList<>();
+        for (Sentence s : sentences.get(index)) {
             list.add(s.getTitle());
         }
         return list;
     }
 
+    public static boolean serchDic(String serch) {
+        for (int i = 0; i < config.size(); i++) {
+            if (config.get(i).equals("/" + serch + ".csv")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean serch(String serch) {
         key = serch;
         for (int i = 0; i < sentences.size(); i++) {
-            if (sentences.get(i).serchKey(serch)) {
-                text = sentences.get(i).getText();
-                link = sentences.get(i).getLink();
-                return true;
+            for (int j = 0; j < sentences.get(i).size(); j++) {
+                if (sentences.get(i).get(j).serchKey(serch)) {
+                    text = sentences.get(i).get(j).getText();
+                    link = sentences.get(i).get(j).getLink();
+                    return true;
+                }
             }
         }
         text = "検索結果はありません";
@@ -38,15 +66,17 @@ public class Sentences {
         return false;
     }
 
-    public static boolean serch(String serch, int index) {
+    public static boolean serch(String serch, int index1, int index2) {
         key = serch;
         for (int i = 0; i < sentences.size(); i++) {
-            if (i == index)
-                continue;
-            if (sentences.get(i).serchKey(serch)) {
-                text = sentences.get(i).getText();
-                link = sentences.get(i).getLink();
-                return true;
+            for (int j = 0; j < sentences.get(i).size(); j++) {
+                if (i == index1 && j == index2)
+                    continue;
+                if (sentences.get(i).get(j).serchKey(serch)) {
+                    text = sentences.get(i).get(j).getText();
+                    link = sentences.get(i).get(j).getLink();
+                    return true;
+                }
             }
         }
         text = "検索結果はありません";

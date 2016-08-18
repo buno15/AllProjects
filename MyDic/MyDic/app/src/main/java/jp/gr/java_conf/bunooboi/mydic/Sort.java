@@ -25,8 +25,9 @@ public class Sort extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("並び替え");
         setContentView(R.layout.sort);
-        PREFS = Sentences.getList().toArray(new String[]{});
+        PREFS = Sentences.getSentencesList(Sentences.ConfigIndex).toArray(new String[]{});
 
         mAdapter = new SampleAdapter();
         mListView = (SortableListView) findViewById(R.id.list);
@@ -135,10 +136,10 @@ public class Sort extends AppCompatActivity {
 
         @Override
         public boolean onStopDrag(int positionFrom, int positionTo) {
-            Sentence sen = Sentences.sentences.get(startPosition);
-            Sentences.sentences.remove(startPosition);
-            Sentences.sentences.add(positionFrom, sen);
-            Output.getOutput().write(false);
+            Sentence sen = Sentences.sentences.get(Sentences.ConfigIndex).get(startPosition);
+            Sentences.sentences.get(Sentences.ConfigIndex).remove(startPosition);
+            Sentences.sentences.get(Sentences.ConfigIndex).add(positionFrom, sen);
+            Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
             mDraggingPosition = -1;
             mListView.invalidateViews();
             return super.onStopDrag(positionFrom, positionTo);
