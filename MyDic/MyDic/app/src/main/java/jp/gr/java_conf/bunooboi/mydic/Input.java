@@ -39,7 +39,7 @@ public class Input {
         File file[] = new File(Values.ConfigPath).listFiles();
         ArrayList<String> list = new ArrayList<>();
         for (File f : file) {
-            list.add("/"+f.getName());
+            list.add("/" + f.getName());
         }
         return list;
     }
@@ -53,11 +53,13 @@ public class Input {
             while ((line = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, ",");
                 String title = st.nextToken();
+                int level = Integer.parseInt(st.nextToken());
                 String key[] = st.nextToken().split("%");
                 String link = st.nextToken();
+                String description = st.nextToken();
                 String text = st.nextToken();
                 text = text.replaceAll("&&", "\n");
-                list.add(new Sentence(title, key, link, text));
+                list.add(new Sentence(title, level, key, link, description, text));
             }
         } catch (IOException e) {
             e.printStackTrace();

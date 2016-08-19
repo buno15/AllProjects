@@ -50,6 +50,47 @@ public class Sentences {
         return false;
     }
 
+    public static boolean serchTitle(String serch, int index1, int index2) {
+        for (int i = 0; i < sentences.size(); i++) {
+            for (int j = 0; j < sentences.get(i).size(); j++) {
+                if (i == index1 && j == index2)
+                    continue;
+                if (sentences.get(i).get(j).getTitle().equals(serch)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean serchKey(String serch, int index1, int index2) {
+        for (int i = 0; i < sentences.size(); i++) {
+            for (int j = 0; j < sentences.get(i).size(); j++) {
+                if (i == index1 && j == index2)
+                    continue;
+                if (sentences.get(i).get(j).serchKey(serch)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean serchKey(String[] serch, int index1, int index2) {
+        for (int i = 0; i < sentences.size(); i++) {
+            for (int j = 0; j < sentences.get(i).size(); j++) {
+                if (i == index1 && j == index2)
+                    continue;
+                for (String s : serch) {
+                    if (sentences.get(i).get(j).serchKey(s)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean serch(String serch) {
         key = serch;
         for (int i = 0; i < sentences.size(); i++) {

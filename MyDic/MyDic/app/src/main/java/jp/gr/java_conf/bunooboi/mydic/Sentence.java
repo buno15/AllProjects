@@ -7,19 +7,27 @@ import java.io.Serializable;
  */
 public class Sentence implements Serializable {
     private String title;
+    private int level;
     private String key[];
     private String link;
+    private String description;
     private String text;
 
-    public Sentence(String title, String key[], String link, String text) {
+    public Sentence(String title, int level, String key[], String link, String description, String text) {
         this.title = title;
+        this.level = level;
         this.key = key;
         this.link = link;
+        this.description = description;
         this.text = text;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public String[] getKey() {
@@ -48,11 +56,15 @@ public class Sentence implements Serializable {
         return false;
     }
 
-    public String getText() {
-        return text;
-    }
-
     public String getLink() {
         return link;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getText() {
+        return text;
     }
 }

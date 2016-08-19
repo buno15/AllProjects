@@ -53,7 +53,7 @@ public class Output {
             for (int i = 0; i < Sentences.sentences.get(index).size(); i++) {
                 Sentence s = Sentences.sentences.get(index).get(i);
                 String text = s.getText().replaceAll("\n", "&&");
-                osw.write(s.getTitle() + "," + s.getKeytoString() + "," + s.getLink() + "," + text + "\n");
+                osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getDescription() + "," + text + "\n");
             }
             osw.flush();
         } catch (IOException e) {

@@ -13,13 +13,14 @@ import android.widget.Button;
 /**
  * Created by hiro on 2016/07/21.
  */
-public class MyDialog extends DialogFragment {
-    FitTextView textview;
+public class View_MyDialog extends DialogFragment {
+    View_FitTextView textview;
     Button button1;
     Button button2;
     static String text;
+    static int id;
 
-    public MyDialog() {
+    public View_MyDialog() {
     }
 
     @Override
@@ -31,7 +32,7 @@ public class MyDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.mydialog, null, false);
-        textview = (FitTextView) view.findViewById(R.id.text);
+        textview = (View_FitTextView) view.findViewById(R.id.text);
         button1 = (Button) view.findViewById(R.id.button1);
         button2 = (Button) view.findViewById(R.id.button2);
         textview.setText(text);
@@ -52,6 +53,13 @@ public class MyDialog extends DialogFragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (id) {
+                    case 0:
+                        break;
+                    case 1:
+                        GameFall.start();
+                        break;
+                }
                 dismiss();
             }
         });

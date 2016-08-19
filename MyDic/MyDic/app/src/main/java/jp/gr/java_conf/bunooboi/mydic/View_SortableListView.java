@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class SortableListView extends ListView implements AdapterView.OnItemLongClickListener {
+public class View_SortableListView extends ListView implements AdapterView.OnItemLongClickListener {
     private static final int SCROLL_SPEED_FAST = 25;
     private static final int SCROLL_SPEED_SLOW = 8;
     private static final Bitmap.Config DRAG_BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
@@ -32,7 +32,7 @@ public class SortableListView extends ListView implements AdapterView.OnItemLong
     /**
      * コンストラクタ
      */
-    public SortableListView(Context context) {
+    public View_SortableListView(Context context) {
         super(context);
         setOnItemLongClickListener(this);
     }
@@ -40,7 +40,7 @@ public class SortableListView extends ListView implements AdapterView.OnItemLong
     /**
      * コンストラクタ
      */
-    public SortableListView(Context context, AttributeSet attrs) {
+    public View_SortableListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnItemLongClickListener(this);
     }
@@ -48,7 +48,7 @@ public class SortableListView extends ListView implements AdapterView.OnItemLong
     /**
      * コンストラクタ
      */
-    public SortableListView(Context context, AttributeSet attrs, int defStyle) {
+    public View_SortableListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setOnItemLongClickListener(this);
     }

@@ -29,7 +29,14 @@ public class GameStart extends AppCompatActivity {
         imagebutton[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), GameMain.class));
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
+                finish();
+            }
+        });
+        imagebutton[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 finish();
             }
         });

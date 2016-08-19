@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-public class FitTextView extends TextView {
+public class View_FitTextView extends TextView {
 
 	/** 最小のテキストサイズ */
 	private static final float MIN_TEXT_SIZE = 10f;
@@ -16,7 +16,7 @@ public class FitTextView extends TextView {
 	 * 
 	 * @param context
 	 */
-	public FitTextView(Context context) {
+	public View_FitTextView(Context context) {
 		super(context);
 	}
 
@@ -26,7 +26,7 @@ public class FitTextView extends TextView {
 	 * @param context
 	 * @param attrs
 	 */
-	public FitTextView(Context context, AttributeSet attrs) {
+	public View_FitTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 

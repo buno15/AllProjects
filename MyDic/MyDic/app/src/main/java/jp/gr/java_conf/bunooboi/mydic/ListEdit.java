@@ -38,8 +38,10 @@ public class ListEdit extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Edit.title = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getTitle();
+                Edit.level = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLevel();
                 Edit.key = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getKey();
                 Edit.link = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLink();
+                Edit.description = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getDescription();
                 Edit.text = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getText();
                 Edit.index = i;
                 startActivity(new Intent(getApplicationContext(), Edit.class));
@@ -76,8 +78,10 @@ public class ListEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Edit.title = "";
+                Edit.level = 1;
                 Edit.key = new String[0];
                 Edit.link = "";
+                Edit.description = "";
                 Edit.text = "";
                 Edit.index = -1;
                 startActivity(new Intent(getApplicationContext(), Edit.class));

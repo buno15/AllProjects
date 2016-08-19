@@ -39,7 +39,7 @@
         <activity
             android:name=".ListConfig"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ListEdit"
             android:launchMode="singleTask" />
@@ -60,7 +60,16 @@
             android:name=".GameStart"
             android:launchMode="singleTask" />
         <activity
+            android:name=".GameSelectDic"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".GameFall"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".GameMain"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".GameFin"
             android:launchMode="singleTask" />
 
         <service android:name="BackService" />
