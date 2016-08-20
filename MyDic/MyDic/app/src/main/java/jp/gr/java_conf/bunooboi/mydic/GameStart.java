@@ -19,6 +19,7 @@ public class GameStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("ゲーム一覧");
         setContentView(R.layout.gamestart);
+        Sound.init(getApplicationContext());
 
         ImageButton imagebutton[] = new ImageButton[5];
         imagebutton[0] = (ImageButton) findViewById(R.id.imagebutton1);
