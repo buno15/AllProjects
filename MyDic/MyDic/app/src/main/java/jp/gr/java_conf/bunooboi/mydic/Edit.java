@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout;
+
 /**
  * Created by hiro on 2016/08/04.
  */
@@ -36,7 +38,7 @@ public class Edit extends AppCompatActivity {
             setTitle("データ編集");
         setContentView(R.layout.edit);
 
-        View_DetectableKeyboardEventLayout root = (View_DetectableKeyboardEventLayout) findViewById(R.id.root);
+        DetectableKeyboardEventLayout root = (DetectableKeyboardEventLayout) findViewById(R.id.root);
         final EditText edittext[] = new EditText[5];
         final Button button = (Button) findViewById(R.id.button);
         edittext[0] = (EditText) findViewById(R.id.edittext1);
@@ -178,7 +180,7 @@ public class Edit extends AppCompatActivity {
                 }
             }
         });
-        root.setKeyboardListener(new View_DetectableKeyboardEventLayout.KeyboardListener() {
+        root.setKeyboardListener(new DetectableKeyboardEventLayout.KeyboardListener() {
 
             @Override
             public void onKeyboardShown() {

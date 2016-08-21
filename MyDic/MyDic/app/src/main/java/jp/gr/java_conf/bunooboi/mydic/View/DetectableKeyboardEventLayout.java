@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.View;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 /**
  * Created by bunooboi on 16/08/14.
  */
-public class View_DetectableKeyboardEventLayout extends LinearLayout {
+public class DetectableKeyboardEventLayout extends LinearLayout {
     public interface KeyboardListener {
         void onKeyboardShown();
 
@@ -17,11 +17,11 @@ public class View_DetectableKeyboardEventLayout extends LinearLayout {
     private static final int MIN_KEYBOARD_HEIGHT = 100;
     private KeyboardListener keyboardListener;
 
-    public View_DetectableKeyboardEventLayout(Context context, AttributeSet attrs) {
+    public DetectableKeyboardEventLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public View_DetectableKeyboardEventLayout(Context context) {
+    public DetectableKeyboardEventLayout(Context context) {
         super(context);
     }
 

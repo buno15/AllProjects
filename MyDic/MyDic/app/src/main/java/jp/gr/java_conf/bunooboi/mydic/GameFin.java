@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
+import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
+
 /**
  * Created by hiro on 2016/08/19.
  */
@@ -18,7 +21,14 @@ public class GameFin extends Activity {
         setContentView(R.layout.gamefin);
 
         TextView textview = (TextView) findViewById(R.id.textview);
-        textview.setText(String.valueOf(GameFall.t2 - GameFall.t1) + "秒");
+        switch (GameValue.id) {
+            case 0:
+                textview.setText(GameSelect.question + "問");
+                break;
+            case 1:
+                textview.setText(String.valueOf(GameFall.t2 - GameFall.t1) + "秒");
+                break;
+        }
         textview.setTextSize(40 * Main.getScaleSize(getApplicationContext()));
 
         Button button1 = (Button) findViewById(R.id.button1);

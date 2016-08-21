@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * Created by hiro on 2016/08/04.
  */
 public class Sentences {
-    static ArrayList<String> config = new ArrayList<>();//ファイルの名前
-    static ArrayList<ArrayList<Sentence>> sentences = new ArrayList<>();//各データ
+    public static ArrayList<String> config = new ArrayList<>();//ファイルの名前
+    public static ArrayList<ArrayList<Sentence>> sentences = new ArrayList<>();//各データ
     static int ConfigIndex = 0;//アクセスファイル番号
     static String text = "検索結果はありません";//読み上げテキスト
     static String link = "";//resリンク

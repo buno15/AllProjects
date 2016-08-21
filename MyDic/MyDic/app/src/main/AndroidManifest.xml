@@ -63,7 +63,10 @@
             android:name=".GameSelectDic"
             android:launchMode="singleTask" />
         <activity
-            android:name=".GameFall"
+            android:name=".Game.GameFall"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Game.GameSelect"
             android:launchMode="singleTask" />
         <activity
             android:name=".GameMain"

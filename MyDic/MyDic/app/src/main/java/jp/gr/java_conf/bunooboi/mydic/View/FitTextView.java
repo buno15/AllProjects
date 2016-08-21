@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.View;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-public class View_FitTextView extends TextView {
+public class FitTextView extends TextView {
 
 	/** 最小のテキストサイズ */
 	private static final float MIN_TEXT_SIZE = 10f;
@@ -16,7 +16,7 @@ public class View_FitTextView extends TextView {
 	 * 
 	 * @param context
 	 */
-	public View_FitTextView(Context context) {
+	public FitTextView(Context context) {
 		super(context);
 	}
 
@@ -26,7 +26,7 @@ public class View_FitTextView extends TextView {
 	 * @param context
 	 * @param attrs
 	 */
-	public View_FitTextView(Context context, AttributeSet attrs) {
+	public FitTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 

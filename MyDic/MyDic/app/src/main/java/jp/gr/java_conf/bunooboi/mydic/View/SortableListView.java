@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.View;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class View_SortableListView extends ListView implements AdapterView.OnItemLongClickListener {
+public class SortableListView extends ListView implements AdapterView.OnItemLongClickListener {
     private static final int SCROLL_SPEED_FAST = 25;
     private static final int SCROLL_SPEED_SLOW = 8;
     private static final Bitmap.Config DRAG_BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
@@ -32,7 +32,7 @@ public class View_SortableListView extends ListView implements AdapterView.OnIte
     /**
      * コンストラクタ
      */
-    public View_SortableListView(Context context) {
+    public SortableListView(Context context) {
         super(context);
         setOnItemLongClickListener(this);
     }
@@ -40,7 +40,7 @@ public class View_SortableListView extends ListView implements AdapterView.OnIte
     /**
      * コンストラクタ
      */
-    public View_SortableListView(Context context, AttributeSet attrs) {
+    public SortableListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnItemLongClickListener(this);
     }
@@ -48,7 +48,7 @@ public class View_SortableListView extends ListView implements AdapterView.OnIte
     /**
      * コンストラクタ
      */
-    public View_SortableListView(Context context, AttributeSet attrs, int defStyle) {
+    public SortableListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setOnItemLongClickListener(this);
     }

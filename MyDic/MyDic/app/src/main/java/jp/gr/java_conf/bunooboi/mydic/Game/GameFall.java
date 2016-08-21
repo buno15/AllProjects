@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Game;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,17 +19,24 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import jp.gr.java_conf.bunooboi.mydic.GameFin;
+import jp.gr.java_conf.bunooboi.mydic.GameValue;
+import jp.gr.java_conf.bunooboi.mydic.Main;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentence;
+import jp.gr.java_conf.bunooboi.mydic.Sound;
+import jp.gr.java_conf.bunooboi.mydic.View.FitTextView;
+import jp.gr.java_conf.bunooboi.mydic.View.MyDialog;
 
 /**
  * Created by hiro on 2016/08/19.
  */
 public class GameFall extends Activity {
-    static ArrayList<Integer> participationConfig = new ArrayList<>();//出題する辞書番号
     static Sentence questionSentence;
-    static View_FitTextView questionText;//問題文
+    static FitTextView questionText;//問題文
     static TextView countText;//正解カウント文
     static TextView randomNumberText;//ランダム番号文
     FrameLayout gameMain;//メインレイアウト
@@ -38,8 +45,8 @@ public class GameFall extends Activity {
     static int bou_w;//棒の幅
     static int bou_h;//棒の高さ
     static int limit_h;//limitの高さ
-    static long t1;
-    static long t2;
+    public static long t1;
+    public static long t2;
     static int startCount;//始まりまでのカウントダウン
     static String randomNumber;//ランダム番号
     static String color;//ランダム色
@@ -66,15 +73,15 @@ public class GameFall extends Activity {
         disp_h = size.y;
         bou_w = disp_w / 4;
         bou_h = disp_h / 6;
-        randomNumber = createRandomNumber();
-        color = createRandomColor();
+        randomNumber = GameValue.createRandomNumber();
+        color = GameValue.createRandomColor();
 
-        findViewById(R.id.root).setBackgroundColor(Color.parseColor(createRandomColor()));
-        questionText = (View_FitTextView) findViewById(R.id.questionText);
+        findViewById(R.id.root).setBackgroundColor(Color.parseColor(GameValue.createRandomColor()));
+        questionText = (FitTextView) findViewById(R.id.questionText);
         questionText.setTextColor(Color.BLACK);
         questionText.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         questionText.setPadding(10, 0, 10, 0);
-        questionSentence = getQuestion(true);
+        questionSentence = GameValue.getQuestion(true);
         questionText.setText(questionSentence.getDescription());
         questionText.post(new Runnable() {
             @Override
@@ -133,7 +140,7 @@ public class GameFall extends Activity {
         gameMain.addView(randomNumberText);
     }
 
-    static void start() {//メインタイマースタート
+    public static void start() {//メインタイマースタート
         startCount = 3;
         final Handler handler = new Handler();
         startTimer = new Timer();
@@ -156,7 +163,7 @@ public class GameFall extends Activity {
                 });
             }
         }, 0, 1000);
-        Sound.fall_start();
+        Sound.gamestart();
         mainTimer = new Timer();
         mainTimer.schedule(new TimerTask() {
             @Override
@@ -170,7 +177,7 @@ public class GameFall extends Activity {
                             randomNumberText.setText(randomNumber);
                         }
                         if ((t2 - t1) % 30 == 0) {
-                            questionSentence = getQuestion(true);
+                            questionSentence = GameValue.getQuestion(true);
                             questionText.setText(questionSentence.getDescription());
                             for (Bou b : bou) {
                                 b.button.setEnabled(false);
@@ -227,71 +234,13 @@ public class GameFall extends Activity {
         }, 3000);
     }
 
-    public static Sentence getQuestion(boolean getLevel) {
-        int configIndex = (int) Math.floor(Math.random() * GameFall.participationConfig.size());
-        Sentence sentence = new Sentence("", 1, new String[]{""}, "", "", "");
-        if (getLevel) {
-            switch ((int) Math.floor(Math.random() * 6)) {
-                case 0:
-                    sentence = questionLevel(configIndex, 1);
-                    break;
-                case 1:
-                case 2:
-                    sentence = questionLevel(configIndex, 2);
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                    sentence = questionLevel(configIndex, 3);
-                    break;
-            }
-        } else {
-            do {
-                sentence = Sentences.sentences.get(GameFall.participationConfig.get(configIndex)).get((int) Math.floor(Math.random() * Sentences.sentences.get(GameFall.participationConfig.get(configIndex)).size()));
-            } while (sentence.getLevel() == 0);
-        }
-        return sentence;
-    }
-
-    static Sentence questionLevel(int configIndex, int level) {
-        Sentence sentence;
-        do {
-            sentence = Sentences.sentences.get(GameFall.participationConfig.get(configIndex)).get((int) Math.floor(Math.random() * Sentences.sentences.get(GameFall.participationConfig.get(configIndex)).size()));
-        } while (sentence.getLevel() != level && sentence.getLevel() == 0);
-        return sentence;
-    }
-
-    public static String createRandomNumber() {
-        String str[] = new String[4];
-        for (int i = 0; i < str.length; i++) {
-            str[i] = String.valueOf((int) Math.floor(Math.random() * 10));
-            if (str[i].equals("10")) {
-                str[i] = "・";
-            }
-        }
-        return str[0] + str[1] + "-" + str[2] + str[3];
-    }
-
-    public static String createRandomColor() {
-        char str[] = new char[6];
-        String color = "0123456789ABCDEF";
-        for (int i = 0; i < str.length; i++) {
-            str[i] = color.charAt((int) Math.floor(Math.random() * color.length()));
-        }
-        String s = "#" + str[0] + str[1] + str[2] + str[3] + str[4] + str[5];
-        if (s.equals("#000000")) {
-            s = "#ffdd99";
-        }
-        return s;
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             stop();
-            View_MyDialog.id = 1;
-            View_MyDialog.text = "メインに戻りますか？";
-            View_MyDialog dialog = new View_MyDialog();
+            MyDialog.id = 1;
+            MyDialog.text = "メインに戻りますか？";
+            MyDialog dialog = new MyDialog();
             dialog.show(getFragmentManager(), "test");
             return true;
         }
@@ -350,7 +299,7 @@ public class GameFall extends Activity {
             if ((int) Math.floor(Math.random() * 5) == 0) {
                 text = questionSentence.getTitle();
             } else {
-                text = getQuestion(false).getTitle();
+                text = GameValue.getQuestion(false).getTitle();
             }
             button.setText(text);
         }

@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
+import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
+
 /**
  * Created by hiro on 2016/08/19.
  */
@@ -44,10 +47,17 @@ public class GameSelectDic extends AppCompatActivity {
 
                 for (int i = 0; i < checked.size(); i++) {
                     if (checked.valueAt(i)) {
-                        GameFall.participationConfig.add(i);
+                        GameValue.participationConfig.add(i);
                     }
                 }
-                startActivity(new Intent(getApplicationContext(), GameFall.class));
+                switch (GameValue.id) {
+                    case 0:
+                        startActivity(new Intent(getApplicationContext(), GameSelect.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(getApplicationContext(), GameFall.class));
+                        break;
+                }
                 finish();
                 break;
             case R.id.action_back:

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.View;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,17 +10,23 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
+import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
+import jp.gr.java_conf.bunooboi.mydic.GameStart;
+import jp.gr.java_conf.bunooboi.mydic.Main;
+import jp.gr.java_conf.bunooboi.mydic.R;
+
 /**
  * Created by hiro on 2016/07/21.
  */
-public class View_MyDialog extends DialogFragment {
-    View_FitTextView textview;
+public class MyDialog extends DialogFragment {
+    FitTextView textview;
     Button button1;
     Button button2;
-    static String text;
-    static int id;
+    public static String text;
+    public static int id;
 
-    public View_MyDialog() {
+    public MyDialog() {
     }
 
     @Override
@@ -32,7 +38,7 @@ public class View_MyDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.mydialog, null, false);
-        textview = (View_FitTextView) view.findViewById(R.id.text);
+        textview = (FitTextView) view.findViewById(R.id.text);
         button1 = (Button) view.findViewById(R.id.button1);
         button2 = (Button) view.findViewById(R.id.button2);
         textview.setText(text);
@@ -55,6 +61,7 @@ public class View_MyDialog extends DialogFragment {
             public void onClick(View v) {
                 switch (id) {
                     case 0:
+                        GameSelect.start();
                         break;
                     case 1:
                         GameFall.start();

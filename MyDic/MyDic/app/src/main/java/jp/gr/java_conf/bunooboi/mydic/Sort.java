@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import jp.gr.java_conf.bunooboi.mydic.View.SortableListView;
+
 /**
  * Created by hiro on 2016/08/15.
  */
@@ -20,7 +22,7 @@ public class Sort extends AppCompatActivity {
     int mDraggingPosition = -1;
     int startPosition = -1;
     SampleAdapter mAdapter;
-    View_SortableListView mListView;
+    SortableListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class Sort extends AppCompatActivity {
         PREFS = Sentences.getSentencesList(Sentences.ConfigIndex).toArray(new String[]{});
 
         mAdapter = new SampleAdapter();
-        mListView = (View_SortableListView) findViewById(R.id.list);
+        mListView = (SortableListView) findViewById(R.id.list);
         mListView.setDragListener(new DragListener());
         mListView.setSortable(true);
         mListView.setAdapter(mAdapter);
@@ -94,7 +96,7 @@ public class Sort extends AppCompatActivity {
         }
     }
 
-    class DragListener extends View_SortableListView.SimpleDragListener {
+    class DragListener extends SortableListView.SimpleDragListener {
         @Override
         public int onStartDrag(int position) {
             startPosition = position;

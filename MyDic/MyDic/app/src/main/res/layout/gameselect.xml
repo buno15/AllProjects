@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/root"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -9,33 +8,43 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#0078c4"
         android:orientation="horizontal">
 
-        <jp.gr.java_conf.bunooboi.mydic.View.FitTextView
-            android:id="@+id/questionText"
+        <TextView
+            android:id="@+id/questionCountText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:background="@drawable/fall_question"
+            android:layout_weight="4"
+            android:background="@drawable/backui"
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/countText"
+            android:id="@+id/timeCountText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="text"/>
+            android:background="@drawable/backui"
+            android:gravity="center"/>
     </LinearLayout>
 
+
     <FrameLayout
-        android:id="@+id/gameMain"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="9">
-    </FrameLayout>
 
+        <LinearLayout
+            android:id="@+id/questionlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/backc"
+            android:orientation="vertical"/>
+
+        <TextView
+            android:id="@+id/randomNumberText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+    </FrameLayout>
 
 </LinearLayout>

@@ -30,6 +30,7 @@ public class GameStart extends AppCompatActivity {
         imagebutton[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GameValue.id = 0;
                 startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 finish();
             }
@@ -37,6 +38,31 @@ public class GameStart extends AppCompatActivity {
         imagebutton[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GameValue.id = 1;
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
+                finish();
+            }
+        });
+        imagebutton[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GameValue.id = 2;
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
+                finish();
+            }
+        });
+        imagebutton[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GameValue.id = 3;
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
+                finish();
+            }
+        });
+        imagebutton[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GameValue.id = 4;
                 startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 finish();
             }
