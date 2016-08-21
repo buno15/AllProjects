@@ -415,7 +415,7 @@ public class GameSelect extends Activity {
             answerSentence = questions[(int) Math.floor(Math.random() * questions.length)];
             questionText.setText(answerSentence.getDescription());
             for (int i = 0; i < choicesButton.length; i++) {
-                choicesButton[i].setText(questions[i].getTitle());
+                choicesButton[i].setText(questions[i].getTitle().replaceAll("&&", ""));
             }
         }
     }

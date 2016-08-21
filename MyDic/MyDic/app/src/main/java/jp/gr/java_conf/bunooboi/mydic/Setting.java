@@ -82,7 +82,7 @@ public class Setting extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ListConfig.class));
+                startActivity(new Intent(getApplicationContext(), ListEditConfig.class));
             }
         });
 

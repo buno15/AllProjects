@@ -232,7 +232,7 @@ public class Edit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_back:
-                startActivity(new Intent(getApplicationContext(), ListEdit.class));
+                startActivity(new Intent(getApplicationContext(), ListEditSentence.class));
                 finish();
                 break;
         }
@@ -242,7 +242,7 @@ public class Edit extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(getApplicationContext(), ListEdit.class));
+            startActivity(new Intent(getApplicationContext(), ListEditSentence.class));
             finish();
             return true;
         }

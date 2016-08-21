@@ -26,7 +26,7 @@ import java.io.File;
 /**
  * Created by hiro on 2016/08/18.
  */
-public class ListConfig extends AppCompatActivity {
+public class ListEditConfig extends AppCompatActivity {
     ListView listview;
     EditText edittext;
 
@@ -34,7 +34,7 @@ public class ListConfig extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("辞書一覧");
-        setContentView(R.layout.listconfig);
+        setContentView(R.layout.listeditconfig);
 
         edittext = (EditText) findViewById(R.id.edittext);
         edittext.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
@@ -68,7 +68,7 @@ public class ListConfig extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Sentences.ConfigIndex = i;
-                startActivity(new Intent(getApplicationContext(), ListEdit.class));
+                startActivity(new Intent(getApplicationContext(), ListEditSentence.class));
                 finish();
             }
         });
@@ -77,7 +77,7 @@ public class ListConfig extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 ListView listview = (ListView) adapterView;
                 String item = (String) listview.getItemAtPosition(i);
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListConfig.this);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListEditConfig.this);
                 alertDlg.setMessage(item + "を削除しますか？");
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

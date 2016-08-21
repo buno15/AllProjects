@@ -36,7 +36,7 @@ public class Sentences {
     public static ArrayList<String> getSentencesList(int index) {
         ArrayList<String> list = new ArrayList<>();
         for (Sentence s : sentences.get(index)) {
-            list.add(s.getTitle());
+            list.add(s.getTitle().replaceAll("&&", ""));
         }
         return list;
     }

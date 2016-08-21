@@ -20,14 +20,14 @@ import android.widget.ListView;
 /**
  * Created by hiro on 2016/08/04.
  */
-public class ListEdit extends AppCompatActivity {
+public class ListEditSentence extends AppCompatActivity {
     ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("データ一覧");
-        setContentView(R.layout.listedit);
+        setContentView(R.layout.listeditsentence);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         adapter.addAll(Sentences.getSentencesList(Sentences.ConfigIndex));
@@ -53,7 +53,7 @@ public class ListEdit extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 ListView listview = (ListView) adapterView;
                 String item = (String) listview.getItemAtPosition(i);
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListEdit.this);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(ListEditSentence.this);
                 alertDlg.setMessage(item + "を削除しますか？");
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -112,7 +112,7 @@ public class ListEdit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_back:
-                startActivity(new Intent(getApplicationContext(), ListConfig.class));
+                startActivity(new Intent(getApplicationContext(), ListEditConfig.class));
                 finish();
                 break;
         }
@@ -152,7 +152,7 @@ public class ListEdit extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(getApplicationContext(), ListConfig.class));
+            startActivity(new Intent(getApplicationContext(), ListEditConfig.class));
             finish();
             return true;
         }

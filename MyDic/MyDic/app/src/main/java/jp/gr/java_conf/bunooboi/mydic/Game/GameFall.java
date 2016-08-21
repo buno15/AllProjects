@@ -297,9 +297,9 @@ public class GameFall extends Activity {
             y = 0 - GameFall.bou_h - level * 100;
             button.layout(x, y, x + GameFall.bou_w, y + GameFall.bou_h);
             if ((int) Math.floor(Math.random() * 5) == 0) {
-                text = questionSentence.getTitle();
+                text = questionSentence.getTitle().replaceAll("&&", "\n");
             } else {
-                text = GameValue.getQuestion(false).getTitle();
+                text = GameValue.getQuestion(false).getTitle().replaceAll("&&", "\n");
             }
             button.setText(text);
         }

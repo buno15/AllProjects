@@ -37,11 +37,11 @@
             android:name=".Setting"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ListConfig"
+            android:name=".ListEditConfig"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ListEdit"
+            android:name=".ListEditSentence"
             android:launchMode="singleTask" />
         <activity
             android:name=".Sort"
