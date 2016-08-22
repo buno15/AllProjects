@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutFocusTraversalPolicy;
@@ -35,12 +36,6 @@ public class Main {
 	static MyFrame frame;
 	static String filePath;
 	static String mydicPath = "C:\\Users\\hiro\\Documents\\MyDic";
-	static String title;
-	static int level;
-	static String[] key;
-	static String link;
-	static String description;
-	static String text;
 
 	public static void main(String args[]) {
 		frame = new MyFrame();
@@ -160,8 +155,10 @@ class MyFrame extends JFrame {
 			Main.save(field[0].getText(), Integer.parseInt(field1), field[2].getText(), field[3].getText(), field[4].getText(), area.getText());
 		});
 		area.setFont(new Font(Font.SERIF, Font.BOLD, 30));
-		area.setBounds(600, 50, 590, 750);
 		area.setBorder(new LineBorder(Color.BLACK, 1, false));
+		area.setLineWrap(true);
+		JScrollPane scrollpane = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollpane.setBounds(600, 50, 590, 750);
 
 		label[0].setText("タイトル(必須。改行は&&)");
 		label[1].setText("出題レベル(0~3)");
@@ -189,7 +186,7 @@ class MyFrame extends JFrame {
 			add(field[i]);
 		}
 		add(button);
-		add(area);
+		add(scrollpane);
 
 		menu1.add(menuitem1);
 		menu1.add(menuitem2);
