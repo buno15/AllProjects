@@ -63,8 +63,10 @@ public class Main extends Activity implements RecognitionListener {
 
     EditText serch;
     TextView urltext;
+    ImageButton actionbutton2;
     static TextToSpeech tts;
     SpeechRecognizer recognizer;
+    InputMethodManager inputMethodManager;
     HashMap<String, String> params = new HashMap<String, String>();//音量
     static boolean all = false;
     static int allCount = 0;
@@ -85,6 +87,7 @@ public class Main extends Activity implements RecognitionListener {
         setContentView(R.layout.main);
 
         Values.init(getApplicationContext());
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -145,34 +148,12 @@ public class Main extends Activity implements RecognitionListener {
         serch = (EditText) findViewById(R.id.edittext);
         serch.setTextSize(20 * getScaleSize(getApplicationContext()));
         serch.setTextColor(Color.BLACK);
-        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         serch.setOnKeyListener(new View.OnKeyListener() {
             //コールバックとしてonKey()メソッドを定義
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    inputMethodManager.hideSoftInputFromWindow(serch.getWindowToken(), InputMethodManager
-                            .RESULT_UNCHANGED_SHOWN);
-                    String text = serch.getText().toString();
-                    if (Sentences.serch(text)) {
-                        setView();
-                    } else {
-                        if (text.startsWith("http")) {
-                            webview.loadUrl(text);
-                            Sentences.link = text;
-                        } else if (new File(Values.RootPath + "/" + text).exists()) {
-                            webview.loadUrl("file:///" + Values.RootPath + "/" + text);
-                            Sentences.link = text;
-                        }
-                        textSpeech(Sentences.text);
-                        all = false;
-                        allCount = 0;
-                        if (t != null) {
-                            t.cancel();
-                            t = null;
-                        }
-                    }
+                    serch();
                     return true;
                 }
                 return false;
@@ -191,27 +172,7 @@ public class Main extends Activity implements RecognitionListener {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputMethodManager.hideSoftInputFromWindow(serch.getWindowToken(), InputMethodManager
-                        .RESULT_UNCHANGED_SHOWN);
-                String text = serch.getText().toString();
-                if (Sentences.serch(text)) {
-                    setView();
-                } else {
-                    if (text.startsWith("http")) {
-                        webview.loadUrl(text);
-                        Sentences.link = text;
-                    } else if (new File(Values.RootPath + "/" + text).exists()) {
-                        webview.loadUrl("file:///" + Values.RootPath + "/" + text);
-                        Sentences.link = text;
-                    }
-                    textSpeech(Sentences.text);
-                    all = false;
-                    allCount = 0;
-                    if (t != null) {
-                        t.cancel();
-                        t = null;
-                    }
-                }
+                serch();
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +213,7 @@ public class Main extends Activity implements RecognitionListener {
             }
         });
         ImageButton actionbutton1 = (ImageButton) findViewById(R.id.actionbutton1);
-        final ImageButton actionbutton2 = (ImageButton) findViewById(R.id.actionbutton2);
+        actionbutton2 = (ImageButton) findViewById(R.id.actionbutton2);
         ImageButton actionbutton3 = (ImageButton) findViewById(R.id.actionbutton3);
         ImageButton actionbutton4 = (ImageButton) findViewById(R.id.actionbutton4);
         ImageButton actionbutton5 = (ImageButton) findViewById(R.id.actionbutton5);
@@ -268,23 +229,25 @@ public class Main extends Activity implements RecognitionListener {
         actionbutton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (t != null) {
+                    t.cancel();
+                    t = null;
+                }
                 if (tts.isSpeaking()) {
+                    if (tts != null) {
+                        textSpeech("");
+                    }
                     tts.stop();
                     actionbutton2.setImageResource(R.drawable.play);
-                    if (t != null) {
-                        t.cancel();
-                        t = null;
-                    }
                 } else {
+                    if (tts != null) {
+                        textSpeech("");
+                    }
                     if (all) {
                         if (allCount > 0)
                             allCount--;
                         allView();
                     } else {
-                        if (t != null) {
-                            t.cancel();
-                            t = null;
-                        }
                         if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
                             textSpeech(Sentences.text);
                         }
@@ -340,6 +303,30 @@ public class Main extends Activity implements RecognitionListener {
             resumeView();
     }
 
+    void serch() {
+        inputMethodManager.hideSoftInputFromWindow(serch.getWindowToken(), InputMethodManager
+                .RESULT_UNCHANGED_SHOWN);
+        String text = serch.getText().toString();
+        if (Sentences.serch(text)) {
+            setView();
+        } else {
+            if (text.startsWith("http")) {
+                webview.loadUrl(text);
+                Sentences.link = text;
+            } else if (new File(Values.RootPath + "/" + text).exists()) {
+                webview.loadUrl("file:///" + Values.RootPath + "/" + text);
+                Sentences.link = text;
+            }
+            textSpeech(Sentences.text);
+            all = false;
+            allCount = 0;
+            if (t != null) {
+                t.cancel();
+                t = null;
+            }
+        }
+    }
+
     void setView() {
         all = false;
         allCount = 0;
@@ -363,8 +350,10 @@ public class Main extends Activity implements RecognitionListener {
                 h.post(new Runnable() {
                     @Override
                     public void run() {
+                        System.out.println("run");
                         if (all && !(tts.isSpeaking())) {
                             if (allCount < Sentences.sentences.get(Sentences.ConfigIndex).size()) {
+                                System.out.println("run:speek");
                                 StringBuilder sb = new StringBuilder();
                                 sb.append(Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getTitle() + "。\n");
                                 if (!Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getText().equals("none"))
@@ -374,6 +363,7 @@ public class Main extends Activity implements RecognitionListener {
                                 invalidateView();
                                 allCount++;
                             } else {
+                                System.out.println("run:stop");
                                 all = false;
                                 allCount = 0;
                                 if (t != null) {
@@ -652,6 +642,20 @@ public class Main extends Activity implements RecognitionListener {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (t != null) {
+            t.cancel();
+            t = null;
+        }
+        if (all) {
+            if (allCount > 0)
+                allCount--;
+            actionbutton2.setImageResource(R.drawable.stop);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         System.out.println("dest");
         all = false;
@@ -661,7 +665,6 @@ public class Main extends Activity implements RecognitionListener {
             t = null;
         }
         if (tts != null) {
-            textSpeech("");
             tts.shutdown();
         }
         if (recognizer != null) {

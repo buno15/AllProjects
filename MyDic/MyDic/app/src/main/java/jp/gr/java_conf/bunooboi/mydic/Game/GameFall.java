@@ -120,7 +120,7 @@ public class GameFall extends Activity {
             bou[i].button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (questionSentence.getTitle().equals(bou[finalI].text)) {//ゲーム終了
+                    if (questionSentence.getTitle().equals(bou[finalI].text.replaceAll("\n", ""))) {//ゲーム終了
                         Sound.fall_fin();
                         fin(bou[finalI]);
                     } else {//棒けす

@@ -218,7 +218,7 @@ public class Edit extends AppCompatActivity {
     }
 
     public String[] setKey(String key) {
-        return key.split("$");
+        return key.split("%");
     }
 
     @Override
