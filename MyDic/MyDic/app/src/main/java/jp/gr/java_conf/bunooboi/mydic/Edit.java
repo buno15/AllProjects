@@ -99,7 +99,7 @@ public class Edit extends AppCompatActivity {
             edittext[2].setText("");
         }
         if (text.equals("none")) {
-            edittext[4].setText("");
+            edittext[5].setText("");
         }
         if (index == -1)
             button.setText("作成");
@@ -148,6 +148,8 @@ public class Edit extends AppCompatActivity {
                         if (link.equals("/none")) {
                             edittext[2].setText("");
                         }
+                        edittext[3].setText(selector);
+                        edittext[4].setText(description);
                         if (text.equals("none")) {
                             edittext[5].setText("");
                         }

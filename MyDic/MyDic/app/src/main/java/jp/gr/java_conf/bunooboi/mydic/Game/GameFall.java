@@ -47,6 +47,7 @@ public class GameFall extends Activity {
     static int limit_h;//limitの高さ
     public static long t1;
     public static long t2;
+    float scale;
     static int startCount;//始まりまでのカウントダウン
     static String randomNumber;//ランダム番号
     static String color;//ランダム色
@@ -64,6 +65,7 @@ public class GameFall extends Activity {
         setContentView(R.layout.gamefall);
 
         t1 = System.currentTimeMillis() / 1000 + 4;
+        scale = Main.getScaleSize(getApplicationContext());
 
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Display disp = wm.getDefaultDisplay();
@@ -283,7 +285,7 @@ public class GameFall extends Activity {
             button.setLayoutParams(new LinearLayout.LayoutParams(GameFall.bou_w, GameFall.bou_h));
             button.setAllCaps(false);
             button.setBackgroundResource(R.drawable.fall_bou_1);
-            button.setTextSize(26 * Main.getScaleSize(context));
+            button.setTextSize(20 * scale);
             button.setTextColor(Color.BLACK);
             button.setPadding(Main.getPctX(context, 3), Main.getPctY(context, 2), Main.getPctX(context, 3), Main.getPctY
                     (context, 2));

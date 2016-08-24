@@ -33,7 +33,7 @@ public class GameFin extends Activity {
                 break;
         }
         TextView textview2 = (TextView) findViewById(R.id.textview2);
-        textview2.setText("答え："+answer);
+        textview2.setText("答え：" + answer);
         textview2.setTextSize(40 * Main.getScaleSize(getApplicationContext()));
 
         Button button1 = (Button) findViewById(R.id.button1);
@@ -45,7 +45,14 @@ public class GameFin extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
+                switch (GameValue.id) {
+                    case 0:
+                        startActivity(new Intent(getApplicationContext(), GameSelect.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(getApplicationContext(), GameFall.class));
+                        break;
+                }
                 finish();
             }
         });
