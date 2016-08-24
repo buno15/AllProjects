@@ -96,7 +96,7 @@ public class GameFall extends Activity {
 
         final View view = new View(this);
         view.setLayoutParams(new LinearLayout.LayoutParams(disp_w, Main.getPctY(getApplicationContext(), 1)));
-        view.setBackgroundResource(R.drawable.setting_custom);
+        view.setBackgroundResource(R.drawable.setting_textview_custom);
         view.post(new Runnable() {
             @Override
             public void run() {
@@ -120,7 +120,7 @@ public class GameFall extends Activity {
             bou[i].button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (questionSentence.getTitle().equals(bou[finalI].text.replaceAll("\n", ""))) {//ゲーム終了
+                    if (questionSentence.getSelector().equals(bou[finalI].text.replaceAll("\n", ""))) {//ゲーム終了
                         Sound.fall_fin();
                         fin(bou[finalI]);
                     } else {//棒けす
@@ -223,6 +223,7 @@ public class GameFall extends Activity {
         Sound.stopMediaPlayer1();
         randomNumberText.setText("");
         bou.button.setBackgroundResource(R.drawable.fall_bou_2);
+        GameFin.answer = questionSentence.getSelector();
         Timer t = new Timer();
         t.schedule(new TimerTask() {
             @Override
@@ -297,9 +298,9 @@ public class GameFall extends Activity {
             y = 0 - GameFall.bou_h - level * 100;
             button.layout(x, y, x + GameFall.bou_w, y + GameFall.bou_h);
             if ((int) Math.floor(Math.random() * 5) == 0) {
-                text = questionSentence.getTitle().replaceAll("&&", "\n");
+                text = questionSentence.getSelector().replaceAll("&&", "\n");
             } else {
-                text = GameValue.getQuestion(false).getTitle().replaceAll("&&", "\n");
+                text = GameValue.getQuestion(false).getSelector().replaceAll("&&", "\n");
             }
             button.setText(text);
         }
@@ -320,7 +321,7 @@ public class GameFall extends Activity {
                 button.setEnabled(true);
             }
             if (y > limit_h) {//limitを超える
-                if (!questionSentence.getTitle().equals(text)) {//間違いだったら
+                if (!questionSentence.getSelector().equals(text)) {//間違いだったら
                     if (stoper == false) {
                         Sound.fall_fin();
                         stoper = true;

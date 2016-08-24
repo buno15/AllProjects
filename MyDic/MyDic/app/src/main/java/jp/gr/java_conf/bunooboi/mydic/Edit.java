@@ -25,6 +25,7 @@ public class Edit extends AppCompatActivity {
     static int level;
     static String[] key;
     static String link;
+    static String selector;
     static String description;
     static String text;
     static int index;
@@ -39,15 +40,16 @@ public class Edit extends AppCompatActivity {
         setContentView(R.layout.edit);
 
         DetectableKeyboardEventLayout root = (DetectableKeyboardEventLayout) findViewById(R.id.root);
-        final EditText edittext[] = new EditText[5];
+        final EditText edittext[] = new EditText[6];
         final Button button = (Button) findViewById(R.id.button);
-        edittext[0] = (EditText) findViewById(R.id.edittext1);
-        edittext[1] = (EditText) findViewById(R.id.edittext2);
-        edittext[2] = (EditText) findViewById(R.id.edittext3);
-        edittext[3] = (EditText) findViewById(R.id.edittext4);
-        edittext[4] = (EditText) findViewById(R.id.edittext5);
+        edittext[0] = (EditText) findViewById(R.id.title);
+        edittext[1] = (EditText) findViewById(R.id.key);
+        edittext[2] = (EditText) findViewById(R.id.link);
+        edittext[3] = (EditText) findViewById(R.id.selector);
+        edittext[4] = (EditText) findViewById(R.id.description);
+        edittext[5] = (EditText) findViewById(R.id.text);
 
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        final Spinner spinner = (Spinner) findViewById(R.id.level);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.add("0");
         adapter.add("1");
@@ -73,21 +75,23 @@ public class Edit extends AppCompatActivity {
             Sentences.init();
             Values.init(getApplicationContext());
             String uri = intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString();
-            Edit.title = "";
-            Edit.level = 1;
-            Edit.key = new String[0];
-            Edit.link = "";
-            Edit.description = "";
-            Edit.text = "";
-            Edit.index = -1;
+            title = "";
+            level = 1;
+            key = new String[0];
+            link = "";
+            selector = "";
+            description = "";
+            text = "";
+            index = -1;
             edittext[2].setText(uri);
         } else {
             edittext[2].setText(link);
         }
         edittext[0].setText(title);
         edittext[1].setText(getKey(key));
-        edittext[3].setText(description);
-        edittext[4].setText(text);
+        edittext[3].setText(selector);
+        edittext[4].setText(description);
+        edittext[5].setText(text);
         for (EditText edit : edittext) {
             edit.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         }
@@ -108,20 +112,18 @@ public class Edit extends AppCompatActivity {
                 title = edittext[0].getText().toString();
                 key = setKey(edittext[1].getText().toString());
                 link = edittext[2].getText().toString();
-                description = edittext[3].getText().toString();
-                text = edittext[4].getText().toString();
-                if (title.equals("") || edittext[1].getText().toString().equals("") || description.equals("")) {
+                selector = edittext[3].getText().toString();
+                description = edittext[4].getText().toString();
+                text = edittext[5].getText().toString();
+                if (title.equals("") || edittext[1].getText().toString().equals("") || selector.equals("") || description.equals("")) {
                     Toast.makeText(getApplicationContext(), "未入力の必須項目があります", Toast.LENGTH_SHORT).show();
-                } else if (Sentences.serchTitle(title, Sentences.ConfigIndex, index)) {
-                    Toast.makeText(getApplicationContext(), "タイトルが重複しています", Toast.LENGTH_SHORT).show();
                 } else if (Sentences.serchKey(key, Sentences.ConfigIndex, index)) {
                     Toast.makeText(getApplicationContext(), "キーが重複しています", Toast.LENGTH_SHORT).show();
                 } else {
                     if (link.equals("")) {
                         link = "none";
                     }
-                    if (link.startsWith("http")) {
-                    } else {
+                    if (!link.startsWith("http")) {
                         if (!link.startsWith("/")) {
                             link = "/" + link;
                         }
@@ -130,14 +132,15 @@ public class Edit extends AppCompatActivity {
                         text = "none";
                     }
                     if (index == -1) {
-                        Sentences.sentences.get(Sentences.ConfigIndex).add(new Sentence(title, level, key, link, description, text));
+                        Sentences.sentences.get(Sentences.ConfigIndex).add(new Sentence(title, level, key, link,
+                                selector, description, text));
                         Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         for (EditText edit : edittext) {
                             edit.setText("");
                         }
                         Sentences.init();
                     } else {
-                        Sentences.sentences.get(Sentences.ConfigIndex).set(index, new Sentence(title, level, key, link, description, text));
+                        Sentences.sentences.get(Sentences.ConfigIndex).set(index, new Sentence(title, level, key, link, selector, description, text));
                         Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         Sentences.init();
                         edittext[0].setText(title);
@@ -146,7 +149,7 @@ public class Edit extends AppCompatActivity {
                             edittext[2].setText("");
                         }
                         if (text.equals("none")) {
-                            edittext[4].setText("");
+                            edittext[5].setText("");
                         }
                     }
                     if (index == -1)
@@ -156,17 +159,17 @@ public class Edit extends AppCompatActivity {
                 }
             }
         });
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             edittext[i].setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
                     if (b) {//フォーカスがあたっている
-                        edittext[4].setVisibility(View.GONE);
+                        edittext[5].setVisibility(View.GONE);
                     }
                 }
             });
         }
-        edittext[4].setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edittext[5].setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {//フォーカスがあたっている
@@ -175,6 +178,7 @@ public class Edit extends AppCompatActivity {
                     edittext[1].setVisibility(View.GONE);
                     edittext[2].setVisibility(View.GONE);
                     edittext[3].setVisibility(View.GONE);
+                    edittext[4].setVisibility(View.GONE);
                     spinner.setVisibility(View.GONE);
                     button.setVisibility(View.GONE);
                 }
@@ -194,6 +198,7 @@ public class Edit extends AppCompatActivity {
                 edittext[2].setVisibility(View.VISIBLE);
                 edittext[3].setVisibility(View.VISIBLE);
                 edittext[4].setVisibility(View.VISIBLE);
+                edittext[5].setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.VISIBLE);
                 button.setVisibility(View.VISIBLE);
                 findViewById(R.id.view).requestFocus();

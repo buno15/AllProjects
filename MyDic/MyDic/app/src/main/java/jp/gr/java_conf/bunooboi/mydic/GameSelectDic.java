@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
 import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
 
@@ -24,6 +26,8 @@ public class GameSelectDic extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameselectdic);
+
+        GameValue.participationConfig=new ArrayList<>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_multiple_choice, Sentences.getConfigList());
@@ -47,7 +51,7 @@ public class GameSelectDic extends AppCompatActivity {
 
                 for (int i = 0; i < checked.size(); i++) {
                     if (checked.valueAt(i)) {
-                        GameValue.participationConfig.add(i);
+                        GameValue.participationConfig.add(checked.keyAt(i));
                     }
                 }
                 switch (GameValue.id) {

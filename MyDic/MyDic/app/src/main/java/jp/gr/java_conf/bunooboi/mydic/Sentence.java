@@ -10,14 +10,17 @@ public class Sentence implements Serializable {
     private int level;
     private String key[];
     private String link;
+    private String selector;
     private String description;
     private String text;
 
-    public Sentence(String title, int level, String key[], String link, String description, String text) {
+    public Sentence(String title, int level, String key[], String link, String selector, String description, String
+            text) {
         this.title = title;
         this.level = level;
         this.key = key;
         this.link = link;
+        this.selector = selector;
         this.description = description;
         this.text = text;
     }
@@ -58,6 +61,10 @@ public class Sentence implements Serializable {
 
     public String getLink() {
         return link;
+    }
+
+    public String getSelector() {
+        return selector;
     }
 
     public String getDescription() {

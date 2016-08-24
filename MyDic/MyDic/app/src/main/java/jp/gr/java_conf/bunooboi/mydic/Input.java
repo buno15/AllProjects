@@ -56,10 +56,11 @@ public class Input {
                 int level = Integer.parseInt(st.nextToken());
                 String key[] = st.nextToken().split("%");
                 String link = st.nextToken();
+                String selector = st.nextToken();
                 String description = st.nextToken();
                 String text = st.nextToken();
                 text = text.replaceAll("&&", "\n");
-                list.add(new Sentence(title, level, key, link, description, text));
+                list.add(new Sentence(title, level, key, link, selector, description, text));
             }
         } catch (IOException e) {
             e.printStackTrace();

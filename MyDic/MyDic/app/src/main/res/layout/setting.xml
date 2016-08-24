@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -76,7 +76,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:layout_weight="1">
 
         <TextView
@@ -99,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -123,7 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -147,7 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/setting_custom"
+        android:background="@drawable/setting_textview_custom"
         android:orientation="horizontal">
 
         <TextView
@@ -172,14 +172,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/button_custom"/>
+        android:background="@drawable/setting_button_custom"/>
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/button_custom"/>
+        android:background="@drawable/setting_button_custom"/>
 
     <Space
         android:layout_width="match_parent"

@@ -53,7 +53,7 @@ public class Output {
             for (int i = 0; i < Sentences.sentences.get(index).size(); i++) {
                 Sentence s = Sentences.sentences.get(index).get(i);
                 String text = s.getText().replaceAll("\n", "&&");
-                osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getDescription() + "," + text + "\n");
+                osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getSelector() + "," + s.getDescription() + "," + text + "\n");
             }
             osw.flush();
         } catch (IOException e) {
@@ -73,7 +73,8 @@ public class Output {
             osw = new OutputStreamWriter(new FileOutputStream(configPath, overwrite), "UTF-8");
             for (int i = 0; i < sentences.size(); i++) {
                 Sentence s = sentences.get(i);
-                osw.write(s.getTitle() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getText());
+                String text = s.getText().replaceAll("\n", "&&");
+                osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getSelector() + "," + s.getDescription() + "," + text + "\n");
             }
             osw.flush();
         } catch (IOException e) {

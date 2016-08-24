@@ -41,6 +41,7 @@ public class ListEditSentence extends AppCompatActivity {
                 Edit.level = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLevel();
                 Edit.key = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getKey();
                 Edit.link = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLink();
+                Edit.selector = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getSelector();
                 Edit.description = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getDescription();
                 Edit.text = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getText();
                 Edit.index = i;
@@ -58,7 +59,7 @@ public class ListEditSentence extends AppCompatActivity {
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Sentences.sentences.get(Sentences.ConfigIndex).remove(i);
-                        Output.getOutput().write(false, Sentences.ConfigIndex);
+                        Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         reload();
                     }
                 });
@@ -81,6 +82,7 @@ public class ListEditSentence extends AppCompatActivity {
                 Edit.level = 1;
                 Edit.key = new String[0];
                 Edit.link = "";
+                Edit.selector = "";
                 Edit.description = "";
                 Edit.text = "";
                 Edit.index = -1;

@@ -56,7 +56,7 @@ public class BackService extends Service {
             recognizer.destroy();
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.notification);
+        builder.setSmallIcon(R.drawable.icon_notification);
         builder.setColor(Color.parseColor("#ffa312"));
         builder.setContentTitle("MyDic");
         builder.setContentText("タップして検索開始");

@@ -54,13 +54,21 @@ public class Main {
 		}
 	}
 
-	static void save(String title, int level, String key, String link, String description, String text) {
-		if (title.equals("") && key.equals("") && description.equals("")) {
+	static void save(String title, int level, String key, String link, String selector, String description, String text) {
+		String finallink = link;
+		String finaltext = text;
+		if (title.equals("") && key.equals("") && selector.equals("") && description.equals("")) {
 			JOptionPane.showMessageDialog(frame, "未入力の必須項目がります");
 		} else {
+			if (finallink.equals("")) {
+				finallink = "/none";
+			}
+			if (finaltext.equals("")) {
+				finaltext = "none";
+			}
 			try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")) {
-				String str = text.replaceAll("\n", "&&");
-				osw.write(title + "," + level + "," + key + "," + link + "," + description + "," + str + "\n");
+				String str = finaltext.replaceAll("\n", "&&");
+				osw.write(title + "," + level + "," + key + "," + finallink + "," + selector + "," + description + "," + str + "\n");
 				frame.clear();
 				JOptionPane.showMessageDialog(frame, "保存しました");
 			} catch (IOException e) {
@@ -77,9 +85,9 @@ public class Main {
 
 @SuppressWarnings("serial")
 class MyFrame extends JFrame {
-	JTextField field[] = new JTextField[5];
+	JTextField field[] = new JTextField[6];
 	JTextArea area = new JTextArea();
-	JLabel label[] = new JLabel[6];
+	JLabel label[] = new JLabel[7];
 	JButton button = new JButton("作成");
 	JMenuBar menubar = new JMenuBar();
 	JMenu menu1 = new JMenu("File");
@@ -146,13 +154,13 @@ class MyFrame extends JFrame {
 			field[i].setColumns(40);
 		}
 		button.setFont(new Font(Font.SERIF, Font.BOLD, 100));
-		button.setBounds(20, 550, 570, 248);
+		button.setBounds(20, 650, 570, 148);
 		button.addActionListener(e -> {
 			String field1 = field[1].getText().replaceAll(" ", "");
 			if (field1.equals("") || (field1.equals("0") == false && field1.equals("1") == false && field1.equals("2") == false && field1.equals("3") == false)) {
 				field1 = "1";
 			}
-			Main.save(field[0].getText(), Integer.parseInt(field1), field[2].getText(), field[3].getText(), field[4].getText(), area.getText());
+			Main.save(field[0].getText(), Integer.parseInt(field1), field[2].getText(), field[3].getText(), field[4].getText(), field[5].getText(), area.getText());
 		});
 		area.setFont(new Font(Font.SERIF, Font.BOLD, 30));
 		area.setBorder(new LineBorder(Color.BLACK, 1, false));
@@ -165,19 +173,22 @@ class MyFrame extends JFrame {
 		label[2].setText("検索キー(必須。複数の場合、%で区切る)");
 		label[2].setFont(new Font(Font.SERIF, Font.BOLD, 20));
 		label[3].setText("ファイルパス・URL");
-		label[4].setText("説明(必須)");
-		label[5].setText("読み上げ文(全文日本語推奨)");
+		label[4].setText("選択肢(必須)");
+		label[5].setText("説明(必須)");
+		label[6].setText("読み上げ文(全文日本語推奨)");
 		label[0].setBounds(20, 0, 570, 50);
 		label[1].setBounds(20, 100, 570, 50);
 		label[2].setBounds(20, 200, 570, 50);
 		label[3].setBounds(20, 300, 570, 50);
 		label[4].setBounds(20, 400, 570, 50);
-		label[5].setBounds(600, 0, 590, 50);
+		label[5].setBounds(20, 500, 570, 50);
+		label[6].setBounds(600, 0, 590, 50);
 		field[0].setBounds(20, 50, 570, 50);
 		field[1].setBounds(20, 150, 570, 50);
 		field[2].setBounds(20, 250, 570, 50);
 		field[3].setBounds(20, 350, 570, 50);
 		field[4].setBounds(20, 450, 570, 50);
+		field[5].setBounds(20, 550, 570, 50);
 
 		for (int i = 0; i < label.length; i++) {
 			add(label[i]);

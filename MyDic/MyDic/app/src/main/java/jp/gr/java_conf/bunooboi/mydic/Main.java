@@ -238,7 +238,7 @@ public class Main extends Activity implements RecognitionListener {
                         textSpeech("");
                     }
                     tts.stop();
-                    actionbutton2.setImageResource(R.drawable.play);
+                    actionbutton2.setImageResource(R.drawable.button_play);
                 } else {
                     if (tts != null) {
                         textSpeech("");
@@ -252,7 +252,7 @@ public class Main extends Activity implements RecognitionListener {
                             textSpeech(Sentences.text);
                         }
                     }
-                    actionbutton2.setImageResource(R.drawable.stop);
+                    actionbutton2.setImageResource(R.drawable.button_stop);
                 }
             }
         });
@@ -282,7 +282,7 @@ public class Main extends Activity implements RecognitionListener {
         super.onResume();
         if (Values.notification) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-            builder.setSmallIcon(R.drawable.notification);
+            builder.setSmallIcon(R.drawable.icon_notification);
             builder.setColor(Color.parseColor("#ffa312"));
             builder.setContentTitle("MyDic");
             builder.setContentText("タップして検索開始");
@@ -411,7 +411,7 @@ public class Main extends Activity implements RecognitionListener {
                 webview.setVisibility(View.GONE);
                 imageview.setVisibility(View.GONE);
                 textview.setVisibility(View.VISIBLE);
-                textview.setText("none");
+                textview.setText(Sentences.text);
                 break;
             case HTML:
                 webview.setVisibility(View.VISIBLE);
@@ -651,7 +651,7 @@ public class Main extends Activity implements RecognitionListener {
         if (all) {
             if (allCount > 0)
                 allCount--;
-            actionbutton2.setImageResource(R.drawable.stop);
+            actionbutton2.setImageResource(R.drawable.button_stop);
         }
     }
 

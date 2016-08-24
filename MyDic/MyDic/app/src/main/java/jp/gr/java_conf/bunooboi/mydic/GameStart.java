@@ -21,12 +21,10 @@ public class GameStart extends AppCompatActivity {
         setContentView(R.layout.gamestart);
         Sound.init(getApplicationContext());
 
-        ImageButton imagebutton[] = new ImageButton[5];
+        ImageButton imagebutton[] = new ImageButton[3];
         imagebutton[0] = (ImageButton) findViewById(R.id.imagebutton1);
         imagebutton[1] = (ImageButton) findViewById(R.id.imagebutton2);
         imagebutton[2] = (ImageButton) findViewById(R.id.imagebutton3);
-        imagebutton[3] = (ImageButton) findViewById(R.id.imagebutton4);
-        imagebutton[4] = (ImageButton) findViewById(R.id.imagebutton5);
         imagebutton[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,22 +45,6 @@ public class GameStart extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 GameValue.id = 2;
-                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
-                finish();
-            }
-        });
-        imagebutton[3].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GameValue.id = 3;
-                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
-                finish();
-            }
-        });
-        imagebutton[4].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GameValue.id = 4;
                 startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 finish();
             }

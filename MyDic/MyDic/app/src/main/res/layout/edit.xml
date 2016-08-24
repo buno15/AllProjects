@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"/>
 
         <LinearLayout
             android:id="@+id/top"
@@ -26,57 +26,65 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/edittext1"
+                android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:hint="@string/title"
                 android:inputType="text"
-                android:maxLength="20" />
+                android:maxLength="20"/>
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/level"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <EditText
-            android:id="@+id/edittext2"
+            android:id="@+id/key"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="@string/key"
-            android:inputType="text" />
+            android:inputType="text"/>
 
         <EditText
-            android:id="@+id/edittext3"
+            android:id="@+id/link"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="@string/link"
-            android:inputType="text" />
+            android:inputType="text"/>
 
         <EditText
-            android:id="@+id/edittext4"
+            android:id="@+id/selector"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="@string/selector"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="@string/description"
-            android:inputType="text" />
+            android:inputType="text"/>
 
         <EditText
-            android:id="@+id/edittext5"
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:gravity="top|left"
-            android:hint="@string/text" />
+            android:hint="@string/text"/>
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2" />
+            android:layout_weight="2"/>
     </LinearLayout>
 </jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout>

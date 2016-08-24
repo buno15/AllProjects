@@ -85,7 +85,7 @@ public class GameSelect extends Activity {
                 public void onClick(View v) {
                     Sound.select_enabled();
                     sqButtonClash(j);
-                    nextAction(checkAnswer(sq.questions[j].getTitle()));
+                    nextAction(checkAnswer(sq.questions[j].getSelector()));
                 }
             });
         }
@@ -116,11 +116,11 @@ public class GameSelect extends Activity {
     }
 
     void invalidateQuestionCountText() {// 問題数書き換え
-        questionCountText.setText(String.valueOf(question) + "問目");
+        questionCountText.setText("第" + String.valueOf(question) + "問");
     }
 
     boolean checkAnswer(String answer) {//正解かどうか
-        if (answerSentence.getTitle().equals(answer)) {
+        if (answerSentence.getSelector().equals(answer)) {
             return true;
         }
         return false;
@@ -139,12 +139,12 @@ public class GameSelect extends Activity {
         if (answer) {// 正解
             Sound.select_yes();
             Sound.stopselect_count();
-            timer_yesno.schedule(new YesNoTimer(R.drawable.yes), 0, 32);
+            timer_yesno.schedule(new YesNoTimer(R.drawable.game_yes), 0, 32);
         } else {
             Sound.select_no();
             Sound.stopselect_count();
-            Sound.stopMediaPlayer1();
-            timer_yesno.schedule(new YesNoTimer(R.drawable.no), 0, 32);
+            //Sound.stopMediaPlayer1();
+            timer_yesno.schedule(new YesNoTimer(R.drawable.game_no), 0, 32);
         }
     }
 
@@ -159,7 +159,7 @@ public class GameSelect extends Activity {
                     @Override
                     public void run() {
                         if (startCount <= -1) {
-                            Sound.startMediaPlayer1(0);
+                            //Sound.startMediaPlayer1(0);
                             randomNumberText.setText("");
                             timer_start.cancel();
                             timer_start = null;
@@ -216,7 +216,7 @@ public class GameSelect extends Activity {
     void fin() {
         Sound.select_no();
         timer_yesno = new Timer();
-        timer_yesno.schedule(new YesNoTimer(R.drawable.no), 0, 32);
+        timer_yesno.schedule(new YesNoTimer(R.drawable.game_no), 0, 32);
     }
 
     class YesNoTimer extends TimerTask {// まるばつタイマー
@@ -228,7 +228,7 @@ public class GameSelect extends Activity {
         public YesNoTimer(int image) {
             randomNumberText.setBackgroundResource(image);
             t1 = System.currentTimeMillis() / 1000;
-            if (image == R.drawable.no) {
+            if (image == R.drawable.game_no) {
                 no = true;
             }
         }
@@ -245,6 +245,7 @@ public class GameSelect extends Activity {
                                 timer_yesno.cancel();
                                 timer_yesno = null;
                             }
+                            GameFin.answer = answerSentence.getSelector();
                             startActivity(new Intent(getApplicationContext(), GameFin.class));
                             finish();
                         }
@@ -285,7 +286,7 @@ public class GameSelect extends Activity {
                                     });
                                 }
                             }, 0, 1000);
-                            randomNumberText.setBackgroundResource(R.drawable.empty);
+                            randomNumberText.setBackgroundResource(R.drawable.select_empty);
                             questionLayout.removeAllViews();
                             question++;
                             invalidateQuestionCountText();
@@ -320,14 +321,14 @@ public class GameSelect extends Activity {
     public void onPause() {
         super.onPause();
         stop();
-        Sound.stopMediaPlayer1();
+        //Sound.stopMediaPlayer1();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         stop();
-        Sound.releaseMediaPlayer1();
+        //Sound.releaseMediaPlayer1();
     }
 
     class selectQuestion {
@@ -406,16 +407,18 @@ public class GameSelect extends Activity {
             for (int i = 0; i < questions.length; i++) {
                 while (true) {
                     questions[i] = GameValue.getQuestion(true);
-                    if (!(before.contains(questions[i]))) {
+                    /*if (!(before.contains(questions[i]))) {
                         before.add(questions[i]);
                         break;
-                    }
+                    }*/
+                    before.add(questions[i]);
+                    break;
                 }
             }
             answerSentence = questions[(int) Math.floor(Math.random() * questions.length)];
             questionText.setText(answerSentence.getDescription());
             for (int i = 0; i < choicesButton.length; i++) {
-                choicesButton[i].setText(questions[i].getTitle().replaceAll("&&", ""));
+                choicesButton[i].setText(questions[i].getSelector().replaceAll("&&", ""));
             }
         }
     }

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:src="@drawable/button_select"
         android:scaleType="fitXY"/>
 
     <ImageButton
@@ -17,24 +18,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:src="@drawable/button_fall"
         android:scaleType="fitXY"/>
 
     <ImageButton
         android:id="@+id/imagebutton3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scaleType="fitXY"/>
-
-    <ImageButton
-        android:id="@+id/imagebutton4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scaleType="fitXY"/>
-
-    <ImageButton
-        android:id="@+id/imagebutton5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

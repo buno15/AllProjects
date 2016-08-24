@@ -10,8 +10,8 @@ public class GameValue {
     static int id;
 
     public static Sentence getQuestion(boolean getLevel) {
-        int configIndex = (int) Math.floor(Math.random() * GameValue.participationConfig.size());
-        Sentence sentence = new Sentence("", 1, new String[]{""}, "", "", "");
+        int configIndex = participationConfig.get((int) Math.floor(Math.random() * participationConfig.size()));
+        Sentence sentence = new Sentence("", 1, new String[]{""}, "", "", "", "");
         if (getLevel) {
             switch ((int) Math.floor(Math.random() * 6)) {
                 case 0:
@@ -29,7 +29,7 @@ public class GameValue {
             }
         } else {
             do {
-                sentence = Sentences.sentences.get(GameValue.participationConfig.get(configIndex)).get((int) Math.floor(Math.random() * Sentences.sentences.get(GameValue.participationConfig.get(configIndex)).size()));
+                sentence = Sentences.sentences.get(configIndex).get((int) Math.floor(Math.random() * Sentences.sentences.get(configIndex).size()));
             } while (sentence.getLevel() == 0);
         }
         return sentence;
@@ -38,7 +38,7 @@ public class GameValue {
     static Sentence questionLevel(int configIndex, int level) {
         Sentence sentence;
         do {
-            sentence = Sentences.sentences.get(GameValue.participationConfig.get(configIndex)).get((int) Math.floor(Math.random() * Sentences.sentences.get(GameValue.participationConfig.get(configIndex)).size()));
+            sentence = Sentences.sentences.get(configIndex).get((int) Math.floor(Math.random() * Sentences.sentences.get(configIndex).size()));
         } while (sentence.getLevel() != level && sentence.getLevel() == 0);
         return sentence;
     }
