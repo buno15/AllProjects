@@ -59,7 +59,7 @@ public class Input {
                 String selector = st.nextToken();
                 String description = st.nextToken();
                 String text = st.nextToken();
-                text = text.replaceAll("&&", "\n");
+                text = text.replaceAll("%%", "\n");
                 list.add(new Sentence(title, level, key, link, selector, description, text));
             }
         } catch (IOException e) {

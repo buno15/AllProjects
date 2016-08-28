@@ -52,7 +52,7 @@ public class Output {
             osw = new OutputStreamWriter(new FileOutputStream(configPath, overwrite), "UTF-8");
             for (int i = 0; i < Sentences.sentences.get(index).size(); i++) {
                 Sentence s = Sentences.sentences.get(index).get(i);
-                String text = s.getText().replaceAll("\n", "&&");
+                String text = s.getText().replaceAll("\n", "%%");
                 osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getSelector() + "," + s.getDescription() + "," + text + "\n");
             }
             osw.flush();
@@ -73,7 +73,7 @@ public class Output {
             osw = new OutputStreamWriter(new FileOutputStream(configPath, overwrite), "UTF-8");
             for (int i = 0; i < sentences.size(); i++) {
                 Sentence s = sentences.get(i);
-                String text = s.getText().replaceAll("\n", "&&");
+                String text = s.getText().replaceAll("\n", "%%");
                 osw.write(s.getTitle() + "," + s.getLevel() + "," + s.getKeytoString() + "," + s.getLink() + "," + s.getSelector() + "," + s.getDescription() + "," + text + "\n");
             }
             osw.flush();

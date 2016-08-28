@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
-import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
 import jp.gr.java_conf.bunooboi.mydic.GameStart;
 import jp.gr.java_conf.bunooboi.mydic.Main;
 import jp.gr.java_conf.bunooboi.mydic.R;
@@ -60,9 +59,6 @@ public class MyDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 switch (id) {
-                    case 0:
-                        GameSelect.start();
-                        break;
                     case 1:
                         GameFall.start();
                         break;

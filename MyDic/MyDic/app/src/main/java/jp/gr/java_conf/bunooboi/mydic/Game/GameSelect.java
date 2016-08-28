@@ -30,23 +30,23 @@ import jp.gr.java_conf.bunooboi.mydic.View.MyDialog;
  * Created by hiro on 2016/08/21.
  */
 public class GameSelect extends Activity {
-    public static Sentence answerSentence;//問題兼答え
+    public Sentence answerSentence;//問題兼答え
     public static int question = 1;// 何問目か
-    static int startCount;//始まりまでのカウントダウン
-    static int timeCount;//制限時間
+    int startCount;//始まりまでのカウントダウン
+    int timeCount;//制限時間
 
     TextView questionCountText;// 出題数テキスト
     TextView timeCountText;//制限時間テキスト
     LinearLayout questionLayout;// 問題レイアウト
-    static TextView randomNumberText;// ランダム番号テキスト
+    TextView randomNumberText;// ランダム番号テキスト
 
     Timer timer_time;//制限時間タイマー
-    static Timer timer_randomnumber;//ランダム番号タイマー
+    Timer timer_randomnumber;//ランダム番号タイマー
     Timer timer_yesno;// まるばつタイマー
-    static Timer timer_start;//スタートタイマー
-    static long t1;
-    static long t2;
-    static String randomNumber;
+    Timer timer_start;//スタートタイマー
+    long t1;
+    long t2;
+    String randomNumber;
     boolean countstoper = false;
     selectQuestion sq;//問題オブジェクト
 
@@ -84,16 +84,18 @@ public class GameSelect extends Activity {
                 @Override
                 public void onClick(View v) {
                     Sound.select_enabled();
-                    sqButtonClash(j);
+                    sqButtonClash();
                     nextAction(checkAnswer(sq.questions[j].getSelector()));
                 }
             });
         }
     }
 
-    void sqButtonClash(int id) {// selectQuestion.choicesButton壊す
-        sq.choicesButton[id].setEnabled(false);
-        sq.choicesButton[id].setText("");
+    void sqButtonClash() {// selectQuestion.choicesButton壊す
+        for (int i = 0; i < sq.choicesButton.length; i++) {
+            sq.choicesButton[i].setEnabled(false);
+            sq.choicesButton[i].setText("");
+        }
     }
 
     void createQuestion() {//問題オブジェクト作成
@@ -137,19 +139,20 @@ public class GameSelect extends Activity {
         }
         timer_yesno = new Timer();
         if (answer) {// 正解
-            Sound.select_yes();
+            Sound.yes();
             Sound.stopselect_count();
             timer_yesno.schedule(new YesNoTimer(R.drawable.game_yes), 0, 32);
         } else {
-            Sound.select_no();
+            Sound.no();
             Sound.stopselect_count();
-            //Sound.stopMediaPlayer1();
+            Sound.stopMediaPlayer1();
             timer_yesno.schedule(new YesNoTimer(R.drawable.game_no), 0, 32);
         }
     }
 
-    public static void start() {
+    public void start() {
         startCount = 3;
+        Sound.game_start();
         final Handler handler = new Handler();
         timer_start = new Timer();
         timer_start.schedule(new TimerTask() {
@@ -159,7 +162,7 @@ public class GameSelect extends Activity {
                     @Override
                     public void run() {
                         if (startCount <= -1) {
-                            //Sound.startMediaPlayer1(0);
+                            Sound.startMediaPlayer1(0);
                             randomNumberText.setText("");
                             timer_start.cancel();
                             timer_start = null;
@@ -173,11 +176,76 @@ public class GameSelect extends Activity {
                 });
             }
         }, 0, 1000);
-        Sound.gamestart();
+        timeCount = 7;
+        timer_time = new Timer();
+        timer_time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (timeCount <= 0) {
+                            fin();
+                            timeCountText.setText("0");
+                            if (timer_time != null) {
+                                timer_time.cancel();
+                                timer_time = null;
+                            }
+                        } else if (timeCount <= 3) {
+                            if (countstoper == false) {
+                                Sound.select_count();
+                                countstoper = true;
+                            }
+                            timeCountText.setText(String.valueOf(timeCount));
+                            timeCount--;
+                        } else {
+                            countstoper = false;
+                            timeCountText.setText(String.valueOf(timeCount));
+                            timeCount--;
+                        }
+                    }
+                });
+            }
+        }, 4000, 1000);
         startTimerRandomNumber();
     }
 
-    static void startTimerRandomNumber() {
+    void startTimerTime(){
+        final Handler handler = new Handler();
+        timeCount = 7;
+        timer_time = new Timer();
+        timer_time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (timeCount <= 0) {
+                            fin();
+                            timeCountText.setText("0");
+                            if (timer_time != null) {
+                                timer_time.cancel();
+                                timer_time = null;
+                            }
+                        } else if (timeCount <= 3) {
+                            if (countstoper == false) {
+                                Sound.select_count();
+                                countstoper = true;
+                            }
+                            timeCountText.setText(String.valueOf(timeCount));
+                            timeCount--;
+                        } else {
+                            countstoper = false;
+                            timeCountText.setText(String.valueOf(timeCount));
+                            timeCount--;
+                        }
+                    }
+                });
+            }
+        }, 0, 1000);
+    }
+
+    void startTimerRandomNumber() {
         final Handler handler = new Handler();
         timer_randomnumber = new Timer();
         timer_randomnumber.schedule(new TimerTask() {
@@ -211,10 +279,11 @@ public class GameSelect extends Activity {
             timer_yesno.cancel();
             timer_yesno = null;
         }
+        Sound.soundPool.stop(Sound.gamestart);
     }
 
     void fin() {
-        Sound.select_no();
+        Sound.no();
         timer_yesno = new Timer();
         timer_yesno.schedule(new YesNoTimer(R.drawable.game_no), 0, 32);
     }
@@ -245,7 +314,7 @@ public class GameSelect extends Activity {
                                 timer_yesno.cancel();
                                 timer_yesno = null;
                             }
-                            GameFin.answer = answerSentence.getSelector();
+                            GameFin.answer = answerSentence.getSelector().replaceAll("%%", "\n");
                             startActivity(new Intent(getApplicationContext(), GameFin.class));
                             finish();
                         }
@@ -255,37 +324,7 @@ public class GameSelect extends Activity {
                                 timer_yesno.cancel();
                                 timer_yesno = null;
                             }
-                            timeCount = 7;
-                            timer_time = new Timer();
-                            timer_time.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (timeCount <= 0) {
-                                                fin();
-                                                timeCountText.setText("0");
-                                                if (timer_time != null) {
-                                                    timer_time.cancel();
-                                                    timer_time = null;
-                                                }
-                                            } else if (timeCount <= 3) {
-                                                if (countstoper == false) {
-                                                    Sound.select_count();
-                                                    countstoper = true;
-                                                }
-                                                timeCountText.setText(String.valueOf(timeCount));
-                                                timeCount--;
-                                            } else {
-                                                countstoper = false;
-                                                timeCountText.setText(String.valueOf(timeCount));
-                                                timeCount--;
-                                            }
-                                        }
-                                    });
-                                }
-                            }, 0, 1000);
+                            startTimerTime();
                             randomNumberText.setBackgroundResource(R.drawable.select_empty);
                             questionLayout.removeAllViews();
                             question++;
@@ -301,7 +340,6 @@ public class GameSelect extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            stop();
             MyDialog.id = 0;
             MyDialog.text = "メインに戻りますか？";
             MyDialog dialog = new MyDialog();
@@ -321,14 +359,14 @@ public class GameSelect extends Activity {
     public void onPause() {
         super.onPause();
         stop();
-        //Sound.stopMediaPlayer1();
+        Sound.stopMediaPlayer1();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         stop();
-        //Sound.releaseMediaPlayer1();
+        Sound.releaseMediaPlayer1();
     }
 
     class selectQuestion {
@@ -418,7 +456,7 @@ public class GameSelect extends Activity {
             answerSentence = questions[(int) Math.floor(Math.random() * questions.length)];
             questionText.setText(answerSentence.getDescription());
             for (int i = 0; i < choicesButton.length; i++) {
-                choicesButton[i].setText(questions[i].getSelector().replaceAll("&&", ""));
+                choicesButton[i].setText(questions[i].getSelector().replaceAll("%%", "\n"));
             }
         }
     }

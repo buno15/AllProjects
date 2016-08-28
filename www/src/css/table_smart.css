@@ -1,13 +1,13 @@
 @charset "utf-8";
 
 table.table {
-	width: 1160px;
-	margin: 5px 0px 10px 20px;
+	width: 100%;
+	margin: 5px 0px 10px 0px;
 	border-collapse: collapse;
 }
 
 table.table th {
-	width: 150px;
+	width: 30%;
 	padding: 10px 10px 5px 10px;
 	text-align: center;
 	white-space: nowrap;

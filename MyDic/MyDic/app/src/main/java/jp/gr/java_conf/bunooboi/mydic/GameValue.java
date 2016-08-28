@@ -9,10 +9,10 @@ public class GameValue {
     public static ArrayList<Integer> participationConfig = new ArrayList<>();//出題する辞書番号
     static int id;
 
-    public static Sentence getQuestion(boolean getLevel) {
+    public static Sentence getQuestion(boolean levelLimit) {
         int configIndex = participationConfig.get((int) Math.floor(Math.random() * participationConfig.size()));
         Sentence sentence = new Sentence("", 1, new String[]{""}, "", "", "", "");
-        if (getLevel) {
+        if (levelLimit) {
             switch ((int) Math.floor(Math.random() * 6)) {
                 case 0:
                     sentence = questionLevel(configIndex, 1);
@@ -37,8 +37,11 @@ public class GameValue {
 
     static Sentence questionLevel(int configIndex, int level) {
         Sentence sentence;
+        int count = 0;
         do {
             sentence = Sentences.sentences.get(configIndex).get((int) Math.floor(Math.random() * Sentences.sentences.get(configIndex).size()));
+            if (count++ >= 9)
+                break;
         } while (sentence.getLevel() != level && sentence.getLevel() == 0);
         return sentence;
     }

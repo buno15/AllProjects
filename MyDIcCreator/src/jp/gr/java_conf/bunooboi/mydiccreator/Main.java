@@ -67,7 +67,7 @@ public class Main {
 				finaltext = "none";
 			}
 			try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")) {
-				String str = finaltext.replaceAll("\n", "&&");
+				String str = finaltext.replaceAll("\n", "%%");
 				osw.write(title + "," + level + "," + key + "," + finallink + "," + selector + "," + description + "," + str + "\n");
 				frame.clear();
 				JOptionPane.showMessageDialog(frame, "保存しました");
@@ -162,7 +162,7 @@ class MyFrame extends JFrame {
 			}
 			Main.save(field[0].getText(), Integer.parseInt(field1), field[2].getText(), field[3].getText(), field[4].getText(), field[5].getText(), area.getText());
 		});
-		area.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+		area.setFont(new Font(Font.SERIF, Font.BOLD, 20));
 		area.setBorder(new LineBorder(Color.BLACK, 1, false));
 		area.setLineWrap(true);
 		JScrollPane scrollpane = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

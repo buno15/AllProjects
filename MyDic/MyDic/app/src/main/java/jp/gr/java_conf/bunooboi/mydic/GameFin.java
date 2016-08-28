@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
+import jp.gr.java_conf.bunooboi.mydic.Game.GameMemory;
 import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
 
 /**
@@ -31,10 +32,14 @@ public class GameFin extends Activity {
             case 1:
                 textview1.setText(String.valueOf(GameFall.t2 - GameFall.t1) + "秒");
                 break;
+            case 2:
+                textview1.setText("問題数" + (GameMemory.questionNumber - 1));
         }
         TextView textview2 = (TextView) findViewById(R.id.textview2);
         textview2.setText("答え：" + answer);
-        textview2.setTextSize(40 * Main.getScaleSize(getApplicationContext()));
+        if (GameValue.id == 2 && GameMemory.questionNumber == 10)
+            textview2.setText("");
+        textview2.setTextSize(30 * Main.getScaleSize(getApplicationContext()));
 
         Button button1 = (Button) findViewById(R.id.button1);
         Button button2 = (Button) findViewById(R.id.button2);
@@ -51,6 +56,9 @@ public class GameFin extends Activity {
                         break;
                     case 1:
                         startActivity(new Intent(getApplicationContext(), GameFall.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(getApplicationContext(), GameMemory.class));
                         break;
                 }
                 finish();
