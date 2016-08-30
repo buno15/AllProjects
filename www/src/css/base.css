@@ -7,8 +7,6 @@
 }
 
 body {
-	background-color: #996633;
-	background-image: url(../../img/bg_root.png);
 	font-size: 110%;
 	font-family: sans-serif;
 	line-height: 1.5;
@@ -19,44 +17,49 @@ img {
 }
 
 div#pagebody {
-	width: 1400px;
+	width: 100%;
 	background-color: #FFFFFF;
 	padding: 10px 0px;
 	margin: 40px auto;
 }
 
+div.end {
+	text-align: center;
+}
+
+div.end img {
+	width: 100%;
+	height: 80px;
+}
+
 div#head {
 	height: 120px;
+	text-align: center;
 }
 
-div#head h1 {
-	padding: 0px 0px 0px 100px;
-	font-size: 18px;
-}
-
-div#head h1 a {
+div#head a {
 	text-decoration: none;
 }
 
 ul#menu {
-	width: 1200px;
+	width: 80%;
 	height: 60px;
-	margin: 0 100px;
+	margin: 0 10%;
 }
 
 ul#menu li {
+	width: 25%;
 	list-style-type: none;
 	display: inline;
 	float: left;
 }
 
 ul#menu li a {
-	width: 300px;
 	height: 40px;
 	display: block;
 	padding: 20px 0px 0px 0px;
 	background-color: #996633;
-	background-image: url(../../img/menu_1.png);
+	box-shadow: 0 0 0 2px #ffffff inset;
 	text-decoration: none;
 	text-align: center;
 	color: #ffffff;
@@ -64,25 +67,33 @@ ul#menu li a {
 
 ul#menu li a:hover {
 	background-color: #5d3d1f;
-	background-image: url(../../img/menu_2.png);
+	box-shadow: 0 0 0 4px #ffffff inset;
 }
 
 div#img_index {
-	width: 1200px;
+	width: 80%;
 	height: 400px;
-	margin: 5px 100px 20px 100px;
+	margin: 5px 10% 20px 10%;
 	background-color: #996633;
+	text-align: center;
 }
 
 div#img_index img {
-	margin: 0 37px;
+	width: 80%;
+	height: 100%;
 }
 
 div#img_sub {
-	width: 1200px;
+	width: 80%;
 	height: 300px;
-	margin: 5px 100px 20px 100px;
+	margin: 5px 10% 20px 10%;
 	background-color: #996633;
+	text-align: center;
+}
+
+div#img_sub img {
+	width: 80%;
+	height: 100%;
 }
 
 div#info {
@@ -90,12 +101,13 @@ div#info {
 }
 
 div.title {
-	width: 1200px;
+	width: 80%;
 	height: 120px;
-	margin: 5px 100px 20px 100px;
+	margin: 5px 10% 20px 10%;
 	background-color: #FFFFFF;
-	background-image: url(../../img/bg_h2.png);
+	background-size: 100%;
 	background-repeat: repeat-y;
+	background-image: url(../../img/bg_h2.png);
 }
 
 div.title img {
@@ -107,9 +119,9 @@ div.title img {
 }
 
 div.title h2 {
-	width: 527px;
+	width: 50%;
 	height: 80px;
-	padding: 40px 0px 0px 40px;
+	padding: 40px 0px 0px 2%;
 	margin: 0;
 	color: #FFFFFF;
 	float: left;
@@ -117,17 +129,17 @@ div.title h2 {
 }
 
 div.title h4 {
-	width: 527px;
+	width: 27%;
 	height: 100px;
-	padding: 20px 0px 0px 0px;
+	padding: 20px 0px 0px 3%;
 	margin: 0;
 	color: #FFFFFF;
 	float: left;
 }
 
 div.each {
-	width: 1200px;
-	margin: 0px auto;
+	width: 80%;
+	margin: 0px 10%;
 }
 
 div.each h3 a {
@@ -144,12 +156,12 @@ div.each img {
 	width: 194px;
 	height: 194px;
 	float: left;
+	padding: 10px;
 	border: solid 1px #000000;
 	margin: 10px 0px;
 }
 
 div.each h4 {
-	width: 960px;
 	height: 80px;
 	padding: 10px 10px 0px 10px;
 	margin-left: 220px;
@@ -157,18 +169,18 @@ div.each h4 {
 }
 
 div.each p {
-	width: 960px;
-	height: 50px;
-	padding: 20px 10px 10px 10px;
+	height: 120px;
+	padding: 20px 10px 0px 10px;
 	margin-left: 220px;
 	color: #000000;
 }
 
 div.store {
-	width: 960px;
-	height: 30px;
-	padding: 10px 10px 0px 10px;
-	margin-left: 220px;
+	width: 20%;
+	height: 20px;
+	padding: 0px 0px 10px 0px;
+	margin-top: 10px;
+	margin-left: 10px;
 }
 
 div.store a {
@@ -180,8 +192,8 @@ div.store a:hover {
 }
 
 div#text {
-	width: 1200px;
-	margin: 5px 100px;
+	width: 80%;
+	margin: 5px 10%;
 }
 
 div#text h3 {
@@ -212,10 +224,11 @@ div#text img {
 }
 
 #info h2 {
-	margin: 5px 100px;
+	margin: 5px 10%;
 	padding: 20px 0px 15px 40px;
 	background-color: #996633;
 	background-image: url(../../img/bg_h2.png);
+	background-size: 100%;
 	background-repeat: repeat-y;
 	color: #ffffff;
 }
@@ -232,8 +245,8 @@ div#text img {
 }
 
 #mail p {
-	width: 1180px;
-	margin: 0px 100px;
+	width: 80%;
+	margin: 0px 10%;
 	padding-left: 20px;
 }
 
@@ -243,7 +256,7 @@ div#copy {
 
 hr {
 	clear: both;
-	width: 1200px;
+	width: 100%;
 	margin: 5px 0px;
 	border: 1px dotted #999999;
 }
