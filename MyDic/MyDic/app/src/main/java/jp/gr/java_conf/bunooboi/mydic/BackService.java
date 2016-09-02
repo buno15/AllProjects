@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.gr.java_conf.bunooboi.mydic.Activity.Main;
+
 /**
  * Created by hiro on 2016/08/05.
  */

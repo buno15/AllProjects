@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import jp.gr.java_conf.bunooboi.mydic.Output;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentence;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
+import jp.gr.java_conf.bunooboi.mydic.Values;
 import jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout;
 
 /**
@@ -134,14 +139,14 @@ public class Edit extends AppCompatActivity {
                     if (index == -1) {
                         Sentences.sentences.get(Sentences.ConfigIndex).add(new Sentence(title, level, key, link,
                                 selector, description, text));
-                        Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
+                        Output.getOutput(Sentences.data.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         for (EditText edit : edittext) {
                             edit.setText("");
                         }
                         Sentences.init();
                     } else {
                         Sentences.sentences.get(Sentences.ConfigIndex).set(index, new Sentence(title, level, key, link, selector, description, text));
-                        Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
+                        Output.getOutput(Sentences.data.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
                         Sentences.init();
                         edittext[0].setText(title);
                         edittext[1].setText(getKey(key));

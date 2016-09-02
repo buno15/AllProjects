@@ -22,9 +22,9 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import jp.gr.java_conf.bunooboi.mydic.GameFin;
+import jp.gr.java_conf.bunooboi.mydic.Activity.GameFin;
 import jp.gr.java_conf.bunooboi.mydic.GameValue;
-import jp.gr.java_conf.bunooboi.mydic.Main;
+import jp.gr.java_conf.bunooboi.mydic.Activity.Main;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sentence;
 import jp.gr.java_conf.bunooboi.mydic.Sound;

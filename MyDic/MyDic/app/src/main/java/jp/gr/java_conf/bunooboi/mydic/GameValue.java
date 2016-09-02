@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class GameValue {
     public static ArrayList<Integer> participationConfig = new ArrayList<>();//出題する辞書番号
-    static int id;
+    public static int id;
 
     public static Sentence getQuestion(boolean levelLimit) {
         int configIndex = participationConfig.get((int) Math.floor(Math.random() * participationConfig.size()));

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import jp.gr.java_conf.bunooboi.mydic.Input;
+import jp.gr.java_conf.bunooboi.mydic.MainService;
+import jp.gr.java_conf.bunooboi.mydic.Output;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
 
 /**
  * Created by hiro on 2016/08/07.
@@ -30,8 +36,6 @@ public class ListLinkSentence extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Main.tts.stop();
-                Main.all = false;
-                Main.allCount = 0;
                 Sentences.link = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getLink();
                 Sentences.text = Sentences.sentences.get(Sentences.ConfigIndex).get(i).getText();
                 startActivity(new Intent(getApplicationContext(), Main.class));
@@ -52,10 +56,11 @@ public class ListLinkSentence extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_all:
                 Main.tts.stop();
-                Sentences.link = "/none";
-                Sentences.text = "";
-                Main.all = true;
-                Main.allCount = 0;
+                stopService(new Intent(getApplicationContext(), MainService.class));
+                MainService.putAllSpeak();
+                Output.getOutput().allSpeakWrite(Sentences.sentences.get(Sentences.ConfigIndex));
+                MainService.sentences = Input.getInput().allSpeakRead();
+                startService(new Intent(getApplicationContext(), MainService.class));
                 startActivity(new Intent(getApplicationContext(), Main.class));
                 finish();
                 break;

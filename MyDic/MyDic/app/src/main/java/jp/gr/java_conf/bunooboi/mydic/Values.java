@@ -9,16 +9,18 @@ import android.preference.PreferenceManager;
  * Created by hiro on 2016/08/04.
  */
 public class Values {
-    static float pitch;//音声読み上げ高さ
-    static float speechrate;//音声読み上げ速さ
-    static int time;//音声検索長さ
-    static float volume;//音量
-    static boolean display;//html表示形式
-    static boolean recognition;//音声認識オフラインか
-    static boolean notification;//通知へのアクセス
-    static Context context;
-    static final String RootPath = Environment.getExternalStorageDirectory() + "/MyDic";
-    static final String ConfigPath = RootPath + "/config";
+    public static float pitch;//音声読み上げ高さ
+    public static float speechrate;//音声読み上げ速さ
+    public static int time;//音声検索長さ
+    public static float volume;//音量
+    public static boolean display;//html表示形式
+    public static boolean recognition;//音声認識オフラインか
+    public static boolean notification;//通知へのアクセス
+    public static boolean startservice;//端末起動時にサービス起動か
+    public static Context context;
+    public static final String RootPath = Environment.getExternalStorageDirectory() + "/MyDic";
+    public static final String DataPath = RootPath + "/data";
+    public static final String ConfigPath = RootPath + "/config";
 
     public static void init(Context context) {
         Values.context = context;
@@ -30,6 +32,7 @@ public class Values {
         display = sp.getBoolean("display", display);
         recognition = sp.getBoolean("recognition", recognition);
         notification = sp.getBoolean("notification", notification);
+        startservice = sp.getBoolean("startservice", startservice);
     }
 
     public static void setPitch(float pitch) {
@@ -72,5 +75,11 @@ public class Values {
         Values.notification = notification;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean("notification", notification).commit();
+    }
+
+    public static void setStartservice(boolean startservice) {
+        Values.startservice = startservice;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean("startservice", startservice).commit();
     }
 }

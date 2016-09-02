@@ -49,9 +49,16 @@ public class Sentence implements Serializable {
         return new String(sb);
     }
 
+    private String getHash() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < key.length; i++) {
+            sb.append(key[i]);
+        }
+        return new String(sb);
+    }
+
     public boolean serchKey(String serch) {
         for (int i = 0; i < key.length; i++) {
-            System.out.println(key[i]);
             if (key[i].equals(serch)) {
                 return true;
             }
@@ -74,4 +81,6 @@ public class Sentence implements Serializable {
     public String getText() {
         return text;
     }
+
+
 }

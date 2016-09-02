@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,11 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.gr.java_conf.bunooboi.mydic.MainService;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
+import jp.gr.java_conf.bunooboi.mydic.Values;
+
 /**
  * Created by hiro on 2016/08/04.
  */
@@ -19,11 +24,14 @@ public class Start extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.start);
-        File file = new File(Values.ConfigPath);
+        File file = new File(Values.DataPath);
         if (!file.exists()) {
             file.mkdirs();
         }
+        stopService(new Intent(getApplicationContext(), MainService.class));
         Sentences.init();
+        MainService.putRepeat();
+        startService(new Intent(getApplicationContext(), MainService.class));
         final Handler h = new Handler();
         new Timer().schedule(new TimerTask() {
             @Override

@@ -12,14 +12,14 @@ import java.util.StringTokenizer;
  * Created by hiro on 2016/08/04.
  */
 public class Input {
-    private static String configPath = Values.ConfigPath;
+    private static String dataPath = Values.DataPath;
     private static final Input input = new Input();
 
     private Input() {
     }
 
     public static Input getInput() {
-        File file = new File(Values.ConfigPath);
+        File file = new File(Values.DataPath);
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -27,8 +27,8 @@ public class Input {
     }
 
     public static Input getInput(String configName) {
-        configPath = Values.ConfigPath + configName;
-        File file = new File(configPath);
+        dataPath = Values.DataPath + configName;
+        File file = new File(dataPath);
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -36,7 +36,7 @@ public class Input {
     }
 
     public synchronized ArrayList<String> readConfig() {
-        File file[] = new File(Values.ConfigPath).listFiles();
+        File file[] = new File(Values.DataPath).listFiles();
         ArrayList<String> list = new ArrayList<>();
         for (File f : file) {
             list.add("/" + f.getName());
@@ -45,10 +45,10 @@ public class Input {
     }
 
     public synchronized ArrayList<Sentence> read() {
-        ArrayList<Sentence> list = new ArrayList<>();
+        ArrayList<Sentence> sentences = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(configPath), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, ",");
@@ -60,7 +60,7 @@ public class Input {
                 String description = st.nextToken();
                 String text = st.nextToken();
                 text = text.replaceAll("%%", "\n");
-                list.add(new Sentence(title, level, key, link, selector, description, text));
+                sentences.add(new Sentence(title, level, key, link, selector, description, text));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +70,49 @@ public class Input {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return list;
+            return sentences;
+        }
+    }
+
+    public synchronized ArrayList<String> repeatRead() {
+        ArrayList<String> sentences = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/repeat.txt"), "UTF-8"));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sentences.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return sentences;
+        }
+    }
+
+    public synchronized ArrayList<String> allSpeakRead() {
+        ArrayList<String> sentences = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/allSpeak.txt"), "UTF-8"));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sentences.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return sentences;
         }
     }
 }

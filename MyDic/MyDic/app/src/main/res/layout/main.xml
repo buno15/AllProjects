@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,13 +20,13 @@
             android:layout_marginRight="10dp"
             android:layout_weight="5"
             android:background="#fafafa"
-            android:inputType="text" />
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/button1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2" />
+            android:layout_weight="2"/>
 
         <ImageButton
             android:id="@+id/button2"
@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_setting" />
+            android:src="@drawable/button_setting"/>
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +63,7 @@
                     android:layout_marginRight="10dp"
                     android:gravity="left|center"
                     android:inputType="text"
-                    android:textIsSelectable="true" />
+                    android:textIsSelectable="true"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_copy" />
+            android:src="@drawable/button_copy"/>
 
         <ImageButton
             android:id="@+id/button4"
@@ -81,7 +81,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_goedit" />
+            android:src="@drawable/button_goedit"/>
 
         <ImageButton
             android:id="@+id/button5"
@@ -89,7 +89,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_list" />
+            android:src="@drawable/button_list"/>
     </LinearLayout>
 
     <LinearLayout
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -122,7 +122,7 @@
             android:background="@drawable/button_actionbutton_custom"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_rec" />
+            android:src="@drawable/button_rec"/>
 
         <ImageButton
             android:id="@+id/actionbutton2"
@@ -132,7 +132,7 @@
             android:background="@drawable/button_actionbutton_custom"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_stop" />
+            android:src="@drawable/button_stop"/>
 
         <ImageButton
             android:id="@+id/actionbutton3"
@@ -142,7 +142,7 @@
             android:background="@drawable/button_actionbutton_custom"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_game" />
+            android:src="@drawable/button_servicestop"/>
 
         <ImageButton
             android:id="@+id/actionbutton4"
@@ -152,8 +152,7 @@
             android:background="@drawable/button_actionbutton_custom"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_left" />
-
+            android:src="@drawable/button_game"/>
 
         <ImageButton
             android:id="@+id/actionbutton5"
@@ -163,6 +162,17 @@
             android:background="@drawable/button_actionbutton_custom"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/button_right" />
+            android:src="@drawable/button_left"/>
+
+
+        <ImageButton
+            android:id="@+id/actionbutton6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_actionbutton_custom"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_right"/>
     </LinearLayout>
 </LinearLayout>

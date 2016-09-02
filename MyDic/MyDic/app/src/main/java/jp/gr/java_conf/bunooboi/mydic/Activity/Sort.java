@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import jp.gr.java_conf.bunooboi.mydic.Output;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentence;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
 import jp.gr.java_conf.bunooboi.mydic.View.SortableListView;
 
 /**
@@ -141,7 +145,7 @@ public class Sort extends AppCompatActivity {
             Sentence sen = Sentences.sentences.get(Sentences.ConfigIndex).get(startPosition);
             Sentences.sentences.get(Sentences.ConfigIndex).remove(startPosition);
             Sentences.sentences.get(Sentences.ConfigIndex).add(positionFrom, sen);
-            Output.getOutput(Sentences.config.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
+            Output.getOutput(Sentences.data.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
             mDraggingPosition = -1;
             mListView.invalidateViews();
             return super.onStopDrag(positionFrom, positionTo);

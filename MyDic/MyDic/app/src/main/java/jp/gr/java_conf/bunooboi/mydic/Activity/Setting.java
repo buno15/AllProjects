@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -19,6 +19,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
+import jp.gr.java_conf.bunooboi.mydic.Values;
+
 /**
  * Created by hiro on 2016/08/04.
  */
@@ -30,7 +34,7 @@ public class Setting extends AppCompatActivity {
         setTitle("設定");
         setContentView(R.layout.setting);
 
-        final TextView textview[] = new TextView[7];
+        final TextView textview[] = new TextView[8];
         textview[0] = (TextView) findViewById(R.id.textview1);
         textview[1] = (TextView) findViewById(R.id.textview2);
         textview[2] = (TextView) findViewById(R.id.textview3);
@@ -38,6 +42,7 @@ public class Setting extends AppCompatActivity {
         textview[4] = (TextView) findViewById(R.id.textview5);
         textview[5] = (TextView) findViewById(R.id.textview6);
         textview[6] = (TextView) findViewById(R.id.textview7);
+        textview[7] = (TextView) findViewById(R.id.textview8);
         textview[0].setText("音声スピード");
         textview[1].setText("音声ピッチ");
         textview[2].setText("音声検索時間");
@@ -45,6 +50,7 @@ public class Setting extends AppCompatActivity {
         textview[4].setText("画面を広げる");
         textview[5].setText("オフラインでの音声認識");
         textview[6].setText("通知へのアクセス");
+        textview[7].setText("端末起動時にサービスを起動");
         for (TextView text : textview)
             text.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
 
@@ -66,20 +72,30 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-        Button button1 = (Button) findViewById(R.id.button1);
-        Button button2 = (Button) findViewById(R.id.button2);
-        button1.setText("データベースを更新");
-        button2.setText("データベースを編集");
-        button1.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        button2.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button button[] = new Button[3];
+        button[0] = (Button) findViewById(R.id.button1);
+        button[1] = (Button) findViewById(R.id.button2);
+        button[2] = (Button) findViewById(R.id.button3);
+        button[0].setText("定期読み上げ設定");
+        button[1].setText("データベースを更新");
+        button[2].setText("データベースを編集");
+        for (int i = 0; i < button.length; i++) {
+            button[i].setTextSize(20 * Main.getScaleSize(getApplicationContext()));
+        }
+        button[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SelectRepeat.class));
+            }
+        });
+        button[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Sentences.init();
                 Toast.makeText(getApplicationContext(), "更新しました", Toast.LENGTH_SHORT).show();
             }
         });
-        button2.setOnClickListener(new View.OnClickListener() {
+        button[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ListEditConfig.class));
@@ -173,6 +189,7 @@ public class Setting extends AppCompatActivity {
         Switch switch1 = (Switch) findViewById(R.id.switch1);
         Switch switch2 = (Switch) findViewById(R.id.switch2);
         Switch switch3 = (Switch) findViewById(R.id.switch3);
+        Switch switch4 = (Switch) findViewById(R.id.switch4);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -195,11 +212,21 @@ public class Setting extends AppCompatActivity {
         });
         switch3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     Values.setNotification(true);
                 } else {
                     Values.setNotification(false);
+                }
+            }
+        });
+        switch4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Values.setStartservice(true);
+                } else {
+                    Values.setStartservice(false);
                 }
             }
         });
@@ -239,6 +266,11 @@ public class Setting extends AppCompatActivity {
             switch3.setChecked(true);
         } else {
             switch3.setChecked(false);
+        }
+        if (Values.startservice) {
+            switch4.setChecked(true);
+        } else {
+            switch4.setChecked(false);
         }
         textview[3].setText("音量：" + seekbar.getProgress());
     }

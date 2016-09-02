@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
 import jp.gr.java_conf.bunooboi.mydic.Game.GameMemory;
 import jp.gr.java_conf.bunooboi.mydic.Game.GameSelect;
+import jp.gr.java_conf.bunooboi.mydic.GameValue;
+import jp.gr.java_conf.bunooboi.mydic.R;
 
 /**
  * Created by hiro on 2016/08/19.

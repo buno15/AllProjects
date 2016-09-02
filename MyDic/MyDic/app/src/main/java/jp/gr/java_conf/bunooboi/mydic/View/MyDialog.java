@@ -11,8 +11,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import jp.gr.java_conf.bunooboi.mydic.Game.GameFall;
-import jp.gr.java_conf.bunooboi.mydic.GameStart;
-import jp.gr.java_conf.bunooboi.mydic.Main;
+import jp.gr.java_conf.bunooboi.mydic.Activity.GameStart;
+import jp.gr.java_conf.bunooboi.mydic.Activity.Main;
 import jp.gr.java_conf.bunooboi.mydic.R;
 
 /**

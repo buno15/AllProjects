@@ -1,6 +1,7 @@
-package jp.gr.java_conf.bunooboi.mydic;
+package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -49,9 +50,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import jp.gr.java_conf.bunooboi.mydic.BackService;
+import jp.gr.java_conf.bunooboi.mydic.MainService;
+import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sentences;
+import jp.gr.java_conf.bunooboi.mydic.Values;
 
 
 public class Main extends Activity implements RecognitionListener {
@@ -63,14 +71,11 @@ public class Main extends Activity implements RecognitionListener {
 
     EditText serch;
     TextView urltext;
-    ImageButton actionbutton2;
+    ImageButton actionbutton[] = new ImageButton[6];
     static TextToSpeech tts;
     SpeechRecognizer recognizer;
     InputMethodManager inputMethodManager;
-    HashMap<String, String> params = new HashMap<String, String>();//音量
-    static boolean all = false;
-    static int allCount = 0;
-    Timer t;
+    public static HashMap<String, String> params = new HashMap<String, String>();//音量
 
     enum Extension {
         NONE,
@@ -212,12 +217,13 @@ public class Main extends Activity implements RecognitionListener {
                 startActivity(new Intent(getApplicationContext(), ListLinkConfig.class));
             }
         });
-        ImageButton actionbutton1 = (ImageButton) findViewById(R.id.actionbutton1);
-        actionbutton2 = (ImageButton) findViewById(R.id.actionbutton2);
-        ImageButton actionbutton3 = (ImageButton) findViewById(R.id.actionbutton3);
-        ImageButton actionbutton4 = (ImageButton) findViewById(R.id.actionbutton4);
-        ImageButton actionbutton5 = (ImageButton) findViewById(R.id.actionbutton5);
-        actionbutton1.setOnClickListener(new View.OnClickListener() {
+        actionbutton[0] = (ImageButton) findViewById(R.id.actionbutton1);
+        actionbutton[1] = (ImageButton) findViewById(R.id.actionbutton2);
+        actionbutton[2] = (ImageButton) findViewById(R.id.actionbutton3);
+        actionbutton[3] = (ImageButton) findViewById(R.id.actionbutton4);
+        actionbutton[4] = (ImageButton) findViewById(R.id.actionbutton5);
+        actionbutton[5] = (ImageButton) findViewById(R.id.actionbutton6);
+        actionbutton[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (recognizer != null) {
@@ -226,50 +232,53 @@ public class Main extends Activity implements RecognitionListener {
                 startSpeech();
             }
         });
-        actionbutton2.setOnClickListener(new View.OnClickListener() {
+        actionbutton[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (t != null) {
-                    t.cancel();
-                    t = null;
-                }
                 if (tts.isSpeaking()) {
-                    if (tts != null) {
-                        textSpeech("");
-                    }
                     tts.stop();
-                    actionbutton2.setImageResource(R.drawable.button_play);
+                    actionbutton[1].setImageResource(R.drawable.button_play);
                 } else {
-                    if (tts != null) {
-                        textSpeech("");
+                    if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
+                        textSpeech(Sentences.text);
                     }
-                    if (all) {
-                        if (allCount > 0)
-                            allCount--;
-                        allView();
-                    } else {
-                        if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
-                            textSpeech(Sentences.text);
-                        }
-                    }
-                    actionbutton2.setImageResource(R.drawable.button_stop);
+                    actionbutton[1].setImageResource(R.drawable.button_stop);
                 }
             }
         });
-        actionbutton3.setOnClickListener(new View.OnClickListener() {
+        actionbutton[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                List<ActivityManager.RunningServiceInfo> listServiceInfo = am.getRunningServices(Integer.MAX_VALUE);
+                boolean found = false;
+                for (ActivityManager.RunningServiceInfo curr : listServiceInfo) {
+                    if (curr.service.getClassName().equals(MainService.class.getName())) {
+                        stopService(new Intent(getApplicationContext(), MainService.class));
+                        actionbutton[2].setImageResource(R.drawable.button_servicestart);
+                        found = true;
+                    }
+                }
+                if (found == false) {
+                    startService(new Intent(getApplicationContext(), MainService.class));
+                    actionbutton[2].setImageResource(R.drawable.button_servicestop);
+                }
+            }
+        });
+        actionbutton[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), GameStart.class));
                 finish();
             }
         });
-        actionbutton4.setOnClickListener(new View.OnClickListener() {
+        actionbutton[4].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 webview.goBack();
             }
         });
-        actionbutton5.setOnClickListener(new View.OnClickListener() {
+        actionbutton[5].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 webview.goForward();
@@ -297,10 +306,14 @@ public class Main extends Activity implements RecognitionListener {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotificationManager.cancel(R.string.app_name);
         }
-        if (all) {
-            allView();
-        } else
-            resumeView();
+        resumeView();
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> listServiceInfo = am.getRunningServices(Integer.MAX_VALUE);
+        for (ActivityManager.RunningServiceInfo curr : listServiceInfo) {
+            if (curr.service.getClassName().equals(MainService.class.getName())) {
+                actionbutton[2].setImageResource(R.drawable.button_servicestart);
+            }
+        }
     }
 
     void serch() {
@@ -318,73 +331,17 @@ public class Main extends Activity implements RecognitionListener {
                 Sentences.link = text;
             }
             textSpeech(Sentences.text);
-            all = false;
-            allCount = 0;
-            if (t != null) {
-                t.cancel();
-                t = null;
-            }
         }
     }
 
     void setView() {
-        all = false;
-        allCount = 0;
-        if (t != null) {
-            t.cancel();
-            t = null;
-        }
         invalidateView();
         if (!Sentences.text.equals("none")) {
             textSpeech(Sentences.text);
         }
     }
 
-    void allView() {
-        final Handler h = new Handler();
-        System.out.println("allView");
-        t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                h.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("run");
-                        if (all && !(tts.isSpeaking())) {
-                            if (allCount < Sentences.sentences.get(Sentences.ConfigIndex).size()) {
-                                System.out.println("run:speek");
-                                StringBuilder sb = new StringBuilder();
-                                sb.append(Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getTitle() + "。\n");
-                                if (!Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getText().equals("none"))
-                                    sb.append(Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getText() + "。\n");
-                                textSpeech(new String(sb));
-                                Sentences.link = Sentences.sentences.get(Sentences.ConfigIndex).get(allCount).getLink();
-                                invalidateView();
-                                allCount++;
-                            } else {
-                                System.out.println("run:stop");
-                                all = false;
-                                allCount = 0;
-                                if (t != null) {
-                                    t.cancel();
-                                    t = null;
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }, 0, 1000);
-    }
-
     void resumeView() {
-        all = false;
-        allCount = 0;
-        if (t != null) {
-            t.cancel();
-            t = null;
-        }
         invalidateView();
         if (!Sentences.text.equals("none") && !Sentences.text.equals("検索結果はありません")) {
             if (!tts.isSpeaking())
@@ -475,8 +432,16 @@ public class Main extends Activity implements RecognitionListener {
                 alertDlg.setMessage("アプリを終了しますか？");
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        if (tts != null) {
+                            tts.shutdown();
+                        }
+                        if (recognizer != null) {
+                            recognizer.destroy();
+                            recognizer = null;
+                        }
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                         mNotificationManager.cancel(R.string.app_name);
+                        stopService(new Intent(getApplicationContext(), MainService.class));
                         stopService(new Intent(getApplicationContext(), BackService.class));
                         finish();
                     }
@@ -644,26 +609,10 @@ public class Main extends Activity implements RecognitionListener {
     @Override
     public void onPause() {
         super.onPause();
-        if (t != null) {
-            t.cancel();
-            t = null;
-        }
-        if (all) {
-            if (allCount > 0)
-                allCount--;
-            actionbutton2.setImageResource(R.drawable.button_stop);
-        }
     }
 
     @Override
     public void onDestroy() {
-        System.out.println("dest");
-        all = false;
-        allCount = 0;
-        if (t != null) {
-            t.cancel();
-            t = null;
-        }
         if (tts != null) {
             tts.shutdown();
         }
