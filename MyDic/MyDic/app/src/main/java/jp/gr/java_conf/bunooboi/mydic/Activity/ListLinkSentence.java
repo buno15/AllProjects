@@ -16,6 +16,7 @@ import jp.gr.java_conf.bunooboi.mydic.MainService;
 import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sentences;
+import jp.gr.java_conf.bunooboi.mydic.Values;
 
 /**
  * Created by hiro on 2016/08/07.
@@ -57,6 +58,7 @@ public class ListLinkSentence extends AppCompatActivity {
             case R.id.action_all:
                 Main.tts.stop();
                 stopService(new Intent(getApplicationContext(), MainService.class));
+                Values.setIndexCount(0);
                 MainService.putAllSpeak();
                 Output.getOutput().allSpeakWrite(Sentences.sentences.get(Sentences.ConfigIndex));
                 MainService.sentences = Input.getInput().allSpeakRead();

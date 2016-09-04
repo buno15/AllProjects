@@ -17,6 +17,9 @@ public class Values {
     public static boolean recognition;//音声認識オフラインか
     public static boolean notification;//通知へのアクセス
     public static boolean startservice;//端末起動時にサービス起動か
+
+    public static int indexCount;//リピート機能インデックス
+
     public static Context context;
     public static final String RootPath = Environment.getExternalStorageDirectory() + "/MyDic";
     public static final String DataPath = RootPath + "/data";
@@ -81,5 +84,14 @@ public class Values {
         Values.startservice = startservice;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean("startservice", startservice).commit();
+    }
+
+    public static int getIndexCount() {
+        return (Values.indexCount = PreferenceManager.getDefaultSharedPreferences(context).getInt("indexcount", indexCount));
+    }
+
+    public static void setIndexCount(int indexCount) {
+        Values.indexCount = indexCount;
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("indexcount", indexCount).commit();
     }
 }

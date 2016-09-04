@@ -2,10 +2,12 @@ package jp.gr.java_conf.bunooboi.mydic;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,7 +25,6 @@ public class MainService extends Service {
     TextToSpeech tts;
     int minuteCount;
     int minuteLimit;
-    int indexCount;
     int mood;
     public static final int REPEAT = 0;
     public static final int ALLSPEAK = 1;
@@ -41,7 +42,6 @@ public class MainService extends Service {
         mainTimer = new Timer();
         minuteCount = 0;
         minuteLimit = (int) Math.floor(Math.random() * 5) + 1;
-        indexCount = 0;
         mood = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("mood", mood);
         if (mood == REPEAT) {
             sentences = Input.getInput().repeatRead();
@@ -69,39 +69,55 @@ public class MainService extends Service {
                 }
             }
         });
+        Toast.makeText(getApplicationContext(), "MyDicStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flag, int startid) {
+        final Handler handler = new Handler();
         if (mood == REPEAT) {
             mainTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    minuteCount++;
-                    if (minuteCount >= minuteLimit) {
-                        textSpeech(sentences.get(indexCount));
-                        if (indexCount < sentences.size()) {
-                            indexCount++;
-                        } else {
-                            indexCount = 0;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int index = Values.getIndexCount();
+                            minuteCount++;
+                            if (minuteCount >= minuteLimit) {
+                                textSpeech(sentences.get(index));
+                                if (index < sentences.size()) {
+                                    Values.setIndexCount(++index);
+                                    Toast.makeText(getApplicationContext(), "MyDic" + index, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Values.setIndexCount(0);
+                                }
+                                minuteCount = 0;
+                                minuteLimit = (int) Math.floor(Math.random() * 5) + 1;
+                            }
                         }
-                        minuteCount = 0;
-                        minuteLimit = (int) Math.floor(Math.random() * 5) + 1;
-                    }
+                    });
                 }
             }, 0, 60000);
         } else {
             mainTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!tts.isSpeaking()) {
-                        if (indexCount < sentences.size()) {
-                            textSpeech(sentences.get(indexCount));
-                            indexCount++;
-                        } else {
-                            stopService(new Intent(getApplicationContext(), MainService.class));
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int index = Values.getIndexCount();
+                            if (!tts.isSpeaking()) {
+                                if (index < sentences.size()) {
+                                    textSpeech(sentences.get(index));
+                                    Values.setIndexCount(++index);
+                                    Toast.makeText(getApplicationContext(), "MyDic" + index, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    stopService(new Intent(getApplicationContext(), MainService.class));
+                                }
+                            }
                         }
-                    }
+                    });
                 }
             }, 3000, 1000);
         }

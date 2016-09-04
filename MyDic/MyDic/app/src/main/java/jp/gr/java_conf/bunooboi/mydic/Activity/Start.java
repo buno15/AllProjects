@@ -30,6 +30,8 @@ public class Start extends Activity {
         }
         stopService(new Intent(getApplicationContext(), MainService.class));
         Sentences.init();
+        Values.context = getApplicationContext();
+        Values.setIndexCount(0);
         MainService.putRepeat();
         startService(new Intent(getApplicationContext(), MainService.class));
         final Handler h = new Handler();

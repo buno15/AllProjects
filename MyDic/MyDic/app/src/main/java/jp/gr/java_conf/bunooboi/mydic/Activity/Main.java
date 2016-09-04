@@ -260,6 +260,7 @@ public class Main extends Activity implements RecognitionListener {
                     }
                 }
                 if (found == false) {
+                    Values.setIndexCount(0);
                     startService(new Intent(getApplicationContext(), MainService.class));
                     actionbutton[2].setImageResource(R.drawable.button_servicestop);
                 }
