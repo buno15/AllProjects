@@ -1,4 +1,4 @@
-package jp.gr.java_conf.bunooboi.appcheck;
+package jp.gr.java_conf.bunooboi.mydic;
 
 import android.app.ActivityManager;
 import android.app.Service;
@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,10 +18,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.gr.java_conf.bunooboi.mydic.Activity.Stop;
+
 /**
  * Created by hiro on 2016/09/05.
  */
-public class MainService extends Service {
+public class CheckService extends Service {
     Timer timer;
     int timeCount;
 
@@ -34,6 +37,7 @@ public class MainService extends Service {
         super.onCreate();
         timer = new Timer();
         getTimeCount();
+        Toast.makeText(getApplicationContext(), "YouTubeCheckStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -45,7 +49,7 @@ public class MainService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                       check();
+                        check();
                     }
                 });
             }
@@ -66,13 +70,13 @@ public class MainService extends Service {
                     ApplicationInfo appInfo = packageManager.getApplicationInfo(app.processName, 0);
                     list.add((String) packageManager.getApplicationLabel(appInfo));
                 } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
+
                 }
             }
         }
         if (list.contains("YouTube")) {
             setTimeCount(0);
-            Intent i = new Intent(getApplicationContext(), StopActivity.class);
+            Intent i = new Intent(getApplicationContext(), Stop.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         } else {
@@ -121,5 +125,6 @@ public class MainService extends Service {
             timer.cancel();
             timer = null;
         }
+        Toast.makeText(getApplicationContext(), "YouTubeCheckStop", Toast.LENGTH_SHORT).show();
     }
 }

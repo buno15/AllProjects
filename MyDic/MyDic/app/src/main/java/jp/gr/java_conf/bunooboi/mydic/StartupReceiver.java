@@ -21,6 +21,7 @@ public class StartupReceiver extends BroadcastReceiver {
             Values.setIndexCount(0);
             MainService.putRepeat();
             context.startService(new Intent(context, MainService.class));
+            context.startService(new Intent(context, CheckService.class));
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
             builder.setSmallIcon(R.drawable.icon_notification);

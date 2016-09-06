@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.gr.java_conf.bunooboi.mydic.CheckService;
 import jp.gr.java_conf.bunooboi.mydic.MainService;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sentences;
@@ -34,6 +35,7 @@ public class Start extends Activity {
         Values.setIndexCount(0);
         MainService.putRepeat();
         startService(new Intent(getApplicationContext(), MainService.class));
+        startService(new Intent(getApplicationContext(), CheckService.class));
         final Handler h = new Handler();
         new Timer().schedule(new TimerTask() {
             @Override
