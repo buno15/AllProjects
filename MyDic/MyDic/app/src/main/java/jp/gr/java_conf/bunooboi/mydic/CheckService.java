@@ -81,7 +81,7 @@ public class CheckService extends Service {
             startActivity(i);
         } else {
             setTimeCount(timeCount + 1);
-            if (timeCount >= 60) {
+            if (timeCount >= 600) {
                 setTimeCount(0);
                 stopSelf();
             }

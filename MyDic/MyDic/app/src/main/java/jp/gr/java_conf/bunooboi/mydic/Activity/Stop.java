@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import jp.gr.java_conf.bunooboi.mydic.CheckService;
 import jp.gr.java_conf.bunooboi.mydic.R;
 
 /**
@@ -62,7 +61,6 @@ public class Stop extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        stopService(new Intent(getApplicationContext(), CheckService.class));
         ActivityManager activityManager = ((ActivityManager) getSystemService(ACTIVITY_SERVICE));
         PackageManager pm = getPackageManager();
         List<ApplicationInfo> appList = pm.getInstalledApplications(0);
@@ -78,6 +76,5 @@ public class Stop extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        startService(new Intent(getApplicationContext(), CheckService.class));
     }
 }

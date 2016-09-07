@@ -67,8 +67,8 @@ public class Main {
 				finaltext = "none";
 			}
 			try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")) {
-				String str = finaltext.replaceAll("\n", "%%");
-				osw.write(title + "," + level + "," + key + "," + finallink + "," + selector + "," + description + "," + str + "\n");
+				String str = finaltext.replaceAll("\n", "%%").replaceAll(",", "、");
+				osw.write(title + "," + level + "," + key + "," + finallink + "," + selector.replaceAll(",", "、") + "," + description.replaceAll(",", "、") + "," + str + "\n");
 				frame.clear();
 				JOptionPane.showMessageDialog(frame, "保存しました");
 			} catch (IOException e) {
@@ -168,12 +168,12 @@ class MyFrame extends JFrame {
 		JScrollPane scrollpane = new JScrollPane(area, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollpane.setBounds(600, 50, 590, 750);
 
-		label[0].setText("タイトル(必須。改行は&&)");
+		label[0].setText("タイトル(必須。改行は%%)");
 		label[1].setText("出題レベル(0~3)");
 		label[2].setText("検索キー(必須。複数の場合、%で区切る)");
 		label[2].setFont(new Font(Font.SERIF, Font.BOLD, 20));
 		label[3].setText("ファイルパス・URL");
-		label[4].setText("選択肢(必須)");
+		label[4].setText("選択肢(必須。改行は%%)");
 		label[5].setText("説明(必須)");
 		label[6].setText("読み上げ文(全文日本語推奨)");
 		label[0].setBounds(20, 0, 570, 50);

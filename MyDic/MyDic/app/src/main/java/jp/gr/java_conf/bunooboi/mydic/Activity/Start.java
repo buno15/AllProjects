@@ -30,6 +30,7 @@ public class Start extends Activity {
             file.mkdirs();
         }
         stopService(new Intent(getApplicationContext(), MainService.class));
+        stopService(new Intent(getApplicationContext(), CheckService.class));
         Sentences.init();
         Values.context = getApplicationContext();
         Values.setIndexCount(0);
