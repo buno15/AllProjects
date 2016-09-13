@@ -217,6 +217,16 @@ div#text input[type=number] {
 	font-size: 30px;
 }
 
+div#movie {
+	text-align: center;
+}
+
+div#movie iframe {
+	width: 560px;
+	height: 315px;
+	padding: 10px 0px 0px 0px;
+}
+
 div.radio {
 	width: 100%;
 	text-align: center;

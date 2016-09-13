@@ -7,7 +7,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -36,7 +35,6 @@ public class CheckService extends Service {
     public void onCreate() {
         super.onCreate();
         timer = new Timer();
-        getTimeCount();
         Toast.makeText(getApplicationContext(), "YouTubeCheckStart", Toast.LENGTH_SHORT).show();
     }
 
@@ -49,43 +47,36 @@ public class CheckService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        check();
+                        ArrayList<String> list = new ArrayList<String>();
+                        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                        // 起動中のアプリ情報を取得
+                        List<ActivityManager.RunningAppProcessInfo> runningApp = activityManager.getRunningAppProcesses();
+                        PackageManager packageManager = getPackageManager();
+                        if (runningApp != null) {
+                            for (ActivityManager.RunningAppProcessInfo app : runningApp) {
+                                try {
+                                    // アプリ名をリストに追加
+                                    ApplicationInfo appInfo = packageManager.getApplicationInfo(app.processName, 0);
+                                    list.add((String) packageManager.getApplicationLabel(appInfo));
+                                } catch (PackageManager.NameNotFoundException e) {
+
+                                }
+                            }
+                        }
+                        if (list.contains("YouTube")) {
+                            Intent i = new Intent(getApplicationContext(), Stop.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                        } else {
+                            if (timeCount >= 600) {
+                                stopSelf();
+                            }
+                        }
                     }
                 });
             }
         }, 0, 10000);
         return START_STICKY;
-    }
-
-    void check() {
-        ArrayList<String> list = new ArrayList<String>();
-        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        // 起動中のアプリ情報を取得
-        List<ActivityManager.RunningAppProcessInfo> runningApp = activityManager.getRunningAppProcesses();
-        PackageManager packageManager = getPackageManager();
-        if (runningApp != null) {
-            for (ActivityManager.RunningAppProcessInfo app : runningApp) {
-                try {
-                    // アプリ名をリストに追加
-                    ApplicationInfo appInfo = packageManager.getApplicationInfo(app.processName, 0);
-                    list.add((String) packageManager.getApplicationLabel(appInfo));
-                } catch (PackageManager.NameNotFoundException e) {
-
-                }
-            }
-        }
-        if (list.contains("YouTube")) {
-            setTimeCount(0);
-            Intent i = new Intent(getApplicationContext(), Stop.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
-        } else {
-            setTimeCount(timeCount + 1);
-            if (timeCount >= 600) {
-                setTimeCount(0);
-                stopSelf();
-            }
-        }
     }
 
     private void showLog() {
@@ -107,15 +98,6 @@ public class CheckService extends Service {
         } catch (IOException e) {
             // 例外処理
         }
-    }
-
-    void setTimeCount(int timeCount) {
-        this.timeCount = timeCount;
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("timecount", timeCount).commit();
-    }
-
-    void getTimeCount() {
-        this.timeCount = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("timecount", timeCount);
     }
 
     @Override

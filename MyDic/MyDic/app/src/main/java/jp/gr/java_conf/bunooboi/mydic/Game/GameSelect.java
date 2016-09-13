@@ -414,11 +414,9 @@ public class GameSelect extends Activity {
             for (int i = 0; i < choicesButton.length; i++) {
                 choicesButton[i].setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams
                         .MATCH_PARENT, 1));
-                choicesButton[i].setTextSize(22 * Main.getScaleSize(getApplicationContext()));
-                choicesButton[i].setTextColor(Color.WHITE);
+                choicesButton[i].setTextSize(26 * Main.getScaleSize(getApplicationContext()));
+                choicesButton[i].setTextColor(Color.BLACK);
                 choicesButton[i].setAllCaps(false);
-                choicesButton[i].setShadowLayer(5, 0, 0, Color.BLACK);
-                choicesButton[i].setBackgroundResource(R.drawable.select_button_custom);
                 switch (i) {
                     case 0:
                     case 1:
