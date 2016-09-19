@@ -17,6 +17,7 @@ public class Values {
     public static boolean recognition;//音声認識オフラインか
     public static boolean notification;//通知へのアクセス
     public static boolean startservice;//端末起動時にサービス起動か
+    public static boolean readtext;//定期読み上げ本文かどうか
 
     public static int indexCount;//リピート機能インデックス
 
@@ -36,6 +37,7 @@ public class Values {
         recognition = sp.getBoolean("recognition", recognition);
         notification = sp.getBoolean("notification", notification);
         startservice = sp.getBoolean("startservice", startservice);
+        readtext = sp.getBoolean("readtext", readtext);
     }
 
     public static void setPitch(float pitch) {
@@ -84,6 +86,12 @@ public class Values {
         Values.startservice = startservice;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean("startservice", startservice).commit();
+    }
+
+    public static void setReadText(boolean readtext) {
+        Values.readtext = readtext;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean("readtext", readtext).commit();
     }
 
     public static int getIndexCount() {

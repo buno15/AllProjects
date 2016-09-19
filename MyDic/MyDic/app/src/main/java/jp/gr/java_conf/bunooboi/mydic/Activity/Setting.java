@@ -34,7 +34,7 @@ public class Setting extends AppCompatActivity {
         setTitle("設定");
         setContentView(R.layout.setting);
 
-        final TextView textview[] = new TextView[8];
+        final TextView textview[] = new TextView[9];
         textview[0] = (TextView) findViewById(R.id.textview1);
         textview[1] = (TextView) findViewById(R.id.textview2);
         textview[2] = (TextView) findViewById(R.id.textview3);
@@ -43,6 +43,7 @@ public class Setting extends AppCompatActivity {
         textview[5] = (TextView) findViewById(R.id.textview6);
         textview[6] = (TextView) findViewById(R.id.textview7);
         textview[7] = (TextView) findViewById(R.id.textview8);
+        textview[8] = (TextView) findViewById(R.id.textview9);
         textview[0].setText("音声スピード");
         textview[1].setText("音声ピッチ");
         textview[2].setText("音声検索時間");
@@ -51,6 +52,7 @@ public class Setting extends AppCompatActivity {
         textview[5].setText("オフラインでの音声認識");
         textview[6].setText("通知へのアクセス");
         textview[7].setText("端末起動時にサービスを起動");
+        textview[8].setText("定期読み上げ（本文）");
         for (TextView text : textview)
             text.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
 
@@ -190,6 +192,7 @@ public class Setting extends AppCompatActivity {
         Switch switch2 = (Switch) findViewById(R.id.switch2);
         Switch switch3 = (Switch) findViewById(R.id.switch3);
         Switch switch4 = (Switch) findViewById(R.id.switch4);
+        Switch switch5 = (Switch) findViewById(R.id.switch5);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -227,6 +230,16 @@ public class Setting extends AppCompatActivity {
                     Values.setStartservice(true);
                 } else {
                     Values.setStartservice(false);
+                }
+            }
+        });
+        switch5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    Values.setReadText(true);
+                } else {
+                    Values.setReadText(false);
                 }
             }
         });
@@ -271,6 +284,11 @@ public class Setting extends AppCompatActivity {
             switch4.setChecked(true);
         } else {
             switch4.setChecked(false);
+        }
+        if (Values.readtext) {
+            switch5.setChecked(true);
+        } else {
+            switch5.setChecked(false);
         }
         textview[3].setText("音量：" + seekbar.getProgress());
     }

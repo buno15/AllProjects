@@ -81,7 +81,7 @@ public class Input {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/repeat.txt"), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
-                sentences.add(line);
+                sentences.add(line.replaceAll("%%",""));
             }
         } catch (IOException e) {
             e.printStackTrace();

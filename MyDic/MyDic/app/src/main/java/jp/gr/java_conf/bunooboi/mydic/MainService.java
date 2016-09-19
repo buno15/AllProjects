@@ -27,7 +27,7 @@ public class MainService extends Service {
     int minuteLimit;
     int mood;
     public static final int REPEAT = 0;
-    public static final int ALLSPEAK = 1;
+    public static final int ALLSPEEK = 1;
 
     @Nullable
     @Override
@@ -98,7 +98,7 @@ public class MainService extends Service {
                         }
                     });
                 }
-            }, 0, 60000);
+            }, 3000, 60000);
         } else {
             mainTimer.schedule(new TimerTask() {
                 @Override
@@ -142,7 +142,7 @@ public class MainService extends Service {
     }
 
     public static void putAllSpeak() {
-        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("mood", MainService.ALLSPEAK).commit();
+        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("mood", MainService.ALLSPEEK).commit();
     }
 
     void textSpeech(String text) {

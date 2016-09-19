@@ -73,7 +73,12 @@ public class Output {
             osw = new OutputStreamWriter(new FileOutputStream(Values.ConfigPath + "/repeat.txt", false), "UTF-8");
             for (int i = 0; i < sentences.size(); i++) {
                 String title = sentences.get(i).getTitle().replaceAll(" ", "");
-                String description = sentences.get(i).getDescription().replaceAll(" ", "");
+                String description;
+                if (Values.readtext) {
+                    description = sentences.get(i).getText().replaceAll(" ", "");
+                } else {
+                    description = sentences.get(i).getDescription().replaceAll(" ", "");
+                }
                 osw.write(createSpeechText(title, description) + "\n");
             }
             osw.flush();
@@ -113,10 +118,13 @@ public class Output {
     }
 
     String createSpeechText(String title, String description) {
+        if(description.equals("none")){
+            return title;
+        }
         if (title.equals(description)) {
             return title;
         } else {
-            return "「" + title + "」。" + description;
+            return "「" + title + "」。" + description.replaceAll("\n","%%");
         }
     }
 }
