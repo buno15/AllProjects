@@ -57,6 +57,8 @@ public class SelectRepeat extends AppCompatActivity {
                 Output.getOutput().repeatWrite(sentences);
                 MainService.putRepeat();
                 MainService.sentences = Input.getInput().repeatRead();
+                stopService(new Intent(getApplicationContext(), MainService.class));
+                startService(new Intent(getApplicationContext(), MainService.class));
                 startActivity(new Intent(getApplicationContext(), Setting.class));
                 finish();
                 break;

@@ -85,8 +85,8 @@ public class MainService extends Service {
                             int index = Values.getIndexCount();
                             minuteCount++;
                             if (minuteCount >= minuteLimit) {
-                                textSpeech(sentences.get(index));
                                 if (index < sentences.size()) {
+                                    textSpeech(sentences.get(index));
                                     Values.setIndexCount(++index);
                                     Toast.makeText(getApplicationContext(), "MyDic" + index, Toast.LENGTH_SHORT).show();
                                 } else {
