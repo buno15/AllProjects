@@ -117,14 +117,51 @@ public class Output {
         }
     }
 
+    public synchronized void newWrite(Sentence sentence) {
+        OutputStreamWriter osw = null;
+        try {
+            osw = new OutputStreamWriter(new FileOutputStream(Values.ConfigPath + "/new.txt", true), "UTF-8");
+            String title = sentence.getTitle().replaceAll(" ", "");
+            String description;
+            description = sentence.getText().replaceAll(" ", "");
+            osw.write(createSpeechText(title, description) + "\n");
+            osw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                osw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized void newDelete() {
+        OutputStreamWriter osw = null;
+        try {
+            osw = new OutputStreamWriter(new FileOutputStream(Values.ConfigPath + "/new.txt", false), "UTF-8");
+            osw.write("");
+            osw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                osw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     String createSpeechText(String title, String description) {
-        if(description.equals("none")){
+        if (description.equals("none")) {
             return title;
         }
         if (title.equals(description)) {
             return title;
         } else {
-            return "「" + title + "」。" + description.replaceAll("\n","%%");
+            return "「" + title + "」。" + description.replaceAll("\n", "%%");
         }
     }
 }

@@ -163,6 +163,8 @@ public class Edit extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "データを作成しました", Toast.LENGTH_SHORT).show();
                     else
                         Toast.makeText(getApplicationContext(), "データを編集しました", Toast.LENGTH_SHORT).show();
+                    Sentence sentence = new Sentence(title, level, key, link, selector, description, text);
+                    Output.getOutput().newWrite(sentence);
                 }
             }
         });

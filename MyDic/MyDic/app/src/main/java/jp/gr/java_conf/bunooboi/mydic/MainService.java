@@ -27,7 +27,8 @@ public class MainService extends Service {
     int minuteLimit;
     int mood;
     public static final int REPEAT = 0;
-    public static final int ALLSPEEK = 1;
+    public static final int ALLSPEAK = 1;
+    public static final int NEW = 2;
 
     @Nullable
     @Override
@@ -45,8 +46,10 @@ public class MainService extends Service {
         mood = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("mood", mood);
         if (mood == REPEAT) {
             sentences = Input.getInput().repeatRead();
-        } else {
+        } else if (mood == ALLSPEAK) {
             sentences = Input.getInput().allSpeakRead();
+        } else if (mood == NEW) {
+            sentences = Input.getInput().getNew();
         }
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -99,7 +102,7 @@ public class MainService extends Service {
                     });
                 }
             }, 3000, 60000);
-        } else {
+        } else if (mood == ALLSPEAK || mood == NEW) {
             mainTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -113,6 +116,7 @@ public class MainService extends Service {
                                     Values.setIndexCount(++index);
                                     Toast.makeText(getApplicationContext(), "MyDic" + index, Toast.LENGTH_SHORT).show();
                                 } else {
+                                    putRepeat();
                                     stopService(new Intent(getApplicationContext(), MainService.class));
                                 }
                             }
@@ -142,7 +146,11 @@ public class MainService extends Service {
     }
 
     public static void putAllSpeak() {
-        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("mood", MainService.ALLSPEEK).commit();
+        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("mood", MainService.ALLSPEAK).commit();
+    }
+
+    public static void putNew() {
+        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("mood", MainService.NEW).commit();
     }
 
     void textSpeech(String text) {

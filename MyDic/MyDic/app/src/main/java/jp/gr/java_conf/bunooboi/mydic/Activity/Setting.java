@@ -1,5 +1,7 @@
 package jp.gr.java_conf.bunooboi.mydic.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import jp.gr.java_conf.bunooboi.mydic.MainService;
+import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sentences;
 import jp.gr.java_conf.bunooboi.mydic.Values;
@@ -74,13 +78,18 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-        Button button[] = new Button[3];
+        Button button[] = new Button[5];
         button[0] = (Button) findViewById(R.id.button1);
         button[1] = (Button) findViewById(R.id.button2);
         button[2] = (Button) findViewById(R.id.button3);
+        button[3] = (Button) findViewById(R.id.button4);
+        button[4] = (Button) findViewById(R.id.button5);
+
         button[0].setText("定期読み上げ設定");
-        button[1].setText("データベースを更新");
-        button[2].setText("データベースを編集");
+        button[1].setText("新規追加データ削除");
+        button[2].setText("新規追加データ読み上げ");
+        button[3].setText("データベースを更新");
+        button[4].setText("データベースを編集");
         for (int i = 0; i < button.length; i++) {
             button[i].setTextSize(20 * Main.getScaleSize(getApplicationContext()));
         }
@@ -92,12 +101,40 @@ public class Setting extends AppCompatActivity {
         });
         button[1].setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(Setting.this);
+                alertDlg.setMessage("新規追加データ情報を削除しますか？");
+                alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Output.getOutput().newDelete();
+                        Toast.makeText(getApplicationContext(), "削除しました", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDlg.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDlg.create().show();
+            }
+        });
+        button[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(new Intent(getApplicationContext(),MainService.class));
+                Values.setIndexCount(0);
+                MainService.putNew();
+                startService(new Intent(getApplicationContext(), MainService.class));
+            }
+        });
+        button[3].setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 Sentences.init();
                 Toast.makeText(getApplicationContext(), "更新しました", Toast.LENGTH_SHORT).show();
             }
         });
-        button[2].setOnClickListener(new View.OnClickListener() {
+        button[4].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ListEditConfig.class));

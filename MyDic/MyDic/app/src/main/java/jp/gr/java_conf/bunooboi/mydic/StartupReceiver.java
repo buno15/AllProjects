@@ -8,7 +8,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
+
+import java.util.Calendar;
 
 /**
  * Created by hiro on 2016/09/02.
@@ -19,7 +22,12 @@ public class StartupReceiver extends BroadcastReceiver {
         Values.init(context);
         if (Values.startservice) {
             Values.setIndexCount(0);
-            MainService.putRepeat();
+            if (isChangeDate()) {
+                MainService.putNew();
+                setChengeDate();
+            } else {
+                MainService.putRepeat();
+            }
             context.startService(new Intent(context, MainService.class));
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -35,5 +43,22 @@ public class StartupReceiver extends BroadcastReceiver {
             note.flags = Notification.FLAG_ONGOING_EVENT;
             manager.notify(R.string.app_name, note);
         }
+    }
+
+    public static boolean isChangeDate() {
+        Calendar c = Calendar.getInstance();
+        int nowDay = c.get(Calendar.DATE);
+        int beforeDay = PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).getInt("changedate", -1);
+        if (nowDay == beforeDay) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static void setChengeDate() {
+        Calendar c = Calendar.getInstance();
+        int nowDay = c.get(Calendar.DATE);
+        PreferenceManager.getDefaultSharedPreferences(App.getInstance().getApplicationContext()).edit().putInt("changedate", nowDay).commit();
     }
 }

@@ -81,7 +81,7 @@ public class Input {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/repeat.txt"), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
-                sentences.add(line.replaceAll("%%",""));
+                sentences.add(line.replaceAll("%%", ""));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,6 +103,27 @@ public class Input {
             String line = "";
             while ((line = br.readLine()) != null) {
                 sentences.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return sentences;
+        }
+    }
+
+    public synchronized ArrayList<String> getNew() {
+        ArrayList<String> sentences = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/new.txt"), "UTF-8"));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sentences.add(line.replaceAll("%%", ""));
             }
         } catch (IOException e) {
             e.printStackTrace();

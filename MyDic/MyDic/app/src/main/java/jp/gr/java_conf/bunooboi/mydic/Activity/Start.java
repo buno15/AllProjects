@@ -32,7 +32,6 @@ public class Start extends Activity {
         Sentences.init();
         Values.context = getApplicationContext();
         Values.setIndexCount(0);
-        MainService.putRepeat();
         startService(new Intent(getApplicationContext(), MainService.class));
         final Handler h = new Handler();
         new Timer().schedule(new TimerTask() {
