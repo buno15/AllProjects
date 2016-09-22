@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import jp.gr.java_conf.bunooboi.mydic.MainService;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sentences;
 import jp.gr.java_conf.bunooboi.mydic.Values;
@@ -28,11 +27,8 @@ public class Start extends Activity {
         if (!file.exists()) {
             file.mkdirs();
         }
-        stopService(new Intent(getApplicationContext(), MainService.class));
         Sentences.init();
         Values.context = getApplicationContext();
-        Values.setIndexCount(0);
-        startService(new Intent(getApplicationContext(), MainService.class));
         final Handler h = new Handler();
         new Timer().schedule(new TimerTask() {
             @Override
