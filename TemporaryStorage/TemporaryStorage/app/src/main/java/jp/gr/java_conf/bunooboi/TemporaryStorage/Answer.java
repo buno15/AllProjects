@@ -16,6 +16,7 @@ import android.widget.TextView;
  */
 public class Answer extends Activity {
     static String answer;
+    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceStatte) {
@@ -28,10 +29,21 @@ public class Answer extends Activity {
         } else {
             findViewById(R.id.root).setBackgroundColor(Color.parseColor("#c40026"));
         }
+        text = Play.text.replaceAll("\n", "");
+        answer = answer.replaceAll("\n", "");
+        char c[] = answer.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < c.length; i++) {
+            sb.append(c[i]);
+            if ((i + 1) % 10 == 0) {
+                sb.append("<br/>");
+            }
+        }
+        answer = new String(sb);
 
         TextView textview1 = (TextView) findViewById(R.id.textview1);
         TextView textview2 = (TextView) findViewById(R.id.textview2);
-        textview1.setText(Play.text);
+        textview1.setText(text);
         textview2.setText(answer);
         textview1.setTextSize(20 * Start.getScaleSize(getApplicationContext()));
         textview2.setTextSize(20 * Start.getScaleSize(getApplicationContext()));
@@ -66,10 +78,14 @@ public class Answer extends Activity {
                     sb1.append("<font color=\"#c40026\">" + c1[i] + "</font>");
                 }
             }
+            if ((i + 1) % 10 == 0) {
+                sb1.append("<br/>");
+                sb2.append("<br/>");
+            }
         }
         text1.setText(Html.fromHtml(new String(sb1)));
         if (c1.length < max) {
-            text2.setText(Html.fromHtml(text2.getText().toString() + sb2));
+            text2.setText(Html.fromHtml(text2.getText().toString()));
         }
     }
 

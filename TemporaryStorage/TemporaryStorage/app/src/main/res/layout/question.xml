@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#ffec67"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffec67"
+    android:orientation="vertical">
 
 
     <EditText
@@ -15,13 +15,14 @@
         android:background="#ffffff"
         android:gravity="left|top"
         android:hint="@string/questionhint"
-        android:padding="20dp"/>
+        android:maxLength="50"
+        android:padding="20dp" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

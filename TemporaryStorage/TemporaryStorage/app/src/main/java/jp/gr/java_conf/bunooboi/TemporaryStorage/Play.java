@@ -27,19 +27,19 @@ public class Play extends Activity {
 
         switch (level) {
             case 0:
-                text = getRandomString(new Random().nextInt(20) + 10);
+                text = getRandomString(10);
                 break;
             case 1:
-                text = getRandomString(new Random().nextInt(20) + 30);
+                text = getRandomString(20);
                 break;
             case 2:
-                text = getRandomString(new Random().nextInt(40) + 60);
+                text = getRandomString(30);
                 break;
             case 3:
-                text = getRandomString(new Random().nextInt(100) + 100);
+                text = getRandomString(50);
                 break;
             default:
-                text = getRandomString(new Random().nextInt(200) + 10);
+                text = getRandomString(10);
         }
         Log.v("text", text);
         Log.v("text_length", String.valueOf(text.length()));
@@ -60,13 +60,17 @@ public class Play extends Activity {
     }
 
     public static String getRandomString(int cnt) {
-        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" +
-                "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+        /*final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" +
+                "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";*/
+        final String chars = "0123456789";
         Random rnd = new Random();
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < cnt; i++) {
             int val = rnd.nextInt(chars.length());
             buf.append(chars.charAt(val));
+            if ((i + 1) % 10 == 0) {
+                buf.append("\n");
+            }
         }
         return buf.toString();
     }
