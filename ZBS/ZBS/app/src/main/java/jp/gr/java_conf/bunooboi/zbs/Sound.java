@@ -32,7 +32,7 @@ public class Sound {
             mediaPlayer = null;
         }
         mediaPlayer = MediaPlayer.create(context, R.raw.air);
-        mediaPlayer.setLooping(true);
+        mediaPlayer.setLooping(false);
         mediaPlayer.setVolume(1.0F, 1.0F);
     }
 

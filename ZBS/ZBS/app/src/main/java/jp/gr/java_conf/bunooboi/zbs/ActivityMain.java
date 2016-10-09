@@ -16,7 +16,7 @@ public class ActivityMain extends Activity {
     LinearLayout linearLayout;
     Button button[] = new Button[6];
     int page = 1;
-    static int total = 0;
+    static int point[] = new int[6];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,19 @@ public class ActivityMain extends Activity {
             button[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    total += j;
+                    if (page == 1) {
+                        point[0] += j;
+                    } else if (page == 2) {
+                        point[1] += j;
+                    } else if (page == 3) {
+                        point[2] += j;
+                    } else if (page == 4) {
+                        point[3] += j;
+                    } else if (page == 5) {
+                        point[4] += j;
+                    } else if (page == 6) {
+                        point[5] += j;
+                    }
                     if (page == 6) {
                         startActivity(new Intent(getApplicationContext(), ActivityAnswer.class));
                         overridePendingTransition(0, 0);
@@ -84,7 +96,6 @@ public class ActivityMain extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        Sound.restartMediaPlayer();
     }
 
     @Override
