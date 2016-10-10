@@ -1,6 +1,7 @@
 package jp.gr.java_conf.bunooboi.zbs;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,6 +18,7 @@ public class ActivityAnswer extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_answer);
 
         TextView textView1 = (TextView) findViewById(R.id.textView1);
@@ -29,7 +31,7 @@ public class ActivityAnswer extends Activity {
 
         textView1.setTextSize(100 * Mine.getScaleSize(getApplicationContext()));
         textView2.setTextSize(60 * Mine.getScaleSize(getApplicationContext()));
-        textView3.setTextSize(20 * Mine.getScaleSize(getApplicationContext()));
+        textView3.setTextSize(18 * Mine.getScaleSize(getApplicationContext()));
 
         textView1.setTextColor(Color.RED);
     }
@@ -62,22 +64,22 @@ public class ActivityAnswer extends Activity {
             review.append("最高の心理状態\n");
         }
         if (point[0] <= 2) {
-            review.append("禁欲をしてください。\n");
+            review.append("\n禁欲をしてください。\n自らの感情をコントロールしてみましょう。\n");
         }
         if (point[1] <= 2) {
-            review.append("忍耐が低下しています。\n");
+            review.append("\n忍耐が低下しています。\nつらさは自身の為になります。\n");
         }
         if (point[2] <= 2) {
-            review.append("冷静さにかけています。\n");
+            review.append("\n冷静さにかけています。\n一度頭を空っぽにしてください。\n");
         }
         if (point[3] <= 2) {
-            review.append("集中がきれています。\n");
+            review.append("\n集中がきれています。\n集中する対象を作成（変化）してみましょう。\n");
         }
         if (point[4] <= 2) {
-            review.append("視野が狭いです。\n");
+            review.append("\n視野が狭いです。\n頭を空にし、問題から離れましょう。\n");
         }
         if (point[5] <= 2) {
-            review.append("幸せではありません。\n");
+            review.append("\n幸せではありません。\nそれがあなたの求めた不幸なら問題はありません。\n");
         }
         return total;
     }
