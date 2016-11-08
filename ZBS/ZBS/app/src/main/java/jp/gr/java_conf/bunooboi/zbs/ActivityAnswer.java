@@ -64,10 +64,10 @@ public class ActivityAnswer extends Activity {
             review.append("最高の心理状態\n");
         }
         if (point[0] <= 2) {
-            review.append("\n禁欲をしてください。\n自らの感情をコントロールしてみましょう。\n");
+            review.append("\n禁欲をしてください。\n自らを客観的に見て、感情をコントロールしましょう。\n");
         }
         if (point[1] <= 2) {
-            review.append("\n忍耐が低下しています。\nつらさは自身の為になります。\n");
+            review.append("\n忍耐が低下しています。\n「自分のため」を間接的にしましょう。\n");
         }
         if (point[2] <= 2) {
             review.append("\n冷静さにかけています。\n一度頭を空っぽにしてください。\n");
