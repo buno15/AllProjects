@@ -9,21 +9,40 @@
 body {
 	font-size: 110%;
 	font-family: sans-serif;
-	line-height: 1.5;
-	background-color: #66CCFF;
-}
-
-img {
-	border: none;
+	font-weight: bold;
+	background-color: #FFE4B5;
 }
 
 hr {
+	width: 99%;
 	clear: both;
-	width: 100%;
+	display: none;
 }
 
 #head {
 	width: 100%;
+	height: 200px;
+	background-color: #FF9900;
+}
+
+#head h1 {
+	height: 60px;
+	padding: 40px 0 0 30px;
+	font-family: impact;
+}
+
+#head h2 {
+	height: 50px;
+	padding: 30px 0 0 30px;
+	font-style: oblique;
+}
+
+#logo img {
+	width: 150px;
+	height: 150px;
+	float: right;
+	margin: 20px;
+	margin-right: 100px;
 	background-color: #FF9900;
 }
 
@@ -31,39 +50,23 @@ hr {
 	float: left;
 }
 
-#head h1 {
-	height: 70px;
-	padding: 30px 0 0 30px;
-}
-
-#head h2 {
-	height: 50px;
-	padding: 10px 0 10px 30px;
-}
-
-#head img {
-	width: 150px;
-	height: 150px;
-	float: right;
-	margin: 20px;
-	margin-right: 100px;
-}
-
-#head ul {
-	height: 85px;
+ul#menu {
+	height: 80px;
 	border-top: solid 1px #ffffff;
 	border-bottom: solid 1px #ffffff;
 }
 
-#head ul li {
+ul#menu li {
 	width: 25%;
 	list-style-type: none;
 	display: inline;
 	float: left;
+	font-size: 150%;
+	display: inline;
 }
 
-#head ul li a {
-	height: 55px;
+ul#menu li a {
+	height: 50px;
 	display: block;
 	padding: 30px 0px 0px 0px;
 	background-color: #4689FF;
@@ -72,77 +75,157 @@ hr {
 	color: #ffffff;
 }
 
-#head ul li a:hover {
+ul#menu li a:hover {
 	background-color: #191970;
 }
 
-div#main_img img {
+#foot {
+	height: 100px;
+	background-color: #FF9900;
+	border-top: solid 1px #ffffff;
+}
+
+#main {
 	width: 100%;
-	height: 440px;
-	margin-bottom:20px;
+	background-color: #FFE4B5;
 }
 
-div#main h3 {
-	margin: 10px;
-	color: #000000;
-	background-color: #FFCC33;
-	padding: 10px 0px 10px 50px;
-	border: 1px solid #000000;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-o-border-radius: 5px;
-	-ms-border-radius: 5px;
-	border-radius: 5px;
+#index {
+	height: 800px;
 }
 
-div.link {
-	height: 90px;
-	margin: 100px 0;
-	text-align: center;
+#index img {
+	width: 100%;
+	height: 100%;
 }
 
-div.link a {
-	margin: 50px;
+#detail {
+	height: 1200px;
+	margin: 20px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-image: url("../img/board.jpg");
 }
 
-div.link a img {
-	width: 320px;
-	height: 90px;
-	background-color: #ffffff;
-}
-
-div#detail {
-	margin: 100px 0;
-	text-align: center;
-}
-
-div#detail img {
-	width: 400px;
+#detail_1 {
 	height: 300px;
-	margin: 0 100px;
-}
-
-div#access_img {
+	margin: 200px 0px 0px 200px;
+	border: 1px solid #000000;
 	float: left;
 }
 
-div#access_img img {
-	width: 400px;
+#detail_2 {
+	height: 300px;
+	margin: 200px 200px 0px 0px;
+	border: 1px solid #000000;
+	float: right;
+}
+
+#detail_3 {
+	height: 300px;
+	margin: 100px 0px 0px 200px;
+	border: 1px solid #000000;
+	float: left;
+}
+
+#detail_4 {
+	height: 300px;
+	margin: 100px 200px 0px 0px;
+	border: 1px solid #000000;
+	float: right;
+}
+
+#detail img {
+	width: 100%;
+	height: 100%;
+}
+
+.access {
+	height: 500px;
+	margin: 20px;
+	border: 1px solid #000000;
+}
+
+.access img {
+	width: 35%;
+	height: 87%;
+	margin: 20px;
+	padding: 10px;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+	float: left;
+}
+
+.access_info {
+	margin: 40px;
+}
+
+.access_info h2 {
+
+}
+
+.access_info h3 {
+	margin-top: 40px;
+}
+
+.access_info p {
+	margin-top: 20px;
+}
+
+#links {
 	height: 400px;
 	margin: 20px;
-	margin-bottom:80px;
 }
 
-div#access_info {
-	margin: 20px;
+#link_1 {
+	width: 320px;
+	height: 90px;
+	margin: 50px 0px 0px 200px;
+	padding: 10px;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+	float: left;
 }
 
-div#access_info p {
-	margin-top: 30px;
+#link_2 {
+	width: 320px;
+	height: 90px;
+	margin: 50px 200px 0px 0px;
+	padding: 10px;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+	float: right;
 }
 
-div#copy {
+#link_3 {
+	width: 320px;
+	height: 90px;
+	margin: 100px 0px 0px 200px;
+	padding: 10px;
+	background-color: #0d6fb8;
+	border: 1px solid #000000;
+	float: left;
+}
+
+#link_4 {
+	width: 320px;
+	height: 90px;
+	margin: 100px 200px 0px 0px;
+	padding: 10px;
+	background-color: #df6f9c;
+	border: 1px solid #000000;
+	float: right;
+}
+
+a.link img {
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+}
+
+#copy {
 	text-align: center;
-	clear:both;
-	margin:10px 0;
+	font-family: arial;
+	clear: both;
+	margin: 50px 0px 20px 0px;
 }
