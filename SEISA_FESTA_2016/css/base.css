@@ -143,4 +143,6 @@ div#access_info p {
 
 div#copy {
 	text-align: center;
+	clear:both;
+	margin:10px 0;
 }
