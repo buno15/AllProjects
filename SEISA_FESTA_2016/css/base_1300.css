@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+
+#detail {
+	height: 1200px;
+	margin: 10px;
+	border: 1px solid #000000;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-image: url("../img/board.jpg");
+}
+
+#detail_1 {
+	width: 30%;
+	height: 200px;
+	margin: 140px auto 20px auto;
+	border: 1px solid #000000;
+	float: none;
+}
+
+#detail_2 {
+	width: 30%;
+	height: 200px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	float: none;
+}
+
+#detail_3 {
+	width: 30%;
+	height: 200px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	float: none;
+}
+
+#detail_4 {
+	width: 30%;
+	height: 200px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	float: none;
+}
+
+#links {
+	height: 500px;
+	margin: 20px;
+}
+
+#link_1 {
+	width: 40%;
+	height: 90px;
+	margin: 20px auto;
+	padding: 10px;
+	float: none;
+}
+
+#link_2 {
+	width: 40%;
+	height: 90px;
+	margin: 20px auto;
+	padding: 10px;
+	float: none;
+}
+
+#link_3 {
+	width: 40%;
+	height: 90px;
+	margin: 20px auto;
+	padding: 10px;
+	float: none;
+}
+
+#link_4 {
+	width: 40%;
+	height: 90px;
+	margin: 20px auto;
+	padding: 10px;
+	float: none;
+}

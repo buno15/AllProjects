@@ -13,6 +13,10 @@ body {
 	background-color: #FFE4B5;
 }
 
+img {
+	border: none;
+}
+
 hr {
 	width: 99%;
 	clear: both;
@@ -57,7 +61,7 @@ ul#menu {
 }
 
 ul#menu li {
-	width: 25%;
+	width: 20%;
 	list-style-type: none;
 	display: inline;
 	float: left;
@@ -97,6 +101,18 @@ ul#menu li a:hover {
 #index img {
 	width: 100%;
 	height: 100%;
+}
+
+#description {
+	width: 100%;
+	height: 400px;
+}
+
+#description img {
+	height: 300px;
+	margin: 50px 20px;
+	float: left;
+	border: 1px solid #000000;
 }
 
 #detail {
@@ -227,5 +243,5 @@ a.link img {
 	text-align: center;
 	font-family: arial;
 	clear: both;
-	margin: 50px 0px 20px 0px;
+	margin: 30px 0px 0px 0px;
 }

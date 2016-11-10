@@ -1,14 +1,16 @@
+@charset "utf-8";
+
 #detail {
 	height: 1200px;
 	margin: 10px;
-	border: 1px solid #000000;
+	border: 1px solid #bf7c12;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-image: url("../img/board.jpg");
 }
 
 #detail_1 {
-	width: 30%;
+	width: 60%;
 	height: 200px;
 	margin: 140px auto 20px auto;
 	border: 1px solid #000000;
@@ -16,7 +18,7 @@
 }
 
 #detail_2 {
-	width: 30%;
+	width: 60%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
@@ -24,7 +26,7 @@
 }
 
 #detail_3 {
-	width: 30%;
+	width: 60%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
@@ -32,11 +34,48 @@
 }
 
 #detail_4 {
-	width: 30%;
+	width: 60%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
 	float: none;
+}
+
+.access {
+	height: 150px;
+	margin: 5px;
+	border: 1px solid #000000;
+}
+
+.access img {
+	width: 35%;
+	height: 60%;
+	margin: 20px 10px;
+	padding: 10px;
+	float: left;
+}
+
+.access_info {
+	margin: 30px 5px;
+}
+
+.access_info h2 {
+	font-weight: bold;
+	font-size: 80%;
+}
+
+.access_info h3 {
+	font-size: 70%;
+	margin-top: 10px;
+}
+
+.access_info p {
+	font-size: 60%;
+	margin-top: 5px;
+}
+
+.access_info a {
+	font-size: 50%;
 }
 
 #links {
@@ -45,7 +84,7 @@
 }
 
 #link_1 {
-	width: 40%;
+	width: 90%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -53,7 +92,7 @@
 }
 
 #link_2 {
-	width: 40%;
+	width: 90%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -61,7 +100,7 @@
 }
 
 #link_3 {
-	width: 40%;
+	width: 90%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -69,7 +108,7 @@
 }
 
 #link_4 {
-	width: 40%;
+	width: 90%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;

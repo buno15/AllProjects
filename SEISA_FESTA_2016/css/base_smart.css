@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 * {
 	margin: 0;
 	padding: 0;
@@ -33,7 +35,7 @@ body {
 }
 
 ul#menu {
-	height: 320px;
+	height: 400px;
 }
 
 ul#menu li {
@@ -56,14 +58,14 @@ ul#menu li a {
 #detail {
 	height: 1200px;
 	margin: 10px;
-	border: 1px solid #000000;
+	border: 1px solid #bf7c12;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-image: url("../img/board.jpg");
 }
 
 #detail_1 {
-	width: 60%;
+	width: 40%;
 	height: 200px;
 	margin: 140px auto 20px auto;
 	border: 1px solid #000000;
@@ -71,7 +73,7 @@ ul#menu li a {
 }
 
 #detail_2 {
-	width: 60%;
+	width: 40%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
@@ -79,7 +81,7 @@ ul#menu li a {
 }
 
 #detail_3 {
-	width: 60%;
+	width: 40%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
@@ -87,7 +89,7 @@ ul#menu li a {
 }
 
 #detail_4 {
-	width: 60%;
+	width: 40%;
 	height: 200px;
 	margin: 20px auto;
 	border: 1px solid #000000;
@@ -95,36 +97,40 @@ ul#menu li a {
 }
 
 .access {
-	height: 150px;
-	margin: 20px;
+	height: 300px;
+	margin: 5px;
 	border: 1px solid #000000;
 }
 
 .access img {
 	width: 35%;
-	height: 60%;
-	margin: 20px;
+	height: 70%;
+	margin: 30px 10px;
 	padding: 10px;
 	float: left;
 }
 
 .access_info {
-	margin: 30px;
+	margin: 40px 5px;
 }
 
 .access_info h2 {
-	font-weight:bold;
-	font-size: 80%;
+	font-weight: bold;
+	font-size: 100%;
 }
 
 .access_info h3 {
-	font-size: 70%;
+	font-size: 100%;
 	margin-top: 10px;
 }
 
 .access_info p {
-	font-size: 60%;
+	font-size: 100%;
 	margin-top: 5px;
+}
+
+.access_info a {
+	font-size: 100%;
 }
 
 #links {
@@ -133,7 +139,7 @@ ul#menu li a {
 }
 
 #link_1 {
-	width: 90%;
+	width: 60%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -141,7 +147,7 @@ ul#menu li a {
 }
 
 #link_2 {
-	width: 90%;
+	width: 60%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -149,7 +155,7 @@ ul#menu li a {
 }
 
 #link_3 {
-	width: 90%;
+	width: 60%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
@@ -157,7 +163,7 @@ ul#menu li a {
 }
 
 #link_4 {
-	width: 90%;
+	width: 60%;
 	height: 90px;
 	margin: 20px auto;
 	padding: 10px;
