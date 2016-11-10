@@ -1,5 +1,8 @@
 @charset "utf-8";
 
+ul#menu li {
+	font-size: 90%;
+}
 
 #detail {
 	height: 1200px;

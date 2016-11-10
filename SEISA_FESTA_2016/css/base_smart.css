@@ -40,6 +40,7 @@ ul#menu {
 
 ul#menu li {
 	width: 100%;
+	font-size: 150%;
 }
 
 ul#menu li a {
@@ -53,6 +54,37 @@ ul#menu li a {
 #index img {
 	width: 100%;
 	height: 100%;
+}
+
+#description {
+	width: 100%;
+	height: 600px;
+}
+
+#description_img {
+	text-align: center;
+}
+
+#description img {
+	height: 200px;
+	margin: 10px 0;
+	float: none;
+}
+
+#description_info {
+	height: 350px;
+	margin: 10px;
+	padding-top: 10px;
+	text-align: center;
+}
+
+#description_info h2 {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+#description_info p {
+	text-align: left;
 }
 
 #detail {

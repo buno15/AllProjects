@@ -105,14 +105,26 @@ ul#menu li a:hover {
 
 #description {
 	width: 100%;
-	height: 400px;
+	height: 500px;
 }
 
 #description img {
 	height: 300px;
-	margin: 50px 20px;
+	margin: 100px 20px;
 	float: left;
-	border: 1px solid #000000;
+}
+
+#description_info {
+	margin: 0px 50px 0px 500px;
+	padding-top: 100px;
+}
+
+#description_info h2 {
+	margin-bottom: 20px;
+}
+
+#description_info p {
+	text-size:90%;
 }
 
 #detail {
@@ -196,7 +208,7 @@ ul#menu li a:hover {
 #link_1 {
 	width: 320px;
 	height: 90px;
-	margin: 50px 0px 0px 200px;
+	margin: 50px 0px 0px 260px;
 	padding: 10px;
 	background-color: #ffffff;
 	border: 1px solid #000000;
@@ -206,7 +218,7 @@ ul#menu li a:hover {
 #link_2 {
 	width: 320px;
 	height: 90px;
-	margin: 50px 200px 0px 0px;
+	margin: 50px 260px 0px 0px;
 	padding: 10px;
 	background-color: #ffffff;
 	border: 1px solid #000000;
@@ -216,7 +228,7 @@ ul#menu li a:hover {
 #link_3 {
 	width: 320px;
 	height: 90px;
-	margin: 100px 0px 0px 200px;
+	margin: 100px 0px 0px 260px;
 	padding: 10px;
 	background-color: #0d6fb8;
 	border: 1px solid #000000;
@@ -226,7 +238,7 @@ ul#menu li a:hover {
 #link_4 {
 	width: 320px;
 	height: 90px;
-	margin: 100px 200px 0px 0px;
+	margin: 100px 260px 0px 0px;
 	padding: 10px;
 	background-color: #df6f9c;
 	border: 1px solid #000000;
