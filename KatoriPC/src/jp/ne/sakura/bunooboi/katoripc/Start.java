@@ -39,12 +39,10 @@ public class Start {
 		new Help();
 		new Preparation();
 		new Over();
-		new Play();
 		new Clear();
 		Help.panel.setVisible(false);
 		Preparation.panel.setVisible(false);
 		Over.panel.setVisible(false);
-		Play.panel.setVisible(false);
 		Clear.panel.setVisible(false);
 	}
 }
