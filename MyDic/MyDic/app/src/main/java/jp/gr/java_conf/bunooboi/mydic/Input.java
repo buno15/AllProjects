@@ -12,55 +12,59 @@ import java.util.StringTokenizer;
  * Created by hiro on 2016/08/04.
  */
 public class Input {
-    private static String dataPath = Values.DataPath;
     private static final Input input = new Input();
 
     private Input() {
     }
 
-    public static Input getInput() {
-        File file = new File(Values.DataPath);
-        if (!file.exists()) {
-            file.mkdirs();
+    public static Input getInput() {//Input初期化
+        File root = new File(Values.RootPath);
+        if (!root.exists()) {
+            root.mkdirs();
         }
         return input;
     }
 
-    public static Input getInput(String configName) {
-        dataPath = Values.DataPath + configName;
-        File file = new File(dataPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return input;
-    }
-
-    public synchronized ArrayList<String> readConfig() {
-        File file[] = new File(Values.DataPath).listFiles();
-        ArrayList<String> list = new ArrayList<>();
-        for (File f : file) {
-            list.add("/" + f.getName());
-        }
-        return list;
-    }
-
-    public synchronized ArrayList<Sentence> read() {
-        ArrayList<Sentence> sentences = new ArrayList<>();
+    public synchronized ArrayList<String> getTags() {//Tags入手
+        ArrayList<String> tags = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.TagPath), "UTF-8"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String s[] = line.split(",");
+                for (int i = 0; i < s.length; i++) {
+                    tags.add(s[i]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return tags;
+        }
+    }
+
+    public synchronized ArrayList<Word> getWords() {//Words入手
+        ArrayList<Word> words = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.WordPath), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, ",");
-                String title = st.nextToken();
-                int level = Integer.parseInt(st.nextToken());
-                String key[] = st.nextToken().split("%");
-                String link = st.nextToken();
-                String selector = st.nextToken();
+                String word = st.nextToken();
                 String description = st.nextToken();
-                String text = st.nextToken();
-                text = text.replaceAll("%%", "\n");
-                sentences.add(new Sentence(title, level, key, link, selector, description, text));
+                int size = Integer.parseInt(st.nextToken());
+                ArrayList<String> tag = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    tag.add(st.nextToken());
+                }
+                words.add(new Word(word, description, tag));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,70 +74,8 @@ public class Input {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return sentences;
+            return words;
         }
     }
 
-    public synchronized ArrayList<String> repeatRead() {
-        ArrayList<String> sentences = new ArrayList<>();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/repeat.txt"), "UTF-8"));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sentences.add(line.replaceAll("%%", ""));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return sentences;
-        }
-    }
-
-    public synchronized ArrayList<String> allSpeakRead() {
-        ArrayList<String> sentences = new ArrayList<>();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/allSpeak.txt"), "UTF-8"));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sentences.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return sentences;
-        }
-    }
-
-    public synchronized ArrayList<String> getNew() {
-        ArrayList<String> sentences = new ArrayList<>();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.ConfigPath + "/new.txt"), "UTF-8"));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sentences.add(line.replaceAll("%%", ""));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return sentences;
-        }
-    }
 }

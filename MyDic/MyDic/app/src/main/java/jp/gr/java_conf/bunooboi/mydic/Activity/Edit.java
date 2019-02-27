@@ -1,253 +1,141 @@
 package jp.gr.java_conf.bunooboi.mydic.Activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import java.util.ArrayList;
+
+import jp.gr.java_conf.bunooboi.mydic.DisplayManager;
 import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
-import jp.gr.java_conf.bunooboi.mydic.Sentence;
-import jp.gr.java_conf.bunooboi.mydic.Sentences;
 import jp.gr.java_conf.bunooboi.mydic.Values;
-import jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout;
+import jp.gr.java_conf.bunooboi.mydic.Word;
 
-/**
- * Created by hiro on 2016/08/04.
- */
 public class Edit extends AppCompatActivity {
-    static String title;
-    static int level;
-    static String[] key;
-    static String link;
-    static String selector;
-    static String description;
-    static String text;
-    static int index;
+    ListView listView;
+    EditText editText1;
+    EditText editText2;
+    static ArrayList<String> tag = new ArrayList<>();
+    static String word = "";
+    static String description = "";
+    static boolean fix = false;
+    static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (index == -1)
-            setTitle("データ作成");
+        if (fix)
+            setTitle("Fix Data");
         else
-            setTitle("データ編集");
+            setTitle("Create Data");
         setContentView(R.layout.edit);
 
-        DetectableKeyboardEventLayout root = (DetectableKeyboardEventLayout) findViewById(R.id.root);
-        final EditText edittext[] = new EditText[6];
-        final Button button = (Button) findViewById(R.id.button);
-        edittext[0] = (EditText) findViewById(R.id.title);
-        edittext[1] = (EditText) findViewById(R.id.key);
-        edittext[2] = (EditText) findViewById(R.id.link);
-        edittext[3] = (EditText) findViewById(R.id.selector);
-        edittext[4] = (EditText) findViewById(R.id.description);
-        edittext[5] = (EditText) findViewById(R.id.text);
+        editText1 = findViewById(R.id.word);
+        editText2 = findViewById(R.id.description);
 
-        final Spinner spinner = (Spinner) findViewById(R.id.level);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter.add("0");
-        adapter.add("1");
-        adapter.add("2");
-        adapter.add("3");
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        editText1.setText(word);
+        editText2.setText(description);
+
+        Button button1 = findViewById(R.id.button1);
+        button1.setText("add tag");
+        button1.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                level = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onClick(View v) {
+                word = editText1.getText().toString();
+                description = editText2.getText().toString();
+                startActivity(new Intent(getApplicationContext(), Tag.class));
+                finish();
             }
         });
-        spinner.setSelection(level);
+        Button button2 = findViewById(R.id.button2);
+        button2.setText("OK");
+        button2.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fix)
+                    Values.words.set(index, new Word(editText1.getText().toString(), editText2.getText().toString(), tag));
+                else
+                    Values.words.add(new Word(editText1.getText().toString(), editText2.getText().toString(), tag));
+                Output.getOutput().writeWord(false);
+                clear();
+                startActivity(new Intent(getApplicationContext(), Main.class));
+                finish();
+            }
+        });
 
-        final Intent intent = getIntent();
-        String action = intent.getAction();
-        if (Intent.ACTION_SEND.equals(action)) {
-            Sentences.init();
-            Values.init(getApplicationContext());
-            String uri = intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString();
-            title = "";
-            level = 1;
-            key = new String[0];
-            link = "";
-            selector = "";
-            description = "";
-            text = "";
-            index = -1;
-            edittext[2].setText(uri);
+        listView = findViewById(R.id.listView);
+        if (fix) {
+            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+            adapter.addAll(tag);
+            listView.setAdapter(adapter);
         } else {
-            edittext[2].setText(link);
+            MyAdapter adapter = new MyAdapter(this, android.R.layout.simple_list_item_1);
+            adapter.addAll(tag);
+            listView.setAdapter(adapter);
         }
-        edittext[0].setText(title);
-        edittext[1].setText(getKey(key));
-        edittext[3].setText(selector);
-        edittext[4].setText(description);
-        edittext[5].setText(text);
-        for (EditText edit : edittext) {
-            edit.setTextSize(20 * Main.getScaleSize(getApplicationContext()));
-        }
-        if (link.equals("/none")) {
-            edittext[2].setText("");
-        }
-        if (text.equals("none")) {
-            edittext[5].setText("");
-        }
-        if (index == -1)
-            button.setText("作成");
-        else
-            button.setText("編集");
-        button.setTextSize(24 * Main.getScaleSize(getApplicationContext()));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                title = edittext[0].getText().toString();
-                key = setKey(edittext[1].getText().toString());
-                link = edittext[2].getText().toString();
-                selector = edittext[3].getText().toString();
-                description = edittext[4].getText().toString();
-                text = edittext[5].getText().toString();
-                if (title.equals("") || edittext[1].getText().toString().equals("") || selector.equals("") || description.equals("")) {
-                    Toast.makeText(getApplicationContext(), "未入力の必須項目があります", Toast.LENGTH_SHORT).show();
-                } else if (Sentences.serchKey(key, Sentences.ConfigIndex, index)) {
-                    Toast.makeText(getApplicationContext(), "キーが重複しています", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (link.equals("")) {
-                        link = "none";
-                    }
-                    if (!link.startsWith("http")) {
-                        if (!link.startsWith("/")) {
-                            link = "/" + link;
-                        }
-                    }
-                    if (text.equals("")) {
-                        text = "none";
-                    }
-                    if (index == -1) {
-                        Sentences.sentences.get(Sentences.ConfigIndex).add(new Sentence(title, level, key, link,
-                                selector, description, text));
-                        Output.getOutput(Sentences.data.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
-                        for (EditText edit : edittext) {
-                            edit.setText("");
-                        }
-                        Sentences.init();
-                    } else {
-                        Sentences.sentences.get(Sentences.ConfigIndex).set(index, new Sentence(title, level, key, link, selector, description, text));
-                        Output.getOutput(Sentences.data.get(Sentences.ConfigIndex)).write(false, Sentences.ConfigIndex);
-                        Sentences.init();
-                        edittext[0].setText(title);
-                        edittext[1].setText(getKey(key));
-                        if (link.equals("/none")) {
-                            edittext[2].setText("");
-                        }
-                        edittext[3].setText(selector);
-                        edittext[4].setText(description);
-                        if (text.equals("none")) {
-                            edittext[5].setText("");
-                        }
-                    }
-                    if (index == -1)
-                        Toast.makeText(getApplicationContext(), "データを作成しました", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(getApplicationContext(), "データを編集しました", Toast.LENGTH_SHORT).show();
-                    Sentence sentence = new Sentence(title, level, key, link, selector, description, text);
-                    Output.getOutput().newWrite(sentence);
-                }
-            }
-        });
-        for (int i = 0; i < 5; i++) {
-            edittext[i].setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if (b) {//フォーカスがあたっている
-                        edittext[5].setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-        edittext[5].setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {//フォーカスがあたっている
-                    findViewById(R.id.top).setVisibility(View.GONE);
-                    edittext[0].setVisibility(View.GONE);
-                    edittext[1].setVisibility(View.GONE);
-                    edittext[2].setVisibility(View.GONE);
-                    edittext[3].setVisibility(View.GONE);
-                    edittext[4].setVisibility(View.GONE);
-                    spinner.setVisibility(View.GONE);
-                    button.setVisibility(View.GONE);
-                }
-            }
-        });
-        root.setKeyboardListener(new DetectableKeyboardEventLayout.KeyboardListener() {
-
-            @Override
-            public void onKeyboardShown() {
-            }
-
-            @Override
-            public void onKeyboardHidden() {
-                findViewById(R.id.top).setVisibility(View.VISIBLE);
-                edittext[0].setVisibility(View.VISIBLE);
-                edittext[1].setVisibility(View.VISIBLE);
-                edittext[2].setVisibility(View.VISIBLE);
-                edittext[3].setVisibility(View.VISIBLE);
-                edittext[4].setVisibility(View.VISIBLE);
-                edittext[5].setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.VISIBLE);
-                button.setVisibility(View.VISIBLE);
-                findViewById(R.id.view).requestFocus();
-            }
-        });
+        listHeight();
     }
 
-    public String getKey(String key[]) {
-        if (key.length == 0) {
-            return "";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < key.length; i++) {
-                if (i == key.length - 1) {
-                    sb.append(key[i]);
-                } else {
-                    sb.append(key[i] + "%");
-                }
-            }
-            return new String(sb);
-        }
-    }
-
-    public String[] setKey(String key) {
-        return key.split("%");
+    void clear() {
+        word = "";
+        description = "";
+        tag.clear();
+        index = 0;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.base, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {//アクションバー作成
+        if (fix) {
+            getMenuInflater().inflate(R.menu.fix, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.base, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {//アクションバーのイベント
         switch (item.getItemId()) {
-            case R.id.action_back:
-                startActivity(new Intent(getApplicationContext(), ListEditSentence.class));
+            case R.id.back:
+                clear();
+                startActivity(new Intent(getApplicationContext(), Main.class));
                 finish();
+                break;
+            case R.id.delete:
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(this);
+                alertDlg.setMessage(Values.words.get(index).getWord() + " Delete?");
+                alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Values.words.remove(index);
+                        Output.getOutput().writeWord(false);
+                        clear();
+                        startActivity(new Intent(getApplicationContext(), Main.class));
+                        finish();
+                    }
+                });
+                alertDlg.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDlg.create().show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -256,10 +144,44 @@ public class Edit extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(getApplicationContext(), ListEditSentence.class));
+            clear();
+            startActivity(new Intent(getApplicationContext(), Main.class));
             finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    public void listHeight() {// リスト高さ調節
+        ListAdapter la = listView.getAdapter();
+        if (la == null) {
+            return;
+        }
+
+        int i;
+        int h = 0; // ListView トータルの高さ
+
+        for (i = 0; i < la.getCount(); i++) {
+            View item = la.getView(i, null, listView);
+            item.measure(0, 0);
+            h += item.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams p = listView.getLayoutParams();
+        p.height = h + (listView.getDividerHeight() * (la.getCount() - 1));
+        listView.setLayoutParams(p);
+    }
+}
+
+class MyAdapter extends ArrayAdapter<String> {//クリックさせないための継承
+
+    public MyAdapter(@NonNull Context context, int resource) {
+        super(context, resource);
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
     }
 }

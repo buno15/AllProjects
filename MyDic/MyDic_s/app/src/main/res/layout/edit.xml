@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                                   android:id="@+id/root"
+                                                                   android:layout_width="match_parent"
+                                                                   android:layout_height="match_parent"
+                                                                   android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <LinearLayout
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:hint="@string/title"
+                android:inputType="text"
+                android:maxLength="20"/>
+
+            <Spinner
+                android:id="@+id/level"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/key"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="@string/key"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/link"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="@string/link"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/selector"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="@string/selector"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="@string/description"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="top|left"
+            android:hint="@string/text"/>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</jp.gr.java_conf.bunooboi.mydic.View.DetectableKeyboardEventLayout>
