@@ -29,6 +29,9 @@
             android:name=".Activity.Tag"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+        <activity
+            android:name=".Activity.GameStart"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

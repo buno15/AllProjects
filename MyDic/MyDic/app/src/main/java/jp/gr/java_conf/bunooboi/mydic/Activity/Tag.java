@@ -16,11 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import jp.gr.java_conf.bunooboi.mydic.DisplayManager;
 import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Values;
@@ -36,7 +32,6 @@ public class Tag extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         button.setText("New");
-        button.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +42,7 @@ public class Tag extends AppCompatActivity {
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Values.tags.add(editText.getText().toString());
-                        Output.getOutput().writeTags(false);
+                        Output.getOutput().writeTags();
                         reload();
                     }
                 });
@@ -93,7 +88,7 @@ public class Tag extends AppCompatActivity {
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Values.tags.remove(position);
-                        Output.getOutput().writeTags(false);
+                        Output.getOutput().writeTags();
                         reload();
                     }
                 });

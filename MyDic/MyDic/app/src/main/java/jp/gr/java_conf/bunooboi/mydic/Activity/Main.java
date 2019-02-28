@@ -2,9 +2,12 @@ package jp.gr.java_conf.bunooboi.mydic.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Values;
 
@@ -30,12 +34,15 @@ public class Main extends AppCompatActivity {
     ListView listView;
     EditText editText;
     ImageButton search;
-    ImageButton list;
+    ImageButton dictionary;
     ImageButton tag;
     ImageButton edit;
+    ImageButton game;
+    FloatingActionButton add;
     ArrayAdapter adapter;
-    static int listClick = 0;//0=list,1=tag,2=詳細tag
-    static String selectTag = "";//indexによらないTag
+    static int listClick = 0;//0=dictionary,1=tag,2=詳細tag
+    static String selectWord = "";//indexによらないTag
+    static int clickState = 0;// clickState=0,dictionary clickState=1,tag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +58,8 @@ public class Main extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     buttonFocus(0);
-                    selectTag = editText.getText().toString();
-                    search(selectTag);
+                    selectWord = editText.getText().toString();
+                    search(selectWord);
                     return true;
                 }
                 return false;
@@ -73,17 +80,17 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buttonFocus(0);
-                selectTag = editText.getText().toString();
-                search(selectTag);
+                selectWord = editText.getText().toString();
+                search(selectWord);
             }
         });
 
-        list = findViewById(R.id.list);
-        list.setOnClickListener(new View.OnClickListener() {
+        dictionary = findViewById(R.id.list);
+        dictionary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buttonFocus(1);
-                setNormalList();
+                setDictionaryList();
             }
         });
 
@@ -105,22 +112,56 @@ public class Main extends AppCompatActivity {
                 finish();
             }
         });
+        add = findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText editText = new EditText(Main.this);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(Main.this);
+                alertDlg.setMessage("New Dictionary");
+                alertDlg.setView(editText);
+                alertDlg.setPositiveButton("edit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Values.dictionaries.add(editText.getText().toString());
+                        Output.getOutput().writeDictionaries();
+                        reload();
+                    }
+                });
+                alertDlg.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDlg.create().show();
+            }
+        });
+
+        game = findViewById(R.id.game);
+        game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), GameStart.class));
+                finish();
+            }
+        });
+
+
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
         listView = findViewById(R.id.main);
         if (listClick == 0) {//リストの選択状態確認
-            setNormalList();
+            setDictionaryList();
         } else if (listClick == 1) {
             setTagList();
         } else if (listClick == 2) {
-            setSelectTagList();
+            setDetailList();
         } else if (listClick == 3) {
-            search(selectTag);
+            search(selectWord);
         }
         listHeight();
     }
 
     public void search(String search) {//タグ検索
-        clearEnable(list);
+        clearEnable(dictionary);
         clearEnable(tag);
         adapter.clear();
         ArrayList<String> list = new ArrayList<>();
@@ -149,34 +190,34 @@ public class Main extends AppCompatActivity {
         listHeight();
     }
 
-    public void setNormalList() {//普通のリストの構築
-        setEnable(list);
+    public void setDictionaryList() {//辞書リストの構築
+        setEnable(dictionary);
         clearEnable(tag);
         listClick = 0;
         adapter.clear();
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < Values.words.size(); i++) {
-            list.add(Values.words.get(i).getWord());
+        for (int i = 0; i < Values.dictionaries.size(); i++) {
+            list.add(Values.dictionaries.get(i));
+
         }
+        System.out.println(list);
         adapter.addAll(list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ListView listview = (ListView) adapterView;
-                String item = (String) listview.getItemAtPosition(i);
-                fixEdit(item);
-                startActivity(new Intent(getApplicationContext(), Edit.class));
-                finish();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listview = (ListView) parent;
+                selectWord = (String) listview.getItemAtPosition(position);
+                clickState = 0;
+                setDetailList();
             }
-
         });
         listHeight();
     }
 
     public void setTagList() {//タグリストの構築
         setEnable(tag);
-        clearEnable(list);
+        clearEnable(dictionary);
         listClick = 1;
         adapter.clear();
         ArrayList<String> list = new ArrayList<>();
@@ -189,23 +230,33 @@ public class Main extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView listview = (ListView) parent;
-                selectTag = (String) listview.getItemAtPosition(position);
-                setSelectTagList();
+                selectWord = (String) listview.getItemAtPosition(position);
+                clickState = 1;
+                setDetailList();
             }
         });
         listHeight();
     }
 
-    public void setSelectTagList() {//詳細タグリストの構築
-        setEnable(tag);
-        clearEnable(list);
+    public void setDetailList() {//詳細タグリストの構築
         listClick = 2;
         adapter.clear();
         ArrayList<String> list = new ArrayList<>();
         list.add("<-");
-        for (int i = 0; i < Values.words.size(); i++) {
-            if (Values.words.get(i).searchTag(selectTag))
-                list.add(Values.words.get(i).getWord());
+        if (clickState == 0) {
+            setEnable(dictionary);
+            clearEnable(tag);
+            for (int i = 0; i < Values.words.size(); i++) {
+                if (Values.words.get(i).searchDic(selectWord))
+                    list.add(Values.words.get(i).getWord());
+            }
+        } else if (clickState == 1) {
+            setEnable(tag);
+            clearEnable(dictionary);
+            for (int i = 0; i < Values.words.size(); i++) {
+                if (Values.words.get(i).searchTag(selectWord))
+                    list.add(Values.words.get(i).getWord());
+            }
         }
         adapter.addAll(list);
         listView.setAdapter(adapter);
@@ -213,7 +264,10 @@ public class Main extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    setTagList();
+                    if (clickState == 0)
+                        setDictionaryList();
+                    else if (clickState == 1)
+                        setTagList();
                 } else {
                     ListView listview = (ListView) adapterView;
                     String item = (String) listview.getItemAtPosition(i);
@@ -229,8 +283,11 @@ public class Main extends AppCompatActivity {
 
     public void newEdit() {//Editが新規作成画面
         Edit.fix = false;
+        Edit.dictionary = "";
         Edit.word = "";
-        Edit.description = "";
+        Edit.description[0] = "";
+        Edit.description[1] = "";
+        Edit.description[2] = "";
         Edit.tag = new ArrayList<>();
         Edit.index = -1;
     }
@@ -238,6 +295,7 @@ public class Main extends AppCompatActivity {
     public void fixEdit(String item) {//Editが編集画面
         int index = Values.getIndex(item);
         Edit.fix = true;
+        Edit.dictionary = Values.words.get(index).getDictionary();
         Edit.word = Values.words.get(index).getWord();
         Edit.description = Values.words.get(index).getDescription();
         Edit.tag = Values.words.get(index).getTag();
@@ -249,8 +307,8 @@ public class Main extends AppCompatActivity {
             case 0:
                 search.setFocusable(true);
                 search.setFocusableInTouchMode(true);
-                list.setFocusable(false);
-                list.setFocusableInTouchMode(false);
+                dictionary.setFocusable(false);
+                dictionary.setFocusableInTouchMode(false);
                 tag.setFocusable(false);
                 tag.setFocusableInTouchMode(false);
                 search.requestFocus();
@@ -258,17 +316,17 @@ public class Main extends AppCompatActivity {
             case 1:
                 search.setFocusable(false);
                 search.setFocusableInTouchMode(false);
-                list.setFocusable(true);
-                list.setFocusableInTouchMode(true);
+                dictionary.setFocusable(true);
+                dictionary.setFocusableInTouchMode(true);
                 tag.setFocusable(false);
                 tag.setFocusableInTouchMode(false);
-                list.requestFocus();
+                dictionary.requestFocus();
                 break;
             case 2:
                 search.setFocusable(false);
                 search.setFocusableInTouchMode(false);
-                list.setFocusable(false);
-                list.setFocusableInTouchMode(false);
+                dictionary.setFocusable(false);
+                dictionary.setFocusableInTouchMode(false);
                 tag.setFocusable(true);
                 tag.setFocusableInTouchMode(true);
                 tag.requestFocus();
@@ -314,6 +372,16 @@ public class Main extends AppCompatActivity {
         ViewGroup.LayoutParams p = listView.getLayoutParams();
         p.height = h + (listView.getDividerHeight() * (la.getCount() - 1));
         listView.setLayoutParams(p);
+    }
+
+    private void reload() {// 画面リロード
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;//パーミッションチェックの変数

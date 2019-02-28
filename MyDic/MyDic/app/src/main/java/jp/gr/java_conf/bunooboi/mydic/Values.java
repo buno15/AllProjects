@@ -7,14 +7,17 @@ import java.util.ArrayList;
 public class Values {
     public static final String RootPath = Environment.getExternalStorageDirectory() + "/MyDic";
     public static final String TagPath = RootPath + "/tag.csv";
+    public static final String DicPath = RootPath + "/dictionary.csv";
     public static final String WordPath = RootPath + "/word.csv";
     public static ArrayList<String> tags = new ArrayList<>();
     public static ArrayList<Word> words = new ArrayList<>();
+    public static ArrayList<String> dictionaries = new ArrayList<>();
 
     public static void init() {
         Input input = Input.getInput();
         tags = input.getTags();
         words = input.getWords();
+        dictionaries = input.getDictionaries();
     }
 
     public static int getIndex(String name) {

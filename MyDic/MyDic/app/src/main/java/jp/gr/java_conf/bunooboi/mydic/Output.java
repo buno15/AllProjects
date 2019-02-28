@@ -22,10 +22,30 @@ public class Output {
         return output;
     }
 
-    public synchronized void writeTags(boolean overwrite) {
+    public synchronized void writeDictionaries() {
         OutputStreamWriter osw = null;
         try {
-            osw = new OutputStreamWriter(new FileOutputStream(Values.TagPath, overwrite), "UTF-8");
+            osw = new OutputStreamWriter(new FileOutputStream(Values.DicPath, false), "UTF-8");
+            for (int i = 0; i < Values.dictionaries.size(); i++) {
+                osw.write(Values.dictionaries.get(i) + ",");
+            }
+            osw.write("\n");
+            osw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                osw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized void writeTags() {
+        OutputStreamWriter osw = null;
+        try {
+            osw = new OutputStreamWriter(new FileOutputStream(Values.TagPath, false), "UTF-8");
             for (int i = 0; i < Values.tags.size(); i++) {
                 osw.write(Values.tags.get(i) + ",");
             }
@@ -42,17 +62,26 @@ public class Output {
         }
     }
 
-    public synchronized void writeWord(boolean overwrite) {
+    public synchronized void writeWord() {
         OutputStreamWriter osw = null;
         try {
-            osw = new OutputStreamWriter(new FileOutputStream(Values.WordPath, overwrite), "UTF-8");
+            osw = new OutputStreamWriter(new FileOutputStream(Values.WordPath, false), "UTF-8");
             for (int i = 0; i < Values.words.size(); i++) {
                 StringBuffer tagLine = new StringBuffer();
                 for (int j = 0; j < Values.words.get(i).getTag().size(); j++) {
                     tagLine.append(Values.words.get(i).getTag().get(j));
                     tagLine.append(",");
                 }
-                osw.write(Values.words.get(i).getWord() + "," + Values.words.get(i).getDescription() + "," + Values.words.get(i).getTag().size() + "," + tagLine);
+                StringBuffer descriptionLine = new StringBuffer();
+                for (int j = 0; j < Values.words.get(i).getDescription().length; j++) {
+                    String s = Values.words.get(i).getDescription()[j];
+                    if (s.equals(""))
+                        descriptionLine.append("?");
+                    else
+                        descriptionLine.append(Values.words.get(i).getDescription()[j]);
+                    descriptionLine.append(",");
+                }
+                osw.write(Values.words.get(i).getDictionary() + "," + Values.words.get(i).getWord() + "," + descriptionLine + "" + Values.words.get(i).getTag().size() + "," + tagLine);
                 osw.write("\n");
             }
             osw.write("\n");
