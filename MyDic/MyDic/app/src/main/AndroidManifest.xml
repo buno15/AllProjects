@@ -32,6 +32,18 @@
         <activity
             android:name=".Activity.GameStart"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.GameSelectDic"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.GameSelect"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.GameFall"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.GameFin"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

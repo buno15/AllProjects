@@ -4,9 +4,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:choiceMode="multipleChoice" />
+        android:layout_height="50dp"
+        android:background="#0078c4"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_list" />
+
+        <ImageButton
+            android:id="@+id/tag"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_tag" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

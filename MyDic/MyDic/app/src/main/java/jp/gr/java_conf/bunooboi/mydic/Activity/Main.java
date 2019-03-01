@@ -3,16 +3,20 @@ package jp.gr.java_conf.bunooboi.mydic.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -107,9 +111,13 @@ public class Main extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newEdit();
-                startActivity(new Intent(getApplicationContext(), Edit.class));
-                finish();
+                if (Values.dictionaries.size() == 0) {
+                    Toast.makeText(Main.this, "There is no dictionary data.", Toast.LENGTH_SHORT).show();
+                } else {
+                    newEdit();
+                    startActivity(new Intent(getApplicationContext(), Edit.class));
+                    finish();
+                }
             }
         });
         add = findViewById(R.id.add);
@@ -200,7 +208,6 @@ public class Main extends AppCompatActivity {
             list.add(Values.dictionaries.get(i));
 
         }
-        System.out.println(list);
         adapter.addAll(list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -382,6 +389,22 @@ public class Main extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    public static int getPctX(Context context, int value) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+        Point size = new Point();
+        disp.getSize(size);
+        return size.x / 100 * value;
+    }
+
+    public static int getPctY(Context context, int value) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+        Point size = new Point();
+        disp.getSize(size);
+        return size.y / 100 * value;
     }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;//パーミッションチェックの変数

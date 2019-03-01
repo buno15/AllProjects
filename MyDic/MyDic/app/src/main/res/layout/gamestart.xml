@@ -19,12 +19,4 @@
         android:layout_weight="1"
         android:scaleType="fitXY"
         android:src="@drawable/button_fall" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_memory" />
 </LinearLayout>

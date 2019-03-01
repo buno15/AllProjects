@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class Edit extends AppCompatActivity {
     static String description[] = new String[3];
     static boolean fix = false;
     static int index = 0;
+    static int spinnerPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +53,16 @@ public class Edit extends AppCompatActivity {
         setContentView(R.layout.edit);
 
         spinner = findViewById(R.id.dictionary);
-        ArrayAdapter<String> dicAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> dicAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item);
         dicAdapter.addAll(Values.dictionaries);
         spinner.setAdapter(dicAdapter);
+        spinner.setSelection(spinnerPosition);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Spinner spinner = (Spinner) parent;
-                dictionary = (String) spinner.getSelectedItem();
+                dictionary = (String) spinner.getItemAtPosition(position);
+                spinnerPosition = position;
             }
 
             @Override
@@ -95,17 +99,22 @@ public class Edit extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                word = editText1.getText().toString();
                 description[0] = editText2.getText().toString();
                 description[1] = editText3.getText().toString();
                 description[2] = editText4.getText().toString();
-                if (fix)
-                    Values.words.set(index, new Word(dictionary, editText1.getText().toString(), description, tag));
-                else
-                    Values.words.add(new Word(dictionary, editText1.getText().toString(), description, tag));
-                Output.getOutput().writeWord();
-                clear();
-                startActivity(new Intent(getApplicationContext(), Main.class));
-                finish();
+                if (word.equals("") || (description[0].equals("") && description[1].equals("") && description[2].equals(""))) {
+                    Toast.makeText(Edit.this, "There is data that is not entered.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (fix)
+                        Values.words.set(index, new Word(dictionary, word, description, tag));
+                    else
+                        Values.words.add(new Word(dictionary, word, description, tag));
+                    Output.getOutput().writeWord();
+                    clear();
+                    startActivity(new Intent(getApplicationContext(), Main.class));
+                    finish();
+                }
             }
         });
 
@@ -130,6 +139,7 @@ public class Edit extends AppCompatActivity {
         description[2] = "";
         tag.clear();
         index = 0;
+        spinnerPosition = 0;
     }
 
     @Override

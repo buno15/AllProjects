@@ -20,28 +20,25 @@ public class GameStart extends AppCompatActivity {
         setTitle("Game");
         setContentView(R.layout.gamestart);
 
-        ImageButton imagebutton[] = new ImageButton[3];
-        imagebutton[0] = findViewById(R.id.imageButton1);
-        imagebutton[1] = findViewById(R.id.imageButton2);
-        imagebutton[2] = findViewById(R.id.imageButton3);
-        imagebutton[0].setOnClickListener(new View.OnClickListener() {
+        Game.init();
+
+        ImageButton imageButton[] = new ImageButton[2];
+        imageButton[0] = findViewById(R.id.imageButton1);
+        imageButton[1] = findViewById(R.id.imageButton2);
+
+        imageButton[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 Game.id = 0;
                 finish();
             }
         });
-        imagebutton[1].setOnClickListener(new View.OnClickListener() {
+        imageButton[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GameSelectDic.class));
                 Game.id = 1;
-                finish();
-            }
-        });
-        imagebutton[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Game.id = 2;
                 finish();
             }
         });
