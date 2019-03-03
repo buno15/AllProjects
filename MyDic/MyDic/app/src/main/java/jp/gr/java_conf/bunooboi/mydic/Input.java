@@ -32,9 +32,11 @@ public class Input {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(Values.DicPath), "UTF-8"));
             String line;
             while ((line = br.readLine()) != null) {
-                String s[] = line.split(",");
-                for (int i = 0; i < s.length; i++) {
-                    dictionaries.add(s[i]);
+                if (!line.equals("")) {
+                    String s[] = line.split(",");
+                    for (int i = 0; i < s.length; i++) {
+                        dictionaries.add(s[i]);
+                    }
                 }
             }
         } catch (IOException e) {

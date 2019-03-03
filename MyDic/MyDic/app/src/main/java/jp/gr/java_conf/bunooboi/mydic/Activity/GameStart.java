@@ -10,29 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-
 import jp.gr.java_conf.bunooboi.mydic.Game;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Sound;
 
-public class GameStart extends AppCompatActivity implements RewardedVideoAdListener {
-    private RewardedVideoAd mRewardedVideoAd;
+public class GameStart extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Game");
         setContentView(R.layout.gamestart);
-
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-
-        loadRewardedVideoAd();
 
         Game.init();
         Sound.init(getApplicationContext());
@@ -57,19 +45,6 @@ public class GameStart extends AppCompatActivity implements RewardedVideoAdListe
                 finish();
             }
         });
-    }
-
-    private void loadRewardedVideoAd() {
-        //mRewardedVideoAd.loadAd("ca-app-pub-2096872993008006/3682950090", new AdRequest.Builder().build());
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());//テスト
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.show();
-        }
     }
 
     @Override
@@ -98,45 +73,5 @@ public class GameStart extends AppCompatActivity implements RewardedVideoAdListe
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
     }
 }

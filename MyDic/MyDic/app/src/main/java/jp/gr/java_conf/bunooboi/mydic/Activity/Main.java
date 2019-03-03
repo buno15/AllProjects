@@ -25,15 +25,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-
 import java.util.ArrayList;
 
 import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Values;
+import jp.gr.java_conf.bunooboi.mydic.Word;
 
 public class Main extends AppCompatActivity {
     ListView listView;
@@ -49,20 +46,14 @@ public class Main extends AppCompatActivity {
     static String selectWord = "";//indexによらないTag
     static int clickState = 0;// clickState=0,dictionary clickState=1,tag
 
-    private InterstitialAd mInterstitialAd;
+    ArrayList<Word> delete = new ArrayList<>();
+
     //ca-app-pub-2096872993008006~2033814746 app ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-        MobileAds.initialize(this, "ca-app-pub-2096872993008006~2033814746");
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");//テスト広告
-        //mInterstitialAd.setAdUnitId("ca-app-pub-2096872993008006/5901919326");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
 
         Values.init();
 
@@ -121,7 +112,6 @@ public class Main extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInterstitialAd.show();
                 if (Values.dictionaries.size() == 0) {
                     Toast.makeText(Main.this, "There is no dictionary data.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -142,9 +132,13 @@ public class Main extends AppCompatActivity {
                 alertDlg.setView(editText);
                 alertDlg.setPositiveButton("edit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Values.dictionaries.add(editText.getText().toString());
-                        Output.getOutput().writeDictionaries();
-                        reload();
+                        if (!editText.getText().toString().equals("")) {
+                            Values.dictionaries.add(editText.getText().toString());
+                            Output.getOutput().writeDictionaries();
+                            reload();
+                        } else {
+                            Toast.makeText(Main.this, "Please enter a word.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 alertDlg.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -229,6 +223,53 @@ public class Main extends AppCompatActivity {
                 selectWord = (String) listview.getItemAtPosition(position);
                 clickState = 0;
                 setDetailList();
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                ListView listview = (ListView) parent;
+                final String item = (String) listview.getItemAtPosition(position);
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(Main.this);
+                alertDlg.setMessage(item + " Delete?");
+                alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder alertDlg2 = new AlertDialog.Builder(Main.this);
+                        alertDlg2.setMessage("All data in the dictionary will be deleted. Is it OK?");
+                        alertDlg2.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (int i = 0; i < Values.words.size(); i++) {
+                                    if (Values.words.get(i).searchDic(item)) {
+                                        delete.add(Values.words.get(i));
+                                    }
+                                }
+                                Values.words.removeAll(delete);
+                                Values.dictionaries.remove(position);
+                                Output.getOutput().writeDictionaries();
+                                Output.getOutput().writeWord();
+                                setEnable(dictionary);
+                                clearEnable(tag);
+                                listClick = 0;
+                                adapter.clear();
+                                delete.clear();
+                                reload();
+                            }
+                        });
+                        alertDlg2.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        alertDlg2.create().show();
+                    }
+                });
+                alertDlg.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDlg.create().show();
+                return true;
             }
         });
         listHeight();

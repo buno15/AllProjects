@@ -106,14 +106,22 @@ public class Edit extends AppCompatActivity {
                 if (word.equals("") || (description[0].equals("") && description[1].equals("") && description[2].equals(""))) {
                     Toast.makeText(Edit.this, "There is data that is not entered.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (fix)
-                        Values.words.set(index, new Word(dictionary, word, description, tag));
-                    else
-                        Values.words.add(new Word(dictionary, word, description, tag));
-                    Output.getOutput().writeWord();
-                    clear();
-                    startActivity(new Intent(getApplicationContext(), Main.class));
-                    finish();
+                    ArrayList<String> wordList = new ArrayList<>();
+                    for (int i = 0; i < Values.words.size(); i++) {
+                        wordList.add(Values.words.get(i).getWord());
+                    }
+                    if (wordList.indexOf(word) == -1) {
+                        if (fix)
+                            Values.words.set(index, new Word(dictionary, word, description, tag));
+                        else
+                            Values.words.add(new Word(dictionary, word, description, tag));
+                        Output.getOutput().writeWord();
+                        clear();
+                        startActivity(new Intent(getApplicationContext(), Main.class));
+                        finish();
+                    } else {
+                        Toast.makeText(Edit.this, "It already exists.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

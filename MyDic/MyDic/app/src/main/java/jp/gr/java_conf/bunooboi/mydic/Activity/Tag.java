@@ -1,9 +1,11 @@
 package jp.gr.java_conf.bunooboi.mydic.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -18,18 +20,52 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import jp.gr.java_conf.bunooboi.mydic.Output;
 import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Values;
 
 public class Tag extends AppCompatActivity {
     ListView listView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Tags");
         setContentView(R.layout.tag);
+
+        MobileAds.initialize(this, "ca-app-pub-2096872993008006~2033814746");
+        mInterstitialAd = new InterstitialAd(this);
+        // mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");//テスト広告
+        mInterstitialAd.setAdUnitId("ca-app-pub-2096872993008006/5901919326");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        final Handler handler = new Handler();
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void run() {
+                        if (mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                            if (timer != null) {
+                                timer.cancel();
+                            }
+                        }
+                    }
+                });
+            }
+        }, 2000, 1000);
 
         Button button = findViewById(R.id.button);
         button.setText("New");

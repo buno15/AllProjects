@@ -1,7 +1,9 @@
 package jp.gr.java_conf.bunooboi.mydic.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,7 +18,15 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import jp.gr.java_conf.bunooboi.mydic.Game;
 import jp.gr.java_conf.bunooboi.mydic.R;
@@ -25,7 +35,7 @@ import jp.gr.java_conf.bunooboi.mydic.Values;
 /**
  * Created by hiro on 2016/08/19.
  */
-public class GameSelectDic extends AppCompatActivity {
+public class GameSelectDic extends AppCompatActivity implements RewardedVideoAdListener {
     ListView listView;
     ImageButton dictionary;
     ImageButton tag;
@@ -33,10 +43,38 @@ public class GameSelectDic extends AppCompatActivity {
     ArrayList<String> clicked = new ArrayList<>();
     int listType = 0;//0=dictionary,1=tag
 
+    private RewardedVideoAd mRewardedVideoAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameselectdic);
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+
+        loadRewardedVideoAd();
+
+        final Handler handler = new Handler();
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void run() {
+                        if (mRewardedVideoAd.isLoaded()) {
+                            mRewardedVideoAd.show();
+                            if (timer != null) {
+                                timer.cancel();
+                            }
+                        }
+                    }
+                });
+            }
+        }, 2000, 1000);
+
 
         adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_multiple_choice);
@@ -60,6 +98,11 @@ public class GameSelectDic extends AppCompatActivity {
         });
         setDictionaryList();
         listHeight();
+    }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-2096872993008006/3682950090", new AdRequest.Builder().build());
+        //mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());//テスト
     }
 
     public void setDictionaryList() {//辞書リストの構築
@@ -210,5 +253,45 @@ public class GameSelectDic extends AppCompatActivity {
         ViewGroup.LayoutParams p = listView.getLayoutParams();
         p.height = h + (listView.getDividerHeight() * (la.getCount() - 1));
         listView.setLayoutParams(p);
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
     }
 }

@@ -27,7 +27,10 @@ public class Output {
         try {
             osw = new OutputStreamWriter(new FileOutputStream(Values.DicPath, false), "UTF-8");
             for (int i = 0; i < Values.dictionaries.size(); i++) {
-                osw.write(Values.dictionaries.get(i) + ",");
+                if (!(Values.dictionaries.size() == 0))
+                    osw.write(Values.dictionaries.get(i) + ",");
+                else
+                    osw.write("");
             }
             osw.write("\n");
             osw.flush();
