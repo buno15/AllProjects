@@ -30,6 +30,7 @@ public class GameSelectDic extends AppCompatActivity {
     ImageButton dictionary;
     ImageButton tag;
     ArrayAdapter adapter;
+    ArrayList<String> clicked = new ArrayList<>();
     int listType = 0;//0=dictionary,1=tag
 
     @Override
@@ -63,6 +64,7 @@ public class GameSelectDic extends AppCompatActivity {
 
     public void setDictionaryList() {//辞書リストの構築
         listType = 0;
+        clicked.clear();
         Game.words.clear();
         setEnable(dictionary);
         clearEnable(tag);
@@ -81,9 +83,17 @@ public class GameSelectDic extends AppCompatActivity {
                 String item = (String) listview.getItemAtPosition(position);
                 for (int i = 0; i < Values.words.size(); i++) {
                     if (Values.words.get(i).searchDic(item)) {
-                        Game.words.add(Values.words.get(i));
+                        if (Game.words.indexOf(Values.words.get(i)) == -1) {
+                            Game.words.add(Values.words.get(i));
+                        } else if (clicked.indexOf(item) >= 1) {
+                            Game.words.remove(Game.words.indexOf(Values.words.get(i)));
+                        }
                     }
                 }
+                if (clicked.indexOf(item) == -1)
+                    clicked.add(item);
+                else
+                    clicked.remove(item);
             }
         });
         listHeight();
@@ -91,6 +101,7 @@ public class GameSelectDic extends AppCompatActivity {
 
     public void setTagList() {//タグリストの構築
         listType = 1;
+        clicked.clear();
         Game.words.clear();
         setEnable(tag);
         clearEnable(dictionary);
@@ -108,9 +119,19 @@ public class GameSelectDic extends AppCompatActivity {
                 String item = (String) listview.getItemAtPosition(position);
                 for (int i = 0; i < Values.words.size(); i++) {
                     if (Values.words.get(i).searchTag(item)) {
-                        Game.words.add(Values.words.get(i));
+                        if (Game.words.indexOf(Values.words.get(i)) == -1) {
+                            Game.words.add(Values.words.get(i));
+                        } else if (clicked.indexOf(item) >= 1) {
+                            Game.words.remove(Game.words.indexOf(Values.words.get(i)));
+                        }
                     }
                 }
+                if (clicked.indexOf(item) == -1)
+                    clicked.add(item);
+                else
+                    clicked.remove(item);
+                System.out.println(clicked);
+                System.out.println(Game.words.size());
             }
         });
         listHeight();

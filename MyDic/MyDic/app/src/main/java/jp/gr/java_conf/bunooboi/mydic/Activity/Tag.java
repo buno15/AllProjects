@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class Tag extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText editText = new EditText(Tag.this);
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(Tag.this);
                 alertDlg.setMessage("New");
                 alertDlg.setView(editText);
@@ -84,7 +86,7 @@ public class Tag extends AppCompatActivity {
                 ListView listview = (ListView) parent;
                 String item = (String) listview.getItemAtPosition(position);
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(Tag.this);
-                alertDlg.setMessage(item+" Delete?");
+                alertDlg.setMessage(item + " Delete?");
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Values.tags.remove(position);

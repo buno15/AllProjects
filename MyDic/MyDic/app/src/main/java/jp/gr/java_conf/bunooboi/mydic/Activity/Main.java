@@ -1,17 +1,14 @@
 package jp.gr.java_conf.bunooboi.mydic.Activity;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,6 +24,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 
@@ -48,12 +49,21 @@ public class Main extends AppCompatActivity {
     static String selectWord = "";//indexによらないTag
     static int clickState = 0;// clickState=0,dictionary clickState=1,tag
 
+    private InterstitialAd mInterstitialAd;
+    //ca-app-pub-2096872993008006~2033814746 app ID
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        verifyStoragePermissions(this);
+        MobileAds.initialize(this, "ca-app-pub-2096872993008006~2033814746");
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");//テスト広告
+        //mInterstitialAd.setAdUnitId("ca-app-pub-2096872993008006/5901919326");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
         Values.init();
 
         editText = findViewById(R.id.editText);
@@ -111,6 +121,7 @@ public class Main extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mInterstitialAd.show();
                 if (Values.dictionaries.size() == 0) {
                     Toast.makeText(Main.this, "There is no dictionary data.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -125,6 +136,7 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText editText = new EditText(Main.this);
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(Main.this);
                 alertDlg.setMessage("New Dictionary");
                 alertDlg.setView(editText);
@@ -405,25 +417,5 @@ public class Main extends AppCompatActivity {
         Point size = new Point();
         disp.getSize(size);
         return size.y / 100 * value;
-    }
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;//パーミッションチェックの変数
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    public static void verifyStoragePermissions(Activity activity) {//パーミッションチェック
-        // Check if we have read or write permission
-        int writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int readPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
     }
 }

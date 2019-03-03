@@ -20,14 +20,6 @@ public class DisplayManager {
         return scale;
     }
 
-    public static int getPctX(Context context, int value) {
-        return getPoint(context).x / 100 * value;
-    }
-
-    public static int getPctY(Context context, int value) {
-        return getPoint(context).y / 100 * value;
-    }
-
     public static Point getPoint(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display d = wm.getDefaultDisplay();

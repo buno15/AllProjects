@@ -2,12 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5deb3"
     android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/imageButton1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="60dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
         android:src="@drawable/button_select" />
@@ -16,6 +21,10 @@
         android:id="@+id/imageButton2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="60dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
         android:src="@drawable/button_fall" />

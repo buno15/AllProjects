@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 import jp.gr.java_conf.bunooboi.mydic.Game;
 import jp.gr.java_conf.bunooboi.mydic.R;
+import jp.gr.java_conf.bunooboi.mydic.Sound;
 import jp.gr.java_conf.bunooboi.mydic.Word;
 
 public class GameSelect extends AppCompatActivity {
@@ -41,7 +42,8 @@ public class GameSelect extends AppCompatActivity {
 
     Timer judgeTimer;//正解の表示タイマー
 
-    static int answerIndex = 0;//答え番号
+    int answerIndex = 0;//答え番号
+    int questionIndex[] = new int[6];
 
     int judgeTime = 0;//正解の表示時間
     int questionCount = 0;//問題数
@@ -67,6 +69,7 @@ public class GameSelect extends AppCompatActivity {
                 int j = (int) Math.floor(Math.random() * Game.words.size());
                 Word word = Game.words.get(j);
                 if (question.indexOf(word) == -1) {
+                    questionIndex[i] = j;
                     question.add(word);
                     q.button[i].setText(word.getWord());
                     break;
@@ -108,6 +111,7 @@ public class GameSelect extends AppCompatActivity {
     }
 
     void stop() {//停止
+        Sound.soundPool.stop(Sound.game_start_keep);
         rootLayout.removeAllViews();
         question.clear();
         q.timeView.stop();
@@ -120,11 +124,17 @@ public class GameSelect extends AppCompatActivity {
     void judge(int index) {//正解確認
         q.timeView.stop();
         if (index == answerIndex) {
-            q.button[index].setBackgroundResource(R.drawable.button_maru_custom);
+            q.button[index].setBackgroundResource(R.drawable.button_maru);
             judgeTimer(true);
         } else {
-            q.button[index].setBackgroundResource(R.drawable.button_batu_custom);
-            judgeTimer(false);
+            if (Game.words.get(questionIndex[index]).searchDescription(q.questionText.getText().toString())) {
+                q.button[index].setBackgroundResource(R.drawable.button_maru);
+                judgeTimer(true);
+            } else {
+                Sound.stopMediaPlayer();
+                q.button[index].setBackgroundResource(R.drawable.button_batu);
+                judgeTimer(false);
+            }
         }
         for (int i = 0; i < q.button.length; i++) {
             q.button[i].setEnabled(false);
@@ -132,6 +142,10 @@ public class GameSelect extends AppCompatActivity {
     }
 
     void judgeTimer(final boolean judge) {//正解確認タイマーの設定 judge=合否
+        if (judge)
+            Sound.yes();
+        else
+            Sound.no();
         final Handler handler = new Handler();
         judgeTimer = new Timer();
         judgeTimer.schedule(new TimerTask() {
@@ -167,17 +181,20 @@ public class GameSelect extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         makeQuestion();
+        Sound.startMediaPlayer(0);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         stop();
+        Sound.stopMediaPlayer();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Sound.stopMediaPlayer();
     }
 
     @Override
@@ -191,6 +208,32 @@ public class GameSelect extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.back:
+                if (q.timeView.timer_time != null) {
+                    stop();
+                    AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameSelect.this);
+                    alertDlg.setMessage("Will you finish the game?");
+                    alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(getApplicationContext(), GameStart.class));
+                            finish();
+                        }
+                    });
+                    alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            makeQuestion();
+                        }
+                    });
+                    alertDlg.create().show();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (q.timeView.timer_time != null) {
                 stop();
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameSelect.this);
                 alertDlg.setMessage("Will you finish the game?");
@@ -206,30 +249,9 @@ public class GameSelect extends AppCompatActivity {
                     }
                 });
                 alertDlg.create().show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            stop();
-            AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameSelect.this);
-            alertDlg.setMessage("Will you finish the game?");
-            alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(getApplicationContext(), GameStart.class));
-                    finish();
-                }
-            });
-            alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    makeQuestion();
-                }
-            });
-            alertDlg.create().show();
-            return true;
+                return true;
+            }
+            return false;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -316,7 +338,8 @@ public class GameSelect extends AppCompatActivity {
                                     for (int i = 0; i < q.button.length; i++) {
                                         q.button[i].setEnabled(false);
                                     }
-                                    q.button[answerIndex].setBackgroundResource(R.drawable.button_maru_custom);
+                                    q.button[answerIndex].setBackgroundResource(R.drawable.button_maru);
+                                    Sound.stopMediaPlayer();
                                     judgeTimer(false);
                                 }
                             } else {

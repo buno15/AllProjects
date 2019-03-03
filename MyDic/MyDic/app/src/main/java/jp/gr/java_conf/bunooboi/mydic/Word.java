@@ -41,6 +41,15 @@ public class Word {
         return false;
     }
 
+    public boolean searchDescription(String search) {
+        for (int i = 0; i < description.length; i++) {
+            if (description[i].equals(search) && !description[i].equals(""))
+                return true;
+        }
+        return false;
+    }
+
+
     public boolean searchTag(String search) {//Wordに該当タグが存在
         for (int i = 0; i < tag.size(); i++) {
             if (tag.get(i).equals(search)) {
