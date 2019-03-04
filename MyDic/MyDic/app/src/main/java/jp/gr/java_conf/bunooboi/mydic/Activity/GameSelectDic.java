@@ -42,6 +42,7 @@ public class GameSelectDic extends AppCompatActivity implements RewardedVideoAdL
     ArrayAdapter adapter;
     ArrayList<String> clicked = new ArrayList<>();
     int listType = 0;//0=dictionary,1=tag
+    boolean back = false;
 
     private RewardedVideoAd mRewardedVideoAd;
 
@@ -228,9 +229,13 @@ public class GameSelectDic extends AppCompatActivity implements RewardedVideoAdL
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            startActivity(new Intent(getApplicationContext(), GameStart.class));
-            finish();
-            return true;
+            if (back) {
+                return false;
+            } else {
+                startActivity(new Intent(getApplicationContext(), GameStart.class));
+                finish();
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -262,17 +267,17 @@ public class GameSelectDic extends AppCompatActivity implements RewardedVideoAdL
 
     @Override
     public void onRewardedVideoAdOpened() {
-
+        back = true;
     }
 
     @Override
     public void onRewardedVideoStarted() {
-
+        back = true;
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
-
+        back = false;
     }
 
     @Override

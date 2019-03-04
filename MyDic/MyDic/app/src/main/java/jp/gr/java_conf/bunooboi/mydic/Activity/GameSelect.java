@@ -307,18 +307,11 @@ public class GameSelect extends AppCompatActivity {
             canvas.drawArc(rect, 270, -circle_ac, true, timeRect);
 
             Paint paint2 = new Paint();
-            paint2.setColor(Color.parseColor("#f5deb3"));
+            paint2.setColor(Color.parseColor("#000000"));
             paint2.setStrokeWidth(5);
             paint2.setAntiAlias(true);
             paint2.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(circle_x, circle_y, circle_r / 2, paint2);
-
-            Paint paint3 = new Paint();
-            paint3.setColor(Color.parseColor("#87cefa"));
-            paint3.setStrokeWidth(5);
-            paint3.setAntiAlias(true);
-            paint3.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(circle_x, circle_y, circle_r / 6, paint3);
+            canvas.drawCircle(circle_x, circle_y, circle_r / 8, paint2);
         }
 
         public void start() {

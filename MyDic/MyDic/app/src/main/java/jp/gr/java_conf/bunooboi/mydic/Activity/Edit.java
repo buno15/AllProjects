@@ -170,7 +170,7 @@ public class Edit extends AppCompatActivity {
                 break;
             case R.id.delete:
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(this);
-                alertDlg.setMessage(Values.words.get(index).getWord() + " Delete?");
+                alertDlg.setMessage("Delete " + Values.words.get(index).getWord() + "?");
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Values.words.remove(index);

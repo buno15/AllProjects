@@ -75,7 +75,7 @@ public class Tag extends AppCompatActivity {
                 final EditText editText = new EditText(Tag.this);
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(Tag.this);
-                alertDlg.setMessage("New");
+                alertDlg.setMessage("New Tag");
                 alertDlg.setView(editText);
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -122,7 +122,7 @@ public class Tag extends AppCompatActivity {
                 ListView listview = (ListView) parent;
                 String item = (String) listview.getItemAtPosition(position);
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(Tag.this);
-                alertDlg.setMessage(item + " Delete?");
+                alertDlg.setMessage("Delete "+item+"?");
                 alertDlg.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Values.tags.remove(position);
