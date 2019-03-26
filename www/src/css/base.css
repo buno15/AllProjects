@@ -23,15 +23,6 @@ div#pagebody {
 	margin: 40px auto;
 }
 
-div.end {
-	text-align: center;
-}
-
-div.end img {
-	width: 100%;
-	height: 80px;
-}
-
 div#head {
 	height: 120px;
 	text-align: center;
@@ -110,7 +101,7 @@ div.title img {
 	width: 96px;
 	height: 96px;
 	margin: 14px 0px 0px 10px;
-	background-color: rgba(0, 0, 0.0);
+	background-color: rgba(0, 0, 0.0f);
 	float: left;
 }
 
