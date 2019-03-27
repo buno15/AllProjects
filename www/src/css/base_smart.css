@@ -232,6 +232,38 @@ div#movie iframe {
 	-ms-border-radius: 0px;
 }
 
+div.train {
+	width: 100%;
+	height: 650px;
+	text-align: center;
+}
+
+div.train img {
+	width: 40%;
+	margin: 250px 0px 40px 0px;
+	text-align: center;
+}
+
+div.train img#cards3 {
+	width: 10%;
+	margin: 250px 0px 40px 0px;
+	text-align: center;
+}
+
+div.train h1 {
+	width: 100%;
+	margin: 250px 0px 40px 0px;
+	font-size: 100px;
+	text-align: center;
+}
+
+div.train h2 {
+	text-align: center;
+	width: 100%;
+	margin: 250px 0px 40px 0px;
+	font-size: 50px;
+}
+
 #mail p {
 	width: 85%;
 	margin: 0px;
