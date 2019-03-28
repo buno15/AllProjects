@@ -1,5 +1,5 @@
 function ok() {
-	document.cookie = "second=" + encodeURIComponent(document.getElementById("second").value);
-	document.cookie = "group=" + encodeURIComponent(document.getElementById("group").value);
+	document.cookie = "secondCard=" + encodeURIComponent(document.getElementById("second").value);
+	document.cookie = "groupCard=" + encodeURIComponent(document.getElementById("group").value);
 	window.location.href = "playCards.html";
 }

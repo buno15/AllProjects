@@ -274,23 +274,29 @@ div.button button {
 	padding: 5px 12%;
 }
 
-div.train {
+div.trainCard {
 	width: 100%;
 	height: 550px;
 	text-align: center;
 }
 
-div.train h1 {
+div.trainCard img {
+	margin: 120px 0px 0px 0px;
+}
+
+div.trainNum {
+	width: 100%;
+	height: 400px;
+	text-align: center;
+}
+
+div.trainNum h1 {
 	font-size: 200px;
 }
 
-div.train h2 {
+div.trainNum h2 {
 	margin: 50px 0px 0px 0px;
 	font-size: 100px;
-}
-
-div.train img {
-	margin: 120px 0px 0px 0px;
 }
 
 #info h2 {

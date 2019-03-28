@@ -23,7 +23,7 @@
 			<li><a href="../memory.html">MemoryTraining</a></li>
 			<li><a href="../feedback.html">Message</a></li>
 		</ul>
-		<div class="train">
+		<div class="trainCard">
 			<img id="cards1" /> <img id="cards3" /><img id="cards2" />
 		</div>
 		<div class="button">
@@ -38,6 +38,10 @@
 		</div>
 		<script type="text/javascript">
 			var img = new Array();
+			var count = 0;
+			var second = '';
+			var group = '';
+			var length = new Array();
 			for (var i = 0; i < 4; i++) {
 				for (var j = 1; j <= 13; j++) {
 					var string = "../../../img/trump/";
@@ -53,19 +57,21 @@
 					img.push(string)
 				}
 			}
-			var second = '';
-			var group = '';
 			var r = document.cookie.split(';');
 			for (var i = 0; i < r.length; i++) {
 				var s = r[i].split('=');
-				if (s[0].trim() == 'second') {
+				if (s[0].trim() == 'secondCard') {
 					second = s[1].trim();
-				} else if (s[0].trim() == 'group') {
+				} else if (s[0].trim() == 'groupCard') {
 					group = s[1].trim();
 				}
 			}
-			var count = 0;
-			var length = new Array();
+			if (group != 1 && group != 2) {
+				group = 1;
+			}
+			if (second <= 0) {
+				second = 1;
+			}
 			function imgTimer() {
 				if (group == 2) {
 					if (count == 2704) {
@@ -235,8 +241,7 @@
 						if (group == 2) {
 							document.getElementById("cards2").src = " ../../../img/none.png";
 						} else {
-							if (parseInt(document.getElementById("pagebody")
-									.getBoundingClientRect().width) <= 800) {
+							if (parseInt(document.getElementById("pagebody").getBoundingClientRect().width) <= 800) {
 								document.getElementById("cards1").style.width = "0%"
 								document.getElementById("cards2").style.width = "0%"
 								document.getElementById("cards3").style.width = "10%"
@@ -255,9 +260,6 @@
 			function start() {
 				if (count <= 0) {
 					count = 1;
-				}
-				if (group != 1 && group != 2) {
-					group = 1;
 				}
 				document.getElementById("retry").disabled = true;
 				count = 3;
