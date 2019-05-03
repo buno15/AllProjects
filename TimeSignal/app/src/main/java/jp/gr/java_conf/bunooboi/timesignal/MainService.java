@@ -65,11 +65,10 @@ public class MainService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (++timeCount % 60 == 0) {
+                        if (++timeCount % 180 == 0) {
                             mediaPlayer.start();
-                            Toast.makeText(getApplicationContext(), "体を動かしましょう", Toast.LENGTH_SHORT).show();
 
-                            long pattern[] = {3000, 100, 900, 100, 900, 100, 900, 500};
+                            long pattern[] = {3000, 300, 700, 300, 700, 300, 700, 800};
                             mVibrator.vibrate(pattern, -1);
 
                             timeCount = 0;
@@ -78,7 +77,7 @@ public class MainService extends Service {
                     }
                 });
             }
-        }, 0, 60000);
+        }, 0, 10000);
         return START_STICKY;
     }
 
