@@ -167,7 +167,9 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
         game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRewardedVideoAd.show();
+                //mRewardedVideoAd.show();
+                startActivity(new Intent(getApplicationContext(), GameStart.class));
+                finish();
             }
         });
 
