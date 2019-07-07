@@ -19,11 +19,15 @@ public class MainService extends Service {
     Timer timer;
     Handler handler = new Handler();
 
-    MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer1;
+    MediaPlayer mediaPlayer2[] = new MediaPlayer[3];
     NotificationCompat.Builder builder;
     Vibrator mVibrator;
 
     int timeCount = 0;
+    int randomCount = 0;
+    int random = 0;
+    int mp2Rnd = 0;
     String id = "Run";
     String name = "TimeSignal";
 
@@ -36,11 +40,17 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.start);
+        mediaPlayer1 = MediaPlayer.create(getApplicationContext(), R.raw.start);
+        mediaPlayer2[0] = MediaPlayer.create(getApplicationContext(), R.raw.golgo13);
+        mediaPlayer2[1] = MediaPlayer.create(getApplicationContext(), R.raw.re);
+        mediaPlayer2[2] = MediaPlayer.create(getApplicationContext(), R.raw.revoice2);
 
         NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
         NotificationManager nm = getSystemService(NotificationManager.class);
         nm.createNotificationChannel(mChannel);
+
+        random = (int) Math.floor(Math.random() * 180) + 60;
+        mp2Rnd = (int) Math.floor(Math.random() * 4);
 
         builder = new NotificationCompat.Builder(getApplicationContext(), id);
         builder.setSmallIcon(R.drawable.icon);
@@ -66,13 +76,33 @@ public class MainService extends Service {
                     @Override
                     public void run() {
                         if (++timeCount % 180 == 0) {
-                            mediaPlayer.start();
+                            mediaPlayer1.start();
 
-                            long pattern[] = {3000, 300, 700, 300, 700, 300, 700, 800};
+                            long pattern[] = {3000, 200, 800, 200, 800, 200, 800, 1000};
                             mVibrator.vibrate(pattern, -1);
 
                             timeCount = 0;
 
+                        }
+                        if (++randomCount % random == 0) {
+                            switch (mp2Rnd) {
+                                case 0:
+                                case 1:
+                                    mediaPlayer2[0].start();
+                                    break;
+                                case 2:
+                                    mediaPlayer2[1].start();
+                                    break;
+                                case 3:
+                                    mediaPlayer2[2].start();
+                            }
+                            mp2Rnd = (int) Math.floor(Math.random() * 4);
+
+                            long pattern[] = {0, 1500};
+                            mVibrator.vibrate(pattern, -1);
+
+                            randomCount = 0;
+                            random = (int) Math.floor(Math.random() * 180) + 60;
                         }
                     }
                 });
@@ -88,9 +118,21 @@ public class MainService extends Service {
             timer.cancel();
             timer = null;
         }
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
+        if (mediaPlayer1 != null) {
+            mediaPlayer1.release();
+            mediaPlayer1 = null;
+        }
+        if (mediaPlayer2[0] != null) {
+            mediaPlayer2[0].release();
+            mediaPlayer2[0] = null;
+        }
+        if (mediaPlayer2[1] != null) {
+            mediaPlayer2[1].release();
+            mediaPlayer2[1] = null;
+        }
+        if (mediaPlayer2[2] != null) {
+            mediaPlayer2[2].release();
+            mediaPlayer2[2] = null;
         }
         if (mVibrator != null) {
             mVibrator.cancel();
