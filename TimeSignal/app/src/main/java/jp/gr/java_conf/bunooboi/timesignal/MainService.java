@@ -20,7 +20,7 @@ public class MainService extends Service {
     Handler handler = new Handler();
 
     MediaPlayer mediaPlayer1;
-    MediaPlayer mediaPlayer2[] = new MediaPlayer[3];
+    MediaPlayer mediaPlayer2[] = new MediaPlayer[8];
     NotificationCompat.Builder builder;
     Vibrator mVibrator;
 
@@ -42,15 +42,20 @@ public class MainService extends Service {
         super.onCreate();
         mediaPlayer1 = MediaPlayer.create(getApplicationContext(), R.raw.start);
         mediaPlayer2[0] = MediaPlayer.create(getApplicationContext(), R.raw.golgo13);
-        mediaPlayer2[1] = MediaPlayer.create(getApplicationContext(), R.raw.re);
-        mediaPlayer2[2] = MediaPlayer.create(getApplicationContext(), R.raw.revoice2);
+        mediaPlayer2[1] = MediaPlayer.create(getApplicationContext(), R.raw.goglo132);
+        mediaPlayer2[2] = MediaPlayer.create(getApplicationContext(), R.raw.sherlocka);
+        mediaPlayer2[3] = MediaPlayer.create(getApplicationContext(), R.raw.sherlockb);
+        mediaPlayer2[4] = MediaPlayer.create(getApplicationContext(), R.raw.sherlockc);
+        mediaPlayer2[5] = MediaPlayer.create(getApplicationContext(), R.raw.sherlockd);
+        mediaPlayer2[6] = MediaPlayer.create(getApplicationContext(), R.raw.re);
+        mediaPlayer2[7] = MediaPlayer.create(getApplicationContext(), R.raw.revoice2);
 
         NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
         NotificationManager nm = getSystemService(NotificationManager.class);
         nm.createNotificationChannel(mChannel);
 
         random = (int) Math.floor(Math.random() * 180) + 60;
-        mp2Rnd = (int) Math.floor(Math.random() * 4);
+        mp2Rnd = (int) Math.floor(Math.random() * 9);
 
         builder = new NotificationCompat.Builder(getApplicationContext(), id);
         builder.setSmallIcon(R.drawable.icon);
@@ -87,16 +92,31 @@ public class MainService extends Service {
                         if (++randomCount % random == 0) {
                             switch (mp2Rnd) {
                                 case 0:
-                                case 1:
                                     mediaPlayer2[0].start();
                                     break;
-                                case 2:
+                                case 1:
                                     mediaPlayer2[1].start();
                                     break;
-                                case 3:
+                                case 2:
                                     mediaPlayer2[2].start();
+                                    break;
+                                case 3:
+                                    mediaPlayer2[3].start();
+                                    break;
+                                case 4:
+                                    mediaPlayer2[4].start();
+                                    break;
+                                case 5:
+                                    mediaPlayer2[5].start();
+                                    break;
+                                case 6:
+                                    mediaPlayer2[6].start();
+                                    break;
+                                case 7:
+                                    mediaPlayer2[7].start();
+                                    break;
                             }
-                            mp2Rnd = (int) Math.floor(Math.random() * 4);
+                            mp2Rnd = (int) Math.floor(Math.random() * 9);
 
                             long pattern[] = {0, 1500};
                             mVibrator.vibrate(pattern, -1);
@@ -122,18 +142,13 @@ public class MainService extends Service {
             mediaPlayer1.release();
             mediaPlayer1 = null;
         }
-        if (mediaPlayer2[0] != null) {
-            mediaPlayer2[0].release();
-            mediaPlayer2[0] = null;
+        for(int i=0;i<mediaPlayer2.length;i++){
+            if (mediaPlayer2[i] != null) {
+                mediaPlayer2[i].release();
+                mediaPlayer2[i] = null;
+            }
         }
-        if (mediaPlayer2[1] != null) {
-            mediaPlayer2[1].release();
-            mediaPlayer2[1] = null;
-        }
-        if (mediaPlayer2[2] != null) {
-            mediaPlayer2[2].release();
-            mediaPlayer2[2] = null;
-        }
+
         if (mVibrator != null) {
             mVibrator.cancel();
             mVibrator = null;
