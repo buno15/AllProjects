@@ -19,17 +19,23 @@ public class MainService extends Service {
     Timer timer;
     Handler handler = new Handler();
 
-    MediaPlayer mediaPlayer1;
+    MediaPlayer mediaPlayer1[] = new MediaPlayer[4];
     MediaPlayer mediaPlayer2[] = new MediaPlayer[8];
     NotificationCompat.Builder builder;
     Vibrator mVibrator;
 
     int timeCount = 0;
+    int quarterCount = 0;
     int randomCount = 0;
     int random = 0;
     int mp2Rnd = 0;
     String id = "Run";
     String name = "TimeSignal";
+
+    long pattern1[] = {0, 200};
+    long pattern2[] = {0, 200, 800, 500};
+    long pattern3[] = {0, 200, 800, 200, 800, 500};
+    long pattern4[] = {0, 200, 800, 200, 800, 200, 800, 500};
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,7 +46,11 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mediaPlayer1 = MediaPlayer.create(getApplicationContext(), R.raw.start);
+        mediaPlayer1[0] = MediaPlayer.create(getApplicationContext(), R.raw.count1);
+        mediaPlayer1[1] = MediaPlayer.create(getApplicationContext(), R.raw.count2);
+        mediaPlayer1[2] = MediaPlayer.create(getApplicationContext(), R.raw.count3);
+        mediaPlayer1[3] = MediaPlayer.create(getApplicationContext(), R.raw.count4);
+
         mediaPlayer2[0] = MediaPlayer.create(getApplicationContext(), R.raw.golgo13);
         mediaPlayer2[1] = MediaPlayer.create(getApplicationContext(), R.raw.goglo132);
         mediaPlayer2[2] = MediaPlayer.create(getApplicationContext(), R.raw.sherlocka);
@@ -54,8 +64,8 @@ public class MainService extends Service {
         NotificationManager nm = getSystemService(NotificationManager.class);
         nm.createNotificationChannel(mChannel);
 
-        random = (int) Math.floor(Math.random() * 180) + 60;
-        mp2Rnd = (int) Math.floor(Math.random() * 9);
+        random = (int) Math.floor(Math.random() * 600) + 1200;
+        mp2Rnd = (int) Math.floor(Math.random() * 8);
 
         builder = new NotificationCompat.Builder(getApplicationContext(), id);
         builder.setSmallIcon(R.drawable.icon);
@@ -80,12 +90,30 @@ public class MainService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (++timeCount % 180 == 0) {
-                            mediaPlayer1.start();
+                        if (++timeCount % 900 == 0) {
 
-                            long pattern[] = {3000, 200, 800, 200, 800, 200, 800, 1000};
-                            mVibrator.vibrate(pattern, -1);
+                            switch (quarterCount) {
+                                case 0:
+                                    mediaPlayer1[0].start();
+                                    mVibrator.vibrate(pattern1, -1);
+                                    break;
+                                case 1:
+                                    mediaPlayer1[1].start();
+                                    mVibrator.vibrate(pattern2, -1);
+                                    break;
+                                case 2:
+                                    mediaPlayer1[2].start();
+                                    mVibrator.vibrate(pattern3, -1);
+                                    break;
+                                case 3:
+                                    mediaPlayer1[3].start();
+                                    mVibrator.vibrate(pattern4, -1);
+                                    break;
+                            }
 
+                            if (quarterCount < 3)
+                                quarterCount++;
+                            else quarterCount = 0;
                             timeCount = 0;
 
                         }
@@ -116,18 +144,15 @@ public class MainService extends Service {
                                     mediaPlayer2[7].start();
                                     break;
                             }
-                            mp2Rnd = (int) Math.floor(Math.random() * 9);
-
-                            long pattern[] = {0, 1500};
-                            mVibrator.vibrate(pattern, -1);
+                            mp2Rnd = (int) Math.floor(Math.random() * 8);
 
                             randomCount = 0;
-                            random = (int) Math.floor(Math.random() * 180) + 60;
+                            random = (int) Math.floor(Math.random() * 600) + 1200;
                         }
                     }
                 });
             }
-        }, 0, 10000);
+        }, 0, 1000);
         return START_STICKY;
     }
 
@@ -138,11 +163,13 @@ public class MainService extends Service {
             timer.cancel();
             timer = null;
         }
-        if (mediaPlayer1 != null) {
-            mediaPlayer1.release();
-            mediaPlayer1 = null;
+        for (int i = 0; i < mediaPlayer1.length; i++) {
+            if (mediaPlayer1[i] != null) {
+                mediaPlayer1[i].release();
+                mediaPlayer1[i] = null;
+            }
         }
-        for(int i=0;i<mediaPlayer2.length;i++){
+        for (int i = 0; i < mediaPlayer2.length; i++) {
             if (mediaPlayer2[i] != null) {
                 mediaPlayer2[i].release();
                 mediaPlayer2[i] = null;
