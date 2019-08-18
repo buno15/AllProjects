@@ -19,7 +19,8 @@ import java.util.TimerTask;
 public class MainService extends Service implements TextToSpeech.OnInitListener {
     Timer timer;
     Handler handler = new Handler();
-    TextToSpeech tts;
+    TextToSpeech ttsJ;
+    TextToSpeech ttsE;
     NotificationCompat.Builder builder;
     int timeCount = 0;
     int random = 0;
@@ -52,7 +53,8 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
         note.flags = Notification.FLAG_ONGOING_EVENT;
         startForeground(1, note);
 
-        tts = new TextToSpeech(this, this);
+        ttsJ = new TextToSpeech(this, this);
+        ttsE = new TextToSpeech(this, this);
 
         Toast.makeText(getApplicationContext(), "Start Rema", Toast.LENGTH_SHORT).show();
 
@@ -76,7 +78,17 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
                             Notification note = builder.build();
                             startForeground(1, note);
 
-                            speechText(App.titles.get(random));
+                            speechJapanText(App.titles.get(random));
+
+                        }
+                        if (timeCount % 32 == 0) {
+                            builder = new NotificationCompat.Builder(getApplicationContext(), id);
+                            builder.setSmallIcon(R.drawable.icon);
+                            builder.setContentTitle(App.answers.get(random));
+                            Notification note = builder.build();
+                            startForeground(1, note);
+
+                            speechEngText(App.answers.get(random));
 
                             timeCount = 0;
                             if (App.indexes.size() == App.titles.size()) {
@@ -89,8 +101,6 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
                                     break;
                                 }
                             }
-
-
                         }
                     }
                 });
@@ -104,8 +114,14 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
         if (TextToSpeech.SUCCESS == status) {
             //言語選択
             Locale locale = Locale.JAPAN;
-            if (tts.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE) {
-                tts.setLanguage(locale);
+            if (ttsJ.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE) {
+                ttsJ.setLanguage(locale);
+            } else {
+                Log.d("Error", "Locale");
+            }
+            locale = Locale.ENGLISH;
+            if (ttsE.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE) {
+                ttsE.setLanguage(locale);
             } else {
                 Log.d("Error", "Locale");
             }
@@ -114,14 +130,25 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
         }
     }
 
-    private void speechText(String contents) {
+    private void speechJapanText(String contents) {
         if (0 < contents.length()) {
-            if (tts.isSpeaking()) {
+            if (ttsJ.isSpeaking()) {
                 // 読み上げ中なら停止
-                tts.stop();
+                ttsJ.stop();
             }
             //読み上げ開始
-            tts.speak(contents, TextToSpeech.QUEUE_FLUSH, null);
+            ttsJ.speak(contents, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+    private void speechEngText(String contents) {
+        if (0 < contents.length()) {
+            if (ttsE.isSpeaking()) {
+                // 読み上げ中なら停止
+                ttsE.stop();
+            }
+            //読み上げ開始
+            ttsE.speak(contents, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 
@@ -132,9 +159,13 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
             timer.cancel();
             timer = null;
         }
-        if (null != tts) {
+        if (null != ttsJ) {
             //ttsのリソース解放する
-            tts.shutdown();
+            ttsJ.shutdown();
+        }
+        if (null != ttsE) {
+            //ttsのリソース解放する
+            ttsE.shutdown();
         }
         stopForeground(Service.STOP_FOREGROUND_DETACH);
         NotificationManager nm = getSystemService(NotificationManager.class);

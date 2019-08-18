@@ -12,6 +12,7 @@ public class App extends Application {
     private static App instance = null;
 
     public static ArrayList<String> titles = new ArrayList<>();
+    public static ArrayList<String> answers = new ArrayList<>();
     public static ArrayList<Integer> indexes = new ArrayList<>();
 
     public static final String DataPath = Environment.getExternalStorageDirectory() + "/Rema";
@@ -24,7 +25,8 @@ public class App extends Application {
     }
 
     public static void init() {
-        titles = Input.getInstance().read();
+        titles = Input.getInstance().readTitle();
+        answers = Input.getInstance().readAnswer();
     }
 
     public static synchronized App getInstance() {

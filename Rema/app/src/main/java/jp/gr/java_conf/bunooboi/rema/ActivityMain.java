@@ -62,6 +62,7 @@ public class ActivityMain extends AppCompatActivity {
                 alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         App.titles.remove(j);
+                        App.answers.remove(j);
                         Output.getInstance().write();
                         stopService(new Intent(getApplicationContext(), MainService.class));
                         reload();
@@ -138,7 +139,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     public static void verifyStoragePermissions(Activity activity) {//パーミッションチェック
-        // Check if we have read or write permission
+        // Check if we have readTitle or write permission
         int writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int readPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
 

@@ -1,6 +1,5 @@
 package jp.gr.java_conf.bunooboi.rema;
 
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,20 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Calendar;
 
 /**
  * Created by bunooboi on 2016/10/27.
  */
 
 public class ActivityEdit extends AppCompatActivity {
-    EditText editText;
-    Button button3;
+    EditText editText1;
+    EditText editText2;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +26,22 @@ public class ActivityEdit extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         setTitle("Add Data");
 
-        editText = (EditText) findViewById(R.id.editText);
-        button3 = (Button) findViewById(R.id.button3);
-        button3.setText("Add");
+        editText1 = findViewById(R.id.editText1);
+        editText2 = findViewById(R.id.editText2);
+        button = findViewById(R.id.button);
+        button.setText("Add");
 
-        editText.setTextSize(20);
-        button3.setTextSize(20);
+        editText1.setTextSize(20);
+        editText2.setTextSize(20);
+        button.setTextSize(20);
 
-        button3.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String m = editText.getText().toString();
+                String m = editText1.getText().toString();
+                String n = editText2.getText().toString();
                 App.titles.add(m);
+                App.answers.add(n);
                 Output.getInstance().write();
                 Toast.makeText(getApplicationContext(), "Add Data", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), MainService.class));

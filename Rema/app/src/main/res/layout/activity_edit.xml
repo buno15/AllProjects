@@ -5,7 +5,14 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -17,7 +24,7 @@
         android:layout_weight="8" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

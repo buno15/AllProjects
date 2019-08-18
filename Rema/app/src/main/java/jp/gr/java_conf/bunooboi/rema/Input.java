@@ -29,7 +29,7 @@ public class Input {
         return input;
     }
 
-    public ArrayList<String> read() {
+    public ArrayList<String> readTitle() {
         ArrayList<String> titles = new ArrayList<>();
         BufferedReader br = null;
         try {
@@ -47,6 +47,27 @@ public class Input {
                 e.printStackTrace();
             }
             return titles;
+        }
+    }
+
+    public ArrayList<String> readAnswer() {
+        ArrayList<String> answers = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(App.DataPath + "/answer.txt"), "UTF-8"));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                answers.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return answers;
         }
     }
 }

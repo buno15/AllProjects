@@ -33,6 +33,12 @@ public class Output {
                 osw.write(m + "\n");
             }
             osw.flush();
+            osw = new OutputStreamWriter(new FileOutputStream(App.DataPath + "/answer.txt", false), "UTF-8");
+            for (int i = 0; i < App.answers.size(); i++) {
+                String m = App.answers.get(i);
+                osw.write(m + "\n");
+            }
+            osw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
