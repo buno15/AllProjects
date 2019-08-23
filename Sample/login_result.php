@@ -24,10 +24,12 @@ $ps = $db -> query($sql);
 				$id = $row['id'];
 				$pass = $row['pass'];
 				$groupID = $row['groupID'];
+				$reward = $row['reward'];
 			}
 			setcookie('id', $id);
 			setcookie('pass', $pass);
 			setcookie('groupID', $groupID);
+			setcookie('reward', $reward);
 		} else {
 			echo 'アカウントが存在しません。';
 		}

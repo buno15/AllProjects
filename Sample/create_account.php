@@ -4,7 +4,8 @@ $id = @$_POST['id'];
 // ユーザID
 $pass = @$_POST['pass'];
 
-$groupID = "default";
+$groupID = "none0";
+$reward = "0";
 // パスワード
 
 // データベースに接続
@@ -18,16 +19,18 @@ $stmt = $db -> query($sql);
 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 	echo 'アカウントが存在します';
 } else {
-	$sql = "INSERT INTO User (id, pass, groupID) VALUES (:id, :pass, :groupID)";
+	$sql = "INSERT INTO User (id, pass, groupID, reward) VALUES (:id, :pass, :groupID ,:reward)";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindParam(':id', $id, PDO::PARAM_STR);
 	$stmt -> bindParam(':pass', $pass, PDO::PARAM_STR);
 	$stmt -> bindParam(':groupID', $groupID, PDO::PARAM_STR);
+	$stmt -> bindParam(':reward', $reward, PDO::PARAM_STR);
 	$stmt -> execute();
 
 	setcookie('id', $id);
 	setcookie('pass', $pass);
 	setcookie('groupID', $groupID);
+	setcookie('reward', $reward);
 
 	echo '新規登録しました';
 	echo "<br/>ID:";

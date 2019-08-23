@@ -1,7 +1,18 @@
 <?php
-$id = $_COOKIE['id'];
-$pass = $_COOKIE['pass'];
-$groupID = $_COOKIE['groupID'];
+
+$id = "";
+$pass = "";
+$groupID = "";
+
+if (isset($_COOKIE['id'])) {
+	$id = $_COOKIE['id'];
+}
+if (isset($_COOKIE['pass'])) {
+	$pass = $_COOKIE['pass'];
+}
+if (isset($_COOKIE['groupID'])) {
+	$groupID = $_COOKIE['groupID'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,16 +26,12 @@ $groupID = $_COOKIE['groupID'];
 		<form action="login_result.php" method="POST">
 			ユーザ名
 			<input type="text" name="id" placeholder="id" value="<?php
-			if ($id == "default") {
-				echo "";
-			}
+			echo $id;
 			?>">
 			<br>
 			パスワード
 			<input type="text" name="pass" placeholder="pass" value="<?php
-			if ($pass == "default") {
-				echo "";
-			}
+			echo $pass;
 			?>">
 			<br>
 			<input type="submit" value="ログイン">
