@@ -31,6 +31,13 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 	setcookie('pass', $pass);
 	setcookie('groupID', $groupID);
 	setcookie('reward', $reward);
+	if ($groupID == "none0") {
+		setcookie('groupNAME', "none0");
+		setcookie('taskNAME', "none0");
+		setcookie('taskREWARD', "none0");
+		setcookie('doubletAMOUNT', "none0");
+		setcookie('doubletREWARD', "none0");
+	}
 
 	echo '新規登録しました';
 	echo "<br/>ID:";

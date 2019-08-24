@@ -20,7 +20,7 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('doubletREWARD', $doubletREWARD);
 	}
 }
- ?>
+?>
 
 <!DOCTYPE html>
 <html>
@@ -29,8 +29,15 @@ if (isset($_COOKIE['groupID'])) {
 		<title>AndYou</title>
 	</head>
 	<body>
-		<h2>Group:<?php echo $_COOKIE['groupNAME']; ?></h2>
 		<?php
+		echo "<h2>GroupID:";
+		echo $groupID;
+		echo "</h2>";
+
+		echo "<h2>Group:";
+		echo $_COOKIE['groupNAME'];
+		echo "</h2>";
+
 		if (isset($_COOKIE['doubletAMOUNT'])) {
 			$doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
 			$doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
@@ -44,8 +51,23 @@ if (isset($_COOKIE['groupID'])) {
 				}
 			}
 		}
+		echo "<br/>";
+		if (isset($_COOKIE['taskNAME'])) {
+			$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
+			$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+
+			for ($i = 0; $i < count($taskNAMEs); $i++) {
+				if ($taskNAMEs[$i] != "none0") {
+					echo "<h3>Task:";
+					echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
+					echo "<input type=\"button\" onclick=\"location.href='delete_task.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]'\" value=\"Delete\">";
+					echo "</h3>";
+				}
+			}
+		}
 		?>
 		<input type="button" name="add" onclick="location.href='index.php'" value="戻る">
 		<input type="button" name="add" onclick="location.href='./html/create_doublet.html'" value="ボーナス作成">
+		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="タスク追加">
 	</body>
 </html>

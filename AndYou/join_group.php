@@ -5,6 +5,7 @@ header('Content-Type: text/html; charset=UTF-8');
 $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
 $id = $_COOKIE['id'];
+$pass = $_COOKIE['pass'];
 $groupID = $_GET['groupID'];
 $groupNAME = "";
 
@@ -13,7 +14,7 @@ $sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 $stmt = $db -> query($sql);
 
 if ($stmt -> rowCount() > 0) {
-	$sql = "UPDATE User SET groupID = '$groupID' WHERE id = '$id'";
+	$sql = "UPDATE User SET groupID = '$groupID',reward='0' WHERE id = '$id' AND pass='$pass'";
 	$stmt = $db -> query($sql);
 
 	setcookie('groupID', $groupID);
@@ -23,8 +24,18 @@ if ($stmt -> rowCount() > 0) {
 	if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 		foreach ($stmt as $row) {
 			$groupNAME = $row['groupNAME'];
+			$groupNAME = $row['groupNAME'];
+			$taskNAME = $row['taskNAME'];
+			$taskREWARD = $row['taskREWARD'];
+			$doubletAMOUNT = $row['doubletAMOUNT'];
+			$doubletREWARD = $row['doubletREWARD'];
 		}
+		setcookie('reward', "0");
 		setcookie('groupNAME', $groupNAME);
+		setcookie('taskNAME', $taskNAME);
+		setcookie('taskREWARD', $taskREWARD);
+		setcookie('doubletAMOUNT', $doubletAMOUNT);
+		setcookie('doubletREWARD', $doubletREWARD);
 	}
 
 	echo 'グループに参加しました<br/>ID:';

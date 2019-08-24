@@ -4,6 +4,8 @@ session_start();
 $id = "";
 $pass = "";
 $groupID = "";
+$reward = "";
+
 $groupNAME = "";
 $taskNAME = "";
 $taskREWARD = "";
@@ -30,19 +32,23 @@ if (isset($_COOKIE['id'])) {
 if (isset($_COOKIE['pass'])) {
 	$pass = $_COOKIE['pass'];
 }
+if (isset($_COOKIE['reward'])) {
+	$reward = $_COOKIE['reward'];
+}
 if (isset($_COOKIE['groupID'])) {
 	$groupID = $_COOKIE['groupID'];
 	if ($groupID == "none0") {
 		setcookie('groupNAME', "none0");
 		setcookie('taskNAME', "none0");
 		setcookie('taskREWARD', "none0");
+		setcookie('doubletAMOUNT', "none0");
+		setcookie('doubletREWARD', "none0");
 	}
 
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 	if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
-
 		foreach ($stmt as $row) {
 			$groupNAME = $row['groupNAME'];
 			$taskNAME = $row['taskNAME'];
@@ -56,8 +62,9 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('doubletAMOUNT', $doubletAMOUNT);
 		setcookie('doubletREWARD', $doubletREWARD);
 	}
+
 }
- ?>
+?>
 
 <!DOCTYPE html>
 <html>
@@ -66,10 +73,16 @@ if (isset($_COOKIE['groupID'])) {
 		<title>AndYou</title>
 	</head>
 	<body>
-		<h1 >AndYou</h1>
-		<h2>ID:<?php echo $id; ?></h2>
-		<h2>Group:<?php echo $groupNAME; ?></h2>
+		<h1>AndYou</h1>
 		<?php
+		echo "<h2>ID:";
+		echo $id;
+		echo "</h2>";
+
+		echo "<h2>Group:";
+		echo $groupNAME;
+		echo "</h2>";
+
 		if (isset($_COOKIE['taskNAME'])) {
 			$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
 			$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
@@ -83,11 +96,52 @@ if (isset($_COOKIE['groupID'])) {
 				}
 			}
 		}
+
+		if (isset($_COOKIE['doubletAMOUNT'])) {
+			$doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
+			$doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
+
+			for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
+				if ($doubletAMOUNTs[$i] != "none0") {
+					echo "<h3>Doublet:";
+					echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
+					echo "</h3>";
+				}
+			}
+		}
+
+		if ($id != "none0") {
+			echo "<input type=\"button\" onclick=\"location.href='login_user.php'\" value=\"Logout\">";
+		} else {
+			echo "<input type=\"button\" onclick=\"location.href='login_user.php'\" value=\"Login\">";
+		}
+		if ($groupID == "none0") {
+			echo "<input type=\"button\" onclick=\"location.href='./html/create_group.html'\" value=\"Create New Group\">";
+			echo "<input type=\"button\" onclick=\"location.href='./html/join_group.html'\" value=\"Join a group\">";
+		} else if ($groupID != "none0") {
+			echo "<input type=\"button\" onclick=\"location.href='./login_group.php'\" value=\"Edit the group\">";
+			echo "<input type=\"button\" onclick=\"location.href='./exit_group.php'\" value=\"Leave the group\">";
+		}
 		?>
-		<input type="button" name="add" onclick="location.href='login.php'" value="ログイン">
-		<input type="button" name="add" onclick="location.href='./html/create_group.html'" value="グループ作成">
-		<input type="button" name="add" onclick="location.href='./html/join_group.html'" value="グループ参加">
-		<input type="button" name="add" onclick="location.href='./edit_group.php'" value="グループ編集">
-		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="タスク追加">
+		<br />
+
+		<?php
+		if ($groupID != "none0") {
+			$ids = array();
+			$sql = "SELECT * FROM User WHERE groupID='$groupID'";
+			$stmt = $db -> query($sql);
+
+			if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
+				foreach ($stmt as $row) {
+					$ids[$row['reward']] = $row['id'];
+				}
+			}
+			krsort($ids);
+			foreach ($ids as $key => $value) {
+				echo $value . '->' . $key;
+				echo "<br/>";
+			}
+		}
+		?>
 	</body>
 </html>

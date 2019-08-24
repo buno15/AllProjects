@@ -4,9 +4,15 @@ header('Content-Type: text/html; charset=UTF-8');
 // データベースに接続
 $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
+$id = $_COOKIE['id'];
 $groupID = $_COOKIE['groupID'];
 $taskNAME = $_GET['taskNAME'];
-$taskREWARD = $_GET['taskREWARD'];
+$taskREWARD = (int)$_GET['taskREWARD'];
+
+$reward = (int)$_COOKIE['reward'] + $taskREWARD;
+
+$sql = "UPDATE User SET reward = '$reward' WHERE groupID = '$groupID' AND id='$id'";
+$stmt = $db -> query($sql);
 
 $taskNAMEs = explode(",", $_COOKIE['taskNAME']);
 $taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
@@ -40,6 +46,7 @@ $stmt = $db -> query($sql);
 
 setcookie('taskNAME', $afterTaskNAME);
 setcookie('taskREWARD', $afterTaskREWARD);
+setcookie('reward', $reward);
 
 echo 'タスクを行いました';
 ?>

@@ -6,6 +6,7 @@ $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
 $groupNAME = @$_GET['groupNAME'];
 $groupID = md5(uniqid(rand() . $groupNAME, 1));
+$groupPASS = @$_GET['groupPASS'];
 $taskNAME = "none0";
 $taskREWARD = "none0";
 $doubletAMOUNT = "none0";
@@ -19,9 +20,10 @@ $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 	echo 'エラー：グループを作成できません。';
 } else {
-	$sql = "INSERT INTO Gro (groupID, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD) VALUES (:groupID, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD)";
+	$sql = "INSERT INTO Gro (groupID, groupPASS, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD) VALUES (:groupID, :groupPASS, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD)";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindParam(':groupID', $groupID, PDO::PARAM_STR);
+	$stmt -> bindParam(':groupPASS', $groupPASS, PDO::PARAM_STR);
 	$stmt -> bindParam(':groupNAME', $groupNAME, PDO::PARAM_STR);
 	$stmt -> bindParam(':taskNAME', $taskNAME, PDO::PARAM_STR);
 	$stmt -> bindParam(':taskREWARD', $taskREWARD, PDO::PARAM_STR);
@@ -34,6 +36,7 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 	$stmt = $db -> query($sql);
 
 	setcookie('groupID', $groupID);
+	setcookie('groupPASS', $groupPASS);
 	setcookie('groupNAME', $groupNAME);
 	setcookie('taskNAME', $taskNAME);
 	setcookie('taskREWARD', $taskREWARD);

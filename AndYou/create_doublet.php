@@ -37,6 +37,6 @@ if ($doubletAMOUNT != "") {
 <html>
 	<body>
 		<br />
-		<input type="button" name="add" onclick="location.href='index.php'" value="back"/>
+		<input type="button" name="add" onclick="location.href='edit_group.php'" value="back"/>
 	</body>
 </html>
