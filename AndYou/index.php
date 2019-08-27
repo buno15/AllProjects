@@ -28,6 +28,17 @@ $doubletREWARD = "";
 
 if (isset($_COOKIE['id'])) {
 	$id = $_COOKIE['id'];
+} else {
+	setcookie('id', "none0");
+	setcookie('pass', "none0");
+	setcookie('groupID', "none0");
+	setcookie('groupNAME', "none0");
+	setcookie('groupPASS', "none0");
+	setcookie('taskNAME', "none0");
+	setcookie('taskREWARD', "none0");
+	setcookie('doubletAMOUNT', "none0");
+	setcookie('doubletREWARD', "none0");
+	setcookie('reward', "0");
 }
 if (isset($_COOKIE['pass'])) {
 	$pass = $_COOKIE['pass'];
@@ -62,25 +73,27 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('doubletAMOUNT', $doubletAMOUNT);
 		setcookie('doubletREWARD', $doubletREWARD);
 	}
-
 }
 ?>
 
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="UTF-8" />
 		<title>AndYou</title>
 	</head>
 	<body>
-		<h1>AndYou</h1>
+		<h1><a href="index.php">AndYou</a></h1>
 		<?php
 		echo "<h2>ID:";
-		echo $id;
+		if ($id != "none0")
+			echo $id;
 		echo "</h2>";
 
 		echo "<h2>Group:";
-		echo $groupNAME;
+		if ($groupNAME != "none0")
+			echo $groupNAME;
 		echo "</h2>";
 
 		if (isset($_COOKIE['taskNAME'])) {
@@ -111,16 +124,17 @@ if (isset($_COOKIE['groupID'])) {
 		}
 
 		if ($id != "none0") {
-			echo "<input type=\"button\" onclick=\"location.href='login_user.php'\" value=\"Logout\">";
+			echo "<input type=\"button\" onclick=\"location.href='login_account.php'\" value=\"Logout\">";
+			echo "<input type=\"button\" onclick=\"location.href='./edit_account.php'\" value=\"Setting\">";
 		} else {
-			echo "<input type=\"button\" onclick=\"location.href='login_user.php'\" value=\"Login\">";
+			echo "<input type=\"button\" onclick=\"location.href='login_account.php'\" value=\"Login\">";
 		}
 		if ($groupID == "none0") {
 			echo "<input type=\"button\" onclick=\"location.href='./html/create_group.html'\" value=\"Create New Group\">";
 			echo "<input type=\"button\" onclick=\"location.href='./html/join_group.html'\" value=\"Join a group\">";
 		} else if ($groupID != "none0") {
-			echo "<input type=\"button\" onclick=\"location.href='./login_group.php'\" value=\"Edit the group\">";
-			echo "<input type=\"button\" onclick=\"location.href='./exit_group.php'\" value=\"Leave the group\">";
+			echo "<input type=\"button\" onclick=\"location.href='./login_group.php'\" value=\"Edit " . $groupNAME . "\">";
+
 		}
 		?>
 		<br />

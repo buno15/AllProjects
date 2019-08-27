@@ -2,11 +2,13 @@
 session_start();
 
 $groupID = "";
+$groupNAME = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
 
 if (isset($_COOKIE['groupID'])) {
 	$groupID = $_COOKIE['groupID'];
+	$groupNAME = $_COOKIE['groupNAME'];
 
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
@@ -29,13 +31,14 @@ if (isset($_COOKIE['groupID'])) {
 		<title>AndYou</title>
 	</head>
 	<body>
+		<h1><a href="index.php">AndYou</a></h1>
 		<?php
 		echo "<h2>GroupID:";
 		echo $groupID;
 		echo "</h2>";
 
 		echo "<h2>Group:";
-		echo $_COOKIE['groupNAME'];
+		echo $groupNAME;
 		echo "</h2>";
 
 		if (isset($_COOKIE['doubletAMOUNT'])) {
@@ -69,5 +72,9 @@ if (isset($_COOKIE['groupID'])) {
 		<input type="button" name="add" onclick="location.href='index.php'" value="戻る">
 		<input type="button" name="add" onclick="location.href='./html/create_doublet.html'" value="ボーナス作成">
 		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="タスク追加">
+		<input type="button" name="add" onclick="location.href='html/edit_group_pass.html'" value="Change Password"/>
+		<?php
+		echo "<input type=\"button\" onclick=\"location.href='html/delete_group.html'\" value=\"Delete " . $groupNAME . "\"/>";
+		?>
 	</body>
 </html>

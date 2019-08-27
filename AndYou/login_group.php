@@ -15,10 +15,11 @@ if (isset($_COOKIE['groupPASS'])) {
 	</head>
 	<body>
 		<h1>パスワードを入力してください</h1>
-		<form action="login_result_group.php" method="POST">
+		<form action="login_group_result.php" method="POST">
 			パスワード
 			<input type="text" name="groupPASS" placeholder="groupPASS" value="<?php
-			echo $groupPASS;
+			if ($groupPASS != "none0")
+				echo $groupPASS;
 			?>">
 			<br>
 			<input type="submit" value="ログイン">

@@ -48,11 +48,9 @@ setcookie('taskNAME', $afterTaskNAME);
 setcookie('taskREWARD', $afterTaskREWARD);
 setcookie('reward', $reward);
 
-echo 'タスクを行いました';
+header("Location: ./index.php");
+exit ;
 ?>
 <html>
-	<body>
-		<br />
-		<input type="button" name="add" onclick="location.href='index.php'" value="back"/>
 	</body>
 </html>
