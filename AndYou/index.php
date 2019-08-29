@@ -11,6 +11,12 @@ $taskNAME = "";
 $taskREWARD = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
+$period = "";
+$bingoREWARD = "";
+$doDATE = "none0";
+$doTASK = "none0";
+$doREWARD = "none0";
+$doACCOUNT = "none0";
 /*include 'Data.php';
 
  class Data {
@@ -39,6 +45,12 @@ if (isset($_COOKIE['id'])) {
 	setcookie('doubletAMOUNT', "none0");
 	setcookie('doubletREWARD', "none0");
 	setcookie('reward', "0");
+	setcookie('period', "none0");
+	setcookie('bingoREWARD', "none0");
+	setcookie('doDATE', "none0");
+	setcookie('doTASK', "none0");
+	setcookie('doREWARD', "none0");
+	setcookie('doACCOUNT', "none0");
 }
 if (isset($_COOKIE['pass'])) {
 	$pass = $_COOKIE['pass'];
@@ -54,6 +66,12 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('taskREWARD', "none0");
 		setcookie('doubletAMOUNT', "none0");
 		setcookie('doubletREWARD', "none0");
+		setcookie('period', "none0");
+		setcookie('bingoREWARD', "none0");
+		setcookie('doDATE', "none0");
+		setcookie('doTASK', "none0");
+		setcookie('doREWARD', "none0");
+		setcookie('doACCOUNT', "none0");
 	}
 
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
@@ -66,12 +84,24 @@ if (isset($_COOKIE['groupID'])) {
 			$taskREWARD = $row['taskREWARD'];
 			$doubletAMOUNT = $row['doubletAMOUNT'];
 			$doubletREWARD = $row['doubletREWARD'];
+			$period = $row['period'];
+			$bingoREWARD = $row['bingoREWARD'];
+			$doDATE = $row['doDATE'];
+			$doTASK = $row['doTASK'];
+			$doREWARD = $row['doREWARD'];
+			$doACCOUNT = $row['doACCOUNT'];
 		}
 		setcookie('groupNAME', $groupNAME);
 		setcookie('taskNAME', $taskNAME);
 		setcookie('taskREWARD', $taskREWARD);
 		setcookie('doubletAMOUNT', $doubletAMOUNT);
 		setcookie('doubletREWARD', $doubletREWARD);
+		setcookie('period', $period);
+		setcookie('bingoREWARD', $bingoREWARD);
+		setcookie('doDATE', $doDATE);
+		setcookie('doTASK', $doTASK);
+		setcookie('doREWARD', $doREWARD);
+		setcookie('doACCOUNT', $doACCOUNT);
 	}
 }
 ?>
@@ -118,6 +148,21 @@ if (isset($_COOKIE['groupID'])) {
 				if ($doubletAMOUNTs[$i] != "none0") {
 					echo "<h3>Doublet:";
 					echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
+					echo "</h3>";
+				}
+			}
+		}
+
+		if (isset($_COOKIE['doDATE'])) {
+			$doDATEs = explode(",", $_COOKIE['doDATE']);
+			$doTASKs = explode(",", $_COOKIE['doTASK']);
+			$doREWARDs = explode(",", $_COOKIE['doREWARD']);
+			$doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
+
+			for ($i = 0; $i < count($doDATEs); $i++) {
+				if ($doDATEs[$i] != "none0") {
+					echo "<h3>Do:";
+					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
 					echo "</h3>";
 				}
 			}

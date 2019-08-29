@@ -68,10 +68,26 @@ if (isset($_COOKIE['groupID'])) {
 				}
 			}
 		}
+		if (isset($_COOKIE['doDATE'])) {
+			$doDATEs = explode(",", $_COOKIE['doDATE']);
+			$doTASKs = explode(",", $_COOKIE['doTASK']);
+			$doREWARDs = explode(",", $_COOKIE['doREWARD']);
+			$doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
+
+			for ($i = 0; $i < count($doDATEs); $i++) {
+				if ($doDATEs[$i] != "none0") {
+					echo "<h3>Do:";
+					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
+					echo "<input type=\"button\" onclick=\"location.href='delete_do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]'\" value=\"Delete\">";
+					echo "</h3>";
+				}
+			}
+		}
 		?>
 		<input type="button" name="add" onclick="location.href='index.php'" value="戻る">
 		<input type="button" name="add" onclick="location.href='./html/create_doublet.html'" value="ボーナス作成">
-		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="タスク追加">
+		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="Add new Task">
+		<input type="button" name="add" onclick="location.href='./html/create_group_setting.html'" value="Setting">
 		<input type="button" name="add" onclick="location.href='html/edit_group_pass.html'" value="Change Password"/>
 		<?php
 		echo "<input type=\"button\" onclick=\"location.href='html/delete_group.html'\" value=\"Delete " . $groupNAME . "\"/>";

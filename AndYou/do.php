@@ -8,6 +8,7 @@ $id = $_COOKIE['id'];
 $groupID = $_COOKIE['groupID'];
 $taskNAME = $_GET['taskNAME'];
 $taskREWARD = (int)$_GET['taskREWARD'];
+$doDATE = date("Y/m/d H:i:s");
 
 $reward = (int)$_COOKIE['reward'] + $taskREWARD;
 
@@ -19,6 +20,10 @@ $taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
 
 $afterTaskNAME = "";
 $afterTaskREWARD = "";
+$afterDoDATE = $_COOKIE['doDATE'];
+$afterDoTASK = $_COOKIE['doTASK'];
+$afterDoREWARD = $_COOKIE['doREWARD'];
+$afterDoACCOUNT = $_COOKIE['doACCOUNT'];
 
 for ($i = 0; $i < count($taskNAMEs); $i++) {
 	if ($taskNAMEs[$i] != "none0" && $taskNAMEs[$i] != $taskNAME) {
@@ -37,6 +42,18 @@ if ($afterTaskNAME == null) {
 	$afterTaskREWARD = "none0";
 }
 
+if ($afterDoDATE != "none0") {
+	$afterDoDATE .= "," . $doDATE;
+	$afterDoTASK .= "," . $taskNAME;
+	$afterDoREWARD .= "," . $taskREWARD;
+	$afterDoACCOUNT .= "," . $id;
+} else {
+	$afterDoDATE = $doDATE;
+	$afterDoTASK = $taskNAME;
+	$afterDoREWARD = $taskREWARD;
+	$afterDoACCOUNT = $id;
+}
+
 $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";
 $stmt = $db -> query($sql);
@@ -44,9 +61,25 @@ $stmt = $db -> query($sql);
 $sql = "UPDATE Gro SET taskREWARD = '$afterTaskREWARD' WHERE groupID = '$groupID'";
 $stmt = $db -> query($sql);
 
+$sql = "UPDATE Gro SET doDATE = '$afterDoDATE' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
+$sql = "UPDATE Gro SET doTASK = '$afterDoTASK' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
+$sql = "UPDATE Gro SET doREWARD = '$afterDoREWARD' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
+$sql = "UPDATE Gro SET doACCOUNT = '$afterDoACCOUNT' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
 setcookie('taskNAME', $afterTaskNAME);
 setcookie('taskREWARD', $afterTaskREWARD);
 setcookie('reward', $reward);
+setcookie('doDATE', $afterDoDATE);
+setcookie('doTASK', $afterDoTASK);
+setcookie('doREWARD', $afterDoREWARD);
+setcookie('doACCOUNT', $afterDoACCOUNT);
 
 header("Location: ./index.php");
 exit ;
