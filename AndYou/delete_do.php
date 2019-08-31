@@ -11,6 +11,9 @@ $doTASK = $_GET['doTASK'];
 $doREWARD = $_GET['doREWARD'];
 $doACCOUNT = $_GET['doACCOUNT'];
 
+$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
+$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+
 $reward = 0;
 
 $sql = "SELECT * FROM User WHERE id='$doACCOUNT'";
@@ -32,6 +35,8 @@ $doTASKs = explode(",", $_COOKIE['doTASK']);
 $doREWARDs = explode(",", $_COOKIE['doREWARD']);
 $doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 
+$afterTaskNAME = "";
+$afterTaskREWARD = "";
 $afterDoDATE = "";
 $afterDoTASK = "";
 $afterDoREWARD = "";
@@ -59,7 +64,30 @@ if ($afterDoDATE == null) {
 	$afterDoACCOUNT = "none0";
 }
 
+for ($i = 0; $i < count($taskNAMEs); $i++) {
+	if ($taskNAMEs[$i] != "none0" && $taskNAMEs[$i] != "###" . $doTASK) {
+		$afterTaskNAME .= $taskNAMEs[$i] . ",";
+		$afterTaskREWARD .= $taskREWARDs[$i] . ",";
+	} else if ($taskNAMEs[$i] == "###" . $doTASK) {
+		$taskNAMEs[$i] = ltrim($taskNAMEs[$i], '###');
+		$taskREWARDs[$i] = ltrim($taskREWARDs[$i], '###');
+		$afterTaskNAME .= $taskNAMEs[$i] . ",";
+		$afterTaskREWARD .= $taskREWARDs[$i] . ",";
+	}
+}
+
+if (mb_substr($afterTaskNAME, -1) == ",") {
+	$afterTaskNAME = mb_substr($afterTaskNAME, 0, -1);
+	$afterTaskREWARD = mb_substr($afterTaskREWARD, 0, -1);
+}
+
 $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
+$sql = "UPDATE Gro SET taskREWARD = '$afterTaskREWARD' WHERE groupID = '$groupID'";
+$stmt = $db -> query($sql);
+
 $sql = "UPDATE Gro SET doDATE = '$afterDoDATE' WHERE groupID = '$groupID'";
 $stmt = $db -> query($sql);
 
@@ -72,6 +100,8 @@ $stmt = $db -> query($sql);
 $sql = "UPDATE Gro SET doACCOUNT = '$afterDoACCOUNT' WHERE groupID = '$groupID'";
 $stmt = $db -> query($sql);
 
+setcookie('taskNAME', $afterTaskNAME);
+setcookie('taskREWARD', $afterTaskREWARD);
 setcookie('doDATE', $afterDoDATE);
 setcookie('doTASK', $afterDoTASK);
 setcookie('doREWARD', $afterDoREWARD);

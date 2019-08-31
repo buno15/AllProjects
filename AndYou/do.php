@@ -1,4 +1,5 @@
 <?php
+require_once 'func.php';
 header('Content-Type: text/html; charset=UTF-8');
 
 // データベースに接続
@@ -6,6 +7,7 @@ $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
 $id = $_COOKIE['id'];
 $groupID = $_COOKIE['groupID'];
+$groupPASS = $_COOKIE['groupPASS'];
 $taskNAME = $_GET['taskNAME'];
 $taskREWARD = (int)$_GET['taskREWARD'];
 $doDATE = date("Y/m/d H:i:s");
@@ -18,29 +20,13 @@ $stmt = $db -> query($sql);
 $taskNAMEs = explode(",", $_COOKIE['taskNAME']);
 $taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
 
-$afterTaskNAME = "";
-$afterTaskREWARD = "";
+list($taskNAMEs, $taskREWARDs) = addDo($taskNAMEs, $taskREWARDs, $taskNAME, $taskREWARD);
+$afterTaskNAME = $taskNAMEs;
+$afterTaskREWARD = $taskREWARDs;
 $afterDoDATE = $_COOKIE['doDATE'];
 $afterDoTASK = $_COOKIE['doTASK'];
 $afterDoREWARD = $_COOKIE['doREWARD'];
 $afterDoACCOUNT = $_COOKIE['doACCOUNT'];
-
-for ($i = 0; $i < count($taskNAMEs); $i++) {
-	if ($taskNAMEs[$i] != "none0" && $taskNAMEs[$i] != $taskNAME) {
-		$afterTaskNAME .= $taskNAMEs[$i] . ",";
-		$afterTaskREWARD .= $taskREWARDs[$i] . ",";
-	}
-}
-
-if (mb_substr($afterTaskNAME, -1) == ",") {
-	$afterTaskNAME = mb_substr($afterTaskNAME, 0, -1);
-	$afterTaskREWARD = mb_substr($afterTaskREWARD, 0, -1);
-}
-
-if ($afterTaskNAME == null) {
-	$afterTaskNAME = "none0";
-	$afterTaskREWARD = "none0";
-}
 
 if ($afterDoDATE != "none0") {
 	$afterDoDATE .= "," . $doDATE;
@@ -80,10 +66,45 @@ setcookie('doDATE', $afterDoDATE);
 setcookie('doTASK', $afterDoTASK);
 setcookie('doREWARD', $afterDoREWARD);
 setcookie('doACCOUNT', $afterDoACCOUNT);
-
-header("Location: ./index.php");
-exit ;
 ?>
 <html>
+	<body>
+		<table>
+			<table border="1">
+				<?php
+				require_once 'func.php';
+				$taskNAMEs;
+				$taskREWARDs;
+				if (isset($_COOKIE['taskNAME'])) {
+					$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
+					$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+				}
+				$bingoWeight = getGroupValue($groupID, $groupPASS, "bingoWEIGHT");
+
+				$tableN = splitArray($taskNAMEs, $bingoWeight);
+				$tableR = splitArray($taskREWARDs, $bingoWeight);
+
+				for ($i = 0; $i < $bingoWeight; $i++) {
+					echo "<tr>";
+					for ($j = 0; $j < $bingoWeight; $j++) {
+						if ($tableN[$i] != "none0") {
+							$n = "";
+							$r = "";
+							if (mb_substr($tableN[$i][$j], 0, 3) == "###") {
+								$n = mb_substr($tableN[$i][$j], 3);
+								$r = mb_substr($tableR[$i][$j], 3);
+							} else {
+								$n = $tableN[$i][$j];
+								$r = $tableR[$i][$j];
+							}
+							echo "<td>";
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r'\" value=\"code\">$n<br/>$r</button>";
+							echo "</td>";
+						}
+					}
+					echo "</tr>";
+				}
+				?>
+			</table>
 	</body>
 </html>

@@ -8,19 +8,31 @@ $groupID = $_COOKIE['groupID'];
 $taskNAME = $_GET['taskNAME'];
 $taskREWARD = $_GET['taskREWARD'];
 
-$afterTaskNAME = $_COOKIE['taskNAME'];
+$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
+$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+
+$afterTaskNAME = "";
+$afterTaskREWARD = "";
+
+$flag = true;
+
 if ($taskNAME != "" && $taskREWARD != "") {
-	if ($afterTaskNAME != "none0") {
-		$afterTaskNAME .= "," . $taskNAME;
-	} else {
-		$afterTaskNAME = $taskNAME;
+	for ($i = 0; $i < count($taskNAMEs); $i++) {
+		if ($taskNAMEs[$i] == "neutral" && $flag) {
+			$afterTaskNAME .= $taskNAME . ",";
+			$afterTaskREWARD .= $taskREWARD . ",";
+			$flag = false;
+		} else if ($taskNAMEs[$i] != "none0") {
+			$afterTaskNAME .= $taskNAMEs[$i] . ",";
+			$afterTaskREWARD .= $taskREWARDs[$i] . ",";
+		}
 	}
-	$afterTaskREWARD = $_COOKIE['taskREWARD'];
-	if ($afterTaskREWARD != "none0") {
-		$afterTaskREWARD .= "," . $taskREWARD;
-	} else {
-		$afterTaskREWARD = $taskREWARD;
+
+	if (mb_substr($afterTaskNAME, -1) == ",") {
+		$afterTaskNAME = mb_substr($afterTaskNAME, 0, -1);
+		$afterTaskREWARD = mb_substr($afterTaskREWARD, 0, -1);
 	}
+
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";
 	$stmt = $db -> query($sql);

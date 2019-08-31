@@ -7,8 +7,19 @@ $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 $groupNAME = @$_GET['groupNAME'];
 $groupID = md5(uniqid(rand() . $groupNAME, 1));
 $groupPASS = @$_GET['groupPASS'];
-$taskNAME = "none0";
-$taskREWARD = "none0";
+
+$taskNAME = "";
+$taskREWARD = "";
+for ($i = 0; $i < 25; $i++) {
+	$taskNAME .= "neutral,";
+	$taskREWARD .= "neutral,";
+}
+
+if (mb_substr($taskNAME, -1) == ",") {
+	$taskNAME = mb_substr($taskNAME, 0, -1);
+	$taskREWARD = mb_substr($taskREWARD, 0, -1);
+}
+
 $doubletAMOUNT = "none0";
 $doubletREWARD = "none0";
 $period = "none0";

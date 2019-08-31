@@ -60,7 +60,7 @@ if (isset($_COOKIE['groupID'])) {
 			$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
 
 			for ($i = 0; $i < count($taskNAMEs); $i++) {
-				if ($taskNAMEs[$i] != "none0") {
+				if ($taskNAMEs[$i] != "none0" && mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral") {
 					echo "<h3>Task:";
 					echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
 					echo "<input type=\"button\" onclick=\"location.href='delete_task.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]'\" value=\"Delete\">";
@@ -84,10 +84,10 @@ if (isset($_COOKIE['groupID'])) {
 			}
 		}
 		?>
-		<input type="button" name="add" onclick="location.href='index.php'" value="戻る">
+		<input type="button" name="add" onclick="location.href='index.php'" value="back">
 		<input type="button" name="add" onclick="location.href='./html/create_doublet.html'" value="ボーナス作成">
 		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="Add new Task">
-		<input type="button" name="add" onclick="location.href='./html/create_group_setting.html'" value="Setting">
+		<input type="button" name="add" onclick="location.href='./create_group_setting.php'" value="Setting">
 		<input type="button" name="add" onclick="location.href='html/edit_group_pass.html'" value="Change Password"/>
 		<?php
 		echo "<input type=\"button\" onclick=\"location.href='html/delete_group.html'\" value=\"Delete " . $groupNAME . "\"/>";
