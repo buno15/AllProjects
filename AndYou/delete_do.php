@@ -1,10 +1,12 @@
 <?php
+require_once 'func.php';
 header('Content-Type: text/html; charset=UTF-8');
 
 // データベースに接続
 $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
 $groupID = $_COOKIE['groupID'];
+$groupPASS = $_COOKIE['groupPASS'];
 
 $doDATE = $_GET['doDATE'];
 $doTASK = $_GET['doTASK'];
@@ -80,6 +82,32 @@ if (mb_substr($afterTaskNAME, -1) == ",") {
 	$afterTaskNAME = mb_substr($afterTaskNAME, 0, -1);
 	$afterTaskREWARD = mb_substr($afterTaskREWARD, 0, -1);
 }
+
+$arrangementTASKs = explode(",", $_COOKIE['arrangementTASK']);
+$arrangementACCOUNTs = explode(",", $_COOKIE['arrangementACCOUNT']);
+
+$afterArrangementTASK = "";
+$afterArrangementACCOUNT = "";
+
+for ($i = 0; $i < count($arrangementTASKs); $i++) {
+	if ($arrangementTASKs[$i] == $doTASK && $arrangementACCOUNTs[$i] == $doACCOUNT) {
+		$afterArrangementTASK .= "neutral,";
+		$afterArrangementACCOUNT .= "neutral,";
+	} else {
+		$afterArrangementTASK .= $arrangementTASKs[$i] . ",";
+		$afterArrangementACCOUNT .= $arrangementACCOUNTs[$i] . ",";
+	}
+
+}
+
+if (mb_substr($afterArrangementTASK, -1) == ",") {
+	$afterArrangementTASK = mb_substr($afterArrangementTASK, 0, -1);
+	$afterArrangementACCOUNT = mb_substr($afterArrangementACCOUNT, 0, -1);
+}
+setGroupValue($groupID, $groupPASS, "arrangementTASK", $afterArrangementTASK);
+setGroupValue($groupID, $groupPASS, "arrangementACCOUNT", $afterArrangementACCOUNT);
+setcookie('arrangementTASK', $afterArrangementTASK);
+setcookie('arrangementACCOUNT', $afterArrangementACCOUNT);
 
 $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";

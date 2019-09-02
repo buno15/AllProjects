@@ -124,4 +124,84 @@ function addDo($array1, $array2, $taskNAME, $taskREWARD) {
 	}
 	return array($after1, $after2);
 }
+
+function addArrangement($arrangementTASKs, $arrangementACCOUNTs, $taskNAME, $id, $index) {
+	$after1 = "";
+	$after2 = "";
+	for ($i = 0; $i < count($arrangementTASKs); $i++) {
+		if ($i == $index) {
+			$after1 .= $taskNAME . ",";
+			$after2 .= $id . ",";
+		} else {
+			$after1 .= $arrangementTASKs[$i] . ",";
+			$after2 .= $arrangementACCOUNTs[$i] . ",";
+		}
+	}
+	if (mb_substr($after1, -1) == ",") {
+		$after1 = mb_substr($after1, 0, -1);
+		$after2 = mb_substr($after2, 0, -1);
+	}
+	return array($after1, $after2);
+}
+
+function isBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {//ビンゴ判定
+	$dx = array( array(1, -1), array(0, 0), array(1, -1), array(1, -1));
+	$dy = array( array(0, 0), array(1, -1), array(1, -1), array(-1, 1));
+
+	list($x, $y) = getMatrix($index, $bingoWEIGHT);
+	$table = splitArray($arrangementACCOUNTs, $bingoWEIGHT);
+	$answer = 0;
+
+	for ($i = 0; $i < 4; $i++) {
+		$count = 0;
+		$stackX = array($x);
+		$stackY = array($y);
+		$listX = array();
+		$listY = array();
+
+		while (!empty($stackX) && !empty($stackY)) {
+			$X = array_shift($stackX);
+			$Y = array_shift($stackY);
+			array_push($listX, $X);
+			array_push($listY, $Y);
+			for ($j = 0; $j < 2; $j++) {
+				$nx = $X + $dx[$i][$j];
+				$ny = $Y + $dy[$i][$j];
+				if ($nx >= 0 && $nx < $bingoWEIGHT && $ny >= 0 && $ny < $bingoWEIGHT) {
+					if (isList($listX, $listY, $nx, $ny)) {
+						continue;
+					}
+					if ($table[$y][$x] == $table[$ny][$nx]) {
+						array_push($stackX, $nx);
+						array_push($stackY, $ny);
+						$count++;
+					}
+				}
+			}
+		}
+		if ($count + 1 == $bingoWEIGHT) {
+			$answer++;
+		}
+	}
+	return $answer;
+}
+
+function getMatrix($index, $bingoWEIGHT) {//配列から座標取得
+	$x = intval($index % $bingoWEIGHT);
+	$y = intval($index / $bingoWEIGHT);
+	return array($x, $y);
+}
+
+function isList($listX, $listY, $x, $y) {//探索済みリストに登録されいているか
+	for ($i = 0; $i < count($listX); $i++) {
+		if ($listX[$i] == $x && $listY[$i] == $y) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function signBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {
+
+}
 ?>

@@ -20,9 +20,28 @@ if (isGroup($groupID, $groupPASS)) {// SELECTした行が存在する場合ロ�
 		setGroupValue($groupID, $groupPASS, "bingoWEIGHT", $bingoWEIGHT);
 		setGroupValue($groupID, $groupPASS, "bingoREWARD", $bingoREWARD);
 
+		if ($bingoWEIGHT != $_COOKIE['bingoWEIGHT']) {
+			$arrangementTASK = "";
+			$arrangementACCOUNT = "";
+			for ($i = 0; $i < 25; $i++) {
+				$arrangementTASK .= "neutral,";
+				$arrangementACCOUNT .= "neutral,";
+			}
+
+			if (mb_substr($taskNAME, -1) == ",") {
+				$arrangementTASK = mb_substr($arrangementTASK, 0, -1);
+				$arrangementACCOUNT = mb_substr($arrangementACCOUNT, 0, -1);
+			}
+			setGroupValue($groupID, $groupPASS, "arrangementTASK", $arrangementTASK);
+			setGroupValue($groupID, $groupPASS, "arrangementACCOUNT", $arrangementACCOUNT);
+			setcookie('arrangementTASK', $arrangementTASK);
+			setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+		}
+
 		setcookie('period', $period);
 		setcookie('bingoREWARD', $bingoREWARD);
 		setcookie('bingoWEIGHT', $bingoWEIGHT);
+
 		header("Location: ./edit_group.php");
 		exit ;
 	}

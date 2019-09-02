@@ -1,5 +1,5 @@
 <?php
-session_start();
+/*同一アカウントID禁止　同一タスク名禁止　同一ボーナス報酬金額禁止*/
 
 $id = "";
 $pass = "";
@@ -10,9 +10,12 @@ $groupNAME = "";
 $groupPASS = "";
 $taskNAME = "";
 $taskREWARD = "";
+$arrangementTASK = "";
+$arrangementACCOUNT = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
 $period = "";
+$bingoWEIGHT = "";
 $bingoREWARD = "";
 $doDATE = "none0";
 $doTASK = "none0";
@@ -47,6 +50,7 @@ if (isset($_COOKIE['id'])) {
 	setcookie('doubletREWARD', "none0");
 	setcookie('reward', "0");
 	setcookie('period', "none0");
+	setcookie('bingoWEIGHT', "none0");
 	setcookie('bingoREWARD', "none0");
 	setcookie('doDATE', "none0");
 	setcookie('doTASK', "none0");
@@ -87,6 +91,9 @@ if (isset($_COOKIE['groupID'])) {
 			$doubletAMOUNT = $row['doubletAMOUNT'];
 			$doubletREWARD = $row['doubletREWARD'];
 			$period = $row['period'];
+			$arrangementTASK = $row['arrangementTASK'];
+			$arrangementACCOUNT = $row['arrangementACCOUNT'];
+			$bingoWEIGHT = $row['bingoWEIGHT'];
 			$bingoREWARD = $row['bingoREWARD'];
 			$doDATE = $row['doDATE'];
 			$doTASK = $row['doTASK'];
@@ -100,6 +107,9 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('doubletAMOUNT', $doubletAMOUNT);
 		setcookie('doubletREWARD', $doubletREWARD);
 		setcookie('period', $period);
+		setcookie('arrangementTASK', $arrangementTASK);
+		setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+		setcookie('bingoWEIGHT', $bingoWEIGHT);
 		setcookie('bingoREWARD', $bingoREWARD);
 		setcookie('doDATE', $doDATE);
 		setcookie('doTASK', $doTASK);
@@ -129,41 +139,39 @@ if (isset($_COOKIE['groupID'])) {
 			echo $groupNAME;
 		echo "</h2>";
 		?>
+
 		<table>
 			<table border="1">
 				<?php
 				require_once 'func.php';
-				$taskNAMEs;
-				$taskREWARDs;
-				if (isset($_COOKIE['taskNAME'])) {
-					$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
-					$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+
+				$arrangementTASKs;
+				$arrangementACCOUNTs;
+				if (isset($_COOKIE['arrangementTASK'])) {
+					$arrangementTASKs = explode(",", $_COOKIE['arrangementTASK']);
+					$arrangementACCOUNTs = explode(",", $_COOKIE['arrangementACCOUNT']);
 				}
 				$bingoWeight = getGroupValue($groupID, $groupPASS, "bingoWEIGHT");
 
-
-				$tableN = splitArray($taskNAMEs, $bingoWeight);
-				$tableR = splitArray($taskREWARDs, $bingoWeight);
-
-				for ($i = 0; $i < $bingoWeight; $i++) {
-					echo "<tr>";
-					for ($j = 0; $j < $bingoWeight; $j++) {
-						if ($tableN[$i] != "none0") {
-							$n = "";
-							$r = "";
-							if (mb_substr($tableN[$i][$j], 0, 3) == "###") {
-								$n = mb_substr($tableN[$i][$j], 3);
-								$r = mb_substr($tableR[$i][$j], 3);
-							} else {
-								$n = $tableN[$i][$j];
-								$r = $tableR[$i][$j];
-							}
-							echo "<td>";
-							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r'\" value=\"code\">$n<br/>$r</button>";
-							echo "</td>";
+				for ($i = 0; $i < $bingoWeight * $bingoWeight; $i++) {
+					if ($i % $bingoWeight == 0)
+						echo "<tr>";
+					if ($arrangementTASKs[$i] != "none0") {
+						$n = "";
+						$r = "";
+						if (mb_substr($arrangementTASKs[$i], 0, 3) == "###") {
+							$n = mb_substr($arrangementTASKs[$i], 3);
+							$r = mb_substr($arrangementACCOUNTs[$i], 3);
+						} else {
+							$n = $arrangementTASKs[$i];
+							$r = $arrangementACCOUNTs[$i];
 						}
+						echo "<td>";
+						echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+						echo "</td>";
 					}
-					echo "</tr>";
+					if (($i + 1) % $bingoWeight == 0)
+						echo "</tr>";
 				}
 				?>
 			</table>
@@ -176,7 +184,7 @@ if (isset($_COOKIE['groupID'])) {
 					if (mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral") {
 						echo "<h3>Task:";
 						echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
-						echo "<input type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]'\" value=\"Do\">";
+						echo "<input type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]&index=-1'\" value=\"Do\">";
 						echo "</h3>";
 					}
 				}
