@@ -1,5 +1,6 @@
 <?php
 /*同一アカウントID禁止　同一タスク名禁止　同一ボーナス報酬金額禁止*/
+require_once 'func.php';
 
 $id = "";
 $pass = "";
@@ -14,13 +15,16 @@ $arrangementTASK = "";
 $arrangementACCOUNT = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
-$period = "";
+
 $bingoWEIGHT = "";
 $bingoREWARD = "";
 $doDATE = "none0";
 $doTASK = "none0";
 $doREWARD = "none0";
 $doACCOUNT = "none0";
+$period = "";
+$start = "";
+$end = "";
 /*include 'Data.php';
 
  class Data {
@@ -42,20 +46,24 @@ if (isset($_COOKIE['id'])) {
 	setcookie('id', "none0");
 	setcookie('pass', "none0");
 	setcookie('groupID', "none0");
+	setcookie('reward', "0");
+
 	setcookie('groupNAME', "none0");
 	setcookie('groupPASS', "none0");
 	setcookie('taskNAME', "none0");
 	setcookie('taskREWARD', "none0");
 	setcookie('doubletAMOUNT', "none0");
 	setcookie('doubletREWARD', "none0");
-	setcookie('reward', "0");
-	setcookie('period', "none0");
+
 	setcookie('bingoWEIGHT', "none0");
 	setcookie('bingoREWARD', "none0");
 	setcookie('doDATE', "none0");
 	setcookie('doTASK', "none0");
 	setcookie('doREWARD', "none0");
 	setcookie('doACCOUNT', "none0");
+	setcookie('period', "none0");
+	setcookie('start', "none0");
+	setcookie('end', "none0");
 }
 if (isset($_COOKIE['pass'])) {
 	$pass = $_COOKIE['pass'];
@@ -90,7 +98,7 @@ if (isset($_COOKIE['groupID'])) {
 			$taskREWARD = $row['taskREWARD'];
 			$doubletAMOUNT = $row['doubletAMOUNT'];
 			$doubletREWARD = $row['doubletREWARD'];
-			$period = $row['period'];
+
 			$arrangementTASK = $row['arrangementTASK'];
 			$arrangementACCOUNT = $row['arrangementACCOUNT'];
 			$bingoWEIGHT = $row['bingoWEIGHT'];
@@ -99,6 +107,9 @@ if (isset($_COOKIE['groupID'])) {
 			$doTASK = $row['doTASK'];
 			$doREWARD = $row['doREWARD'];
 			$doACCOUNT = $row['doACCOUNT'];
+			$period = $row['period'];
+			$start = $row['start'];
+			$end = $row['end'];
 		}
 		setcookie('groupNAME', $groupNAME);
 		setcookie('groupPASS', $groupPASS);
@@ -106,7 +117,7 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('taskREWARD', $taskREWARD);
 		setcookie('doubletAMOUNT', $doubletAMOUNT);
 		setcookie('doubletREWARD', $doubletREWARD);
-		setcookie('period', $period);
+
 		setcookie('arrangementTASK', $arrangementTASK);
 		setcookie('arrangementACCOUNT', $arrangementACCOUNT);
 		setcookie('bingoWEIGHT', $bingoWEIGHT);
@@ -115,7 +126,61 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('doTASK', $doTASK);
 		setcookie('doREWARD', $doREWARD);
 		setcookie('doACCOUNT', $doACCOUNT);
+		setcookie('period', $period);
+		setcookie('start', $start);
+		setcookie('end', $end);
 	}
+}
+if (date("Y/m/d") >= $end) {
+	$start = date("Y/m/d");
+	$end = $start . "+" . $period . " day";
+
+	setGroupValue($groupID, $groupPASS, "start", $start);
+	setGroupValue($groupID, $groupPASS, "end", date("Y/m/d", strtotime($end)));
+	setcookie('start', $start);
+	setcookie('end', $end);
+
+	setGroupValue($groupID, $groupPASS, "bingoCOMBINATION", "none0");
+	setcookie('bingoCOMBINATION', "none0");
+
+	$arrangementTASK = "";
+	$arrangementACCOUNT = "";
+	for ($i = 0; $i < 25; $i++) {
+		$arrangementTASK .= "neutral,";
+		$arrangementACCOUNT .= "neutral,";
+	}
+	if (mb_substr($arrangementTASK, -1) == ",") {
+		$arrangementTASK = mb_substr($arrangementTASK, 0, -1);
+		$arrangementACCOUNT = mb_substr($arrangementACCOUNT, 0, -1);
+	}
+	setGroupValue($groupID, $groupPASS, "arrangementTASK", $arrangementTASK);
+	setGroupValue($groupID, $groupPASS, "arrangementACCOUNT", $arrangementACCOUNT);
+	setcookie('arrangementTASK', $arrangementTASK);
+	setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+
+	$sql = "SELECT * FROM User WHERE groupID='$groupID'";
+	$stmt = $db -> query($sql);
+
+	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	if ($stmt -> rowCount() > 0) {
+		foreach ($stmt as $row) {
+			$Gid = $row['id'];
+			$Gpass = $row['pass'];
+			setAccountValue($Gid, $Gpass, "reward", "0");
+		}
+	}
+	setcookie('reward', "0");
+
+	$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
+	$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
+
+	list($taskNAME, $taskREWARD) = removeDo($taskNAMEs, $taskREWARDs);
+
+	setGroupValue($groupID, $groupPASS, "taskNAME", $taskNAME);
+	setGroupValue($groupID, $groupPASS, "taskREWARD", $taskREWARD);
+	setcookie('taskNAME', $taskNAME);
+	setcookie('taskREWARD', $taskREWARD);
 }
 ?>
 
@@ -143,8 +208,6 @@ if (isset($_COOKIE['groupID'])) {
 		<table>
 			<table border="1">
 				<?php
-				require_once 'func.php';
-
 				$arrangementTASKs;
 				$arrangementACCOUNTs;
 				if (isset($_COOKIE['arrangementTASK'])) {
@@ -167,7 +230,11 @@ if (isset($_COOKIE['groupID'])) {
 							$r = $arrangementACCOUNTs[$i];
 						}
 						echo "<td>";
-						echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+						if ($n == "neutral") {
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n</button>";
+						} else {
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+						}
 						echo "</td>";
 					}
 					if (($i + 1) % $bingoWeight == 0)
@@ -181,27 +248,27 @@ if (isset($_COOKIE['groupID'])) {
 				$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
 
 				for ($i = 0; $i < count($taskNAMEs); $i++) {
-					if (mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral") {
+					if (mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral" && $taskNAMEs[$i] != "none0") {
 						echo "<h3>Task:";
 						echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
-						echo "<input type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]&index=-1'\" value=\"Do\">";
+						echo "<input type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]&index=-1'\" value=\"Do it!\">";
 						echo "</h3>";
 					}
 				}
 			}
 
-			if (isset($_COOKIE['doubletAMOUNT'])) {
-				$doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
-				$doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
+			/*if (isset($_COOKIE['doubletAMOUNT'])) {
+			 $doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
+			 $doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
 
-				for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
-					if ($doubletAMOUNTs[$i] != "none0") {
-						echo "<h3>Doublet:";
-						echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
-						echo "</h3>";
-					}
-				}
-			}
+			 for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
+			 if ($doubletAMOUNTs[$i] != "none0") {
+			 echo "<h3>Doublet:";
+			 echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
+			 echo "</h3>";
+			 }
+			 }
+			 }*/
 
 			if (isset($_COOKIE['doDATE'])) {
 				$doDATEs = explode(",", $_COOKIE['doDATE']);
@@ -210,7 +277,7 @@ if (isset($_COOKIE['groupID'])) {
 				$doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 
 				for ($i = 0; $i < count($doDATEs); $i++) {
-					if ($doDATEs[$i] != "none0") {
+					if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start) {
 						echo "<h3>Do:";
 						echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
 						echo "</h3>";
@@ -219,7 +286,7 @@ if (isset($_COOKIE['groupID'])) {
 			}
 
 			if ($id != "none0") {
-				echo "<input type=\"button\" onclick=\"location.href='login_account.php'\" value=\"Logout\">";
+				echo "<input type=\"button\" onclick=\"location.href='logout.php'\" value=\"Logout\">";
 				echo "<input type=\"button\" onclick=\"location.href='./edit_account.php'\" value=\"Setting\">";
 			} else {
 				echo "<input type=\"button\" onclick=\"location.href='login_account.php'\" value=\"Login\">";
@@ -231,10 +298,9 @@ if (isset($_COOKIE['groupID'])) {
 				echo "<input type=\"button\" onclick=\"location.href='./login_group.php'\" value=\"Edit " . $groupNAME . "\">";
 
 			}
-			?>
-			<br />
 
-			<?php
+			echo "<br>";
+
 			if ($groupID != "none0") {
 				$ids = array();
 				$sql = "SELECT * FROM User WHERE groupID='$groupID'";

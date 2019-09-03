@@ -15,6 +15,15 @@ function getAccountValue() {
 	$sql = "SELECT * FROM User WHERE id='$id' AND pass='$pass'";
 }
 
+function setAccountValue($id, $pass, $kindOf, $value) {
+	if (isAccount($id, $pass)) {
+		header('Content-Type: text/html; charset=UTF-8');
+		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+		$sql = "UPDATE User SET $kindOf = '$value' WHERE id='$id' AND pass = '$pass'";
+		$stmt = $db -> query($sql);
+	}
+}
+
 //Group
 
 function isGroup($groupID, $groupPASS) {
@@ -61,6 +70,17 @@ function splitArray($array, $weight) {//一次元配列→二次元配列
 		}
 	}
 	return $table;
+}
+
+function arrayToString($array) {
+	$str = "";
+	for ($i = 0; $i < count($array); $i++) {
+		$str .= $array[$i] . ",";
+	}
+	if (mb_substr($str, -1) == ",") {
+		$str = mb_substr($str, 0, -1);
+	}
+	return $str;
 }
 
 /*function getBingoWeight($array) {//テーブルサイズ
@@ -125,6 +145,25 @@ function addDo($array1, $array2, $taskNAME, $taskREWARD) {
 	return array($after1, $after2);
 }
 
+function removeDo($array1, $array2) {
+	$after1 = "";
+	$after2 = "";
+	for ($i = 0; $i < count($array1); $i++) {
+		if (mb_substr($array1[$i], 0, 3) == "###") {
+			$after1 .= mb_substr($array1[$i], 3) . ",";
+			$after2 .= mb_substr($array2[$i], 3) . ",";
+		} else {
+			$after1 .= $array1[$i] . ",";
+			$after2 .= $array2[$i] . ",";
+		}
+	}
+	if (mb_substr($after1, -1) == ",") {
+		$after1 = mb_substr($after1, 0, -1);
+		$after2 = mb_substr($after2, 0, -1);
+	}
+	return array($after1, $after2);
+}
+
 function addArrangement($arrangementTASKs, $arrangementACCOUNTs, $taskNAME, $id, $index) {
 	$after1 = "";
 	$after2 = "";
@@ -150,7 +189,7 @@ function isBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {//ビンゴ判定
 
 	list($x, $y) = getMatrix($index, $bingoWEIGHT);
 	$table = splitArray($arrangementACCOUNTs, $bingoWEIGHT);
-	$answer = 0;
+	$bingoCOMBINATIONs = array();
 
 	for ($i = 0; $i < 4; $i++) {
 		$count = 0;
@@ -178,12 +217,26 @@ function isBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {//ビンゴ判定
 					}
 				}
 			}
-		}
-		if ($count + 1 == $bingoWEIGHT) {
-			$answer++;
+			if (count($listX) == $bingoWEIGHT) {//BINGO組み合わせ作成
+				$mat = array();
+				//組み合わせソート用
+				$comb = "";
+				//組み合わせ文字列
+				for ($j = 0; $j < count($listX); $j++) {
+					array_push($mat, $listX[$j] . $listY[$j]);
+				}
+				sort($mat);
+				for ($j = 0; $j < count($mat); $j++) {
+					$comb .= $mat[$j] . "-";
+				}
+				if (mb_substr($comb, -1) == "-") {
+					$comb = mb_substr($comb, 0, -1);
+				}
+				array_push($bingoCOMBINATIONs, $comb);
+			}
 		}
 	}
-	return $answer;
+	return $bingoCOMBINATIONs;
 }
 
 function getMatrix($index, $bingoWEIGHT) {//配列から座標取得

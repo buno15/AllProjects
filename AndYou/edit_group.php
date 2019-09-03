@@ -39,19 +39,19 @@ if (isset($_COOKIE['groupID'])) {
 		echo $groupNAME;
 		echo "</h2>";
 
-		if (isset($_COOKIE['doubletAMOUNT'])) {
-			$doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
-			$doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
+		/*if (isset($_COOKIE['doubletAMOUNT'])) {
+		 $doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
+		 $doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
 
-			for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
-				if ($doubletAMOUNTs[$i] != "none0") {
-					echo "<h3>Doublet:";
-					echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
-					echo "<input type=\"button\" onclick=\"location.href='delete_doublet.php?doubletAMOUNT=$doubletAMOUNTs[$i]&doubletREWARD=$doubletREWARDs[$i]'\" value=\"Delete\">";
-					echo "</h3>";
-				}
-			}
-		}
+		 for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
+		 if ($doubletAMOUNTs[$i] != "none0") {
+		 echo "<h3>Doublet:";
+		 echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
+		 echo "<input type=\"button\" onclick=\"location.href='delete_doublet.php?doubletAMOUNT=$doubletAMOUNTs[$i]&doubletREWARD=$doubletREWARDs[$i]'\" value=\"Delete\">";
+		 echo "</h3>";
+		 }
+		 }
+		 }*/
 		echo "<br/>";
 		if (isset($_COOKIE['taskNAME'])) {
 			$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
@@ -73,7 +73,7 @@ if (isset($_COOKIE['groupID'])) {
 			$doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 
 			for ($i = 0; $i < count($doDATEs); $i++) {
-				if ($doDATEs[$i] != "none0") {
+				if ($doDATEs[$i] != "none0" && $doTASKs[$i] != "BINGO") {
 					echo "<h3>Do:";
 					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
 					echo "<input type=\"button\" onclick=\"location.href='delete_do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]'\" value=\"Delete\">";
@@ -83,7 +83,6 @@ if (isset($_COOKIE['groupID'])) {
 		}
 		?>
 		<input type="button" name="add" onclick="location.href='index.php'" value="back">
-		<input type="button" name="add" onclick="location.href='./html/create_doublet.html'" value="ボーナス作成">
 		<input type="button" name="add" onclick="location.href='./html/create_task.html'" value="Add new Task">
 		<input type="button" name="add" onclick="location.href='./create_group_setting.php'" value="Setting">
 		<input type="button" name="add" onclick="location.href='html/edit_group_pass.html'" value="Change Password"/>

@@ -9,6 +9,8 @@ $groupID = $_COOKIE['groupID'];
 $groupPASS = $_COOKIE['groupPASS'];
 $taskNAME = $_GET['taskNAME'];
 $taskREWARD = (int)$_GET['taskREWARD'];
+$bingoREWARD = $_COOKIE['bingoREWARD'];
+$bingoWEIGHT = $_COOKIE['bingoWEIGHT'];
 
 if ($index != "-1") {
 
@@ -24,9 +26,6 @@ if ($index != "-1") {
 
 	$reward = (int)$_COOKIE['reward'] + $taskREWARD;
 
-	$sql = "UPDATE User SET reward = '$reward' WHERE groupID = '$groupID' AND id='$id'";
-	$stmt = $db -> query($sql);
-
 	$taskNAMEs = explode(",", $_COOKIE['taskNAME']);
 	$taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
 
@@ -39,10 +38,10 @@ if ($index != "-1") {
 	$afterDoACCOUNT = $_COOKIE['doACCOUNT'];
 
 	if ($afterDoDATE != "none0") {
-		$afterDoDATE .= "," . $doDATE;
-		$afterDoTASK .= "," . $taskNAME;
-		$afterDoREWARD .= "," . $taskREWARD;
-		$afterDoACCOUNT .= "," . $id;
+		$afterDoDATE = $doDATE . "," . $afterDoDATE;
+		$afterDoTASK = $taskNAME . "," . $afterDoTASK;
+		$afterDoREWARD = $taskREWARD . "," . $afterDoREWARD;
+		$afterDoACCOUNT = $id . "," . $afterDoACCOUNT;
 	} else {
 		$afterDoDATE = $doDATE;
 		$afterDoTASK = $taskNAME;
@@ -50,10 +49,26 @@ if ($index != "-1") {
 		$afterDoACCOUNT = $id;
 	}
 
-	$answer = isBingo($arrangementACCOUNTs, $bingoWEIGHT, 1);
-	if ($answer != 0) {
-
+	$beforeBingoCOMBINATIONs = explode(",", $_COOKIE['bingoCOMBINATION']);
+	$bingoCOMBINATIONs = isBingo(explode(",", $arrangementACCOUNTs), $bingoWEIGHT, $index);
+	$bingoCOMBINATION = arrayToString($beforeBingoCOMBINATIONs);
+	if (count($bingoCOMBINATIONs) != 0) {
+		for ($j = 0; $j < count($bingoCOMBINATIONs); $j++) {
+			if (!in_array($bingoCOMBINATIONs[$j], $beforeBingoCOMBINATIONs)) {
+				$bingoCOMBINATION .= "," . $bingoCOMBINATIONs[$j];
+				$reward = $reward + intval($bingoREWARD);
+				$afterDoDATE = $doDATE . "," . $afterDoDATE;
+				$afterDoTASK = "BINGO," . $afterDoTASK;
+				$afterDoREWARD = $bingoREWARD . "," . $afterDoREWARD;
+				$afterDoACCOUNT = $id . "," . $afterDoACCOUNT;
+			}
+		}
+		setGroupValue($groupID, $groupPASS, "bingoCOMBINATION", $bingoCOMBINATION);
+		setcookie('bingoCOMBINATION', $bingoCOMBINATION);
 	}
+
+	$sql = "UPDATE User SET reward = '$reward' WHERE groupID = '$groupID' AND id='$id'";
+	$stmt = $db -> query($sql);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";
@@ -116,7 +131,12 @@ if ($index != "-1") {
 							$r = $arrangementACCOUNTs[$i];
 						}
 						echo "<td>";
-						echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\">$n<br/>$r</button>";
+						if ($r == "neutral") {
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\">$n</button>";
+						} else {
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+
+						}
 						echo "</td>";
 					}
 					if (($i + 1) % $bingoWeight == 0)

@@ -12,6 +12,8 @@ $doDATE = $_GET['doDATE'];
 $doTASK = $_GET['doTASK'];
 $doREWARD = $_GET['doREWARD'];
 $doACCOUNT = $_GET['doACCOUNT'];
+$bingoREWARD = $_COOKIE['bingoREWARD'];
+$bingoWEIGHT = $_COOKIE['bingoWEIGHT'];
 
 $taskNAMEs = explode(",", $_COOKIE['taskNAME']);
 $taskREWARDs = explode(",", $_COOKIE['taskREWARD']);
@@ -27,10 +29,6 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 }
 
 $reward -= (int)$doREWARD;
-$sql = "UPDATE User SET reward = '$reward' WHERE id = '$doACCOUNT'";
-$stmt = $db -> query($sql);
-
-setcookie('reward', $reward);
 
 $doDATEs = explode(",", $_COOKIE['doDATE']);
 $doTASKs = explode(",", $_COOKIE['doTASK']);
@@ -43,28 +41,6 @@ $afterDoDATE = "";
 $afterDoTASK = "";
 $afterDoREWARD = "";
 $afterDoACCOUNT = "";
-
-for ($i = 0; $i < count($doDATEs); $i++) {
-	if ($doDATEs[$i] != "none0" && $doDATEs[$i] != $doDATE) {
-		$afterDoDATE .= $doDATEs[$i] . ",";
-		$afterDoTASK .= $doTASKs[$i] . ",";
-		$afterDoREWARD .= $doREWARDs[$i] . ",";
-		$afterDoACCOUNT .= $doACCOUNTs[$i] . ",";
-	}
-}
-
-if (mb_substr($afterDoDATE, -1) == ",") {
-	$afterDoDATE = mb_substr($afterDoDATE, 0, -1);
-	$afterDoTASK = mb_substr($afterDoTASK, 0, -1);
-	$afterDoREWARD = mb_substr($afterDoREWARD, 0, -1);
-	$afterDoACCOUNT = mb_substr($afterDoACCOUNT, 0, -1);
-}
-if ($afterDoDATE == null) {
-	$afterDoDATE = "none0";
-	$afterDoTASK = "none0";
-	$afterDoREWARD = "none0";
-	$afterDoACCOUNT = "none0";
-}
 
 for ($i = 0; $i < count($taskNAMEs); $i++) {
 	if ($taskNAMEs[$i] != "none0" && $taskNAMEs[$i] != "###" . $doTASK) {
@@ -88,16 +64,63 @@ $arrangementACCOUNTs = explode(",", $_COOKIE['arrangementACCOUNT']);
 
 $afterArrangementTASK = "";
 $afterArrangementACCOUNT = "";
+$removeCount = 0;
 
 for ($i = 0; $i < count($arrangementTASKs); $i++) {
 	if ($arrangementTASKs[$i] == $doTASK && $arrangementACCOUNTs[$i] == $doACCOUNT) {
 		$afterArrangementTASK .= "neutral,";
 		$afterArrangementACCOUNT .= "neutral,";
+
+		$bingoCOMBINATIONs = explode(",", $_COOKIE['bingoCOMBINATION']);
+		list($x, $y) = getMatrix($i, $bingoWEIGHT);
+		$matrix = $x . "" . $y;
+		$afterBingoCOMBINATION = "";
+
+		for ($j = 0; $j < count($bingoCOMBINATIONs); $j++) {
+			if (strpos($bingoCOMBINATIONs[$j], $matrix) !== false) {
+				$reward = $reward - $bingoREWARD;
+				$removeCount++;
+			} else {
+				$afterBingoCOMBINATION .= $bingoCOMBINATIONs[$j] . ",";
+			}
+		}
+
+		if (mb_substr($afterBingoCOMBINATION, -1) == ",") {
+			$afterBingoCOMBINATION = mb_substr($afterBingoCOMBINATION, 0, -1);
+		}
+		setGroupValue($groupID, $groupPASS, "bingoCOMBINATION", $afterBingoCOMBINATION);
+		setcookie('bingoCOMBINATION', $afterBingoCOMBINATION);
 	} else {
 		$afterArrangementTASK .= $arrangementTASKs[$i] . ",";
 		$afterArrangementACCOUNT .= $arrangementACCOUNTs[$i] . ",";
 	}
 
+}
+for ($k = 0; $k < count($doTASKs); $k++) {
+	if ($doDATEs[$k] != "none0") {
+		if ($doTASKs[$k] == "BINGO" && $doACCOUNTs[$k] == $doACCOUNT && $removeCount > 0) {
+			$removeCount--;
+		} else if ($doTASKs[$k] != $doTASK) {
+			$afterDoDATE .= $doDATEs[$k] . ",";
+			$afterDoTASK .= $doTASKs[$k] . ",";
+			$afterDoREWARD .= $doREWARDs[$k] . ",";
+			$afterDoACCOUNT .= $doACCOUNTs[$k] . ",";
+		}
+	}
+}
+
+if (mb_substr($afterDoDATE, -1) == ",") {
+	$afterDoDATE = mb_substr($afterDoDATE, 0, -1);
+	$afterDoTASK = mb_substr($afterDoTASK, 0, -1);
+	$afterDoREWARD = mb_substr($afterDoREWARD, 0, -1);
+	$afterDoACCOUNT = mb_substr($afterDoACCOUNT, 0, -1);
+}
+
+if ($afterDoDATE == null) {
+	$afterDoDATE = "none0";
+	$afterDoTASK = "none0";
+	$afterDoREWARD = "none0";
+	$afterDoACCOUNT = "none0";
 }
 
 if (mb_substr($afterArrangementTASK, -1) == ",") {
@@ -108,6 +131,11 @@ setGroupValue($groupID, $groupPASS, "arrangementTASK", $afterArrangementTASK);
 setGroupValue($groupID, $groupPASS, "arrangementACCOUNT", $afterArrangementACCOUNT);
 setcookie('arrangementTASK', $afterArrangementTASK);
 setcookie('arrangementACCOUNT', $afterArrangementACCOUNT);
+
+$sql = "UPDATE User SET reward = '$reward' WHERE id = '$doACCOUNT'";
+$stmt = $db -> query($sql);
+
+setcookie('reward', $reward);
 
 $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "UPDATE Gro SET taskNAME = '$afterTaskNAME' WHERE groupID = '$groupID'";

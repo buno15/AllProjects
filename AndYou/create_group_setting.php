@@ -4,9 +4,14 @@ header('Content-Type: text/html; charset=UTF-8');
 
 $groupID = $_COOKIE['groupID'];
 $groupPASS = @$_COOKIE['groupPASS'];
-$period = "";
+
 $bingoREWARD = "";
 $bingoWEIGHT = "";
+
+$period = "";
+$start = $_COOKIE['start'];
+$end = "";
+
 if (isset($_GET['period']))
 	$period = $_GET['period'];
 if (isset($_GET['bingoREWARD']))
@@ -15,8 +20,11 @@ if (isset($_GET['bingoWEIGHT']))
 	$bingoWEIGHT = $_GET['bingoWEIGHT'];
 
 if (isGroup($groupID, $groupPASS)) {// SELECTした行が存在する場合ログイン成功
-	if ($period != null && $period != "0") {
+	if ($period != null && $period != "1") {
 		setGroupValue($groupID, $groupPASS, "period", $period);
+		$end = $start . "+" . $period . " day";
+		setGroupValue($groupID, $groupPASS, "end", date("Y/m/d", strtotime($end)));
+
 		setGroupValue($groupID, $groupPASS, "bingoWEIGHT", $bingoWEIGHT);
 		setGroupValue($groupID, $groupPASS, "bingoREWARD", $bingoREWARD);
 
@@ -36,11 +44,16 @@ if (isGroup($groupID, $groupPASS)) {// SELECTした行が存在する場合ロ�
 			setGroupValue($groupID, $groupPASS, "arrangementACCOUNT", $arrangementACCOUNT);
 			setcookie('arrangementTASK', $arrangementTASK);
 			setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+
+			setGroupValue($groupID, $groupPASS, "bingoCOMBINATION", "none0");
+			setcookie('bingoCOMBINATION', "none0");
 		}
 
-		setcookie('period', $period);
 		setcookie('bingoREWARD', $bingoREWARD);
 		setcookie('bingoWEIGHT', $bingoWEIGHT);
+
+		setcookie('period', $period);
+		setcookie('end', $end);
 
 		header("Location: ./edit_group.php");
 		exit ;
