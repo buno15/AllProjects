@@ -13,6 +13,10 @@ $taskNAME = "";
 $taskREWARD = "";
 $arrangementTASK = "";
 $arrangementACCOUNT = "";
+$arrangementTASKs;
+$arrangementACCOUNTs;
+$arrangementTASKPrevious = "";
+$arrangementACCOUNTPrevious = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
 
@@ -25,6 +29,8 @@ $doACCOUNT = "none0";
 $period = "";
 $start = "";
 $end = "";
+$dateSTART = "";
+$dateEND = "";
 /*include 'Data.php';
 
  class Data {
@@ -101,6 +107,8 @@ if (isset($_COOKIE['groupID'])) {
 
 			$arrangementTASK = $row['arrangementTASK'];
 			$arrangementACCOUNT = $row['arrangementACCOUNT'];
+			$arrangementTASKPrevious = $row['arrangementTASKPrevious'];
+			$arrangementACCOUNTPrevious = $row['arrangementACCOUNTPrevious'];
 			$bingoWEIGHT = $row['bingoWEIGHT'];
 			$bingoREWARD = $row['bingoREWARD'];
 			$doDATE = $row['doDATE'];
@@ -110,6 +118,8 @@ if (isset($_COOKIE['groupID'])) {
 			$period = $row['period'];
 			$start = $row['start'];
 			$end = $row['end'];
+			$dateSTART = $row['dateSTART'];
+			$dateEND = $row['dateEND'];
 		}
 		setcookie('groupNAME', $groupNAME);
 		setcookie('groupPASS', $groupPASS);
@@ -120,6 +130,8 @@ if (isset($_COOKIE['groupID'])) {
 
 		setcookie('arrangementTASK', $arrangementTASK);
 		setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+		setcookie('arrangementTASKPrevious', $arrangementTASKPrevious);
+		setcookie('arrangementACCOUNTPrevious', $arrangementACCOUNTPrevious);
 		setcookie('bingoWEIGHT', $bingoWEIGHT);
 		setcookie('bingoREWARD', $bingoREWARD);
 		setcookie('doDATE', $doDATE);
@@ -129,9 +141,39 @@ if (isset($_COOKIE['groupID'])) {
 		setcookie('period', $period);
 		setcookie('start', $start);
 		setcookie('end', $end);
+		setcookie('dateSTART', $dateSTART);
+		setcookie('dateEND', $dateEND);
 	}
 }
 if (date("Y/m/d") >= $end) {
+	$dateSTARTs = stringToArray($dateSTART);
+	$dateENDs = stringToArray($dateEND);
+	array_unshift($dateSTARTs, $start);
+	array_unshift($dateENDs, $end);
+	$dateSTART = arrayToString($dateSTARTs);
+	$dateEND = arrayToString($dateENDs);
+
+	setGroupValue($groupID, $groupPASS, "dateSTART", $dateSTART);
+	setGroupValue($groupID, $groupPASS, "dateEND", $dateEND);
+	setcookie('dateSTART', $dateSTART);
+	setcookie('dateEND', $dateEND);
+
+	$arrangementTASKs = explode(",", $_COOKIE['arrangementTASK']);
+	$arrangementACCOUNTs = explode(",", $_COOKIE['arrangementACCOUNT']);
+	$arrangementTASKPreviouses = stringToArray($arrangementTASKPrevious);
+	$arrangementACCOUNTPreviouses = stringToArray($arrangementACCOUNTPrevious);
+	$aTp = unifyArrangement($arrangementTASKs);
+	$aAp = unifyArrangement($arrangementACCOUNTs);
+	array_unshift($arrangementTASKPreviouses, $aTp);
+	array_unshift($arrangementACCOUNTPreviouses, $aAp);
+	$arrangementTASKPrevious = arrayToString($arrangementTASKPreviouses);
+	$arrangementACCOUNTPrevious = arrayToString($arrangementACCOUNTPreviouses);
+
+	setGroupValue($groupID, $groupPASS, "arrangementTASKPrevious", $arrangementTASKPrevious);
+	setGroupValue($groupID, $groupPASS, "arrangementACCOUNTPrevious", $arrangementACCOUNTPrevious);
+	setcookie('arrangementTASKPrevious', $arrangementTASKPrevious);
+	setcookie('arrangementACCOUNTPrevious', $arrangementACCOUNTPrevious);
+
 	$start = date("Y/m/d");
 	$end = $start . "+" . $period . " day";
 
@@ -208,8 +250,7 @@ if (date("Y/m/d") >= $end) {
 		<table>
 			<table border="1">
 				<?php
-				$arrangementTASKs;
-				$arrangementACCOUNTs;
+
 				if (isset($_COOKIE['arrangementTASK'])) {
 					$arrangementTASKs = explode(",", $_COOKIE['arrangementTASK']);
 					$arrangementACCOUNTs = explode(",", $_COOKIE['arrangementACCOUNT']);
@@ -287,6 +328,7 @@ if (date("Y/m/d") >= $end) {
 
 			if ($id != "none0") {
 				echo "<input type=\"button\" onclick=\"location.href='logout.php'\" value=\"Logout\">";
+				echo "<input type=\"button\" onclick=\"location.href='./analysis.php?index=0'\" value=\"Analysis\">";
 				echo "<input type=\"button\" onclick=\"location.href='./edit_account.php'\" value=\"Setting\">";
 			} else {
 				echo "<input type=\"button\" onclick=\"location.href='login_account.php'\" value=\"Login\">";

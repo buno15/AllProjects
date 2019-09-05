@@ -26,6 +26,9 @@ if (mb_substr($taskNAME, -1) == ",") {
 	$arrangementACCOUNT = mb_substr($arrangementACCOUNT, 0, -1);
 }
 
+$arrangementTASKPrevious = "none0";
+$arrangementACCOUNTPrevious = "none0";
+
 $doubletAMOUNT = "none0";
 $doubletREWARD = "none0";
 
@@ -38,7 +41,9 @@ $doREWARD = "none0";
 $doACCOUNT = "none0";
 $period = "30";
 $start = date("Y/m/d");
-$end = date("Y/m/d",strtotime("+30 day"));
+$end = date("Y/m/d", strtotime("+30 day"));
+$dateSTART = "none0";
+$dateEND = "none0";
 
 $sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 $stmt = $db -> query($sql);
@@ -48,7 +53,7 @@ $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 	echo 'エラー：グループを作成できません。';
 } else {
-	$sql = "INSERT INTO Gro (groupID, groupPASS, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD, arrangementTASK, arrangementACCOUNT, bingoWEIGHT, bingoREWARD, bingoCOMBINATION, doDATE, doTASK, doREWARD, doACCOUNT, period ,start ,end) VALUES (:groupID, :groupPASS, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD, :arrangementTASK, :arrangementACCOUNT, :bingoWEIGHT, :bingoREWARD, :bingoCOMBINATION, :doDATE, :doTASK, :doREWARD, :doACCOUNT ,:period ,:start ,:end)";
+	$sql = "INSERT INTO Gro (groupID, groupPASS, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD, arrangementTASK, arrangementACCOUNT,  arrangementTASKPrevious, arrangementACCOUNTPrevious, bingoWEIGHT, bingoREWARD, bingoCOMBINATION, doDATE, doTASK, doREWARD, doACCOUNT, period ,start ,end ,dateSTART ,dateEND) VALUES (:groupID, :groupPASS, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD, :arrangementTASK, :arrangementACCOUNT, :arrangementTASKPrevious, :arrangementACCOUNTPrevious, :bingoWEIGHT, :bingoREWARD, :bingoCOMBINATION, :doDATE, :doTASK, :doREWARD, :doACCOUNT ,:period ,:start ,:end ,:dateSTART ,:dateEND)";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindParam(':groupID', $groupID, PDO::PARAM_STR);
 	$stmt -> bindParam(':groupPASS', $groupPASS, PDO::PARAM_STR);
@@ -60,6 +65,8 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 
 	$stmt -> bindParam(':arrangementTASK', $arrangementTASK, PDO::PARAM_STR);
 	$stmt -> bindParam(':arrangementACCOUNT', $arrangementACCOUNT, PDO::PARAM_STR);
+	$stmt -> bindParam(':arrangementTASKPrevious', $arrangementTASKPrevious, PDO::PARAM_STR);
+	$stmt -> bindParam(':arrangementACCOUNTPrevious', $arrangementACCOUNTPrevious, PDO::PARAM_STR);
 	$stmt -> bindParam(':bingoWEIGHT', $bingoWEIGHT, PDO::PARAM_STR);
 	$stmt -> bindParam(':bingoREWARD', $bingoREWARD, PDO::PARAM_STR);
 	$stmt -> bindParam(':bingoCOMBINATION', $bingoCOMBINATION, PDO::PARAM_STR);
@@ -70,6 +77,8 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 	$stmt -> bindParam(':period', $period, PDO::PARAM_STR);
 	$stmt -> bindParam(':start', $start, PDO::PARAM_STR);
 	$stmt -> bindParam(':end', $end, PDO::PARAM_STR);
+	$stmt -> bindParam(':dateSTART', $dateSTART, PDO::PARAM_STR);
+	$stmt -> bindParam(':dateEND', $dateEND, PDO::PARAM_STR);
 	$stmt -> execute();
 
 	$id = $_COOKIE['id'];
@@ -86,6 +95,8 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 
 	setcookie('arrangementTASK', $arrangementTASK);
 	setcookie('arrangementACCOUNT', $arrangementACCOUNT);
+	setcookie('arrangementTASKPrevious', $arrangementTASKPrevious);
+	setcookie('arrangementACCOUNTPrevious', $arrangementACCOUNTPrevious);
 	setcookie('bingoWEIGHT', $bingoWEIGHT);
 	setcookie('bingoREWARD', $bingoREWARD);
 	setcookie('bingoCOMBINATION', $bingoCOMBINATION);
@@ -96,6 +107,8 @@ if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイ�
 	setcookie('period', $period);
 	setcookie('start', $start);
 	setcookie('end', $end);
+	setcookie('dateSTART', $dateSTART);
+	setcookie('dateEND', $dateEND);
 
 	echo 'Made new group.';
 }

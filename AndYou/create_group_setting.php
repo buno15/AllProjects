@@ -22,7 +22,7 @@ if (isset($_GET['bingoWEIGHT']))
 if (isGroup($groupID, $groupPASS)) {// SELECTした行が存在する場合ログイン成功
 	if ($period != null && $period != "1") {
 		setGroupValue($groupID, $groupPASS, "period", $period);
-		$end = $start . "+" . $period . " day";
+		$end = $start . "-" . $period . " day";
 		setGroupValue($groupID, $groupPASS, "end", date("Y/m/d", strtotime($end)));
 
 		setGroupValue($groupID, $groupPASS, "bingoWEIGHT", $bingoWEIGHT);

@@ -77,10 +77,15 @@ function arrayToString($array) {
 	for ($i = 0; $i < count($array); $i++) {
 		$str .= $array[$i] . ",";
 	}
-	if (mb_substr($str, -1) == ",") {
+	while (mb_substr($str, -1) == ",") {
 		$str = mb_substr($str, 0, -1);
 	}
 	return $str;
+}
+
+function stringToArray($str) {
+	$array = explode(",", $str);
+	return $array;
 }
 
 /*function getBingoWeight($array) {//テーブルサイズ
@@ -181,6 +186,21 @@ function addArrangement($arrangementTASKs, $arrangementACCOUNTs, $taskNAME, $id,
 		$after2 = mb_substr($after2, 0, -1);
 	}
 	return array($after1, $after2);
+}
+
+function unifyArrangement($arrangement) {
+	$str = "";
+	for ($i = 0; $i < count($arrangement); $i++) {
+		$str .= $arrangement[$i] . "-";
+	}
+	if (mb_substr($str, -1) == "-") {
+		$str = mb_substr($str, 0, -1);
+	}
+	return $str;
+}
+
+function splitArrangement($arrangement) {
+	return explode("-", $arrangement);
 }
 
 function isBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {//ビンゴ判定
