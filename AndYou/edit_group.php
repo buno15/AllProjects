@@ -4,6 +4,8 @@ $groupNAME = "";
 $doubletAMOUNT = "";
 $doubletREWARD = "";
 
+$start = $_COOKIE['start'];
+
 if (isset($_COOKIE['groupID'])) {
 	$groupID = $_COOKIE['groupID'];
 	$groupNAME = $_COOKIE['groupNAME'];
@@ -73,7 +75,7 @@ if (isset($_COOKIE['groupID'])) {
 			$doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 
 			for ($i = 0; $i < count($doDATEs); $i++) {
-				if ($doDATEs[$i] != "none0" && $doTASKs[$i] != "BINGO") {
+				if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start && $doTASKs[$i] != "BINGO") {
 					echo "<h3>Do:";
 					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
 					echo "<input type=\"button\" onclick=\"location.href='delete_do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]'\" value=\"Delete\">";

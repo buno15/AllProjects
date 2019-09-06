@@ -3,7 +3,7 @@ require_once 'func.php';
 header('Content-Type: text/html; charset=UTF-8');
 
 $groupID = $_COOKIE['groupID'];
-$groupPASS = @$_COOKIE['groupPASS'];
+$groupPASS = $_COOKIE['groupPASS'];
 
 $bingoREWARD = "";
 $bingoWEIGHT = "";
@@ -20,9 +20,9 @@ if (isset($_GET['bingoWEIGHT']))
 	$bingoWEIGHT = $_GET['bingoWEIGHT'];
 
 if (isGroup($groupID, $groupPASS)) {// SELECTした行が存在する場合ログイン成功
-	if ($period != null && $period != "1") {
+	if ($period != null && $period != "0") {
 		setGroupValue($groupID, $groupPASS, "period", $period);
-		$end = $start . "-" . $period . " day";
+		$end = $start . "+" . $period . " day";
 		setGroupValue($groupID, $groupPASS, "end", date("Y/m/d", strtotime($end)));
 
 		setGroupValue($groupID, $groupPASS, "bingoWEIGHT", $bingoWEIGHT);

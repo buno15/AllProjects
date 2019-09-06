@@ -1,4 +1,5 @@
 <?php
+require_once 'func.php';
 header('Content-Type: text/html; charset=UTF-8');
 
 // データベースに接続
@@ -6,6 +7,12 @@ $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
 $id = $_COOKIE['id'];
 $pass = $_COOKIE['pass'];
+$color = $_COOKIE['color'];
+if ($color == "none0") {
+	$color = "#cee4ae";
+	setAccountValue($id, $pass, 'color', $color);
+}
+
 $groupID = $_GET['groupID'];
 $groupNAME = "";
 
@@ -14,10 +21,11 @@ $sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 $stmt = $db -> query($sql);
 
 if ($stmt -> rowCount() > 0) {
-	$sql = "UPDATE User SET groupID = '$groupID',reward='0' WHERE id = '$id' AND pass='$pass'";
+	$sql = "UPDATE User SET groupID = '$groupID',reward='0',color='$color' WHERE id = '$id' AND pass='$pass'";
 	$stmt = $db -> query($sql);
 
 	setcookie('groupID', $groupID);
+	setcookie('color', $color);
 
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);

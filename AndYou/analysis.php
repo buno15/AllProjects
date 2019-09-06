@@ -80,7 +80,8 @@ $doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 				if ($n == "neutral") {
 					echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n</button>";
 				} else {
-					echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+					$tableColor = getAccountValue($arrangementACCOUNTs[$i], "ads", "color");
+					echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
 				}
 				echo "</td>";
 			}
@@ -96,6 +97,30 @@ $doACCOUNTs = explode(",", $_COOKIE['doACCOUNT']);
 				echo "<h3>Do:";
 				echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
 				echo "</h3>";
+			}
+		}
+		if ($groupID != "none0") {
+			$ids = array();
+			for ($i = 0; $i < count($doACCOUNTs); $i++) {
+				if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start && $doDATEs[$i] <= $end) {
+					if (!in_array($doACCOUNTs[$i], $ids, true)) {
+						$ids["$doACCOUNTs[$i]"] = 0;
+					}
+				}
+			}
+			foreach ($ids as $key => $value) {
+				for ($i = 0; $i < count($doACCOUNTs); $i++) {
+					if ($doACCOUNTs[$i] === $key) {
+						if ($doDATEs[$i] >= $start && $doDATEs[$i] <= $end) {
+							$ids["$key"] += $doREWARDs[$i];
+						}
+					}
+				}
+			}
+			arsort($ids);
+			foreach ($ids as $key => $value) {
+				echo $key . '->' . $value;
+				echo "<br/>";
 			}
 		}
 		?>

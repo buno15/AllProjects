@@ -4,9 +4,15 @@ header('Content-Type: text/html; charset=UTF-8');
 // データベースに接続
 $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
+$id = $_COOKIE['id'];
+$color = $_COOKIE['color'];
 $groupNAME = @$_GET['groupNAME'];
 $groupID = md5(uniqid(rand() . $groupNAME, 1));
 $groupPASS = @$_GET['groupPASS'];
+if ($_COOKIE['color'] == "none0") {
+	$color = "#cee4ae";
+	setAccountValue($id, $pass, 'color', $color);
+}
 
 $taskNAME = "";
 $taskREWARD = "";

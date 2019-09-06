@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 
-$id = @$_POST['id'];
-$pass = @$_COOKIE['pass'];
+$id = $_POST['id'];
+$pass = $_COOKIE['pass'];
 $groupID = $_COOKIE['groupID'];
+$color = $_POST['color'];
 // パスワード
 
 // データベースに接続
@@ -16,10 +17,11 @@ $stmt = $db -> query($sql);
 
 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = "UPDATE User SET id = '$id' WHERE groupID = '$groupID' AND pass='$pass'";
+	$sql = "UPDATE User SET id = '$id',color='$color' WHERE groupID = '$groupID' AND pass='$pass'";
 	$stmt = $db -> query($sql);
 
 	setcookie('id', $id);
+	setcookie('color', $color);
 	echo 'Change ID';
 } else {
 	echo 'wrong pass';

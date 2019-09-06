@@ -6,6 +6,7 @@ $pass = @$_POST['pass'];
 
 $groupID = "none0";
 $reward = "0";
+$color = "#cee4ae";
 // パスワード
 
 // データベースに接続
@@ -19,18 +20,20 @@ $stmt = $db -> query($sql);
 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
 	echo 'アカウントが存在します';
 } else {
-	$sql = "INSERT INTO User (id, pass, groupID, reward) VALUES (:id, :pass, :groupID ,:reward)";
+	$sql = "INSERT INTO User (id, pass, groupID, reward , color) VALUES (:id, :pass, :groupID ,:reward ,:color)";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindParam(':id', $id, PDO::PARAM_STR);
 	$stmt -> bindParam(':pass', $pass, PDO::PARAM_STR);
 	$stmt -> bindParam(':groupID', $groupID, PDO::PARAM_STR);
 	$stmt -> bindParam(':reward', $reward, PDO::PARAM_STR);
+	$stmt -> bindParam(':color', $color, PDO::PARAM_STR);
 	$stmt -> execute();
 
 	setcookie('id', $id);
 	setcookie('pass', $pass);
 	setcookie('groupID', $groupID);
 	setcookie('reward', $reward);
+	setcookie('color', $color);
 	if ($groupID == "none0") {
 		setcookie('groupNAME', "none0");
 		setcookie('taskNAME', "none0");

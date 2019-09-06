@@ -6,6 +6,7 @@ $id = "";
 $pass = "";
 $groupID = "";
 $reward = "";
+$color;
 
 $groupNAME = "";
 $groupPASS = "";
@@ -22,10 +23,10 @@ $doubletREWARD = "";
 
 $bingoWEIGHT = "";
 $bingoREWARD = "";
-$doDATE = "none0";
-$doTASK = "none0";
-$doREWARD = "none0";
-$doACCOUNT = "none0";
+$doDATE = "";
+$doTASK = "";
+$doREWARD = "";
+$doACCOUNT = "";
 $period = "";
 $start = "";
 $end = "";
@@ -44,15 +45,31 @@ $dateEND = "";
  $taskNAMEs = $array;
  }
 
- }*/
+ }
+ *
+ *
+ *
+ * <select name="color">
+ <?php
+ $colors = array("#9fa0a0", "#dddcd6", "#ec6d71", "#f0cfa0", "#ffea00", "#98d98e", "#3eb370", "#c1e4e9", "#89c3eb", "#8491c3");
+ for ($i = 0; $i < count($colors); $i++) {
+ $index = $i + 1;
+ print "<option value=\"color$index\" style = background-color:$colors[$i];>color$index</option>\n";
+ }
+
+ ?>
+ </select>
+ * */
 
 if (isset($_COOKIE['id'])) {
 	$id = $_COOKIE['id'];
+
 } else {
 	setcookie('id', "none0");
 	setcookie('pass', "none0");
 	setcookie('groupID', "none0");
 	setcookie('reward', "0");
+	setcookie('color', "none0");
 
 	setcookie('groupNAME', "none0");
 	setcookie('groupPASS', "none0");
@@ -79,6 +96,7 @@ if (isset($_COOKIE['reward'])) {
 }
 if (isset($_COOKIE['groupID'])) {
 	$groupID = $_COOKIE['groupID'];
+	$color = getAccountValue($id, $pass, "color");
 	if ($groupID == "none0") {
 		setcookie('groupNAME', "none0");
 		setcookie('taskNAME', "none0");
@@ -274,7 +292,8 @@ if (date("Y/m/d") >= $end) {
 						if ($n == "neutral") {
 							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n</button>";
 						} else {
-							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+							$tableColor = getAccountValue($arrangementACCOUNTs[$i], $pass, "color");
+							echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
 						}
 						echo "</td>";
 					}

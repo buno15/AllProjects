@@ -17,6 +17,7 @@ if ($index != "-1") {
 	// データベースに接続
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 
+	//$doDATE = "2018/06/03 12:12:12";
 	$doDATE = date("Y/m/d H:i:s");
 
 	$arrangementTASKs = explode(",", $_COOKIE['arrangementTASK']);
@@ -134,7 +135,9 @@ if ($index != "-1") {
 						if ($r == "neutral") {
 							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\">$n</button>";
 						} else {
-							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+							$pass = "";
+							$tableColor = getAccountValue($arrangementACCOUNTs[$i], $pass, "color");
+							echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
 
 						}
 						echo "</td>";

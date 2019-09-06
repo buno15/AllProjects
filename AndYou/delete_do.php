@@ -100,7 +100,9 @@ for ($k = 0; $k < count($doTASKs); $k++) {
 	if ($doDATEs[$k] != "none0") {
 		if ($doTASKs[$k] == "BINGO" && $doACCOUNTs[$k] == $doACCOUNT && $removeCount > 0) {
 			$removeCount--;
-		} else if ($doTASKs[$k] != $doTASK) {
+		} else if ($doTASKs[$k] == $doTASK && $doDATEs[$k] == $doDATE && $doACCOUNTs[$k] == $doACCOUNT) {
+
+		} else {
 			$afterDoDATE .= $doDATEs[$k] . ",";
 			$afterDoTASK .= $doTASKs[$k] . ",";
 			$afterDoREWARD .= $doREWARDs[$k] . ",";

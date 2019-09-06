@@ -5,21 +5,34 @@
 function isAccount($id, $pass) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-	$sql = "SELECT * FROM User WHERE id='$id' AND pass='$pass'";
+	$sql = "SELECT * FROM User WHERE id='$id'";
 	$stmt = $db -> query($sql);
 
 	return $stmt -> rowCount() > 0 ? true : false;
 }
 
-function getAccountValue() {
-	$sql = "SELECT * FROM User WHERE id='$id' AND pass='$pass'";
+function getAccountValue($id, $pass, $kindOf) {
+	header('Content-Type: text/html; charset=UTF-8');
+	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$sql = "SELECT * FROM User WHERE id='$id'";
+	$stmt = $db -> query($sql);
+
+	if ($stmt -> rowCount() > 0) {
+		foreach ($stmt as $row) {
+			$value = $row[$kindOf];
+			return $value;
+		}
+	} else {
+		return NULL;
+	}
 }
 
 function setAccountValue($id, $pass, $kindOf, $value) {
 	if (isAccount($id, $pass)) {
 		header('Content-Type: text/html; charset=UTF-8');
 		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-		$sql = "UPDATE User SET $kindOf = '$value' WHERE id='$id' AND pass = '$pass'";
+		$sql = "UPDATE User SET $kindOf = '$value' WHERE id='$id'";
 		$stmt = $db -> query($sql);
 	}
 }
