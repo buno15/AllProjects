@@ -2,7 +2,7 @@
 
 //Account
 
-function isAccount($id, $pass) {
+function isAccount($id) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$sql = "SELECT * FROM User WHERE id='$id'";
@@ -11,7 +11,7 @@ function isAccount($id, $pass) {
 	return $stmt -> rowCount() > 0 ? true : false;
 }
 
-function getAccountValue($id, $pass, $kindOf) {
+function getAccountValue($id, $kindOf) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -28,7 +28,7 @@ function getAccountValue($id, $pass, $kindOf) {
 	}
 }
 
-function setAccountValue($id, $pass, $kindOf, $value) {
+function setAccountValue($id, $kindOf, $value) {
 	if (isAccount($id, $pass)) {
 		header('Content-Type: text/html; charset=UTF-8');
 		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
@@ -39,20 +39,19 @@ function setAccountValue($id, $pass, $kindOf, $value) {
 
 //Group
 
-function isGroup($groupID, $groupPASS) {
+function isGroup($groupID) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-	$sql = "SELECT * FROM Gro WHERE groupID='$groupID' AND groupPASS='$groupPASS'";
+	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 
 	return $stmt -> rowCount() > 0 ? true : false;
 }
 
-function getGroupValue($groupID, $groupPASS, $kindOf) {
+function getGroupValue($groupID, $kindOf) {
 	header('Content-Type: text/html; charset=UTF-8');
-	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = "SELECT * FROM Gro WHERE groupID='$groupID' AND groupPASS='$groupPASS'";
+	$db = getPDO();
+	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 
 	if ($stmt -> rowCount() > 0) {
@@ -65,13 +64,24 @@ function getGroupValue($groupID, $groupPASS, $kindOf) {
 	}
 }
 
-function setGroupValue($groupID, $groupPASS, $kindOf, $value) {
+function setGroupValue($groupID, $kindOf, $value) {
 	if (isGroup($groupID, $groupPASS)) {
 		header('Content-Type: text/html; charset=UTF-8');
 		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-		$sql = "UPDATE Gro SET $kindOf = '$value' WHERE groupID='$groupID' AND groupPASS = '$groupPASS'";
+		$sql = "UPDATE Gro SET $kindOf = '$value' WHERE groupID='$groupID'";
 		$stmt = $db -> query($sql);
 	}
+}
+
+function getPDO() {
+	header('Content-Type: text/html; charset=UTF-8');
+	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	return $db;
+}
+
+function isValue($value) {
+	return $value != null && $value != "none0" ? true : false;
 }
 
 function splitArray($array, $weight) {//一次元配列→二次元配列
@@ -285,9 +295,5 @@ function isList($listX, $listY, $x, $y) {//探索済みリストに登録され�
 		}
 	}
 	return false;
-}
-
-function signBingo($arrangementACCOUNTs, $bingoWEIGHT, $index) {
-
 }
 ?>
