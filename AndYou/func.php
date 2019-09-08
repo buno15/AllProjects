@@ -3,7 +3,6 @@
 //Account
 
 function isAccount($id) {
-	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$sql = "SELECT * FROM User WHERE id='$id'";
 	$stmt = $db -> query($sql);
@@ -12,7 +11,6 @@ function isAccount($id) {
 }
 
 function getAccountValue($id, $kindOf) {
-	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$sql = "SELECT * FROM User WHERE id='$id'";
@@ -29,8 +27,7 @@ function getAccountValue($id, $kindOf) {
 }
 
 function setAccountValue($id, $kindOf, $value) {
-	if (isAccount($id, $pass)) {
-		header('Content-Type: text/html; charset=UTF-8');
+	if (isAccount($id)) {
 		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 		$sql = "UPDATE User SET $kindOf = '$value' WHERE id='$id'";
 		$stmt = $db -> query($sql);
@@ -40,7 +37,6 @@ function setAccountValue($id, $kindOf, $value) {
 //Group
 
 function isGroup($groupID) {
-	header('Content-Type: text/html; charset=UTF-8');
 	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
@@ -49,7 +45,6 @@ function isGroup($groupID) {
 }
 
 function getGroupValue($groupID, $kindOf) {
-	header('Content-Type: text/html; charset=UTF-8');
 	$db = getPDO();
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
@@ -65,8 +60,7 @@ function getGroupValue($groupID, $kindOf) {
 }
 
 function setGroupValue($groupID, $kindOf, $value) {
-	if (isGroup($groupID, $groupPASS)) {
-		header('Content-Type: text/html; charset=UTF-8');
+	if (isGroup($groupID)) {
 		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 		$sql = "UPDATE Gro SET $kindOf = '$value' WHERE groupID='$groupID'";
 		$stmt = $db -> query($sql);
@@ -147,10 +141,15 @@ function removeTask($array1, $array2, $taskNAME, $taskREWARD) {
 		if ($array1[$i] != $taskNAME || $array2[$i] != $taskREWARD) {
 			$after1 .= $array1[$i] . ",";
 			$after2 .= $array2[$i] . ",";
+		} else {
+			$after1 .= "neutral,";
+			$after2 .= "neutral,";
 		}
 	}
-	$after1 .= "neutral";
-	$after2 .= "neutral";
+	while (mb_substr($after1, -1) == ",") {
+		$after1 = mb_substr($after1, 0, -1);
+		$after2 = mb_substr($after2, 0, -1);
+	}
 	return array($after1, $after2);
 }
 

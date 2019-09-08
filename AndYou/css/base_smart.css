@@ -1,0 +1,288 @@
+@charset "utf-8";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	font-size: 100%;
+	font-family: sans-serif;
+	line-height: 1.5;
+}
+
+img {
+	border: 0;
+}
+
+div.end img {
+	width: 100%;
+	height: 40px;
+}
+
+div#pagebody {
+	width: 100%;
+	padding: 10px 0px;
+	margin: 0;
+}
+
+div#head {
+	height: 80px;
+}
+
+div#head a {
+	text-decoration: none;
+}
+
+div#head  a img {
+	width: 100%;
+	height: 50px;
+}
+
+ul#menu {
+	width: 100%;
+	margin: 0px;
+}
+
+ul#menu li {
+	margin: 0px;
+	list-style-type: none;
+	display: inline;
+	float: none;
+}
+
+ul#menu li a {
+	width: 100%;
+	height: 40px;
+	display: block;
+	margin: 0px;
+	padding: 20px 0px 0px 0px;
+	background-color: #996633;
+	text-decoration: none;
+	text-align: center;
+	color: #ffffff;
+	border-top: solid 2px #ffffff;
+	border-bottom: solid 2px #ffffff;
+}
+
+ul#menu li a:hover {
+	background-color: #5d3d1f;
+}
+
+div#img_index {
+	display: none;
+}
+
+div#img_sub {
+	display: none;
+}
+
+div#info {
+	margin-top: 230px;
+}
+
+div.title {
+	width: 100%;
+	height: 120px;
+	margin: 230px 0px 20px 0px;
+	background-color: #FFFFFF;
+	background-image: url(../../img/bg_h2.png);
+	background-repeat: repeat-y;
+}
+
+div.title img {
+	width: 80px;
+	height: 80px;
+	margin: 20px 0px 0px 10px;
+	background-color: rgba(0, 0, 0.0);
+	float: left;
+}
+
+div.title h2 {
+	width: 250px;
+	height: 20px;
+	padding: 30px 0px 0px 10px;
+	margin: 0px 0px 0px 100px;
+	float: none;
+	color: #FFFFFF;
+	font-size: 15px;
+	text-decoration: underline;
+}
+
+div.title h4 {
+	width: 250px;
+	height: 40px;
+	padding: 10px 0px 0px 10px;
+	margin: 0px 0px 0px 100px;
+	float: none;
+	font-size: 10px;
+	color: #FFFFFF;
+}
+
+div.each {
+	width: 100%;
+	margin: 0px;
+}
+
+div.each h3 a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+div.each h3 a:hover {
+	text-decoration: underline;
+	color: #ffffff;
+}
+
+div.each img {
+	width: 80px;
+	height: 80px;
+	float: left;
+	border: solid 1px #000000;
+	padding: 0;
+	margin: 10px;
+}
+
+div.each h4 {
+	width: 300px;
+	height: 100px;
+	margin: 0;
+	padding: 10px 0px 0px 0px;
+	font-size: 15px;
+	color: #000000;
+}
+
+div.each p {
+	width: 250px;
+	height: 60px;
+	margin: 0;
+	padding: 0px 0px 10px 10px;
+	font-size: 10px;
+	color: #000000;
+}
+
+div.store {
+	width: 80%;
+	height: 20px;
+	margin: 0;
+	padding: 0px 0px 0px 20px;
+}
+
+div.store a {
+	text-decoration: none;
+}
+
+div.store a:hover {
+	text-decoration: underline;
+}
+
+div#text {
+	width: 100%;
+	margin: 5px 0px;
+}
+
+div#text h3 {
+	background-color: #996633;
+	color: #FFFFFF;
+	padding: 10px 0px 10px 30px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-o-border-radius: 0px;
+	-ms-border-radius: 0px;
+}
+
+div#text h4 {
+	padding: 10px 10px 0px 30px;
+}
+
+div#text p {
+	font-size: 12px;
+	padding: 10px 5%;
+}
+
+div#movie iframe {
+	width: 80%;
+	height: 100%;
+}
+
+#info h2 {
+	width: 95%;
+	height: 30px;
+	margin: 0px 0px 5px 0px;
+	padding: 15px 0px 10px 5%;
+	background-color: #996633;
+	background-image: url(../../img/bg_h2.png);
+	background-repeat: repeat-y;
+	font-size: 20px;
+	color: #ffffff;
+}
+
+#info h3 {
+	width: 95%;
+	background-color: #996633;
+	color: #ffffff;
+	font-size: 15px;
+	padding: 10px 0px 5px 5%;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-o-border-radius: 0px;
+	-ms-border-radius: 0px;
+}
+
+div.trainCard {
+	width: 100%;
+	height: 650px;
+	text-align: center;
+}
+
+div.trainCard img {
+	width: 40%;
+	margin: 250px 0px 40px 0px;
+	text-align: center;
+}
+
+div.trainCard img#cards3 {
+	width: 10%;
+	margin: 250px 0px 40px 0px;
+	text-align: center;
+}
+
+div.trainNum {
+	width: 100%;
+	height: 250px;
+	text-align: center;
+}
+
+div.trainNum h1 {
+	width: 100%;
+	margin: 250px 0px 40px 0px;
+	font-size: 80px;
+	text-align: center;
+}
+
+div.trainNum h2 {
+	text-align: center;
+	width: 100%;
+	margin: 250px 0px 40px 0px;
+	font-size: 50px;
+}
+
+#mail p {
+	width: 85%;
+	margin: 0px;
+	padding-left: 20px;
+}
+
+div#copy {
+	text-align: center;
+}
+
+hr {
+	clear: both;
+	width: 99%;
+	margin: 5px 0px;
+	border: 1% dotted #999999;
+}

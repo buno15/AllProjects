@@ -41,11 +41,31 @@
  }
  }
  }
+ *
+ *
+ *
+ *
+ *
+ *
+ if ($id != "none0") {
+ echo "
+ <input type=\"button\" onclick=\"location.href='signout.php'\" value=\"Sign out\">";
+ } else {
+ echo "<input type=\"button\" onclick=\"location.href='signin.php'\" value=\"Sign in\">";
+ echo "<input type=\"button\" name=\"add\" onclick=\"location.href='signup.php'\" value=\"Sign up\"/>";
+ }
+ if ($id != "none0" && $groupID == "none0") {
+ echo "<input type=\"button\" onclick=\"location.href='./create-group.php'\" value=\"Create a group\">";
+ echo "<input type=\"button\" onclick=\"location.href='./join-group.php'\" value=\"Join a group\">";
+ } else if ($groupID != "none0") {
+ echo "<input type=\"button\" onclick=\"location.href='./analysis.php?index=0'\" value=\"Analysis\">";
+ echo "<input type=\"button\" onclick=\"location.href='./signin-group.php'\" value=\"Edit " . $groupNAME . "\">";
+ }
  * */
 
 require_once 'func.php';
 
-$db;
+$db = getPDO();
 
 $id = "";
 $pass = "";
@@ -72,7 +92,7 @@ $doDATE = "";
 $doTASK = "";
 $doREWARD = "";
 $doACCOUNT = "";
-$period = "";
+$intervalTIME = "";
 $start = "";
 $end = "";
 $dateSTART = "";
@@ -86,7 +106,6 @@ if (isset($_COOKIE['id'])) {
 }
 if (isset($_COOKIE['groupID'])) {
 	$groupID = $_COOKIE['groupID'];
-	$db = getPDO();
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 	if ($stmt -> rowCount() > 0) {
@@ -107,7 +126,7 @@ if (isset($_COOKIE['groupID'])) {
 			$doTASK = $row['doTASK'];
 			$doREWARD = $row['doREWARD'];
 			$doACCOUNT = $row['doACCOUNT'];
-			$period = $row['period'];
+			$intervalTIME = $row['intervalTIME'];
 			$start = $row['start'];
 			$end = $row['end'];
 			$dateSTART = $row['dateSTART'];
@@ -122,7 +141,7 @@ if (isset($_COOKIE['groupID'])) {
 	setcookie("groupID", $groupID);
 }
 if ($groupID != null && $groupID != "none0") {
-	if (date("Y/m/d") >= $end) {
+	if (date("Y/m/d") > $end) {
 		$dateSTARTs = stringToArray($dateSTART);
 		$dateENDs = stringToArray($dateEND);
 		array_unshift($dateSTARTs, $start);
@@ -145,10 +164,11 @@ if ($groupID != null && $groupID != "none0") {
 		setGroupValue($groupID, "arrangementTASKPrevious", $arrangementTASKPrevious);
 		setGroupValue($groupID, "arrangementACCOUNTPrevious", $arrangementACCOUNTPrevious);
 
-		$start = date("Y/m/d");
-		$end = $start . "+" . $period . " day";
+		$start = date("Y/m/01");
 		setGroupValue($groupID, "start", $start);
-		setGroupValue($groupID, "end", date("Y/m/d", strtotime($end)));
+		$end = date("Y/m/d", strtotime($start . "+" . $intervalTIME . " month"));
+		$end = date("Y/m/d", strtotime($end . "-1 day"));
+		setGroupValue($groupID, "end", $end);
 
 		setGroupValue($groupID, "bingoCOMBINATION", "none0");
 
@@ -165,7 +185,6 @@ if ($groupID != null && $groupID != "none0") {
 		setGroupValue($groupID, "arrangementTASK", $arrangementTASK);
 		setGroupValue($groupID, "arrangementACCOUNT", $arrangementACCOUNT);
 
-		$db = getPDO();
 		$sql = "SELECT * FROM User WHERE groupID='$groupID'";
 		$stmt = $db -> query($sql);
 		if ($stmt -> rowCount() > 0) {
@@ -189,121 +208,130 @@ if ($groupID != null && $groupID != "none0") {
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>AndYou</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<link rel="stylesheet" href="css/table.css">
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/table_smart.css" />
+		<title>AndY-ou</title>
 	</head>
 	<body>
-		<h1><a href="index.php">AndYou</a></h1>
-		<?php
-		if (isValue($id)) {
-			echo "<h2>ID:";
-			if ($id != "none0")
-				echo $id;
-			echo "</h2>";
-		}
-		if (isValue($groupID)) {
-			echo "<h2>Group:";
-			if ($groupNAME != "none0")
-				echo $groupNAME;
-			echo "</h2>";
-			echo "<table>";
-			echo "<table border=\"1\">";
+		<div id="head">
+			<a href="index.php"><img src="img/title.png" alt="AndY-ou" /></a>
+			<?php
+			echo "<div id=\"account\">";
+			if (isValue($id)) {
+				echo "<a href=\"edit-account.php\"><img src=\"img/account.png\"/><h2>";
+				if ($id != "none0")
+					echo $id;
+				echo "</h2></a>";
+			}
+			echo "</div>";
+			echo "</div>";
+			echo "<hr>";
+			if (isValue($groupID)) {
 
-			if ($arrangementTASK != null && $arrangementTASK != "none0") {
-				$arrangementTASKs = explode(",", getGroupValue($groupID, "arrangementTASK"));
-				$arrangementACCOUNTs = explode(",", getGroupValue($groupID, "arrangementACCOUNT"));
-				$bingoWeight = getGroupValue($groupID, "bingoWEIGHT");
+				echo "<div id=\"left\">";
+				echo "<div id=\"menu\">";
+				echo "<h2>▼Menu</h2>";
+				echo "<ul>";
+				echo "<li><a href=\"signin-group.php\"><img src=\"img/group.png\"/>Group</a></li>";
+				echo "<li><a href=\"analysis.php?index=0\"><img src=\"img/analysis.png\"/>Analysis</a></li>";
+				echo "</ul>";
+				echo "</div>";
 
-				for ($i = 0; $i < $bingoWeight * $bingoWeight; $i++) {
-					if ($i % $bingoWeight == 0)
-						echo "<tr>";
-					if ($arrangementTASKs[$i] != "none0") {
-						$n = "";
-						$r = "";
-						if (mb_substr($arrangementTASKs[$i], 0, 3) == "###") {
-							$n = mb_substr($arrangementTASKs[$i], 3);
-							$r = mb_substr($arrangementACCOUNTs[$i], 3);
-						} else {
-							$n = $arrangementTASKs[$i];
-							$r = $arrangementACCOUNTs[$i];
+				echo "<div id=\"member\">";
+				echo "<ol>";
+				if ($groupID != "none0") {
+					$ids = array();
+					$sql = "SELECT * FROM User WHERE groupID='$groupID'";
+					$stmt = $db -> query($sql);
+
+					if ($stmt -> rowCount() > 0) {
+						foreach ($stmt as $row) {
+							$ids[$row['id']] = $row['reward'];
 						}
-						echo "<td>";
-						if ($n == "neutral") {
-							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n</button>";
-						} else {
-							$tableColor = getAccountValue($arrangementACCOUNTs[$i], "color");
-							echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
-						}
-						echo "</td>";
 					}
-					if (($i + 1) % $bingoWeight == 0)
-						echo "</tr>";
+					arsort($ids);
+
+					foreach ($ids as $key => $value) {
+						echo "<li>";
+						echo $key . ' : ' . $value;
+						echo "</li>";
+					}
+
+				}
+				echo "</ol>";
+				echo "</div>";
+				echo "</div>";
+
+				echo "<div id=\"pagebody\">";
+				echo "<table class=\"table\" border=\"1\">";
+
+				if ($arrangementTASK != null && $arrangementTASK != "none0") {
+					$arrangementTASKs = explode(",", getGroupValue($groupID, "arrangementTASK"));
+					$arrangementACCOUNTs = explode(",", getGroupValue($groupID, "arrangementACCOUNT"));
+
+					for ($i = 0; $i < $bingoWEIGHT * $bingoWEIGHT; $i++) {
+						if ($i % $bingoWEIGHT == 0)
+							echo "<tr>";
+						if ($arrangementTASKs[$i] != "none0") {
+							$n = "";
+							$r = "";
+							if (mb_substr($arrangementTASKs[$i], 0, 3) == "###") {
+								$n = mb_substr($arrangementTASKs[$i], 3);
+								$r = mb_substr($arrangementACCOUNTs[$i], 3);
+							} else {
+								$n = $arrangementTASKs[$i];
+								$r = $arrangementACCOUNTs[$i];
+							}
+							echo "<td>";
+							if ($n == "neutral") {
+								echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n</button>";
+							} else {
+								$tableColor = getAccountValue($arrangementACCOUNTs[$i], "color");
+								echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+							}
+							echo "</td>";
+						}
+						if (($i + 1) % $bingoWEIGHT == 0)
+							echo "</tr>";
+					}
+				}
+				echo "</table>";
+			} else {
+			}
+			echo "<div id=\"do\">";
+			if (isValue($doDATE)) {
+				$doDATEs = explode(",", $doDATE);
+				$doTASKs = explode(",", $doTASK);
+				$doREWARDs = explode(",", $doREWARD);
+				$doACCOUNTs = explode(",", $doACCOUNT);
+
+				for ($i = 0; $i < count($doDATEs); $i++) {
+					if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start) {
+						echo "<h3>";
+						echo $doDATEs[$i] . " " . $doACCOUNTs[$i] . "->" . $doTASKs[$i] . " " . $doREWARDs[$i];
+						echo "</h3>";
+					}
 				}
 			}
-			echo "		</table>";
-		}
-		if (isValue($taskNAME)) {
-			$taskNAMEs = explode(",", $taskNAME);
-			$taskREWARDs = explode(",", $taskREWARD);
+			echo "</div>";
+			echo "</div>";
 
-			for ($i = 0; $i < count($taskNAMEs); $i++) {
-				if (mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral" && $taskNAMEs[$i] != "none0") {
-					echo "<h3>Task:";
-					echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
-					echo "<input type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]&index=-1'\" value=\"Do it!\">";
-					echo "</h3>";
+			echo "<div id=\"task\">";
+			if (isValue($taskNAME)) {
+				$taskNAMEs = explode(",", $taskNAME);
+				$taskREWARDs = explode(",", $taskREWARD);
+
+				for ($i = 0; $i < count($taskNAMEs); $i++) {
+					if (mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral" && $taskNAMEs[$i] != "none0") {
+						echo "<a class=\"btn-sticky\" href=\"do.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]&index=-1\">$taskNAMEs[$i] $taskREWARDs[$i]</a>";
+					}
 				}
+
 			}
-		}
-
-		if (isValue($doDATE)) {
-			$doDATEs = explode(",", $doDATE);
-			$doTASKs = explode(",", $doTASK);
-			$doREWARDs = explode(",", $doREWARD);
-			$doACCOUNTs = explode(",", $doACCOUNT);
-
-			for ($i = 0; $i < count($doDATEs); $i++) {
-				if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start) {
-					echo "<h3>Do:";
-					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
-					echo "</h3>";
-				}
-			}
-		}
-
-		if ($id != "none0") {
-			echo "<input type=\"button\" onclick=\"location.href='signout.php'\" value=\"Sign out\">";
-			echo "<input type=\"button\" onclick=\"location.href='./edit-account.php'\" value=\"Setting\">";
-		} else {
-			echo "<input type=\"button\" onclick=\"location.href='signin.php'\" value=\"Sign in\">";
-			echo "<input type=\"button\" name=\"add\" onclick=\"location.href='signup.php'\" value=\"Sign up\"/>";
-		}
-		if ($id != "none0" && $groupID == "none0") {
-			echo "<input type=\"button\" onclick=\"location.href='./create-group.php'\" value=\"Create a group\">";
-			echo "<input type=\"button\" onclick=\"location.href='./join-group.php'\" value=\"Join a group\">";
-		} else if ($groupID != "none0") {
-			echo "<input type=\"button\" onclick=\"location.href='./analysis.php?index=0'\" value=\"Analysis\">";
-			echo "<input type=\"button\" onclick=\"location.href='./login_group.php'\" value=\"Edit " . $groupNAME . "\">";
-		}
-
-		echo "<br>";
-
-		if ($groupID != "none0") {
-			$ids = array();
-			$db = getPDO();
-			$sql = "SELECT * FROM User WHERE groupID='$groupID'";
-			$stmt = $db -> query($sql);
-
-			if ($stmt -> rowCount() > 0) {
-				foreach ($stmt as $row) {
-					$ids[$row['reward']] = $row['id'];
-				}
-			}
-			krsort($ids);
-			foreach ($ids as $key => $value) {
-				echo $value . '->' . $key;
-				echo "<br/>";
-			}
-		}
-		?>
+			echo "</div>";
+			?>
 	</body>
 </html>

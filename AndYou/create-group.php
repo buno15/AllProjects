@@ -41,15 +41,16 @@ if (isValue($groupNAME) && isValue($groupPASS)) {
 	$doubletAMOUNT = "none0";
 	$doubletREWARD = "none0";
 	$bingoWEIGHT = "3";
-	$bingoREWARD = "none0";
+	$bingoREWARD = "100";
 	$bingoCOMBINATION = "none0";
 	$doDATE = "none0";
 	$doTASK = "none0";
 	$doREWARD = "none0";
 	$doACCOUNT = "none0";
-	$period = "30";
-	$start = date("Y/m/d");
-	$end = date("Y/m/d", strtotime("+30 day"));
+	$intervalTIME = "1";
+	$start = date("Y/m/01");
+	$end = date("Y/m/d", strtotime($start . "+1 month"));
+	$end = date("Y/m/d", strtotime($end . "-1 day"));
 	$dateSTART = "none0";
 	$dateEND = "none0";
 
@@ -60,7 +61,7 @@ if (isValue($groupNAME) && isValue($groupPASS)) {
 	if ($stmt -> rowCount() > 0) {
 		echo 'Group already exists.';
 	} else {
-		$sql = "INSERT INTO Gro (groupID, groupPASS, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD, arrangementTASK, arrangementACCOUNT,  arrangementTASKPrevious, arrangementACCOUNTPrevious, bingoWEIGHT, bingoREWARD, bingoCOMBINATION, doDATE, doTASK, doREWARD, doACCOUNT, period ,start ,end ,dateSTART ,dateEND) VALUES (:groupID, :groupPASS, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD, :arrangementTASK, :arrangementACCOUNT, :arrangementTASKPrevious, :arrangementACCOUNTPrevious, :bingoWEIGHT, :bingoREWARD, :bingoCOMBINATION, :doDATE, :doTASK, :doREWARD, :doACCOUNT ,:period ,:start ,:end ,:dateSTART ,:dateEND)";
+		$sql = "INSERT INTO Gro (groupID, groupPASS, groupNAME, taskNAME, taskREWARD, doubletAMOUNT, doubletREWARD, arrangementTASK, arrangementACCOUNT,  arrangementTASKPrevious, arrangementACCOUNTPrevious, bingoWEIGHT, bingoREWARD, bingoCOMBINATION, doDATE, doTASK, doREWARD, doACCOUNT, intervalTIME ,start ,end ,dateSTART ,dateEND) VALUES (:groupID, :groupPASS, :groupNAME, :taskNAME, :taskREWARD, :doubletAMOUNT, :doubletREWARD, :arrangementTASK, :arrangementACCOUNT, :arrangementTASKPrevious, :arrangementACCOUNTPrevious, :bingoWEIGHT, :bingoREWARD, :bingoCOMBINATION, :doDATE, :doTASK, :doREWARD, :doACCOUNT ,:intervalTIME ,:start ,:end ,:dateSTART ,:dateEND)";
 		$stmt = $db -> prepare($sql);
 		$stmt -> bindParam(':groupID', $groupID, PDO::PARAM_STR);
 		$stmt -> bindParam(':groupPASS', $groupPASS, PDO::PARAM_STR);
@@ -81,7 +82,7 @@ if (isValue($groupNAME) && isValue($groupPASS)) {
 		$stmt -> bindParam(':doTASK', $doTASK, PDO::PARAM_STR);
 		$stmt -> bindParam(':doREWARD', $doREWARD, PDO::PARAM_STR);
 		$stmt -> bindParam(':doACCOUNT', $doACCOUNT, PDO::PARAM_STR);
-		$stmt -> bindParam(':period', $period, PDO::PARAM_STR);
+		$stmt -> bindParam(':intervalTIME', $intervalTIME, PDO::PARAM_STR);
 		$stmt -> bindParam(':start', $start, PDO::PARAM_STR);
 		$stmt -> bindParam(':end', $end, PDO::PARAM_STR);
 		$stmt -> bindParam(':dateSTART', $dateSTART, PDO::PARAM_STR);
@@ -91,7 +92,8 @@ if (isValue($groupNAME) && isValue($groupPASS)) {
 		$sql = "UPDATE User SET groupID = '$groupID' WHERE id = '$id'";
 		$stmt = $db -> query($sql);
 		setcookie('groupID', $groupID);
-		header("Location: ./index.php");
+		setcookie('groupPASS', $groupPASS);
+		header("Location: ./create-group-setting.php");
 		exit ;
 	}
 } else {

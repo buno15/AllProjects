@@ -1,4 +1,9 @@
 <?php
+header('Expires:');
+header('Cache-Control:');
+header('Pragma:');
+header('Content-Type: text/html; charset=UTF-8');
+
 require_once 'func.php';
 
 $id = $_COOKIE['id'];
@@ -20,26 +25,28 @@ if (isset($_COOKIE['groupID'])) {
 		$groupNAME = getGroupValue($groupID, "groupNAME");
 }
 
-echo "<h1><a href=\"index.php\">AndYou</a></h1>";
+echo "<div id=\"head\">";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\" /></a>";
+if (isValue($id)) {
+	echo "<a href=\"edit-account.php\"><h2>";
+	if ($id != "none0")
+		echo $id;
+	echo "</a></h2>";
+}
 echo "<h1>Setting</h1>";
+echo "</div>";
 
 if (isValue($id) && $beforeId != $id) {
-	$db = getPDO();
-	$sql = "SELECT * FROM User WHERE id='$id'";
-	$stmt = $db -> query($sql);
-	if ($stmt -> rowCount() > 0) {
+	if (isAccount($id)) {
 		echo "ID already exists.";
 	} else {
-		$sql = "UPDATE User SET id = '$id' WHERE id = '$beforeId' AND groupID = '$groupID'";
-		$stmt = $db -> query($sql);
+		setAccountValue($beforeId, "id", $id);
 		setcookie('id', $id);
 	}
 }
 if (isValue($color) && $beforeColor != $color) {
-	$db = getPDO();
-	$sql = "UPDATE User SET color = '$color' WHERE id = '$id' AND groupID = '$groupID'";
-	$stmt = $db -> query($sql);
-	setcookie('color', $color);
+	setAccountValue($id, "color", $color);
+	setcookie("color", $color);
 }
 
 echo "<form action=\"edit-account.php\" method=\"POST\">";
@@ -48,10 +55,10 @@ echo "<input type=\"text\" name=\"id\"value=\"$id\" required>";
 echo "<input type=\"color\" name=\"color\" value=\"$color\" required>";
 echo "<input type=\"submit\" value=\"Save\">";
 echo "<br>";
-echo "<input type=\"button\" name=\"add\" onclick=\"location.href='html/edit_account_pass.html'\" value=\"Change Password\"/>";
-echo "<input type=\"button\" name=\"add\" onclick=\"location.href='html/delete_account.html'\" value=\"Delete account\"/>";
-if (isset($_COOKIE['groupID']))
-	echo "<input type=\"button\" onclick=\"location.href='./exit_group.php'\" value=\"Leave " . $groupNAME . "\">";
+echo "<input type=\"button\" name=\"add\" onclick=\"location.href='edit-account-pass.php'\" value=\"Change password\"/>";
+echo "<input type=\"button\" name=\"add\" onclick=\"location.href='delete-account.php'\" value=\"Delete account\"/>";
+if (isset($_COOKIE['groupID']) && $_COOKIE['groupID'] != "none0")
+	echo "<input type=\"button\" onclick=\"location.href='./signout-group.php?flag=conform'\" value=\"Leave " . $groupNAME . "\">";
 echo "</form>";
 ?>
 
@@ -60,7 +67,10 @@ echo "</form>";
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Setting</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Account</title>
 	</head>
 	<body></body>
 </html>
