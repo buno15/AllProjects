@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Group</title>
+	</head>
+	<body></body>
+</html>
 <?php
 header('Expires:');
 header('Cache-Control:');
@@ -6,13 +17,29 @@ header('Content-Type: text/html; charset=UTF-8');
 
 require_once 'func.php';
 
-$id = "none0";
+$id = $_COOKIE['id'];
 $groupID = $_COOKIE['groupID'];
 $groupPASS = "none0";
 
 if (isset($_POST['groupPASS'])) {
 	$groupPASS = $_POST['groupPASS'];
 }
+
+echo "<div id=\"head\">";
+echo "<ul>";
+echo "<li>";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "</li>";
+if (isValue($id)) {
+	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+}
+echo "</ul>";
+echo "</div>";
+echo "<hr>";
+
+echo "<div id=\"pagebody\">";
+
 if (isValue($groupPASS)) {
 	$db = getPDO();
 	$sql = "SELECT * FROM Gro WHERE groupID ='$groupID' AND groupPASS = '$groupPASS'";
@@ -28,28 +55,22 @@ if (isValue($groupPASS)) {
 		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='signin-group.php'\" value=\"back\"/>";
 	}
 } else {
-
-	echo "<h1><a href=\"index.php\">AndYou</a></h1>";
-	echo "<h1>Edit group</h1>";
 	echo "<form action=\"signin-group.php\" method=\"POST\">";
-	echo "Password";
+	echo "<div class=\"cp_iptxt\">";
+	echo "<label class=\"ef\">";
 	if (isset($_COOKIE['groupPASS']) && $_COOKIE['groupPASS'] != "none0") {
 		$groupPASS = $_COOKIE['groupPASS'];
-		echo "<input type=\"text\" name=\"groupPASS\"value=\"$groupPASS\" required>";
+		echo "<input type=\"text\" name=\"groupPASS\" placeholder=\"Group password\" value=\"$groupPASS\" required>";
 	} else {
-		echo "<input type=\"text\" name=\"groupPASS\"value=\"\" required>";
+		echo "<input type=\"text\" name=\"groupPASS\" placeholder=\"Group password\" required>";
 	}
-	echo "<br>";
-	echo "<input type=\"submit\" value=\"Sign in\">";
+	echo "</label>";
+	echo "</div>";
+
+	echo "<div class=\"submit\">";
+	echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Sign in\">";
+	echo "</div>";
 	echo "</form>";
+	echo "</div>";
 }
 ?>
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Edit group</title>
-	</head>
-	<body></body>
-</html>

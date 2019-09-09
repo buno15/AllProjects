@@ -1,3 +1,13 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Sign up</title>
+	</head>
+	<body></body>
+</html>
 <?php
 header('Expires:');
 header('Cache-Control:');
@@ -22,10 +32,26 @@ $db = getPDO();
 $sql = "SELECT * FROM User WHERE id='$id'";
 $stmt = $db -> query($sql);
 
+echo "<div id=\"head\">";
+echo "<ul>";
+echo "<li>";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "</li>";
+if (isValue($id)) {
+	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+}
+echo "</ul>";
+echo "</div>";
+echo "<hr>";
+
+echo "<div id=\"pagebody\">";
+
 if (isValue($id) && isValue($pass)) {
 	if ($stmt -> rowCount() > 0) {
+		echo "<div class=\"error\">";
 		echo 'ID already exists.<br>';
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='signup.php'\" value=\"back\"/>";
+		echo "</div>";
 	} else {
 		$sql = "INSERT INTO User (id, pass, groupID, reward , color) VALUES (:id, :pass, :groupID ,:reward ,:color)";
 		$stmt = $db -> prepare($sql);
@@ -41,23 +67,22 @@ if (isValue($id) && isValue($pass)) {
 		header("Location: ./index.php");
 		exit ;
 	}
-} else {
-	echo "<h1><a href=\"index.php\">AndYou</a></h1>";
-	echo "<h1>Sign up</h1>";
-	echo "<form action=\"signup.php\" method=\"POST\">";
-	echo "ID";
-	echo "<input type=\"text\" name=\"id\"value=\"\" required>";
-	echo "<br>Password";
-	echo "<input type=\"text\" name=\"pass\" value=\"\" required>";
-	echo "<br>";
-	echo "<input type=\"submit\" value=\"Sign up\">";
-	echo "</form>";
 }
+echo "<form action=\"signup.php\" method=\"POST\">";
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"id\" value=\"\" placeholder=\"ID\" required>";
+echo "</label>";
+echo "</div>";
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"pass\" value=\"\" placeholder=\"Password\" required>";
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"submit\">";
+echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Sign up\">";
+echo "</div>";
+echo "</form>";
+echo "</div>";
 ?>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Sign up</title>
-	</head>
-	<body></body>
-</html>

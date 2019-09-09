@@ -1,7 +1,18 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Account</title>
+	</head>
+	<body></body>
+</html>
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 require_once 'func.php';
 
+$id = $_COOKIE['id'];
 $taskNAME = "none0";
 $taskREWARD = "none0";
 $groupID = $_COOKIE['groupID'];
@@ -20,10 +31,39 @@ $afterTaskREWARD = "";
 
 $flag = true;
 
+echo "<div id=\"head\">";
+echo "<ul>";
+echo "<li>";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "</li>";
+if (isValue($id)) {
+	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+}
+echo "</ul>";
+echo "</div>";
+echo "<hr>";
+
+echo "<div id=\"left\">";
+echo "<div id=\"menu\">";
+echo "<ul>";
+echo "<li><a class=\"active\" >Menu</a></li>";
+echo "<li><a href=\"edit-group.php\">Home</a></li>";
+echo "<li><a href=\"create-task.php\">Add task</a></li>";
+echo "<li><a href=\"edit-group-setting.php\">Setting</a></li>";
+echo "<li><a href=\"edit-group-pass.php\">Change password</a></li>";
+echo "<li><a href=\"delete-group.php\">Delete group</a></li>";
+echo "</ul>";
+echo "</div>";
+echo "</div>";
+
+echo "<div id=\"pagebody\">";
+
 if (isValue($taskNAME) && isValue($taskREWARD)) {
 	if (in_array($taskNAME, $taskNAMEs) || in_array($taskNAME, $doTASKs)) {
-		echo "alredy exist<br>";
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='create-task.php'\" value=\"back\"/>";
+		echo "<div class=\"error\">";
+		echo "Task already exists.";
+		echo "</div>";
 	} else {
 		for ($i = 0; $i < count($taskNAMEs); $i++) {
 			if ($taskNAMEs[$i] == "neutral" && $flag) {
@@ -47,22 +87,22 @@ if (isValue($taskNAME) && isValue($taskREWARD)) {
 		exit ;
 	}
 } else {
-	echo "<h1><a href=\"index.php\">AndYou</a></h1>";
-	echo "<h1>New task</h1>";
-	echo "<form action=\"create-task.php\" method=\"GET\">";
-	echo "Task name";
-	echo "<input type=\"text\" name=\"taskNAME\"value=\"\" required>";
-	echo "<br>Task reward";
-	echo "<input type=\"text\" name=\"taskREWARD\"value=\"\" required>";
-	echo "<br>";
-	echo "<input type=\"submit\" value=\"Save\">";
-	echo "</form>";
 }
+echo "<form action=\"create-task.php\" method=\"GET\">";
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"taskNAME\" value=\"\" placeholder=\"Task name\" required>";
+echo "</label>";
+echo "</div>";
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"number\" name=\"taskREWARD\" value=\"\" placeholder=\"Task reward\" required>";
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"submit\">";
+echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Add\">";
+echo "</div>";
+echo "</form>";
+echo "</div>";
 ?>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>New Task</title>
-	</head>
-	<body></body>
-</html>

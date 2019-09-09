@@ -1,3 +1,15 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<link rel="stylesheet" href="css/table.css">
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/table_smart.css" />
+		<title>AndY-ou</title>
+	</head>
+	<body></body>
+</html>
 <?php
 require_once 'func.php';
 
@@ -5,6 +17,7 @@ $index = $_GET['index'];
 
 $id = $_COOKIE['id'];
 $groupID = $_COOKIE['groupID'];
+$groupNAME = getGroupValue($groupID, "groupNAME");
 $taskNAME = $_GET['taskNAME'];
 $taskREWARD = (int)$_GET['taskREWARD'];
 $bingoREWARD = getGroupValue($groupID, "bingoREWARD");
@@ -76,6 +89,52 @@ if ($index != "-1") {
 	header("Location: ./index.php");
 	exit ;
 } else {
+	echo "<div id=\"head\">";
+	echo "<ul>";
+	echo "<li>";
+	echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+	echo "</li>";
+	if (isValue($id)) {
+		echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+		echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+	}
+	echo "</ul>";
+	echo "</div>";
+	echo "<hr>";
+
+	echo "<div id=\"left\">";
+
+	echo "<div id=\"group\">";
+	echo "<h2>" . $groupNAME . "</h2>";
+	echo "</div>";
+
+	echo "<div id=\"member\">";
+	echo "<ol>";
+	if ($groupID != "none0") {
+		$ids = array();
+		$db = getPDO();
+		$sql = "SELECT * FROM User WHERE groupID='$groupID'";
+		$stmt = $db -> query($sql);
+
+		if ($stmt -> rowCount() > 0) {
+			foreach ($stmt as $row) {
+				$ids[$row['id']] = $row['reward'];
+			}
+		}
+		arsort($ids);
+
+		foreach ($ids as $key => $value) {
+			echo "<li>";
+			echo $key . ' : ' . $value;
+			echo "</li>";
+		}
+
+	}
+	echo "</ol>";
+	echo "</div>";
+	echo "</div>";
+
+	echo "<div id=\"pagebody\">";
 	$flag = true;
 	for ($i = 0; $i < count($arrangementTASKs); $i++) {
 		if ($taskNAME == $arrangementTASKs[$i]) {
@@ -83,8 +142,7 @@ if ($index != "-1") {
 		}
 	}
 	if ($flag) {
-		echo "<table>";
-		echo "<table border=\"1\">";
+		echo "<table class=\"table\" border=\"1\">";
 
 		for ($i = 0; $i < $bingoWEIGHT * $bingoWEIGHT; $i++) {
 			if ($i % $bingoWEIGHT == 0)
@@ -103,7 +161,7 @@ if ($index != "-1") {
 				}
 				echo "<td>";
 				if ($r == "neutral") {
-					echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\">$n</button>";
+					echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$taskNAME&taskREWARD=$taskREWARD&index=$i'\" value=\"code\"></button>";
 				} else {
 					$pass = "";
 					$tableColor = getAccountValue($arrangementACCOUNTs[$i], "color");
@@ -116,13 +174,15 @@ if ($index != "-1") {
 		}
 		echo "</table>";
 	} else {
-		echo 'Error<br>';
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='index.php'\" value=\"back\"/>";
+		echo "<div class=\"error\">";
+		echo "<h1>Error</h1>";
+		echo "</div>";
+		echo "<div class=\"submit\">";
+		echo "<div class=\"conform\">";
+		echo "<input class=\"btn-flat-border\" type=\"button\" name=\"add\" onclick=\"location.href='delete-group.php'\" value=\"Back\"/>";
+		echo "</div>";
+		echo "</div>";
 	}
+	echo "</div>";
 }
 ?>
-<html>
-	<body>
-
-	</body>
-</html>

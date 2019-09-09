@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Sign in</title>
+	</head>
+	<body>
+
+	</body>
+</html>
 <?php
 header('Expires:');
 header('Cache-Control:');
@@ -16,6 +29,21 @@ if (isset($_POST['pass'])) {
 }
 $groupID = "";
 
+echo "<div id=\"head\">";
+echo "<ul>";
+echo "<li>";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "</li>";
+if (isValue($id)) {
+	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+}
+echo "</ul>";
+echo "</div>";
+echo "<hr>";
+
+echo "<div id=\"pagebody\">";
+
 if (isValue($id) && isValue($pass)) {
 	$db = getPDO();
 	$sql = "SELECT * FROM User WHERE id ='$id' AND pass = '$pass'";
@@ -30,37 +58,38 @@ if (isValue($id) && isValue($pass)) {
 		header("Location: ./index.php");
 		exit ;
 	} else {
-		echo 'ID does not exist.<br>';
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='signin.php'\" value=\"back\"/>";
+		echo "<div class=\"error\">";
+		echo "ID does not exist.";
+		echo "</div>";
 	}
-} else {
-	echo "<h1><a href=\"index.php\">AndYou</a></h1>";
-	echo "<h1>Sign in</h1>";
-	echo "<form action=\"signin.php\" method=\"POST\">";
-	echo "ID";
-	if (isset($_COOKIE['id']) && $_COOKIE['id'] != "none0") {
-		$id = $_COOKIE['id'];
-		$pass = getAccountValue($id, "pass");
-		echo "<input type=\"text\" name=\"id\"value=\"$id\" required>";
-		echo "<br>Password";
-		echo "<input type=\"text\" name=\"pass\" value=\"$pass\" required>";
-	} else {
-		echo "<input type=\"text\" name=\"id\"value=\"\" required>";
-		echo "<br>Password";
-		echo "<input type=\"text\" name=\"pass\" value=\"\"required>";
-	}
-	echo "<br>";
-	echo "<input type=\"submit\" value=\"Sign in\">";
-	echo "</form>";
 }
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Sign in</title>
-	</head>
-	<body>
+echo "<form action=\"signin.php\" method=\"POST\">";
 
-	</body>
-</html>
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+if (isset($_COOKIE['id']) && $_COOKIE['id'] != "none0") {
+	$id = $_COOKIE['id'];
+	$pass = getAccountValue($id, "pass");
+	echo "<input type=\"text\" name=\"id\" value=\"$id\" placeholder=\"ID\" required>";
+	echo "</label>";
+	echo "</div>";
+	echo "<div class=\"cp_iptxt\">";
+	echo "<label class=\"ef\">";
+	echo "<input type=\"text\" name=\"pass\" value=\"$pass\" placeholder=\"Password\" required>";
+} else {
+	echo "<input type=\"text\" name=\"id\" value=\"\" placeholder=\"ID\" required>";
+	echo "</label>";
+	echo "</div>";
+	echo "<div class=\"cp_iptxt\">";
+	echo "<label class=\"ef\">";
+	echo "<input type=\"text\" name=\"pass\" value=\"\" placeholder=\"Password\" required>";
+}
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"submit\">";
+echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Sign in\">";
+echo "</div>";
+echo "</form>";
+echo "</div>";
+?>

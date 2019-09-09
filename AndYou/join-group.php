@@ -1,4 +1,13 @@
-<?php
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Account</title>
+	</head>
+	<body></body>
+</html><?php
 header('Expires:');
 header('Cache-Control:');
 header('Pragma:');
@@ -11,6 +20,41 @@ $groupID = "none0";
 if (isset($_GET['groupID'])) {
 	$groupID = $_GET['groupID'];
 }
+
+echo "<div id=\"head\">";
+echo "<ul>";
+echo "<li>";
+echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "</li>";
+if (isValue($id)) {
+	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+}
+echo "</ul>";
+echo "</div>";
+echo "<hr>";
+
+echo "<div id=\"left\">";
+echo "<div id=\"menu\">";
+echo "<ul>";
+echo "<li><a class=\"active\" >Menu</a></li>";
+echo "<li><a href=\"edit-account.php\">Home</a></li>";
+echo "<li><a href=\"edit-account-pass.php\">Change password</a></li>";
+if ($id != "none0" && $groupID == "none0") {
+	echo "<li><a href=\"create-group.php\">Create group</a></li>";
+	echo "<li><a href=\"join-group.php\">Join group</a></li>";
+}
+if (isset($_COOKIE['groupID']) && $_COOKIE['groupID'] != "none0")
+	echo "<li><a href=\"signout-group.php?flag=conform\">Leave group</a></li>";
+if ($id != "none0") {
+	echo "<li><a href=\"signout.php\">Sign out</a></li>";
+}
+echo "<li><a href=\"delete-account.php\">Delete account</a></li>";
+echo "</ul>";
+echo "</div>";
+echo "</div>";
+
+echo "<div id=\"pagebody\">";
 
 $db = getPDO();
 $sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
@@ -30,22 +74,23 @@ if (isValue($groupID)) {
 			exit ;
 		}
 	} else {
-		echo 'Group does not exist.<br>';
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='join-group.php'\" value=\"back\"/>";
+		echo "<div class=\"error\">";
+		echo 'Group does not exist.';
+		echo "</div>";
 	}
 } else {
-	echo "<h1><a href=\"index.php\">AndYou</a></h1>";
-	echo "<h1>Join a group</h1>";
 	echo "<form action=\"join-group.php\" method=\"GET\">";
-	echo "Group ID";
-	echo "<input type=\"text\" name=\"groupID\"value=\"\" required>";
-	echo "<br>";
-	echo "<input type=\"submit\" value=\"Join\">";
+
+	echo "<div class=\"cp_iptxt\">";
+	echo "<label class=\"ef\">";
+	echo "<input type=\"text\" name=\"groupID\" placeholder=\"Group ID\" required>";
+	echo "</label>";
+	echo "</div>";
+
+	echo "<div class=\"submit\">";
+	echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Join\">";
+	echo "</div>";
 	echo "</form>";
+	echo "</div>";
 }
 ?>
-<html>
-	<meta charset="UTF-8" />
-	<title>Join a group</title>
-	<body></body>
-</html>

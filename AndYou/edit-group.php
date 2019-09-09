@@ -1,6 +1,7 @@
 <?php
 require_once 'func.php';
 
+$id = $_COOKIE['id'];
 $groupID = "";
 $groupNAME = "";
 $doubletAMOUNT = "";
@@ -30,58 +31,73 @@ if (isset($_COOKIE['groupID'])) {
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>AndYou</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Group</title>
 	</head>
 	<body>
-		<h1><a href="index.php">AndYou</a></h1>
 		<?php
-		echo "<h2>GroupID:";
-		echo $groupID;
-		echo "</h2>";
+		echo "<div id=\"head\">";
+		echo "<ul>";
+		echo "<li>";
+		echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+		echo "</li>";
+		if (isValue($id)) {
+			echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
+			echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
+		}
+		echo "</ul>";
+		echo "</div>";
+		echo "<hr>";
 
-		echo "<h2>Group:";
-		echo $groupNAME;
-		echo "</h2>";
+		echo "<div id=\"left\">";
+		echo "<div id=\"menu\">";
+		echo "<ul>";
+		echo "<li><a class=\"active\" >Menu</a></li>";
+		echo "<li><a href=\"edit-group.php\">Home</a></li>";
+		echo "<li><a href=\"create-task.php\">Add task</a></li>";
+		echo "<li><a href=\"edit-group-setting.php\">Setting</a></li>";
+		echo "<li><a href=\"edit-group-pass.php\">Change password</a></li>";
+		echo "<li><a href=\"delete-group.php\">Delete group</a></li>";
+		echo "</ul>";
+		echo "</div>";
 
-		/*
-		 * $db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-		 $sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
-		 $stmt = $db -> query($sql);
-		 if ($stmt -> rowCount() > 0) {// SELECTした行が存在する場合ログイン成功
-		 foreach ($stmt as $row) {
-		 $doubletAMOUNT = $row['doubletAMOUNT'];
-		 $doubletREWARD = $row['doubletREWARD'];
-		 }
-		 setcookie('doubletAMOUNT', $doubletAMOUNT);
-		 setcookie('doubletREWARD', $doubletREWARD);
-		 }
-		 *
-		 * if (isset($_COOKIE['doubletAMOUNT'])) {
-		 $doubletAMOUNTs = explode(",", $_COOKIE['doubletAMOUNT']);
-		 $doubletREWARDs = explode(",", $_COOKIE['doubletREWARD']);
+		echo "<div id=\"group\">";
+		echo "<h2>" . $groupNAME . "</h2>";
+		echo "</div>";
 
-		 for ($i = 0; $i < count($doubletAMOUNTs); $i++) {
-		 if ($doubletAMOUNTs[$i] != "none0") {
-		 echo "<h3>Doublet:";
-		 echo $doubletAMOUNTs[$i] . "yen->add" . $doubletREWARDs[$i];
-		 echo "<input type=\"button\" onclick=\"location.href='delete_doublet.php?doubletAMOUNT=$doubletAMOUNTs[$i]&doubletREWARD=$doubletREWARDs[$i]'\" value=\"Delete\">";
-		 echo "</h3>";
-		 }
-		 }
-		 }*/
-		if (isValue($taskNAME)) {
-			$taskNAMEs = explode(",", $taskNAME);
-			$taskREWARDs = explode(",", $taskREWARD);
+		echo "<div id=\"member\">";
+		echo "<ol>";
+		if ($groupID != "none0") {
+			$ids = array();
+			$db = getPDO();
+			$sql = "SELECT * FROM User WHERE groupID='$groupID'";
+			$stmt = $db -> query($sql);
 
-			for ($i = 0; $i < count($taskNAMEs); $i++) {
-				if ($taskNAMEs[$i] != "none0" && mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral") {
-					echo "<h3>Task:";
-					echo $taskNAMEs[$i] . "->" . $taskREWARDs[$i];
-					echo "<input type=\"button\" onclick=\"location.href='delete-task.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]'\" value=\"Delete\">";
-					echo "</h3>";
+			if ($stmt -> rowCount() > 0) {
+				foreach ($stmt as $row) {
+					$ids[$row['id']] = $row['reward'];
 				}
 			}
+			arsort($ids);
+
+			foreach ($ids as $key => $value) {
+				echo "<li>";
+				echo $key . ' : ' . $value;
+				echo "</li>";
+			}
+
 		}
+		echo "</ol>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div id=\"pagebody\">";
+		echo "<h2>Group ID : ";
+		echo $groupID;
+		echo "</h2>";
+		echo "<div id=\"do-group\">";
 		if (isValue($doDATE)) {
 			$doDATEs = explode(",", $doDATE);
 			$doTASKs = explode(",", $doTASK);
@@ -90,19 +106,27 @@ if (isset($_COOKIE['groupID'])) {
 
 			for ($i = 0; $i < count($doDATEs); $i++) {
 				if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start && $doTASKs[$i] != "BINGO") {
-					echo "<h3>Do:";
-					echo $doDATEs[$i] . "->" . $doTASKs[$i] . ":" . $doREWARDs[$i] . "->" . $doACCOUNTs[$i];
-					echo "<input type=\"button\" onclick=\"location.href='delete-do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]'\" value=\"Delete\">";
-					echo "</h3>";
+					echo "<a class=\"btn-do\" href=\"delete-do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]\">";
+					echo $doDATEs[$i] . " " . $doACCOUNTs[$i] . "->" . $doTASKs[$i] . " : " . $doREWARDs[$i];
+					echo "</a>";
 				}
 			}
 		}
-		?>
-		<input type="button" name="add" onclick="location.href='./create-task.php'" value="Add task">
-		<input type="button" name="add" onclick="location.href='./edit-group-setting.php'" value="Setting">
-		<input type="button" name="add" onclick="location.href='edit-group-pass.php'" value="Change password"/>
-		<?php
-		echo "<input type=\"button\" onclick=\"location.href='delete-group.php'\" value=\"Delete " . $groupNAME . "\"/>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div id=\"task\">";
+		if (isValue($taskNAME)) {
+			$taskNAMEs = explode(",", $taskNAME);
+			$taskREWARDs = explode(",", $taskREWARD);
+
+			for ($i = 0; $i < count($taskNAMEs); $i++) {
+				if ($taskNAMEs[$i] != "none0" && mb_substr($taskNAMEs[$i], 0, 3) != "###" && $taskNAMEs[$i] != "neutral") {
+					echo "<a class=\"btn-group-task\" href=\"delete-task.php?taskNAME=$taskNAMEs[$i]&taskREWARD=$taskREWARDs[$i]\">$taskNAMEs[$i] $taskREWARDs[$i]</a>";
+				}
+			}
+		}
+		echo "</div>";
 		?>
 	</body>
 </html>
