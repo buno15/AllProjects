@@ -24,7 +24,7 @@ if (isset($_GET['groupID'])) {
 echo "<div id=\"head\">";
 echo "<ul>";
 echo "<li>";
-echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "<a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
 echo "</li>";
 if (isValue($id)) {
 	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";

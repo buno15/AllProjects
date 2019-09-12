@@ -19,7 +19,7 @@ require_once 'func.php';
 
 $id = $_COOKIE['id'];
 $groupID = "none0";
-$color = $_COOKIE['color'];
+$color = "none0";
 $beforeId = $_COOKIE['id'];
 $beforeColor = getAccountValue($id, "color");
 $groupNAME = "";
@@ -51,7 +51,7 @@ if (isValue($id) && $beforeId != $id) {
 echo "<div id=\"head\">";
 echo "<ul>";
 echo "<li>";
-echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+echo "<a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
 echo "</li>";
 if (isValue($id)) {
 	echo "<li><a href=\"edit-account.php\"><h2>$beforeId</h2></a></li>";
@@ -89,7 +89,6 @@ if ($flag) {
 }
 if (isValue($color) && $beforeColor != $color) {
 	setAccountValue($id, "color", $color);
-	setcookie("color", $color);
 	$beforeColor = $color;
 }
 echo "<form action=\"edit-account.php\" method=\"POST\">";

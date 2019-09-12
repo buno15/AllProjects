@@ -41,7 +41,7 @@ if (isset($_COOKIE['groupID'])) {
 		echo "<div id=\"head\">";
 		echo "<ul>";
 		echo "<li>";
-		echo "<a href=\"index.php\"><img src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
+		echo "<a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
 		echo "</li>";
 		if (isValue($id)) {
 			echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
@@ -107,7 +107,7 @@ if (isset($_COOKIE['groupID'])) {
 			for ($i = 0; $i < count($doDATEs); $i++) {
 				if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start && $doTASKs[$i] != "BINGO") {
 					echo "<a class=\"btn-do\" href=\"delete-do.php?doDATE=$doDATEs[$i]&doTASK=$doTASKs[$i]&doREWARD=$doREWARDs[$i]&doACCOUNT=$doACCOUNTs[$i]\">";
-					echo $doDATEs[$i] . " " . $doACCOUNTs[$i] . "->" . $doTASKs[$i] . " : " . $doREWARDs[$i];
+					echo "<p>" . $doDATEs[$i] . " : " . $doACCOUNTs[$i] . "<br>->" . $doTASKs[$i] . " : " . $doREWARDs[$i] . "</p>";
 					echo "</a>";
 				}
 			}

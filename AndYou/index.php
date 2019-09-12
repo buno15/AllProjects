@@ -102,9 +102,10 @@ if (isset($_COOKIE['id'])) {
 	$id = "none0";
 	setcookie("id", $id);
 }
-if (isset($_COOKIE['groupID'])) {
-	$groupID = $_COOKIE['groupID'];
+if (isValue(getAccountValue($id, "groupID"))) {
+	$groupID = getAccountValue($id, "groupID");
 	setAccountValue($id, "groupID", $groupID);
+	setcookie("groupID", $groupID);
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 	if ($stmt -> rowCount() > 0) {
@@ -220,7 +221,7 @@ if ($groupID != null && $groupID != "none0") {
 		<div id="head">
 		<ul>
 		<li>
-		<a href="index.php"><img src="img/title.png" alt="AndY-ou"/></a>
+		<a href="index.php"><img id="icon" src="img/title.png" alt="AndY-ou"/></a>
 		</li>
 
 		<?php
@@ -302,10 +303,10 @@ if ($groupID != null && $groupID != "none0") {
 						}
 						echo "<td>";
 						if ($n == "neutral") {
-							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled></button>";
+							echo "<button type=\"button\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled><p></p></button>";
 						} else {
 							$tableColor = getAccountValue($arrangementACCOUNTs[$i], "color");
-							echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled>$n<br/>$r</button>";
+							echo "<button type=\"button\" style=\"background-color:$tableColor;\" onclick=\"location.href='do.php?taskNAME=$n&taskREWARD=$r&index=$i'\" value=\"code\" disabled><span>$n<br/>$r</span></button>";
 						}
 						echo "</td>";
 					}
@@ -323,9 +324,9 @@ if ($groupID != null && $groupID != "none0") {
 
 				for ($i = 0; $i < count($doDATEs); $i++) {
 					if ($doDATEs[$i] != "none0" && $doDATEs[$i] >= $start) {
-						echo "<h3>";
-						echo $doDATEs[$i] . " " . $doACCOUNTs[$i] . "->" . $doTASKs[$i] . " : " . $doREWARDs[$i];
-						echo "</h3>";
+						echo "<p>";
+						echo $doDATEs[$i] . " : " . $doACCOUNTs[$i] . "<br>->" . $doTASKs[$i] . " : " . $doREWARDs[$i] . "<br>";
+						echo "</p>";
 					}
 				}
 			}

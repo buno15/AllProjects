@@ -59,6 +59,9 @@ div#head ul li a {
 div#head img {
 	height: 60px;
 }
+div#head img#icon {
+	height: 70px;
+}
 div#head h2 {
 	margin: 10px 0px 10px 0px;
 	padding-top: 10px;
@@ -151,6 +154,9 @@ div#do {
 	margin: 20px 20px 10px 0px;
 	background-color: #d3d3d3;
 	overflow-y: scroll;
+}
+div#do p {
+	margin: 10px 0px;
 }
 
 div#do-group {
@@ -258,13 +264,14 @@ div.warning {
 	transform: translateY(2px);
 }
 a.btn-do {
+	width: 85%;
 	padding: 0.5em;
 	margin: 10px 0;
 	display: block;
 	font-weight: bold;
 	font-size: 16px;
 	border-radius: 3px;
-	text-align: center;
+	text-align: left;
 	text-decoration: none !important;
 	color: #000000;
 	border-left: solid 12px #32A1C3;
@@ -272,18 +279,13 @@ a.btn-do {
 	background-size: contain;
 	background-color: #f7f7f7;
 }
-a.btn-do:before {
-	content: "";
-	display: inline-block;
-	width: 18px;
-	height: 18px;
-	margin: -3px 5px 0 0;
-	vertical-align: middle;
+a.btn-do p {
+	margin-left: 40px;
 }
 a.btn-do:hover {
 	background-color: #a9a9a9;
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 800px) {
 	a.btn-do {
 		padding: 0.5em 2em;
 		margin: 10px auto;
