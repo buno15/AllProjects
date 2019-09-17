@@ -145,13 +145,13 @@ if (isValue($groupNAME) && isValue($groupPASS)) {
 	echo "<form action=\"create-group.php\" method=\"POST\">";
 	echo "<div class=\"cp_iptxt\">";
 	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"groupNAME\" placeholder=\"Group name\" required>";
+	echo "<input type=\"text\" name=\"groupNAME\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Group name\" required>";
 	echo "</label>";
 	echo "</div>";
 
 	echo "<div class=\"cp_iptxt\">";
 	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"groupPASS\" placeholder=\"Group password\" required>";
+	echo "<input type=\"text\" name=\"groupPASS\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Group password\" required>";
 	echo "</label>";
 	echo "</div>";
 

@@ -71,12 +71,12 @@ if (isValue($id) && isValue($pass)) {
 echo "<form action=\"signup.php\" method=\"POST\">";
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"id\" value=\"\" placeholder=\"ID\" required>";
+echo "<input type=\"text\" name=\"id\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"ID\" required>";
 echo "</label>";
 echo "</div>";
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"pass\" value=\"\" placeholder=\"Password\" required>";
+echo "<input type=\"text\" name=\"pass\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Password\" required>";
 echo "</label>";
 echo "</div>";
 

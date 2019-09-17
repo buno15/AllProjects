@@ -3,7 +3,7 @@
 //Account
 
 function isAccount($id) {
-	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+	$db = getPDO();
 	$sql = "SELECT * FROM User WHERE id='$id'";
 	$stmt = $db -> query($sql);
 
@@ -11,8 +11,8 @@ function isAccount($id) {
 }
 
 function getAccountValue($id, $kindOf) {
-	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
-	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	header('Content-Type: text/html; charset=UTF-8');
+	$db = getPDO();
 	$sql = "SELECT * FROM User WHERE id='$id'";
 	$stmt = $db -> query($sql);
 
@@ -28,7 +28,7 @@ function getAccountValue($id, $kindOf) {
 
 function setAccountValue($id, $kindOf, $value) {
 	if (isAccount($id)) {
-		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+		$db = getPDO();
 		$sql = "UPDATE User SET $kindOf = '$value' WHERE id='$id'";
 		$stmt = $db -> query($sql);
 	}
@@ -37,7 +37,7 @@ function setAccountValue($id, $kindOf, $value) {
 //Group
 
 function isGroup($groupID) {
-	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+	$db = getPDO();
 	$sql = "SELECT * FROM Gro WHERE groupID='$groupID'";
 	$stmt = $db -> query($sql);
 
@@ -61,15 +61,14 @@ function getGroupValue($groupID, $kindOf) {
 
 function setGroupValue($groupID, $kindOf, $value) {
 	if (isGroup($groupID)) {
-		$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+		$db = getPDO();
 		$sql = "UPDATE Gro SET $kindOf = '$value' WHERE groupID='$groupID'";
 		$stmt = $db -> query($sql);
 	}
 }
 
 function getPDO() {
-	header('Content-Type: text/html; charset=UTF-8');
-	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+	$db = new PDO("mysql:host=mysql737.db.sakura.ne.jp;dbname=andy-ou_main", "andy-ou", "karipuso1543");
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $db;
 }

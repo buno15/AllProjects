@@ -1,10 +1,10 @@
 <html>
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/base.css" />
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
-		<title>Account</title>
+		<title>Group</title>
 	</head>
 	<body></body>
 </html>
@@ -17,10 +17,12 @@ $taskNAME = "none0";
 $taskREWARD = "none0";
 $groupID = $_COOKIE['groupID'];
 
-if (isset($_GET['taskNAME']))
+if (isset($_GET['taskNAME'])) {
 	$taskNAME = $_GET['taskNAME'];
-if (isset($_GET['taskREWARD']))
+}
+if (isset($_GET['taskREWARD'])) {
 	$taskREWARD = $_GET['taskREWARD'];
+}
 
 $taskNAMEs = explode(",", getGroupValue($groupID, "taskNAME"));
 $taskREWARDs = explode(",", getGroupValue($groupID, "taskREWARD"));
@@ -91,7 +93,7 @@ if (isValue($taskNAME) && isValue($taskREWARD)) {
 echo "<form action=\"create-task.php\" method=\"GET\">";
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"taskNAME\" value=\"\" maxlength=\"15\" pattern=\"^[0-9A-Za-z_]+$\" placeholder=\"Task name\" required>";
+echo "<input type=\"text\" name=\"taskNAME\" value=\"\" maxlength=\"15\"  placeholder=\"Task name\" required>";
 echo "</label>";
 echo "</div>";
 echo "<div class=\"cp_iptxt\">";
@@ -101,7 +103,7 @@ echo "</label>";
 echo "</div>";
 
 echo "<div class=\"submit\">";
-echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Add\">";
+echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Add\" >";
 echo "</div>";
 echo "</form>";
 echo "</div>";

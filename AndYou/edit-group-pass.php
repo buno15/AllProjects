@@ -70,41 +70,43 @@ if (isValue($groupPASS) && isValue($newPass1) && isValue($newPass2)) {
 			$stmt = $db -> query($sql);
 
 			setcookie("groupPASS", $newPass1);
-			echo 'Change Pass<br>';
-			echo "<input type=\"button\" name=\"add\" onclick=\"location.href='edit-group.php'\" value=\"back\"/>";
+			echo "<div class=\"accept\">";
+			echo 'Accepted<br>';
+			echo "</div>";
 		} else {
-			echo 'Not match password<br>';
-			echo "<input type=\"button\" name=\"add\" onclick=\"location.href='edit-group-pass.php'\" value=\"back\"/>";
+			echo "<div class=\"error\">";
+			echo 'Not match password';
+			echo "</div>";
 		}
 	} else {
-		echo 'Wrong password<br>';
-		echo "<input type=\"button\" name=\"add\" onclick=\"location.href='edit-group-pass.php'\" value=\"back\"/>";
+		echo "<div class=\"error\">";
+		echo 'Wrong password';
+		echo "</div>";
 	}
-} else {
-	echo "<form action=\"edit-group-pass.php\" method=\"POST\">";
-
-	echo "<div class=\"cp_iptxt\">";
-	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"groupPASS\" placeholder=\"Current password\" required>";
-	echo "</label>";
-	echo "</div>";
-
-	echo "<div class=\"cp_iptxt\">";
-	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"newPass1\" placeholder=\"New password\" required>";
-	echo "</label>";
-	echo "</div>";
-
-	echo "<div class=\"cp_iptxt\">";
-	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"newPass2\" placeholder=\"New password(again)\" required>";
-	echo "</label>";
-	echo "</div>";
-
-	echo "<div class=\"submit\">";
-	echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Save\">";
-	echo "</div>";
-	echo "</form>";
-	echo "</div>";
 }
+echo "<form action=\"edit-group-pass.php\" method=\"POST\">";
+
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"groupPASS\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Current password\" required>";
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"newPass1\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"New password\" required>";
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"cp_iptxt\">";
+echo "<label class=\"ef\">";
+echo "<input type=\"text\" name=\"newPass2\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"New password(again)\" required>";
+echo "</label>";
+echo "</div>";
+
+echo "<div class=\"submit\">";
+echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Save\">";
+echo "</div>";
+echo "</form>";
+echo "</div>";
 ?>

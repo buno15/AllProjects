@@ -1,6 +1,5 @@
 <?php
 require_once 'func.php';
-header('Content-Type: text/html; charset=UTF-8');
 
 $groupID = $_COOKIE['groupID'];
 
@@ -16,7 +15,7 @@ $taskREWARDs = explode(",", getGroupValue($groupID, "taskREWARD"));
 
 $reward = 0;
 
-$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
+$db = getPDO();
 $sql = "SELECT * FROM User WHERE id='$doACCOUNT'";
 $stmt = $db -> query($sql);
 if ($stmt -> rowCount() > 0) {

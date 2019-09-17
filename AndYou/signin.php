@@ -70,19 +70,19 @@ echo "<label class=\"ef\">";
 if (isset($_COOKIE['id']) && $_COOKIE['id'] != "none0") {
 	$id = $_COOKIE['id'];
 	$pass = getAccountValue($id, "pass");
-	echo "<input type=\"text\" name=\"id\" value=\"$id\" placeholder=\"ID\" required>";
+	echo "<input type=\"text\" name=\"id\" value=\"$id\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"ID\" required>";
 	echo "</label>";
 	echo "</div>";
 	echo "<div class=\"cp_iptxt\">";
 	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"pass\" value=\"$pass\" placeholder=\"Password\" required>";
+	echo "<input type=\"text\" name=\"pass\" value=\"$pass\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Password\" required>";
 } else {
-	echo "<input type=\"text\" name=\"id\" value=\"\" placeholder=\"ID\" required>";
+	echo "<input type=\"text\" name=\"id\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"ID\" required>";
 	echo "</label>";
 	echo "</div>";
 	echo "<div class=\"cp_iptxt\">";
 	echo "<label class=\"ef\">";
-	echo "<input type=\"text\" name=\"pass\" value=\"\" placeholder=\"Password\" required>";
+	echo "<input type=\"text\" name=\"pass\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Password\" required>";
 }
 echo "</label>";
 echo "</div>";

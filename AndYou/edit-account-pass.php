@@ -99,19 +99,19 @@ echo "<form action=\"edit-account-pass.php\" method=\"POST\">";
 
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"pass\" placeholder=\"Current password\" required>";
+echo "<input type=\"text\" name=\"pass\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Current password\" required>";
 echo "</label>";
 echo "</div>";
 
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"newPass1\" placeholder=\"New password\" required>";
+echo "<input type=\"text\" name=\"newPass1\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"New password\" required>";
 echo "</label>";
 echo "</div>";
 
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"newPass2\" placeholder=\"New password(again)\" required>";
+echo "<input type=\"text\" name=\"newPass2\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"New password(again)\" required>";
 echo "</label>";
 echo "</div>";
 

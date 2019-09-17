@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-		<link rel="stylesheet" href="css/base.css" />
-		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
-		<title>Group</title>
-	</head>
-	<body></body>
-</html>
 <?php
-header('Expires:');
-header('Cache-Control:');
-header('Pragma:');
 header('Content-Type: text/html; charset=UTF-8');
-
 require_once 'func.php';
 
 $id = $_COOKIE['id'];
@@ -24,12 +9,9 @@ $groupPASS = "none0";
 if (isset($_POST['groupPASS'])) {
 	$groupPASS = $_POST['groupPASS'];
 }
-
 echo "<div id=\"head\">";
 echo "<ul>";
-echo "<li>";
-echo "<a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
-echo "</li>";
+echo "<li><a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a></li>";
 if (isValue($id)) {
 	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
 	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
@@ -74,3 +56,14 @@ if (isValue($groupPASS)) {
 	echo "</div>";
 }
 ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<title>Group</title>
+	</head>
+	<body></body>
+</html>
