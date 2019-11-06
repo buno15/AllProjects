@@ -143,6 +143,7 @@ exit ;
 ?>
 <html>
 	<meta charset="UTF-8" />
+	<link rel="shortcut icon" href="img/icon.png">
 	<title>AndYou</title>
 	<body></body>
 </html>

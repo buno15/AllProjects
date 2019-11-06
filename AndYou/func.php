@@ -68,7 +68,8 @@ function setGroupValue($groupID, $kindOf, $value) {
 }
 
 function getPDO() {
-	$db = new PDO("mysql:host=mysql737.db.sakura.ne.jp;dbname=andy-ou_main", "andy-ou", "karipuso1543");
+	//$db = new PDO("mysql:host=mysql737.db.sakura.ne.jp;dbname=andy-ou_main", "andy-ou", "karipuso1543");
+	$db = new PDO("mysql:host=127.0.0.1;dbname=AndYou", "root", "");
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $db;
 }

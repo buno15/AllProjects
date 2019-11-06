@@ -34,6 +34,7 @@ if (isset($_COOKIE['groupID'])) {
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/base.css" />
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<link rel="shortcut icon" href="img/icon.png">
 		<title>Group</title>
 	</head>
 	<body>
@@ -55,7 +56,7 @@ if (isset($_COOKIE['groupID'])) {
 		echo "<div id=\"menu\">";
 		echo "<ul>";
 		echo "<li><a class=\"active\" >Menu</a></li>";
-		echo "<li><a href=\"edit-group.php\">Home</a></li>";
+		echo "<li><a href=\"edit-group.php\">Group home</a></li>";
 		echo "<li><a href=\"create-task.php\">Add task</a></li>";
 		echo "<li><a href=\"edit-group-setting.php\">Setting</a></li>";
 		echo "<li><a href=\"edit-group-pass.php\">Change password</a></li>";

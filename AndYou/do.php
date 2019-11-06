@@ -6,6 +6,7 @@
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
 		<link rel="stylesheet" href="css/table.css">
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/table_smart.css" />
+		<link rel="shortcut icon" href="img/icon.png">
 		<title>AndY-ou</title>
 	</head>
 	<body></body>

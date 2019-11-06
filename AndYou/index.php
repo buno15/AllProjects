@@ -216,6 +216,7 @@ if ($groupID != null && $groupID != "none0") {
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
 		<link rel="stylesheet" href="css/table.css">
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/table_smart.css" />
+		<link rel="shortcut icon" href="img/icon.png">
 		<title>AndY-ou</title>
 	</head>
 	<body>
@@ -242,8 +243,30 @@ if ($groupID != null && $groupID != "none0") {
 					echo "<li><a href=\"signup.php\">Sign up</a></li>";
 					echo "</ul>";
 					echo "</div>";
-				}
-				if (isValue($groupID)) {
+					echo "</div>";
+
+					echo "<div id=\"pagebody\">";
+					echo "<h3>Sign in</h3>";
+					echo "<form action=\"signin.php\" method=\"POST\">";
+
+					echo "<div class=\"cp_iptxt\">";
+					echo "<label class=\"ef\">";
+					echo "<input type=\"text\" name=\"id\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"ID\" required>";
+					echo "</label>";
+					echo "</div>";
+					echo "<div class=\"cp_iptxt\">";
+					echo "<label class=\"ef\">";
+					echo "<input type=\"text\" name=\"pass\" value=\"\" pattern=\"^[0-9A-Za-z]+$\" placeholder=\"Password\" required>";
+					echo "</label>";
+					echo "</div>";
+
+					echo "<div class=\"submit\">";
+					echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Sign in\">";
+					echo "</div>";
+					echo "</form>";
+					echo "</div>";
+
+				} else if (isValue($groupID)) {
 					echo "<div id=\"left\">";
 					echo "<div id=\"menu\">";
 					echo "<ul>";
@@ -348,7 +371,21 @@ if ($groupID != null && $groupID != "none0") {
 					}
 					echo "</div>";
 				} else {
+					echo "<div id=\"pagebody\">";
+					echo "<h3>Join group</h3>";
+					echo "<form action=\"join-group.php\" method=\"GET\">";
 
+					echo "<div class=\"cp_iptxt\">";
+					echo "<label class=\"ef\">";
+					echo "<input type=\"text\" name=\"groupID\" placeholder=\"Group ID\" required>";
+					echo "</label>";
+					echo "</div>";
+
+					echo "<div class=\"submit\">";
+					echo "<input class=\"btn-flat-border\" type=\"submit\" value=\"Join\">";
+					echo "</div>";
+					echo "</form>";
+					echo "</div>";
 				}
 				?>
 	</body>

@@ -45,7 +45,8 @@ $doACCOUNTs = explode(",", getGroupValue($groupID, "doACCOUNT"));
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
 		<link rel="stylesheet" href="css/table.css">
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/table_smart.css" />
-		<title>AndY-ou</title>
+		<link rel="shortcut icon" href="img/icon.png">
+		<title>Analysis</title>
 	</head>
 	<body>
 		<?php
@@ -170,7 +171,7 @@ $doACCOUNTs = explode(",", getGroupValue($groupID, "doACCOUNT"));
 			echo "</div>";
 			echo "<div class=\"submit\">";
 			echo "<div class=\"conform\">";
-			echo "<input class=\"btn-flat-border\" type=\"button\" name=\"add\" onclick=\"location.href='delete-group.php'\" value=\"Back\"/>";
+			echo "<input class=\"btn-flat-border\" type=\"button\" name=\"add\" onclick=\"location.href='index.php'\" value=\"Back\"/>";
 			echo "</div>";
 			echo "</div>";
 		}

@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/base.css" />
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<link rel="shortcut icon" href="img/icon.png">
 		<title>Setting</title>
 	</head>
 	<body></body>
@@ -72,6 +73,7 @@ if ($flag == "signout") {
 			setAccountValue($id, "reward", "0");
 
 			setcookie('groupID', "none0");
+			setcookie('groupPASS', "");
 			echo "<div class=\"accept\">";
 			echo "<h1>Accepted</h1>";
 			echo "</div>";

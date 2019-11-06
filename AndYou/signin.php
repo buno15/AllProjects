@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/base.css" />
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
+		<link rel="shortcut icon" href="img/icon.png">
 		<title>Sign in</title>
 	</head>
 	<body>
@@ -34,10 +35,6 @@ echo "<ul>";
 echo "<li>";
 echo "<a href=\"index.php\"><img id=\"icon\" src=\"img/title.png\" alt=\"AndY-ou\"/></a>";
 echo "</li>";
-if (isValue($id)) {
-	echo "<li><a href=\"edit-account.php\"><h2>$id</h2></a></li>";
-	echo "<li><a href=\"edit-account.php\"><img src=\"img/account.png\"/></a></li>";
-}
 echo "</ul>";
 echo "</div>";
 echo "<hr>";

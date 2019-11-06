@@ -147,6 +147,14 @@ div#pagebody h2 {
 	border-bottom: solid 3px #364e96;/*下線*/
 	margin: 10px 5px;
 }
+div#pagebody h3 {
+	width: 200px;
+	color: #364e96;/*文字色*/
+	padding: 0.5em 0.5em;/*上下の余白*/
+	border-top: solid 3px #364e96;/*上線*/
+	border-bottom: solid 3px #364e96;/*下線*/
+	margin: 10px 30px;
+}
 div#do {
 	width: 97%;
 	height: 200px;

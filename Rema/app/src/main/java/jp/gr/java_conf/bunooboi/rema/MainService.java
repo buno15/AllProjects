@@ -70,18 +70,12 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (++timeCount % 30 == 0) {
-
-                            builder = new NotificationCompat.Builder(getApplicationContext(), id);
-                            builder.setSmallIcon(R.drawable.icon);
-                            builder.setContentTitle(App.titles.get(random));
-                            Notification note = builder.build();
-                            startForeground(1, note);
+                        if (++timeCount % 6 == 0) {
 
                             speechJapanText(App.titles.get(random));
 
                         }
-                        if (timeCount % 32 == 0) {
+                        if (timeCount % 7 == 0) {
                             builder = new NotificationCompat.Builder(getApplicationContext(), id);
                             builder.setSmallIcon(R.drawable.icon);
                             builder.setContentTitle(App.answers.get(random));

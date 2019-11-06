@@ -4,7 +4,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/base.css" />
 		<link rel="stylesheet" media="screen and (max-width:800px)" href="css/base_smart.css" />
-		<title>Account</title>
+		<link rel="shortcut icon" href="img/icon.png">
+		<title>Setting</title>
 	</head>
 	<body></body>
 </html><?php
@@ -38,7 +39,7 @@ echo "<div id=\"left\">";
 echo "<div id=\"menu\">";
 echo "<ul>";
 echo "<li><a class=\"active\" >Menu</a></li>";
-echo "<li><a href=\"edit-account.php\">Home</a></li>";
+echo "<li><a href=\"edit-account.php\">Account home</a></li>";
 echo "<li><a href=\"edit-account-pass.php\">Change password</a></li>";
 if ($id != "none0" && $groupID == "none0") {
 	echo "<li><a href=\"create-group.php\">Create group</a></li>";
