@@ -18,22 +18,23 @@ header('Content-Type: text/html; charset=UTF-8');
 
 require_once 'func.php';
 
-$id = $_COOKIE['id'];
+$id = htmlspecialchars($_COOKIE['id'], ENT_QUOTES, "UTF-8");
 $groupID = "none0";
 $color = "none0";
-$beforeId = $_COOKIE['id'];
+$beforeId = htmlspecialchars($_COOKIE['id'], ENT_QUOTES, "UTF-8");
 $beforeColor = getAccountValue($id, "color");
 $groupNAME = "";
 
 $flag = false;
 
 if (isset($_POST['id'])) {
-	$id = $_POST['id'];
+	$id = htmlspecialchars($_POST['id'], ENT_QUOTES, "UTF-8");
 }
 if (isset($_POST['color'])) {
-	$color = $_POST['color'];
+	$color = htmlspecialchars($_POST['color'], ENT_QUOTES, "UTF-8");
 }
 if (isset($_COOKIE['groupID'])) {
+	$groupID = htmlspecialchars($_COOKIE['groupID'], ENT_QUOTES, "UTF-8");
 	$groupID = $_COOKIE['groupID'];
 	if ($groupID != "none0")
 		$groupNAME = getGroupValue($groupID, "groupNAME");
@@ -95,7 +96,7 @@ if (isValue($color) && $beforeColor != $color) {
 echo "<form action=\"edit-account.php\" method=\"POST\">";
 echo "<div class=\"cp_iptxt\">";
 echo "<label class=\"ef\">";
-echo "<input type=\"text\" name=\"id\" value=\"$beforeId\" placeholder=\"ID\" required>";
+echo "<input type=\"text\" name=\"id\" value=\"$beforeId\"  placeholder=\"ID\" required>";
 echo "</label>";
 echo "</div>";
 echo "<input id=\"color\" class=\"btn-flat-border\" type=\"color\" name=\"color\" value=\"$beforeColor\" required>";
