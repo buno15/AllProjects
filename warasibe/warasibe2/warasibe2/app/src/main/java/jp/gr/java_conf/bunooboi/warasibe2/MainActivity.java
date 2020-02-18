@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     public static LinearLayout playbg, buttonLayout;
     public static TextView console;
     public static ImageView itemImage;
-    ImageView hp, stamina, powerImg, intelligenceImg;
+    ImageView hp[] = new ImageView[4], stamina[] = new ImageView[4], powerImg, intelligenceImg;
     ImageView injury, fracture, sick;
     ImageView friendImg, soldierImg, horseImg, cartImg;
 
@@ -41,25 +41,43 @@ public class MainActivity extends AppCompatActivity {
         console.setTextSize(8 * DisplayManager.getScaleSize(getApplicationContext()));
         console.setTextColor(Color.BLACK);
 
-        itemImage = (ImageView) findViewById(R.id.itemImage1);
+        itemImage = (ImageView) findViewById(R.id.itemimg1);
         itemImage.setBackgroundResource(R.drawable.boss);
 
-        hp = (ImageView) findViewById(R.id.hp);
-        hp.setBackgroundResource(R.drawable.boss);
+        hp[0] = (ImageView) findViewById(R.id.hp1);
+        hp[0].setBackgroundResource(R.drawable.boss);
 
-        stamina = (ImageView) findViewById(R.id.stamina);
-        stamina.setBackgroundResource(R.drawable.boss);
+        hp[1] = (ImageView) findViewById(R.id.hp2);
+        hp[1].setBackgroundResource(R.drawable.boss);
+
+        hp[2] = (ImageView) findViewById(R.id.hp3);
+        hp[2].setBackgroundResource(R.drawable.boss);
+
+        hp[3] = (ImageView) findViewById(R.id.hp4);
+        hp[3].setBackgroundResource(R.drawable.boss);
+
+        stamina[0] = (ImageView) findViewById(R.id.stamina1);
+        stamina[0].setBackgroundResource(R.drawable.boss);
+
+        stamina[1] = (ImageView) findViewById(R.id.stamina2);
+        stamina[1].setBackgroundResource(R.drawable.boss);
+
+        stamina[2] = (ImageView) findViewById(R.id.stamina3);
+        stamina[2].setBackgroundResource(R.drawable.boss);
+
+        stamina[3] = (ImageView) findViewById(R.id.stamina4);
+        stamina[3].setBackgroundResource(R.drawable.boss);
 
         powerImg = (ImageView) findViewById(R.id.powerimg);
         powerImg.setBackgroundResource(R.drawable.boss);
 
         power = (TextView) findViewById(R.id.power);
-        power.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        power.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         power.setTextColor(Color.WHITE);
         power.setText("100");
 
         intelligence = (TextView) findViewById(R.id.intelligence);
-        intelligence.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        intelligence.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         intelligence.setTextColor(Color.WHITE);
         intelligence.setText("100");
 
@@ -88,22 +106,22 @@ public class MainActivity extends AppCompatActivity {
         cartImg.setBackgroundResource(R.drawable.boss);
 
         friend = (TextView) findViewById(R.id.friend);
-        friend.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        friend.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         friend.setTextColor(Color.WHITE);
         friend.setText("100");
 
         soldier = (TextView) findViewById(R.id.soldier);
-        soldier.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        soldier.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
         soldier.setTextColor(Color.WHITE);
         soldier.setText("100000");
 
         horse = (TextView) findViewById(R.id.horse);
-        horse.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        horse.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         horse.setTextColor(Color.WHITE);
         horse.setText("100");
 
         cart = (TextView) findViewById(R.id.cart);
-        cart.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
+        cart.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         cart.setTextColor(Color.WHITE);
         cart.setText("100");
 
