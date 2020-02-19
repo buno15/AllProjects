@@ -18,17 +18,15 @@
             android:layout_weight="0.2"
             android:orientation="vertical"></LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/playbg"
+        <ImageView
+            android:id="@+id/playImg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="#ffffff"
-            android:orientation="vertical" />
+            android:background="#ffffff" />
 
-        <jp.gr.java_conf.bunooboi.warasibe2.WrapTextView
-            android:id="@+id/console"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="5dp"
@@ -36,9 +34,46 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:background="#dddddd"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/console_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:background="#a9a9a9"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.8" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/console_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="4"
+                android:background="#dddddd"
+                android:breakStrategy="simple"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -169,12 +204,13 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/button1"
+                        android:id="@+id/up"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="2"
-                        android:background="@drawable/button_custom" />
+                        android:background="@drawable/button_custom"
+                        android:breakStrategy="simple" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -200,15 +236,16 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/left"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:layout_weight="1.7"
-                        android:background="@drawable/button_custom" />
+                        android:layout_weight="2"
+                        android:background="@drawable/button_custom"
+                        android:breakStrategy="simple" />
 
-                    <Button
-                        android:id="@+id/button3"
+                    <ImageButton
+                        android:id="@+id/action"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
@@ -216,12 +253,13 @@
                         android:background="@drawable/button_custom" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/right"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:layout_weight="1.7"
-                        android:background="@drawable/button_custom" />
+                        android:layout_weight="2"
+                        android:background="@drawable/button_custom"
+                        android:breakStrategy="simple" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -247,12 +285,13 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/button5"
+                        android:id="@+id/down"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="2"
-                        android:background="@drawable/button_custom" />
+                        android:background="@drawable/button_custom"
+                        android:breakStrategy="simple" />
 
                     <LinearLayout
                         android:layout_width="0dp"

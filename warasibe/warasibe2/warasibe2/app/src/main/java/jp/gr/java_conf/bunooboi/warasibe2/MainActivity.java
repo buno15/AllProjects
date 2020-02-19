@@ -4,27 +4,32 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    public static LinearLayout playbg, buttonLayout;
-    public static TextView console;
-    public static ImageView itemImage;
+    LinearLayout buttonLayout;
+    static TextView consoleText, consoleName;
+    ImageView itemImage;
+    static ImageView playImg;
     ImageView hp[] = new ImageView[4], stamina[] = new ImageView[4], powerImg, intelligenceImg;
     ImageView injury, fracture, sick;
     ImageView friendImg, soldierImg, horseImg, cartImg;
 
     TextView power, intelligence;
     TextView friend, soldier, horse, cart;
-    public static Button button1, button2;
-    int enemyhp, enemypower, enemydamage = 0;
-    int random1, random2, random3;
-    int rn, margin;
+    static Button up, right, down, left;
+    static ImageButton action;
+    int margin;
+
+    static Scene nowScene;
+    static boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +38,17 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
-        playbg = (LinearLayout) findViewById(R.id.playbg);
-        playbg.setBackgroundResource(R.drawable.main);
+        playImg = findViewById(R.id.playImg);
+
         buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
 
-        console = (TextView) findViewById(R.id.console);
-        console.setTextSize(8 * DisplayManager.getScaleSize(getApplicationContext()));
-        console.setTextColor(Color.BLACK);
+        consoleText = (TextView) findViewById(R.id.console_text);
+        consoleText.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        consoleText.setTextColor(Color.BLACK);
+
+        consoleName = (TextView) findViewById(R.id.console_name);
+        consoleName.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        consoleName.setTextColor(Color.BLACK);
 
         itemImage = (ImageView) findViewById(R.id.itemimg1);
         itemImage.setBackgroundResource(R.drawable.boss);
@@ -125,20 +134,120 @@ public class MainActivity extends AppCompatActivity {
         cart.setTextColor(Color.WHITE);
         cart.setText("100");
 
-        button1 = (Button) findViewById(R.id.button1);
-        button1.setTextSize(8 * DisplayManager.getScaleSize(getApplicationContext()));
-        button2 = (Button) findViewById(R.id.button2);
-        button2.setTextSize(8 * DisplayManager.getScaleSize(getApplicationContext()));
+        up = (Button) findViewById(R.id.up);
+        up.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        down = (Button) findViewById(R.id.down);
+        down.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        left = (Button) findViewById(R.id.left);
+        left.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        right = (Button) findViewById(R.id.right);
+        right.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        action = (ImageButton) findViewById(R.id.action);
 
         int marginmoto = 5;
         float scale = getResources().getDisplayMetrics().density;
         margin = (int) (marginmoto * scale + 0.5f);
+
+
+        Init init = new Init();
+        init.connectScene();
+
+
+        nowScene = init.meziha[1];
+        setNowScene(nowScene);
+
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nowScene = nowScene.getUp();
+                setNowScene(nowScene);
+            }
+        });
+
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nowScene = nowScene.getDown();
+                setNowScene(nowScene);
+            }
+        });
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nowScene = nowScene.getLeft();
+                setNowScene(nowScene);
+            }
+        });
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nowScene = nowScene.getRight();
+                setNowScene(nowScene);
+            }
+        });
+        action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nowScene = nowScene.getAction();
+            }
+        });
     }
 
-    public void buttonoff() {
-        button1.setText("");
-        button2.setText("");
-        button1.setEnabled(false);
-        button2.setEnabled(false);
+    static void setNowScene(Scene s) {
+        s.getEffect();
+        if (!flag) {
+            setText(s);
+            setConsole(s);
+            setPlayImg(s);
+            setButton(s);
+        }
+        flag = false;
+    }
+
+    static void setText(Scene s) {
+        up.setText(s.getUpStr());
+        down.setText(s.getDownStr());
+        left.setText(s.getLeftStr());
+        right.setText(s.getRightStr());
+
+    }
+
+    static void setConsole(Scene s) {
+        consoleText.setText(s.getConsoleText());
+        consoleName.setText(s.getConsoleName());
+    }
+
+    static void setPlayImg(Scene s) {
+        playImg.setBackgroundResource(s.getPlayImg());
+    }
+
+    static void setButton(Scene s) {
+        if (s.getUp() == null) {
+            up.setEnabled(false);
+        } else {
+            up.setEnabled(true);
+        }
+        if (s.getDown() == null) {
+            down.setEnabled(false);
+        } else {
+            down.setEnabled(true);
+        }
+        if (s.getLeft() == null) {
+            left.setEnabled(false);
+        } else {
+            left.setEnabled(true);
+        }
+        if (s.getRight() == null) {
+            right.setEnabled(false);
+        } else {
+            right.setEnabled(true);
+        }
+        if (s.getAction() == null) {
+            action.setEnabled(false);
+        } else {
+            action.setEnabled(true);
+        }
     }
 }
