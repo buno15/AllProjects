@@ -1,7 +1,5 @@
 package jp.gr.java_conf.bunooboi.warasibe2;
 
-import java.util.ArrayList;
-
 public class Init {
 
     Scene meziha[] = new Scene[100];
@@ -10,42 +8,41 @@ public class Init {
     Scene meziha_Armor;
 
     Event meziha_Lynch;
-    final Scene meziha_Lyn[] = new Scene[4];
 
     public Init() {
 
-        meziha_Lynch = new Event();
-        meziha_Lyn[0] = new Scene("次へ", "", "", "");
-        meziha_Lyn[0].setConsoleName("");
-        meziha_Lyn[0].setConsoleText("どんっ");
-        meziha_Lyn[0].setPlayImg(R.drawable.boss);
-        meziha_Lyn[1] = new Scene("次へ", "", "", "");
-        meziha_Lyn[1].setConsoleName("トカ聖兵");
-        meziha_Lyn[1].setConsoleText("おい、ぶつかっておいて謝りもしないのか！");
-        meziha_Lyn[1].setPlayImg(R.drawable.boss);
-        meziha_Lyn[2] = new Scene("次へ", "", "", "");
-        meziha_Lyn[2].setConsoleName("トカ聖兵");
-        meziha_Lyn[2].setConsoleText("このやろう！　ぼかっ");
-        meziha_Lyn[2].setPlayImg(R.drawable.boss);
-        meziha_Lyn[3] = new Scene("次へ", "", "", "");
-        meziha_Lyn[3].setConsoleName("");
-        meziha_Lyn[3].setConsoleText("ダメージを受けた");
-        meziha_Lyn[3].setPlayImg(R.drawable.boss);
-        meziha_Lyn[3].setEffect(new EffectListener() {
+        meziha_Lynch = new Event(4);
+        meziha_Lynch.getScene(0).setInit(new InitListener() {
             @Override
-            public void effect() {
-
+            public void init() {
+                meziha_Lynch.start();
             }
         });
+        meziha_Lynch.getScene(1).setScene("次へ", "", "", "");
+        meziha_Lynch.getScene(1).setConsoleName("");
+        meziha_Lynch.getScene(1).setConsoleText("どんっ");
+        meziha_Lynch.getScene(1).setPlayImg(R.drawable.boss);
+        meziha_Lynch.getScene(2).setScene("次へ", "", "", "");
+        meziha_Lynch.getScene(2).setConsoleName("トカ聖兵");
+        meziha_Lynch.getScene(2).setConsoleText("おい、ぶつかっておいて謝りもしないのか！");
+        meziha_Lynch.getScene(2).setPlayImg(R.drawable.boss);
+        meziha_Lynch.getScene(3).setScene("次へ", "", "", "");
+        meziha_Lynch.getScene(3).setConsoleName("トカ聖兵");
+        meziha_Lynch.getScene(3).setConsoleText("このやろう！　ぼかっ");
+        meziha_Lynch.getScene(3).setPlayImg(R.drawable.boss);
+        meziha_Lynch.getScene(4).setScene("次へ", "", "", "");
+        meziha_Lynch.getScene(4).setConsoleName("");
+        meziha_Lynch.getScene(4).setConsoleText("ダメージを受けた");
+        meziha_Lynch.getScene(4).setPlayImg(R.drawable.boss);
 
 
         meziha[1] = new Scene("北", "東", "南", "西");
         meziha[1].setConsoleText("広場だ");
         meziha[1].setConsoleName("");
         meziha[1].setPlayImg(R.drawable.d);
-        meziha[1].setEffect(new EffectListener() {
+        meziha[1].setInit(new InitListener() {
             @Override
-            public void effect() {
+            public void init() {
 
             }
         });
@@ -53,13 +50,31 @@ public class Init {
         meziha[2] = new Scene("北", "防具屋", "南", "武器屋");
         meziha[2].setConsoleText("町中だ");
         meziha[2].setPlayImg(R.drawable.a);
-        meziha[2].setEffect(new EffectListener() {
+        meziha[2].setInit(new InitListener() {
             @Override
-            public void effect() {
-                if (Math.floor(Math.random() * 2) == 1)
-                    meziha_Lynch.startEvent();
+            public void init() {
+                if (Math.floor(Math.random() * 2) == 1) {
+                    if (!meziha_Lynch.done()) {
+                        meziha_Lynch.start();
+                    } else {
+                        meziha_Lynch.preparation();
+                    }
+                }
             }
         });
+        meziha[2].setEffect(new EffectListener() {
+            @Override
+            public Scene effect(int dir) {
+                if (dir == Scene.ACTION) {
+                    if (Math.floor(Math.random() * 2) == 1) {
+                        return meziha_Lynch.getScene(0);
+                    } else {
+                        return
+                    }
+                }
+            }
+        });
+
 
         meziha[3] = new Scene("北", "東", "南", "西");
         meziha[3].setConsoleText("十字路だ");
@@ -75,28 +90,19 @@ public class Init {
         meziha_Weapon.setConsoleName("武器屋");
         meziha_Weapon.setConsoleText("いらっしゃい。武器屋へようこそ！");
         meziha_Weapon.setPlayImg(R.drawable.e);
-        meziha_Weapon.setEffect(new EffectListener() {
-            @Override
-            public void effect() {
-                meziha_Weapon.setConsoleText("いらっしゃい");
-            }
-        });
 
 
     }
 
     public void connectScene() {
         meziha[1].setScene(meziha[1], meziha[1], meziha[2], meziha[1], null);
-        meziha[2].setScene(meziha[1], meziha_Armor, meziha[3], meziha_Weapon, meziha_Lyn[0]);
+        meziha[2].setScene(meziha[1], meziha_Armor, meziha[3], meziha_Weapon, null);
+        meziha[2].setScene(meziha_Lynch, Scene.ACTION);
         meziha[3].setScene(meziha[2], meziha[3], meziha[3], meziha[3], null);
         meziha_Weapon.setScene(meziha_Weapon, null, meziha[2], null, null);
         meziha_Armor.setScene(meziha_Armor, null, meziha[2], null, null);
 
-        meziha_Lynch.addScene(meziha_Lyn);
-        for (int i = 0; i < meziha_Lyn.length; i++) {
-            if (i < meziha_Lyn.length - 1)
-                meziha_Lyn[i].setScene(meziha_Lyn[i + 1], null, null, null, null);
-        }
-        meziha_Lyn[3].setScene(meziha[2], null, null, null, null);
+        meziha_Lynch.connect();
+        meziha_Lynch.connect(4, meziha[2], Scene.UP);
     }
 }

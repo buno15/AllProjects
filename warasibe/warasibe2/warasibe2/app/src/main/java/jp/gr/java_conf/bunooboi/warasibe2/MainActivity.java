@@ -10,11 +10,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    LinearLayout buttonLayout;
     static TextView consoleText, consoleName;
     ImageView itemImage;
     static ImageView playImg;
@@ -38,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
-        playImg = findViewById(R.id.playImg);
 
-        buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
+
+        playImg = findViewById(R.id.playImg);
 
         consoleText = (TextView) findViewById(R.id.console_text);
         consoleText.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
@@ -183,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nowScene.getEffect(Scene.RIGHT);
                 nowScene = nowScene.getRight();
                 setNowScene(nowScene);
             }
@@ -190,13 +189,15 @@ public class MainActivity extends AppCompatActivity {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nowScene.getEffect(Scene.ACTION);
                 nowScene = nowScene.getAction();
+                setNowScene(nowScene);
             }
         });
     }
 
     static void setNowScene(Scene s) {
-        s.getEffect();
+        s.getInit();
         if (!flag) {
             setText(s);
             setConsole(s);
