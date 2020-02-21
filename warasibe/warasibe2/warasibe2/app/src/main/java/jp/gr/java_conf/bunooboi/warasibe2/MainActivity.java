@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     int margin;
 
     static Scene nowScene;
+    static Scene predScene;
     static boolean flag;
 
     @Override
@@ -148,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         Init init = new Init();
-        init.connectScene();
 
 
         nowScene = init.meziha[1];
@@ -157,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowScene = nowScene.getUp();
+                predScene = nowScene;
+                nowScene = nowScene.finish(Scene.UP);
+                nowScene.start(predScene);
                 setNowScene(nowScene);
             }
         });
@@ -165,7 +167,9 @@ public class MainActivity extends AppCompatActivity {
         down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowScene = nowScene.getDown();
+                predScene = nowScene;
+                nowScene = nowScene.finish(Scene.DOWN);
+                nowScene.start(predScene);
                 setNowScene(nowScene);
             }
         });
@@ -173,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowScene = nowScene.getLeft();
+                predScene = nowScene;
+                nowScene = nowScene.finish(Scene.LEFT);
+                nowScene.start(predScene);
                 setNowScene(nowScene);
             }
         });
@@ -181,23 +187,25 @@ public class MainActivity extends AppCompatActivity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowScene.getEffect(Scene.RIGHT);
-                nowScene = nowScene.getRight();
+                predScene = nowScene;
+                nowScene = nowScene.finish(Scene.RIGHT);
+                nowScene.start(predScene);
                 setNowScene(nowScene);
             }
         });
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowScene.getEffect(Scene.ACTION);
-                nowScene = nowScene.getAction();
+                predScene = nowScene;
+                nowScene = nowScene.finish(Scene.ACTION);
+                nowScene.start(predScene);
                 setNowScene(nowScene);
             }
         });
     }
 
     static void setNowScene(Scene s) {
-        s.getInit();
+        s.start(s);
         if (!flag) {
             setText(s);
             setConsole(s);
@@ -208,11 +216,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void setText(Scene s) {
-        up.setText(s.getUpStr());
-        down.setText(s.getDownStr());
-        left.setText(s.getLeftStr());
-        right.setText(s.getRightStr());
-
+        up.setText(s.getUp());
+        down.setText(s.getDown());
+        left.setText(s.getLeft());
+        right.setText(s.getRight());
     }
 
     static void setConsole(Scene s) {
@@ -225,30 +232,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void setButton(Scene s) {
-        if (s.getUp() == null) {
-            up.setEnabled(false);
-        } else {
+        if (s.isNext(Scene.UP)) {
             up.setEnabled(true);
-        }
-        if (s.getDown() == null) {
-            down.setEnabled(false);
         } else {
+            up.setEnabled(false);
+        }
+        if (s.isNext(Scene.DOWN)) {
             down.setEnabled(true);
-        }
-        if (s.getLeft() == null) {
-            left.setEnabled(false);
         } else {
+            down.setEnabled(false);
+        }
+        if (s.isNext(Scene.LEFT)) {
             left.setEnabled(true);
-        }
-        if (s.getRight() == null) {
-            right.setEnabled(false);
         } else {
+            left.setEnabled(false);
+        }
+        if (s.isNext(Scene.RIGHT)) {
             right.setEnabled(true);
-        }
-        if (s.getAction() == null) {
-            action.setEnabled(false);
         } else {
+            right.setEnabled(false);
+        }
+        if (s.isNext(Scene.ACTION)) {
             action.setEnabled(true);
+        } else {
+            action.setEnabled(false);
         }
     }
 }

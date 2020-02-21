@@ -1,24 +1,18 @@
 package jp.gr.java_conf.bunooboi.warasibe2;
 
-import android.speech.tts.TextToSpeech;
-
 public class Scene {
-    private String upStr;
-    private String downStr;
-    private String leftStr;
-    private String rightStr;
+    private String up;
+    private String down;
+    private String left;
+    private String right;
 
     private String consoleText = "";
     private String consoleName = "";
 
-    private Scene up;
-    private Scene down;
-    private Scene left;
-    private Scene right;
-    private Scene action;
+    private Scene prevScene;
 
     private InitListener init;
-    private EffectListener effect;
+    private FinishListener finish;
 
     private int playImg;
 
@@ -30,105 +24,34 @@ public class Scene {
 
 
     public Scene(String up, String right, String down, String left) {
-        this.upStr = up;
-        this.downStr = down;
-        this.leftStr = left;
-        this.rightStr = right;
+        this.up = up;
+        this.down = down;
+        this.left = left;
+        this.right = right;
     }
 
     public Scene() {
     }
 
-    public void setScene(String up, String right, String down, String left) {
-        this.upStr = up;
-        this.downStr = down;
-        this.leftStr = left;
-        this.rightStr = right;
+    public void setPrevScene(Scene s) {
+        prevScene = s;
     }
 
 
-    public void setScene(Scene up, Scene right, Scene down, Scene left, Scene action) {
-        this.up = up;
-        this.down = down;
-        this.left = left;
-        this.right = right;
-        this.action = action;
-    }
-
-    public void setScene(Scene s, int dir) {
-        switch (dir) {
-            case UP:
-                up = s;
-                break;
-            case RIGHT:
-                right = s;
-                break;
-            case DOWN:
-                down = s;
-                break;
-            case LEFT:
-                left = s;
-                break;
-            case ACTION:
-                action = s;
-                break;
-        }
-    }
-
-    public void setScene(Event e, int dir) {
-        switch (dir) {
-            case UP:
-                up = e.getScene(0);
-                break;
-            case RIGHT:
-                right = e.getScene(0);
-                break;
-            case DOWN:
-                down = e.getScene(0);
-                break;
-            case LEFT:
-                left = e.getScene(0);
-                break;
-            case ACTION:
-                action = e.getScene(0);
-                break;
-        }
-    }
-
-    public Scene getUp() {
+    public String getUp() {
         return up;
     }
 
-    public Scene getDown() {
+    public String getDown() {
         return down;
     }
 
-    public Scene getLeft() {
+    public String getLeft() {
         return left;
     }
 
-    public Scene getRight() {
+    public String getRight() {
         return right;
-    }
-
-    public Scene getAction() {
-        return action;
-    }
-
-    public String getUpStr() {
-        return upStr;
-    }
-
-    public String getDownStr() {
-        return downStr;
-    }
-
-    public String getLeftStr() {
-        return leftStr;
-    }
-
-    public String getRightStr() {
-        return rightStr;
     }
 
     public void setConsoleName(String text) {
@@ -159,19 +82,27 @@ public class Scene {
         this.init = i;
     }
 
-    public void getInit() {
+    public void start(Scene s) {
         if (init != null) {
+            prevScene = s;
             init.init();
         }
     }
 
-    public void setEffect(EffectListener e) {
-        this.effect = e;
+    public void setFinish(FinishListener f) {
+        this.finish = f;
     }
 
-    public Scene getEffect(int dir) {
-        if (effect != null)
-            return effect.effect(dir);
+    public Scene finish(int dir) {
+        if (finish != null)
+            return finish.finish(dir);
         return null;
+    }
+
+    public boolean isNext(int dir) {
+        if (finish(dir) != null) {
+            return true;
+        }
+        return false;
     }
 }
