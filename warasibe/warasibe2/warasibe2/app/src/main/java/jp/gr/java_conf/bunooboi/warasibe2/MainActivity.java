@@ -42,27 +42,23 @@ public class MainActivity extends AppCompatActivity {
         playImg = findViewById(R.id.playImg);
 
         consoleText = (TextView) findViewById(R.id.console_text);
-        consoleText.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        consoleText.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
         consoleText.setTextColor(Color.BLACK);
 
         consoleName = (TextView) findViewById(R.id.console_name);
-        consoleName.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        consoleName.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
         consoleName.setTextColor(Color.BLACK);
 
         itemImage = (ImageView) findViewById(R.id.itemimg1);
         itemImage.setBackgroundResource(R.drawable.boss);
 
         hp[0] = (ImageView) findViewById(R.id.hp1);
-        hp[0].setBackgroundResource(R.drawable.boss);
 
         hp[1] = (ImageView) findViewById(R.id.hp2);
-        hp[1].setBackgroundResource(R.drawable.boss);
 
         hp[2] = (ImageView) findViewById(R.id.hp3);
-        hp[2].setBackgroundResource(R.drawable.boss);
 
         hp[3] = (ImageView) findViewById(R.id.hp4);
-        hp[3].setBackgroundResource(R.drawable.boss);
 
         stamina[0] = (ImageView) findViewById(R.id.stamina1);
         stamina[0].setBackgroundResource(R.drawable.boss);
@@ -76,21 +72,19 @@ public class MainActivity extends AppCompatActivity {
         stamina[3] = (ImageView) findViewById(R.id.stamina4);
         stamina[3].setBackgroundResource(R.drawable.boss);
 
-        powerImg = (ImageView) findViewById(R.id.powerimg);
-        powerImg.setBackgroundResource(R.drawable.boss);
-
         power = (TextView) findViewById(R.id.power);
-        power.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
+        power.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
         power.setTextColor(Color.WHITE);
         power.setText("100");
+        power.setTextColor(Color.parseColor("#fa8072"));
+        power.setShadowLayer(10, 0, 0, Color.BLACK);
 
         intelligence = (TextView) findViewById(R.id.intelligence);
-        intelligence.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
-        intelligence.setTextColor(Color.WHITE);
+        intelligence.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
+        intelligence.setTextColor(Color.parseColor("#00bfff"));
+        intelligence.setShadowLayer(10, 0, 0, Color.BLACK);
         intelligence.setText("100");
 
-        intelligenceImg = (ImageView) findViewById(R.id.intelligenceimg);
-        intelligenceImg.setBackgroundResource(R.drawable.boss);
 
         injury = (ImageView) findViewById(R.id.injury);
         injury.setBackgroundResource(R.drawable.boss);
@@ -134,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
         cart.setText("100");
 
         up = (Button) findViewById(R.id.up);
-        up.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        up.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
         down = (Button) findViewById(R.id.down);
-        down.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        down.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
         left = (Button) findViewById(R.id.left);
-        left.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        left.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
         right = (Button) findViewById(R.id.right);
-        right.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
+        right.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
         action = (ImageButton) findViewById(R.id.action);
 
         int marginmoto = 5;
@@ -148,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         margin = (int) (marginmoto * scale + 0.5f);
 
 
-        Init init = new Init();
+        System init = new System();
 
 
         nowScene = init.meziha[1];
@@ -157,55 +151,47 @@ public class MainActivity extends AppCompatActivity {
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                predScene = nowScene;
-                nowScene = nowScene.finish(Scene.UP);
-                nowScene.start(predScene);
-                setNowScene(nowScene);
+                next(Scene.UP);
             }
         });
 
         down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                predScene = nowScene;
-                nowScene = nowScene.finish(Scene.DOWN);
-                nowScene.start(predScene);
-                setNowScene(nowScene);
+                next(Scene.DOWN);
             }
         });
 
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                predScene = nowScene;
-                nowScene = nowScene.finish(Scene.LEFT);
-                nowScene.start(predScene);
-                setNowScene(nowScene);
+                next(Scene.LEFT);
             }
         });
 
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                predScene = nowScene;
-                nowScene = nowScene.finish(Scene.RIGHT);
-                nowScene.start(predScene);
-                setNowScene(nowScene);
+                next(Scene.RIGHT);
             }
         });
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                predScene = nowScene;
-                nowScene = nowScene.finish(Scene.ACTION);
-                nowScene.start(predScene);
-                setNowScene(nowScene);
+                next(Scene.ACTION);
             }
         });
+
+    }
+
+    static void next(int dir) {
+        predScene = nowScene;
+        nowScene = nowScene.finish(dir);
+        nowScene.start(predScene, dir);
+        setNowScene(nowScene);
     }
 
     static void setNowScene(Scene s) {
-        s.start(s);
         if (!flag) {
             setText(s);
             setConsole(s);
@@ -231,6 +217,16 @@ public class MainActivity extends AppCompatActivity {
         playImg.setBackgroundResource(s.getPlayImg());
     }
 
+    static void setButtonUnable() {
+        up.setEnabled(false);
+        down.setEnabled(false);
+        left.setEnabled(false);
+        right.setEnabled(false);
+        action.setEnabled(false);
+        action.setImageResource(R.drawable.action1);
+
+    }
+
     static void setButton(Scene s) {
         if (s.isNext(Scene.UP)) {
             up.setEnabled(true);
@@ -254,8 +250,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (s.isNext(Scene.ACTION)) {
             action.setEnabled(true);
+            action.setImageResource(R.drawable.action2);
         } else {
             action.setEnabled(false);
+            action.setImageResource(R.drawable.action1);
         }
     }
 }

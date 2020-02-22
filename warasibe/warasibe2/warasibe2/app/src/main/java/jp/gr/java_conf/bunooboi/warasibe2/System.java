@@ -1,6 +1,11 @@
 package jp.gr.java_conf.bunooboi.warasibe2;
 
-public class Init {
+import android.os.Handler;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class System {
 
     Scene meziha[] = new Scene[100];
 
@@ -9,7 +14,125 @@ public class Init {
 
     Scene meziha_Lynch[] = new Scene[4];
 
-    public Init() {
+    Scene battle[] = new Scene[4];
+    Handler handler = new Handler();
+
+    Player toka = new Player("トカ聖兵");
+
+    public System() {
+        toka.setStatus(4,5,10,10);
+
+        battle[0] = new Scene("攻撃", "突進", "逃げる", "ガード");
+        battle[0].setConsoleText("敵が現れた");
+        battle[0].setPlayImg(R.drawable.heisi);
+        battle[0].setFinish(new FinishListener() {
+            @Override
+            public Scene finish(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return battle[1];
+                    case Scene.DOWN:
+                        if (Math.floor(Math.random() * 2) == 1) {
+                            return battle[2];
+                        } else {
+                            return battle[3];
+                        }
+                }
+                return null;
+            }
+        });
+        battle[1] = new Scene("攻撃", "突進", "逃げる", "ガード");
+        battle[1].setConsoleText("敵が現れた");
+        battle[1].setPlayImg(R.drawable.heisi);
+        battle[1].setFinish(new FinishListener() {
+            @Override
+            public Scene finish(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return battle[1];
+                    case Scene.DOWN:
+                        if (Math.floor(Math.random() * 2) == 1) {
+                            return battle[2];
+                        } else {
+                            return battle[3];
+                        }
+                }
+                return null;
+            }
+        });
+        battle[2] = new Scene();
+        battle[2].setConsoleText("逃げられた");
+        battle[2].setPlayImg(R.drawable.heisi);
+        battle[2].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.setButtonUnable();
+                    }
+                });
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.next(dir);
+                            }
+                        });
+
+                    }
+                }, 1000);
+            }
+        });
+        battle[2].setFinish(new FinishListener() {
+            @Override
+            public Scene finish(int dir) {
+                return battle[0].getNextScene();
+            }
+        });
+
+        battle[3] = new Scene();
+        battle[3].setConsoleText("逃げられない");
+        battle[3].setPlayImg(R.drawable.heisi);
+        battle[3].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.setButtonUnable();
+                    }
+                });
+
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.next(dir);
+                            }
+                        });
+
+                    }
+                }, 1000);
+            }
+        });
+        battle[3].setFinish(new FinishListener() {
+            @Override
+            public Scene finish(int dir) {
+                if (dir == Scene.UNABLE) {
+                    return null;
+                } else
+                    return battle[1];
+            }
+        });
+
+
         meziha_Lynch[0] = new Scene("次へ", "", "", "");
         meziha_Lynch[0].setConsoleName("");
         meziha_Lynch[0].setConsoleText("どんっ");
@@ -58,7 +181,7 @@ public class Init {
         meziha_Lynch[3].setPlayImg(R.drawable.boss);
         meziha_Lynch[3].setInit(new InitListener() {
             @Override
-            public void init() {
+            public void init(int dir) {
                 I.meziha_1 = true;
             }
         });
@@ -79,7 +202,7 @@ public class Init {
         meziha[1].setPlayImg(R.drawable.d);
         meziha[1].setInit(new InitListener() {
             @Override
-            public void init() {
+            public void init(int dir) {
 
             }
         });
@@ -90,7 +213,8 @@ public class Init {
                     if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
                         return meziha_Lynch[0];
                     } else {
-                        return meziha[2];
+                        battle[0].setNextScene(meziha[2]);
+                        return battle[0];
                     }
                 }
                 return null;
@@ -102,7 +226,7 @@ public class Init {
         meziha[2].setPlayImg(R.drawable.a);
         meziha[2].setInit(new InitListener() {
             @Override
-            public void init() {
+            public void init(int dir) {
 
             }
         });
@@ -134,14 +258,7 @@ public class Init {
         meziha[3].setFinish(new FinishListener() {
             @Override
             public Scene finish(int dir) {
-                if (dir == Scene.UP) {
-                    if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
-                        return meziha_Lynch[0];
-                    } else {
-                        return meziha[2];
-                    }
-                }
-                return null;
+                return meziha[2];
             }
         });
 

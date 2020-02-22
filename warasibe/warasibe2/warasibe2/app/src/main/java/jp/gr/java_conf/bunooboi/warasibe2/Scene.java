@@ -10,6 +10,7 @@ public class Scene {
     private String consoleName = "";
 
     private Scene prevScene;
+    private Scene nextScene;
 
     private InitListener init;
     private FinishListener finish;
@@ -21,6 +22,8 @@ public class Scene {
     public static final int DOWN = 3;
     public static final int LEFT = 4;
     public static final int ACTION = 5;
+
+    public static final int UNABLE = 6;
 
 
     public Scene(String up, String right, String down, String left) {
@@ -35,6 +38,18 @@ public class Scene {
 
     public void setPrevScene(Scene s) {
         prevScene = s;
+    }
+
+    public Scene getPrevScene() {
+        return prevScene;
+    }
+
+    public void setNextScene(Scene s) {
+        nextScene = s;
+    }
+
+    public Scene getNextScene() {
+        return nextScene;
     }
 
 
@@ -82,10 +97,10 @@ public class Scene {
         this.init = i;
     }
 
-    public void start(Scene s) {
+    public void start(Scene s, int dir) {
+        prevScene = s;
         if (init != null) {
-            prevScene = s;
-            init.init();
+            init.init(dir);
         }
     }
 
