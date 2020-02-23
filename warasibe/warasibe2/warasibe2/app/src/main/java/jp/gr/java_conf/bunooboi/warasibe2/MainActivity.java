@@ -3,6 +3,7 @@ package jp.gr.java_conf.bunooboi.warasibe2;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -61,16 +62,16 @@ public class MainActivity extends AppCompatActivity {
         hp[3] = (ImageView) findViewById(R.id.hp4);
 
         stamina[0] = (ImageView) findViewById(R.id.stamina1);
-        stamina[0].setBackgroundResource(R.drawable.boss);
+        stamina[0].setBackgroundResource(R.drawable.stamina_no_1);
 
         stamina[1] = (ImageView) findViewById(R.id.stamina2);
-        stamina[1].setBackgroundResource(R.drawable.boss);
+        stamina[1].setBackgroundResource(R.drawable.stamina_no_2);
 
         stamina[2] = (ImageView) findViewById(R.id.stamina3);
-        stamina[2].setBackgroundResource(R.drawable.boss);
+        stamina[2].setBackgroundResource(R.drawable.stamina_7);
 
         stamina[3] = (ImageView) findViewById(R.id.stamina4);
-        stamina[3].setBackgroundResource(R.drawable.boss);
+        stamina[3].setBackgroundResource(R.drawable.stamina_5);
 
         power = (TextView) findViewById(R.id.power);
         power.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
@@ -87,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         injury = (ImageView) findViewById(R.id.injury);
-        injury.setBackgroundResource(R.drawable.boss);
 
         fracture = (ImageView) findViewById(R.id.fracture);
-        fracture.setBackgroundResource(R.drawable.boss);
 
         sick = (ImageView) findViewById(R.id.sick);
-        sick.setBackgroundResource(R.drawable.boss);
 
         friendImg = (ImageView) findViewById(R.id.friendimg);
         friendImg.setBackgroundResource(R.drawable.boss);
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         margin = (int) (marginmoto * scale + 0.5f);
 
 
-        System init = new System();
+        Main init = new Main();
 
 
         nowScene = init.meziha[1];
@@ -217,13 +215,24 @@ public class MainActivity extends AppCompatActivity {
         playImg.setBackgroundResource(s.getPlayImg());
     }
 
+    static void setPlayImg(int i) {
+        playImg.setBackgroundResource(i);
+    }
+
     static void setButtonUnable() {
-        up.setEnabled(false);
-        down.setEnabled(false);
-        left.setEnabled(false);
-        right.setEnabled(false);
-        action.setEnabled(false);
-        action.setImageResource(R.drawable.action1);
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                up.setEnabled(false);
+                down.setEnabled(false);
+                left.setEnabled(false);
+                right.setEnabled(false);
+                action.setEnabled(false);
+                action.setImageResource(R.drawable.action1);
+
+            }
+        });
 
     }
 

@@ -9,11 +9,18 @@ public class Player {
     int Power;                                // 力
     int Intelligence;                            // 洞察力
 
+    int img;
+
     ArrayList<Item> item;
 
-    public Player(String name) {
-        this.name = name;
+    public static final int GU = 1;
+    public static final int CHOKI = 2;
+    public static final int PA = 3;
 
+    public Player(String name, int img) {
+        this.name = name;
+        this.img = img;
+        item = new ArrayList<>();
     }
 
     public void setStatus(int hp, int stamina, int power, int intelligence) {
@@ -23,8 +30,27 @@ public class Player {
         this.Intelligence = intelligence;
     }
 
-    public int attack() {
+    public int getAppearance(int appear) {
+        if (appear == 0) {
+            int rand = (int) Math.floor(Math.random() * 3) + 1;
+            if (rand == GU) {
+                return GU;
+            } else if (rand == CHOKI) {
+                return CHOKI;
+            } else if (rand == PA) {
+                return PA;
+            }
+        }
+        return appear;
+    }
 
+    public void addItem(Item item) {
+        this.item.add(item);
+    }
+
+    public Item getRandomItem() {
+        int rand = (int) Math.floor(Math.random() * item.size());
+        return item.get(rand);
     }
 
 }

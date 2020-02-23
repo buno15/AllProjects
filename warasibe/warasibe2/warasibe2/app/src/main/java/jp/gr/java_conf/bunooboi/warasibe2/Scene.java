@@ -22,8 +22,8 @@ public class Scene {
     public static final int DOWN = 3;
     public static final int LEFT = 4;
     public static final int ACTION = 5;
-
-    public static final int UNABLE = 6;
+    public static final int ITEM1 = 6;
+    public static final int ITEM2 = 7;
 
 
     public Scene(String up, String right, String down, String left) {
@@ -34,6 +34,13 @@ public class Scene {
     }
 
     public Scene() {
+    }
+
+    public void setSceneText(String up, String right, String down, String left) {
+        this.up = up;
+        this.down = down;
+        this.left = left;
+        this.right = right;
     }
 
     public void setPrevScene(Scene s) {
