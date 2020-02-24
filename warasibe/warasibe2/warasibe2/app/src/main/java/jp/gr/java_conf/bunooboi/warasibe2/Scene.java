@@ -25,15 +25,27 @@ public class Scene {
     public static final int ITEM1 = 6;
     public static final int ITEM2 = 7;
 
+    private boolean changeStatus;
+
 
     public Scene(String up, String right, String down, String left) {
         this.up = up;
         this.down = down;
         this.left = left;
         this.right = right;
+        changeStatus = true;
     }
 
     public Scene() {
+        changeStatus = true;
+    }
+
+    public void setChangeStatus(boolean change) {
+        changeStatus = change;
+    }
+
+    public boolean isChangeStatus() {
+        return changeStatus;
     }
 
     public void setSceneText(String up, String right, String down, String left) {

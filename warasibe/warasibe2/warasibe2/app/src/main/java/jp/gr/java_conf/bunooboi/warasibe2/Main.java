@@ -22,13 +22,25 @@ public class Main {
     Player enemy = new Player("トカ聖兵", R.drawable.heisi);
     Item item = new Item("剣", R.drawable.heisi);
 
+    int time[] = new int[2];
+    int date[] = new int[3];
+
     public Main() {
         I.HP = 4;
+        I.Stamina = 3;
         I.Power = 40;
-        I.Intelligence = 100;
+        I.Intelligence = 30;
         I.init();
 
+        time[0] = 22;
+        time[1] = 0;
+
+        date[0] = 500;
+        date[1] = 12;
+        date[2] = 30;
+
         battle[0] = new Scene("攻撃", "突進", "逃げる", "ガード");
+        battle[0].setChangeStatus(false);
         battle[0].setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -60,6 +72,7 @@ public class Main {
         });
         battle[1] = new Scene("攻撃", "突進", "逃げる", "ガード");
         battle[1].setConsoleText("どうする");
+        battle[1].setChangeStatus(false);
         battle[1].setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -73,7 +86,7 @@ public class Main {
                     case Scene.UP:
                     case Scene.LEFT:
                     case Scene.RIGHT:
-                        return battle[5];
+                        return battle[4];
                     case Scene.DOWN:
                         if (Math.floor(Math.random() * 2) == 1) {
                             return battle[2];
@@ -86,6 +99,7 @@ public class Main {
         });
         battle[2] = new Scene();
         battle[2].setConsoleText("逃げ切れた");
+        battle[2].setChangeStatus(false);
         battle[2].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -119,6 +133,7 @@ public class Main {
         });
 
         battle[3] = new Scene();
+        battle[3].setChangeStatus(false);
         battle[3].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -175,6 +190,7 @@ public class Main {
             }
         });
         battle[4] = new Scene();
+        battle[4].setChangeStatus(false);
         battle[4].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -336,6 +352,7 @@ public class Main {
             }
         });
         battle[5] = new Scene("身ぐるみを剥ぐ", "", "やめる", "");
+        battle[5].setChangeStatus(false);
         battle[5].setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -360,6 +377,7 @@ public class Main {
             }
         });
         battle[6] = new Scene();
+        battle[6].setChangeStatus(false);
         battle[6].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -411,6 +429,7 @@ public class Main {
             }
         });
         battle[7] = new Scene();
+        battle[7].setChangeStatus(false);
         battle[7].setPlayImg(R.drawable.attack);
         battle[7].setInit(new InitListener() {
             @Override
@@ -433,6 +452,7 @@ public class Main {
             }
         });
         battle[8] = new Scene();
+        battle[8].setChangeStatus(false);
         battle[8].setPlayImg(R.drawable.attack);
         battle[8].setInit(new InitListener() {
             @Override
@@ -462,7 +482,9 @@ public class Main {
                 return battle[0].getNextScene();
             }
         });
+
         battle[9] = new Scene();
+        battle[9].setChangeStatus(false);
         battle[9].setConsoleText("あなたは死んだ");
         battle[9].setInit(new InitListener() {
             @Override
@@ -479,6 +501,7 @@ public class Main {
 
         meziha_Lynch[0] = new Scene("次へ", "", "", "");
         meziha_Lynch[0].setConsoleName("");
+        meziha_Lynch[0].setChangeStatus(false);
         meziha_Lynch[0].setConsoleText("どんっ");
 
         meziha_Lynch[0].setPlayImg(R.drawable.heisi);
@@ -494,13 +517,10 @@ public class Main {
             }
         });
         meziha_Lynch[1] = new Scene("次へ", "", "", "");
-
+        meziha_Lynch[1].setChangeStatus(false);
         meziha_Lynch[1].setConsoleName("トカ聖兵");
-
         meziha_Lynch[1].setConsoleText("おい、ぶつかっておいて謝りもしないのか！");
-
         meziha_Lynch[1].setPlayImg(R.drawable.heisi);
-
         meziha_Lynch[1].setFinish(new FinishListener() {
             @Override
             public Scene finish(int dir) {
@@ -512,47 +532,25 @@ public class Main {
             }
         });
         meziha_Lynch[2] = new Scene("次へ", "", "", "");
-
-        meziha_Lynch[2].
-
-                setConsoleName("トカ聖兵");
-
-        meziha_Lynch[2].
-
-                setConsoleText("このやろう！　ぼかっ");
-
-        meziha_Lynch[2].
-
-                setPlayImg(R.drawable.heisi);
-
-        meziha_Lynch[2].
-
-                setFinish(new FinishListener() {
-                    @Override
-                    public Scene finish(int dir) {
-                        switch (dir) {
-                            case Scene.UP:
-                                return meziha_Lynch[3];
-                        }
-                        return null;
-                    }
-                });
-        meziha_Lynch[3] = new
-
-                Scene("次へ", "", "", "");
-
-        meziha_Lynch[3].
-
-                setConsoleName("");
-
-        meziha_Lynch[3].
-
-                setConsoleText("ダメージを受けた");
-
-        meziha_Lynch[3].
-
-                setPlayImg(R.drawable.heisi);
-
+        meziha_Lynch[2].setChangeStatus(false);
+        meziha_Lynch[2].setConsoleName("トカ聖兵");
+        meziha_Lynch[2].setConsoleText("このやろう！　ぼかっ");
+        meziha_Lynch[2].setPlayImg(R.drawable.heisi);
+        meziha_Lynch[2].setFinish(new FinishListener() {
+            @Override
+            public Scene finish(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha_Lynch[3];
+                }
+                return null;
+            }
+        });
+        meziha_Lynch[3] = new Scene("次へ", "", "", "");
+        meziha_Lynch[3].setConsoleName("");
+        meziha_Lynch[3].setChangeStatus(false);
+        meziha_Lynch[3].setConsoleText("ダメージを受けた");
+        meziha_Lynch[3].setPlayImg(R.drawable.heisi);
         meziha_Lynch[3].setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -571,19 +569,9 @@ public class Main {
         });
 
         meziha[1] = new Scene("北", "東", "南", "西");
-
-        meziha[1].
-
-                setConsoleText("広場だ");
-
-        meziha[1].
-
-                setConsoleName("");
-
-        meziha[1].
-
-                setPlayImg(R.drawable.d);
-
+        meziha[1].setConsoleText("広場だ");
+        meziha[1].setConsoleName("");
+        meziha[1].setPlayImg(R.drawable.d);
         meziha[1].setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -606,11 +594,8 @@ public class Main {
         });
 
         meziha[2] = new Scene("北", "防具屋", "南", "武器屋");
-
         meziha[2].setConsoleText("町中だ");
-
         meziha[2].setPlayImg(R.drawable.a);
-
         meziha[2].setInit(new InitListener() {
             @Override
             public void init(int dir) {

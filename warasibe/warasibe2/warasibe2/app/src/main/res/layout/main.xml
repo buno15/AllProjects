@@ -18,7 +18,36 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="0.2"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="2.5"
+                android:gravity="left|center" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/weather"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/playImg"
@@ -106,8 +135,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:src="@drawable/hp1" />
+                android:layout_weight="2" />
 
             <ImageView
                 android:id="@+id/hp2"
@@ -117,8 +145,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:src="@drawable/hp1" />
+                android:layout_weight="2" />
 
             <ImageView
                 android:id="@+id/hp3"
@@ -128,8 +155,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:src="@drawable/hp2" />
+                android:layout_weight="2" />
 
             <ImageView
                 android:id="@+id/hp4"
@@ -139,8 +165,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:src="@drawable/hp2" />
+                android:layout_weight="2" />
 
             <TextView
                 android:id="@+id/intelligence"
@@ -185,7 +210,6 @@
                         android:layout_height="match_parent"
                         android:layout_margin="6dp"
                         android:layout_weight="1"
-                        android:background="#ffffff"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -209,7 +233,6 @@
                         android:layout_height="match_parent"
                         android:layout_margin="6dp"
                         android:layout_weight="1"
-                        android:background="#ffffff"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -308,14 +331,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.8"
-            android:background="#000000"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#000000"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -323,7 +344,6 @@
                     android:layout_height="0dp"
                     android:layout_marginLeft="25dp"
                     android:layout_weight="1.5"
-                    android:background="#000000"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -348,8 +368,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="#000000"
-                        android:src="@drawable/fracture" />
+                        android:src="@drawable/sick" />
 
                     <View
                         android:layout_width="0dp"
@@ -473,7 +492,9 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:background="#ffffff" />
+                        android:background="#333333"
+                        android:padding="1dp"
+                        android:src="@drawable/horse" />
 
                     <TextView
                         android:id="@+id/horse"
