@@ -172,13 +172,13 @@ public class MainActivity extends AppCompatActivity {
                 next(Scene.ACTION);
             }
         });
-        setStamina(I.Stamina);
 
     }
 
     static void next(int dir) {
         predScene = nowScene;
-        nowScene = nowScene.finish(dir);
+        nowScene.finish(dir);
+        nowScene = nowScene.next(dir);
         nowScene.start(predScene, dir);
         setNowScene(nowScene);
     }
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void updateStatus(Scene s) {
-
+        System.out.println(s.getConsoleText() + " " + I.HP + " " + I.Stamina);
         power.setText(String.valueOf(I.Power));
         intelligence.setText(String.valueOf(I.Intelligence));
         if (s.isChangeStatus()) {
@@ -209,194 +209,57 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 I.Stamina--;
-                setStamina(I.Stamina);
-                if (I.Stamina < 0) {
+                if (I.Stamina <= 0) {
                     I.HP--;
-                    I.Stamina = 20;
-                    setStamina(I.Stamina);
+                    if (I.HP <= -1) {
+                        dead();
+                    } else {
+                        I.Stamina = 20;
+                    }
                 }
-                date.setText(main.date[0] + "年 " + main.date[1] + "/" + main.date[2]);
             } else {
                 main.time[1] += 3;
                 if (main.time[1] == 6) {
                     main.time[0]++;
                     main.time[1] = 0;
                     I.Stamina--;
-                    setStamina(I.Stamina);
-                    if (I.Stamina < 0) {
+                    if (I.Stamina <= 0) {
                         I.HP--;
-                        I.Stamina = 20;
-                        setStamina(I.Stamina);
+                        if (I.HP <= -1) {
+                            dead();
+                        } else {
+                            I.Stamina = 20;
+                        }
                     }
                 }
             }
+            date.setText(main.date[0] + "年 " + main.date[1] + "/" + main.date[2]);
             time.setText(main.time[0] + ":" + main.time[1] + "0");
+            setStamina(I.Stamina);
+            setHP(I.HP);
         }
-        switch (I.HP) {
-            case 0:
-                hp[0].setImageResource(R.drawable.hp2);
-                hp[1].setImageResource(R.drawable.hp2);
-                hp[2].setImageResource(R.drawable.hp2);
-                hp[3].setImageResource(R.drawable.hp2);
-                break;
-            case 1:
-                hp[0].setImageResource(R.drawable.hp1);
-                hp[1].setImageResource(R.drawable.hp2);
-                hp[2].setImageResource(R.drawable.hp2);
-                hp[3].setImageResource(R.drawable.hp2);
-                break;
-            case 2:
-                hp[0].setImageResource(R.drawable.hp1);
-                hp[1].setImageResource(R.drawable.hp1);
-                hp[2].setImageResource(R.drawable.hp2);
-                hp[3].setImageResource(R.drawable.hp2);
-                break;
-            case 3:
-                hp[0].setImageResource(R.drawable.hp1);
-                hp[1].setImageResource(R.drawable.hp1);
-                hp[2].setImageResource(R.drawable.hp1);
-                hp[3].setImageResource(R.drawable.hp2);
-                break;
-            case 4:
-                hp[0].setImageResource(R.drawable.hp1);
-                hp[1].setImageResource(R.drawable.hp1);
-                hp[2].setImageResource(R.drawable.hp1);
-                hp[3].setImageResource(R.drawable.hp1);
-                break;
 
-        }
     }
 
-    static void setStamina(int now) {
-        switch (now) {
-            case 0:
-                stamina[3].setImageResource(R.drawable.stamina_no_4);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 1:
-                stamina[3].setImageResource(R.drawable.stamina_1);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 2:
-                stamina[3].setImageResource(R.drawable.stamina_2);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 3:
-                stamina[3].setImageResource(R.drawable.stamina_3);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 4:
-                stamina[3].setImageResource(R.drawable.stamina_4);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 5:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_no_3);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 6:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_6);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 7:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_7);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 8:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_8);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 9:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_9);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 10:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_no_2);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 11:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_11);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 12:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_12);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 13:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_13);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 14:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_14);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 15:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_no_1);
-                break;
-            case 16:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_16);
-                break;
-            case 17:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_17);
-                break;
-            case 18:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_18);
-                break;
-            case 19:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_19);
-                break;
-            case 20:
-                stamina[3].setImageResource(R.drawable.stamina_5);
-                stamina[2].setImageResource(R.drawable.stamina_10);
-                stamina[1].setImageResource(R.drawable.stamina_15);
-                stamina[0].setImageResource(R.drawable.stamina_20);
-                break;
-        }
+    static void dead() {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                setButtonUnable();
+                up.setText("");
+                down.setText("");
+                left.setText("");
+                right.setText("");
+
+                consoleText.setText("あなたは死んだ");
+                consoleName.setText("");
+                setStamina(-1);
+                setHP(-1);
+            }
+        });
     }
+
 
     static void setText(Scene s) {
         up.setText(s.getUp());
@@ -463,5 +326,185 @@ public class MainActivity extends AppCompatActivity {
             action.setEnabled(false);
             action.setImageResource(R.drawable.action1);
         }
+    }
+
+    static void setHP(final int now) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                switch (now) {
+                    case -1:
+                    case 0:
+                        hp[0].setImageResource(R.drawable.hp2);
+                        hp[1].setImageResource(R.drawable.hp2);
+                        hp[2].setImageResource(R.drawable.hp2);
+                        hp[3].setImageResource(R.drawable.hp2);
+                        break;
+                    case 1:
+                        hp[0].setImageResource(R.drawable.hp1);
+                        hp[1].setImageResource(R.drawable.hp2);
+                        hp[2].setImageResource(R.drawable.hp2);
+                        hp[3].setImageResource(R.drawable.hp2);
+                        break;
+                    case 2:
+                        hp[0].setImageResource(R.drawable.hp1);
+                        hp[1].setImageResource(R.drawable.hp1);
+                        hp[2].setImageResource(R.drawable.hp2);
+                        hp[3].setImageResource(R.drawable.hp2);
+                        break;
+                    case 3:
+                        hp[0].setImageResource(R.drawable.hp1);
+                        hp[1].setImageResource(R.drawable.hp1);
+                        hp[2].setImageResource(R.drawable.hp1);
+                        hp[3].setImageResource(R.drawable.hp2);
+                        break;
+                    case 4:
+                        hp[0].setImageResource(R.drawable.hp1);
+                        hp[1].setImageResource(R.drawable.hp1);
+                        hp[2].setImageResource(R.drawable.hp1);
+                        hp[3].setImageResource(R.drawable.hp1);
+                        break;
+
+                }
+            }
+        });
+    }
+
+    static void setStamina(final int now) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                switch (now) {
+                    case -1:
+                    case 0:
+                        stamina[3].setImageResource(R.drawable.stamina_no_4);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 1:
+                        stamina[3].setImageResource(R.drawable.stamina_1);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 2:
+                        stamina[3].setImageResource(R.drawable.stamina_2);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 3:
+                        stamina[3].setImageResource(R.drawable.stamina_3);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 4:
+                        stamina[3].setImageResource(R.drawable.stamina_4);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 5:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_no_3);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 6:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_6);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 7:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_7);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 8:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_8);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 9:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_9);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 10:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_no_2);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 11:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_11);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 12:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_12);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 13:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_13);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 14:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_14);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 15:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_no_1);
+                        break;
+                    case 16:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_16);
+                        break;
+                    case 17:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_17);
+                        break;
+                    case 18:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_18);
+                        break;
+                    case 19:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_19);
+                        break;
+                    case 20:
+                        stamina[3].setImageResource(R.drawable.stamina_5);
+                        stamina[2].setImageResource(R.drawable.stamina_10);
+                        stamina[1].setImageResource(R.drawable.stamina_15);
+                        stamina[0].setImageResource(R.drawable.stamina_20);
+                        break;
+                }
+            }
+        });
+
     }
 }

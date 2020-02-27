@@ -14,8 +14,10 @@ public class Main {
 
     Scene meziha_Lynch[] = new Scene[4];
 
-    Scene battle[] = new Scene[10];
+    Scene battle[] = new Scene[9];
     //battleは直前のfinishから設定。nextSceneも設定する
+
+    Scene dead;
 
     Handler handler = new Handler();
 
@@ -26,8 +28,8 @@ public class Main {
     int date[] = new int[3];
 
     public Main() {
-        I.HP = 4;
-        I.Stamina = 3;
+        I.HP = 0;
+        I.Stamina = 5;
         I.Power = 40;
         I.Intelligence = 30;
         I.init();
@@ -48,13 +50,13 @@ public class Main {
                 enemy.addItem(item);
                 battle[0].setConsoleText(enemy.name + "が現れた");
                 battle[0].setPlayImg(enemy.img);
-                enemy.setStatus(4, 5, 10, 10);
+                enemy.setStatus(10, 5, 10, 10);
                 item = enemy.getRandomItem();
             }
         });
-        battle[0].setFinish(new FinishListener() {
+        battle[0].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                     case Scene.LEFT:
@@ -79,9 +81,9 @@ public class Main {
                 battle[1].setPlayImg(enemy.img);
             }
         });
-        battle[1].setFinish(new FinishListener() {
+        battle[1].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                     case Scene.LEFT:
@@ -125,9 +127,9 @@ public class Main {
                 }, 1500);
             }
         });
-        battle[2].setFinish(new FinishListener() {
+        battle[2].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 return battle[0].getNextScene();
             }
         });
@@ -179,16 +181,17 @@ public class Main {
                 }, 3200);
             }
         });
-        battle[3].setFinish(new FinishListener() {
+        battle[3].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
-                if (I.HP <= 0) {
-                    return battle[9];
+            public Scene next(int dir) {
+                if (I.HP <= -1) {
+                    return dead;
                 } else {
                     return battle[1];
                 }
             }
         });
+
         battle[4] = new Scene();
         battle[4].setChangeStatus(false);
         battle[4].setInit(new InitListener() {
@@ -237,7 +240,6 @@ public class Main {
                         battle[4].setConsoleText("ガード！");
                         switch (enemyHand) {
                             case Player.GU:
-                                I.Stamina--;
                                 break;
                             case Player.CHOKI:
                                 enemy.HP--;
@@ -246,6 +248,9 @@ public class Main {
                                 break;
                             case Player.PA:
                                 I.HP--;
+                                if (I.HP <= -1) {
+                                    I.Stamina = -1;
+                                }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
                                 break;
@@ -253,14 +258,24 @@ public class Main {
                         break;
                     case Player.CHOKI:
                         battle[4].setConsoleText("攻撃！");
+                        System.out.println("CHOKI");
                         switch (enemyHand) {
                             case Player.GU:
                                 I.HP--;
+                                if (I.HP <= -1) {
+                                    I.Stamina = -1;
+                                }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
                                 break;
                             case Player.CHOKI:
                                 I.Stamina--;
+                                if (I.Stamina <= 0) {
+                                    I.HP--;
+                                    if (I.HP > -1) {
+                                        I.Stamina = 20;
+                                    }
+                                }
                                 break;
                             case Player.PA:
                                 enemy.HP--;
@@ -271,6 +286,7 @@ public class Main {
                         break;
                     case Player.PA:
                         battle[4].setConsoleText("突進！");
+
                         switch (enemyHand) {
                             case Player.GU:
                                 enemy.HP--;
@@ -279,15 +295,25 @@ public class Main {
                                 break;
                             case Player.CHOKI:
                                 I.HP--;
+                                if (I.HP <= -1) {
+                                    I.Stamina = -1;
+                                }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
                                 break;
                             case Player.PA:
                                 I.Stamina--;
+                                if (I.Stamina <= 0) {
+                                    I.HP--;
+                                    if (I.HP > -1) {
+                                        I.Stamina = 20;
+                                    }
+                                }
                                 break;
                         }
                         break;
                 }
+
                 final String result = text;
                 final int img = imgmoto;
                 handler.postDelayed(new Runnable() {
@@ -305,20 +331,22 @@ public class Main {
                                 break;
                         }
                         MainActivity.setConsole(battle[4]);
-                        //すたみなの更新
                     }
                 }, 1200);
+
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (myHand == enemyHand) {
-                            MainActivity.next(dir);
+                            battle[4].setConsoleText(battle[4].getConsoleText() + "\n\n体力を消耗している！");
+                            MainActivity.setConsole(battle[4]);
+                            MainActivity.setStamina(I.Stamina);
                         } else {
                             battle[4].setConsoleText(battle[4].getConsoleText() + "\n\n" + result);
                             MainActivity.setConsole(battle[4]);
                             MainActivity.setPlayImg(img);
-                            //体力の更新
                         }
+                        MainActivity.setHP(I.HP);
                     }
                 }, 2400);
 
@@ -329,28 +357,29 @@ public class Main {
                     }
                 }, 2450);
 
-                if (myHand != enemyHand) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            MainActivity.next(dir);
-                        }
-                    }, 3600);
-                }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.next(dir);
+                        System.out.println(I.HP + " " + I.Stamina);
+                    }
+                }, 3600);
             }
         });
-        battle[4].setFinish(new FinishListener() {
+
+        battle[4].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 if (enemy.HP <= 0) {
                     return battle[5];
-                } else if (I.HP <= 0) {
-                    return battle[9];
+                } else if (I.HP <= -1) { //戦死
+                    return dead;
                 } else {
                     return battle[1];
                 }
             }
         });
+
         battle[5] = new Scene("身ぐるみを剥ぐ", "", "やめる", "");
         battle[5].setChangeStatus(false);
         battle[5].setInit(new InitListener() {
@@ -362,20 +391,34 @@ public class Main {
         });
         battle[5].setFinish(new FinishListener() {
             @Override
-            public Scene finish(int dir) {
+            public void finish(int dir) {
+                switch (dir) {
+                    case Scene.DOWN:
+                        I.Power++;
+                        I.Intelligence++;
+                        break;
+                }
+            }
+        });
+
+        battle[5].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
-                        if (Math.floor(Math.random() * 100) <= I.Intelligence) {
+                        /*if (Math.floor(Math.random() * 100) <= I.Intelligence) {
                             return battle[6];
                         } else {
                             return battle[7];
-                        }
+                        }*/
+                        return battle[7];
                     case Scene.DOWN:
                         return battle[0].getNextScene();
                 }
                 return null;
             }
         });
+
         battle[6] = new Scene();
         battle[6].setChangeStatus(false);
         battle[6].setInit(new InitListener() {
@@ -400,6 +443,7 @@ public class Main {
                         MainActivity.setConsole(battle[6]);
                         I.HP--;
                         MainActivity.setPlayImg(R.drawable.damage);
+                        MainActivity.setHP(I.HP);
                     }
                 }, 2000);
 
@@ -418,16 +462,18 @@ public class Main {
                 }, 3200);
             }
         });
-        battle[6].setFinish(new FinishListener() {
+        battle[6].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
-                if (I.HP <= 0) {
-                    return battle[9];
+            public Scene next(int dir) {
+                if (I.HP <= -1) { //戦死
+                    return dead;
                 } else {
                     return battle[1];
                 }
             }
         });
+
+
         battle[7] = new Scene();
         battle[7].setChangeStatus(false);
         battle[7].setPlayImg(R.drawable.attack);
@@ -440,7 +486,17 @@ public class Main {
         });
         battle[7].setFinish(new FinishListener() {
             @Override
-            public Scene finish(int dir) {
+            public void finish(int dir) {
+                switch (dir) {
+                    case Scene.DOWN:
+                        I.Power++;
+                        I.Intelligence++;
+                }
+            }
+        });
+        battle[7].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.DOWN:
                         return battle[0].getNextScene();
@@ -451,6 +507,7 @@ public class Main {
                 return null;
             }
         });
+
         battle[8] = new Scene();
         battle[8].setChangeStatus(false);
         battle[8].setPlayImg(R.drawable.attack);
@@ -478,22 +535,35 @@ public class Main {
         });
         battle[8].setFinish(new FinishListener() {
             @Override
-            public Scene finish(int dir) {
+            public void finish(int dir) {
+                I.Power++;
+                I.Intelligence++;
+            }
+        });
+        battle[8].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
                 return battle[0].getNextScene();
             }
         });
 
-        battle[9] = new Scene();
-        battle[9].setChangeStatus(false);
-        battle[9].setConsoleText("あなたは死んだ");
-        battle[9].setInit(new InitListener() {
+        dead = new Scene();
+        dead.setConsoleText("あなたは死んだ");
+        dead.setInit(new InitListener() {
             @Override
             public void init(int dir) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.setStamina(-1);
+                    }
+                });
+
             }
         });
-        battle[9].setFinish(new FinishListener() {
+        dead.setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 return null;
             }
         });
@@ -505,10 +575,9 @@ public class Main {
         meziha_Lynch[0].setConsoleText("どんっ");
 
         meziha_Lynch[0].setPlayImg(R.drawable.heisi);
-
-        meziha_Lynch[0].setFinish(new FinishListener() {
+        meziha_Lynch[0].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                         return meziha_Lynch[1];
@@ -516,14 +585,15 @@ public class Main {
                 return null;
             }
         });
+
         meziha_Lynch[1] = new Scene("次へ", "", "", "");
         meziha_Lynch[1].setChangeStatus(false);
         meziha_Lynch[1].setConsoleName("トカ聖兵");
         meziha_Lynch[1].setConsoleText("おい、ぶつかっておいて謝りもしないのか！");
         meziha_Lynch[1].setPlayImg(R.drawable.heisi);
-        meziha_Lynch[1].setFinish(new FinishListener() {
+        meziha_Lynch[1].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                         return meziha_Lynch[2];
@@ -531,14 +601,15 @@ public class Main {
                 return null;
             }
         });
+
         meziha_Lynch[2] = new Scene("次へ", "", "", "");
         meziha_Lynch[2].setChangeStatus(false);
         meziha_Lynch[2].setConsoleName("トカ聖兵");
         meziha_Lynch[2].setConsoleText("このやろう！　ぼかっ");
         meziha_Lynch[2].setPlayImg(R.drawable.heisi);
-        meziha_Lynch[2].setFinish(new FinishListener() {
+        meziha_Lynch[2].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                         return meziha_Lynch[3];
@@ -546,6 +617,7 @@ public class Main {
                 return null;
             }
         });
+
         meziha_Lynch[3] = new Scene("次へ", "", "", "");
         meziha_Lynch[3].setConsoleName("");
         meziha_Lynch[3].setChangeStatus(false);
@@ -557,9 +629,9 @@ public class Main {
                 I.meziha_1 = true;
             }
         });
-        meziha_Lynch[3].setFinish(new FinishListener() {
+        meziha_Lynch[3].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                         return meziha[2];
@@ -578,9 +650,9 @@ public class Main {
 
             }
         });
-        meziha[1].setFinish(new FinishListener() {
+        meziha[1].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 if (dir == Scene.DOWN) {
                     if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
                         return meziha_Lynch[0];
@@ -602,9 +674,9 @@ public class Main {
 
             }
         });
-        meziha[2].setFinish(new FinishListener() {
+        meziha[2].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
                         return meziha[1];
@@ -627,9 +699,9 @@ public class Main {
         meziha[3] = new Scene("北", "東", "南", "西");
         meziha[3].setConsoleText("十字路だ");
         meziha[3].setPlayImg(R.drawable.c);
-        meziha[3].setFinish(new FinishListener() {
+        meziha[3].setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
+            public Scene next(int dir) {
                 return meziha[2];
             }
         });
@@ -638,14 +710,10 @@ public class Main {
         meziha_Armor.setConsoleName("防具屋");
         meziha_Armor.setConsoleText("いらっしゃい。防具屋だよ〜");
         meziha_Armor.setPlayImg(R.drawable.f);
-        meziha_Armor.setFinish(new FinishListener() {
+        meziha_Armor.setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
-                switch (dir) {
-                    case Scene.DOWN:
-                        return meziha[2];
-                }
-                return null;
+            public Scene next(int dir) {
+                return meziha[2];
             }
         });
 
@@ -654,14 +722,10 @@ public class Main {
         meziha_Weapon.setConsoleName("武器屋");
         meziha_Weapon.setConsoleText("いらっしゃい。武器屋へようこそ！");
         meziha_Weapon.setPlayImg(R.drawable.e);
-        meziha_Weapon.setFinish(new FinishListener() {
+        meziha_Weapon.setNext(new NextListener() {
             @Override
-            public Scene finish(int dir) {
-                switch (dir) {
-                    case Scene.DOWN:
-                        return meziha[2];
-                }
-                return null;
+            public Scene next(int dir) {
+                return meziha[2];
             }
         });
 

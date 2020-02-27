@@ -14,6 +14,7 @@ public class Scene {
 
     private InitListener init;
     private FinishListener finish;
+    private NextListener next;
 
     private int playImg;
 
@@ -127,14 +128,24 @@ public class Scene {
         this.finish = f;
     }
 
-    public Scene finish(int dir) {
+    public void finish(int dir) {
         if (finish != null)
-            return finish.finish(dir);
+            finish.finish(dir);
+    }
+
+    public void setNext(NextListener n) {
+        this.next = n;
+    }
+
+    public Scene next(int dir) {
+        if (next != null) {
+            return next.next(dir);
+        }
         return null;
     }
 
     public boolean isNext(int dir) {
-        if (finish(dir) != null) {
+        if (next(dir) != null) {
             return true;
         }
         return false;
