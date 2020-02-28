@@ -395,8 +395,8 @@
                         android:background="#ffffff"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/itemimg1"
+                        <ImageButton
+                            android:id="@+id/item1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
@@ -411,8 +411,8 @@
                         android:background="#ffffff"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/itemimg2"
+                        <ImageButton
+                            android:id="@+id/item2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
@@ -428,6 +428,41 @@
                 android:layout_marginBottom="15dp"
                 android:layout_weight="1.2"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="2" />
+
+                    <ImageView
+                        android:id="@+id/horseimg"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:padding="1dp"
+                        android:src="@drawable/horse" />
+
+                    <ImageView
+                        android:id="@+id/cartimg"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/horse" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -478,56 +513,7 @@
                         android:gravity="center" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/horseimg"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:background="#333333"
-                        android:padding="1dp"
-                        android:src="@drawable/horse" />
-
-                    <TextView
-                        android:id="@+id/horse"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1.5"
-                        android:background="#333333"
-                        android:gravity="center" />
-
-                    <ImageView
-                        android:id="@+id/cartimg"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:background="#ffffff" />
-
-                    <TextView
-                        android:id="@+id/cart"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1.5"
-                        android:background="#333333"
-                        android:gravity="center" />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -15,15 +15,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     static TextView consoleText, consoleName;
-    ImageView itemImage;
+    static ImageView item1, item2;
     static ImageView playImg;
-    static ImageView hp[] = new ImageView[4], stamina[] = new ImageView[4], powerImg, intelligenceImg;
+    static ImageView hp[] = new ImageView[4], stamina[] = new ImageView[4];
     ImageView injury, fracture, sick;
     ImageView friendImg, soldierImg, horseImg, cartImg;
 
     static TextView date, time, weather;
     static TextView power, intelligence;
-    static TextView friend, soldier, horse, cart;
+    static TextView friend, soldier;
     static Button up, right, down, left;
     static ImageButton action;
     int margin;
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         consoleName.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
         consoleName.setTextColor(Color.BLACK);
 
-        itemImage = (ImageView) findViewById(R.id.itemimg1);
-        itemImage.setBackgroundResource(R.drawable.boss);
+        item1 = findViewById(R.id.item1);
+        item2 = findViewById(R.id.item2);
 
 
         hp[0] = (ImageView) findViewById(R.id.hp1);
@@ -111,16 +111,6 @@ public class MainActivity extends AppCompatActivity {
         soldier.setTextColor(Color.WHITE);
         soldier.setText("100000");
 
-        horse = (TextView) findViewById(R.id.horse);
-        horse.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
-        horse.setTextColor(Color.WHITE);
-        horse.setText("100");
-
-        cart = (TextView) findViewById(R.id.cart);
-        cart.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
-        cart.setTextColor(Color.WHITE);
-        cart.setText("100");
-
         up = (Button) findViewById(R.id.up);
         up.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
         down = (Button) findViewById(R.id.down);
@@ -173,6 +163,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        item1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCC");
+            }
+        });
+        item2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("ffffffffffffffffffffffffff");
+            }
+        });
     }
 
     static void next(int dir) {
@@ -192,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void updateStatus(Scene s) {
-        System.out.println(s.getConsoleText() + " " + I.HP + " " + I.Stamina);
         power.setText(String.valueOf(I.Power));
         intelligence.setText(String.valueOf(I.Intelligence));
         if (s.isChangeStatus()) {
@@ -238,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
             setStamina(I.Stamina);
             setHP(I.HP);
         }
-
+        item1.setBackgroundResource(I.getItem(0).getImg());
+        item2.setBackgroundResource(I.getItem(1).getImg());
     }
 
     static void dead() {
@@ -292,7 +294,6 @@ public class MainActivity extends AppCompatActivity {
                 right.setEnabled(false);
                 action.setEnabled(false);
                 action.setImageResource(R.drawable.action1);
-
             }
         });
 
