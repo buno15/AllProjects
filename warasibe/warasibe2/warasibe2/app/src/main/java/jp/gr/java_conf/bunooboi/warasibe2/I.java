@@ -6,9 +6,12 @@ public class I {
 
     static String name;
     static int HP;                                    // 体力
+    static int maxHP;
     static int Stamina;                                //気力
     static int Power;                                // 力
+    static int Defense;                             //防御力
     static int Intelligence;                            // 洞察力
+    static int Karma;                                //民心
 
     private static ArrayList<Item> item;
 
@@ -44,5 +47,12 @@ public class I {
     public static void exchange(Item IHave, Item youHave) {
         item.remove(IHave);
         item.add(youHave);
+    }
+
+    public static boolean isCriminal() {
+        if (Karma <= 10) {
+            return true;
+        }
+        return false;
     }
 }

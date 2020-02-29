@@ -115,57 +115,61 @@
             android:layout_weight="0.4"
             android:orientation="horizontal">
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0.5" />
+
             <TextView
                 android:id="@+id/power"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2.5"
+                android:layout_weight="3"
                 android:background="@drawable/power"
                 android:gravity="center" />
 
-            <ImageView
-                android:id="@+id/hp1"
+            <TextView
+                android:id="@+id/defense"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2" />
+                android:layout_weight="3"
+                android:background="@drawable/power"
+                android:gravity="center" />
 
-            <ImageView
-                android:id="@+id/hp2"
+            <TextView
+                android:id="@+id/hp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2" />
+                android:layout_weight="4"
+                android:background="@drawable/hp1"
+                android:gravity="center" />
 
-            <ImageView
-                android:id="@+id/hp3"
+            <TextView
+                android:id="@+id/karma"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2" />
-
-            <ImageView
-                android:id="@+id/hp4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="2" />
+                android:layout_weight="3"
+                android:background="@drawable/power"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/intelligence"
@@ -173,12 +177,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2.5"
+                android:layout_weight="3"
                 android:background="@drawable/intelligence"
-                android:gravity="center"
-                android:paddingRight="2dp" />
+                android:gravity="center" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0.5" />
 
 
         </LinearLayout>
@@ -438,7 +449,9 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="2" />
 
                     <ImageView

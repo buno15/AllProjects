@@ -17,12 +17,14 @@ public class MainActivity extends AppCompatActivity {
     static TextView consoleText, consoleName;
     static ImageView item1, item2;
     static ImageView playImg;
-    static ImageView hp[] = new ImageView[4], stamina[] = new ImageView[4];
+    static ImageView stamina[] = new ImageView[4];
     ImageView injury, fracture, sick;
     ImageView friendImg, soldierImg, horseImg, cartImg;
 
+    static TextView karma;
+
     static TextView date, time, weather;
-    static TextView power, intelligence;
+    static TextView power, defense, intelligence, hp;
     static TextView friend, soldier;
     static Button up, right, down, left;
     static ImageButton action;
@@ -57,11 +59,6 @@ public class MainActivity extends AppCompatActivity {
         item2 = findViewById(R.id.item2);
 
 
-        hp[0] = (ImageView) findViewById(R.id.hp1);
-        hp[1] = (ImageView) findViewById(R.id.hp2);
-        hp[2] = (ImageView) findViewById(R.id.hp3);
-        hp[3] = (ImageView) findViewById(R.id.hp4);
-
         stamina[0] = (ImageView) findViewById(R.id.stamina1);
         stamina[1] = (ImageView) findViewById(R.id.stamina2);
         stamina[2] = (ImageView) findViewById(R.id.stamina3);
@@ -80,11 +77,30 @@ public class MainActivity extends AppCompatActivity {
         weather.setTextColor(Color.WHITE);
         weather.setText("晴れ");
 
+        hp = (TextView) findViewById(R.id.hp);
+        hp.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
+        hp.setTextColor(Color.parseColor("#00ff00"));
+        hp.setShadowLayer(10, 0, 0, Color.BLACK);
+
         power = (TextView) findViewById(R.id.power);
         power.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
         power.setTextColor(Color.WHITE);
         power.setTextColor(Color.parseColor("#fa8072"));
         power.setShadowLayer(10, 0, 0, Color.BLACK);
+
+
+        defense = (TextView) findViewById(R.id.defense);
+        defense.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
+        defense.setTextColor(Color.WHITE);
+        defense.setTextColor(Color.parseColor("#cd853f"));
+        defense.setShadowLayer(10, 0, 0, Color.BLACK);
+
+        karma = (TextView) findViewById(R.id.karma);
+        karma.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
+        karma.setTextColor(Color.WHITE);
+        karma.setTextColor(Color.parseColor("#da70d6"));
+        karma.setShadowLayer(10, 0, 0, Color.BLACK);
+
 
         intelligence = (TextView) findViewById(R.id.intelligence);
         intelligence.setTextSize(34 * DisplayManager.getScaleSize(getApplicationContext()));
@@ -195,7 +211,9 @@ public class MainActivity extends AppCompatActivity {
 
     static void updateStatus(Scene s) {
         power.setText(String.valueOf(I.Power));
+        defense.setText(String.valueOf(I.Defense));
         intelligence.setText(String.valueOf(I.Intelligence));
+        karma.setText(String.valueOf(I.Karma));
         if (s.isChangeStatus()) {
             if (main.time[0] == 23 && main.time[1] == 3) {
                 main.time[0] = 0;
@@ -211,8 +229,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 I.Stamina--;
                 if (I.Stamina <= 0) {
-                    I.HP--;
-                    if (I.HP <= -1) {
+                    I.HP /= 2;
+                    if (I.HP <= 0) {
                         dead();
                     } else {
                         I.Stamina = 20;
@@ -225,8 +243,8 @@ public class MainActivity extends AppCompatActivity {
                     main.time[1] = 0;
                     I.Stamina--;
                     if (I.Stamina <= 0) {
-                        I.HP--;
-                        if (I.HP <= -1) {
+                        I.HP /= 2;
+                        if (I.HP <= 0) {
                             dead();
                         } else {
                             I.Stamina = 20;
@@ -239,8 +257,8 @@ public class MainActivity extends AppCompatActivity {
             setStamina(I.Stamina);
             setHP(I.HP);
         }
-        item1.setBackgroundResource(I.getItem(0).getImg());
-        item2.setBackgroundResource(I.getItem(1).getImg());
+        item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+        item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
     }
 
     static void dead() {
@@ -257,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 consoleText.setText("あなたは死んだ");
                 consoleName.setText("");
                 setStamina(-1);
-                setHP(-1);
+                setHP(0);
             }
         });
     }
@@ -293,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 left.setEnabled(false);
                 right.setEnabled(false);
                 action.setEnabled(false);
-                action.setImageResource(R.drawable.action1);
+                action.setImageResource(R.drawable.action0);
             }
         });
 
@@ -322,50 +340,38 @@ public class MainActivity extends AppCompatActivity {
         }
         if (s.isNext(Scene.ACTION)) {
             action.setEnabled(true);
-            action.setImageResource(R.drawable.action2);
+            action.setImageResource(R.drawable.action1);
         } else {
             action.setEnabled(false);
-            action.setImageResource(R.drawable.action1);
+            action.setImageResource(R.drawable.action0);
         }
+    }
+
+    static void setActionButton(final boolean on) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (on) {
+                    action.setEnabled(true);
+                    action.setImageResource(R.drawable.action2);
+                } else {
+                    action.setEnabled(true);
+                    action.setImageResource(R.drawable.action1);
+                }
+            }
+        });
+
     }
 
     static void setHP(final int now) {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                switch (now) {
-                    case -1:
-                    case 0:
-                        hp[0].setImageResource(R.drawable.hp2);
-                        hp[1].setImageResource(R.drawable.hp2);
-                        hp[2].setImageResource(R.drawable.hp2);
-                        hp[3].setImageResource(R.drawable.hp2);
-                        break;
-                    case 1:
-                        hp[0].setImageResource(R.drawable.hp1);
-                        hp[1].setImageResource(R.drawable.hp2);
-                        hp[2].setImageResource(R.drawable.hp2);
-                        hp[3].setImageResource(R.drawable.hp2);
-                        break;
-                    case 2:
-                        hp[0].setImageResource(R.drawable.hp1);
-                        hp[1].setImageResource(R.drawable.hp1);
-                        hp[2].setImageResource(R.drawable.hp2);
-                        hp[3].setImageResource(R.drawable.hp2);
-                        break;
-                    case 3:
-                        hp[0].setImageResource(R.drawable.hp1);
-                        hp[1].setImageResource(R.drawable.hp1);
-                        hp[2].setImageResource(R.drawable.hp1);
-                        hp[3].setImageResource(R.drawable.hp2);
-                        break;
-                    case 4:
-                        hp[0].setImageResource(R.drawable.hp1);
-                        hp[1].setImageResource(R.drawable.hp1);
-                        hp[2].setImageResource(R.drawable.hp1);
-                        hp[3].setImageResource(R.drawable.hp1);
-                        break;
-
+                hp.setText(String.valueOf(I.HP));
+                if (I.HP == I.maxHP) {
+                    hp.setTextColor(Color.parseColor("#ffff00"));
+                } else {
+                    hp.setTextColor(Color.parseColor("#00ff00"));
                 }
             }
         });

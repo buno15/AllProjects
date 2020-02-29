@@ -7,6 +7,7 @@ public class Player {
     private int HP;                                    // 体力
     private int Stamina;                                //気力
     private int Power;                                // 力
+    private int Defense;                             //防御力
     private int Intelligence;                            // 洞察力
 
     private int img;
@@ -23,10 +24,11 @@ public class Player {
         item = new ArrayList<>();
     }
 
-    public void setStatus(int hp, int stamina, int power, int intelligence) {
+    public void setStatus(int hp, int stamina, int power, int defense, int intelligence) {
         this.HP = hp;
         this.Stamina = stamina;
         this.Power = power;
+        this.Defense = defense;
         this.Intelligence = intelligence;
     }
 
@@ -84,6 +86,10 @@ public class Player {
 
     public int getPower() {
         return Power;
+    }
+
+    public int getDefense() {
+        return Defense;
     }
 
     public int getIntelligence() {

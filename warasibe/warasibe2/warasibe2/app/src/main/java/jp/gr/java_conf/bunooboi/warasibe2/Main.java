@@ -20,6 +20,7 @@ public class Main {
     //battleは直前のfinishから設定。nextSceneも設定する
     Scene shop[] = new Scene[9];
 
+    Scene coffeeBreak;
     Scene dead;
 
     Handler handler = new Handler();
@@ -50,10 +51,13 @@ public class Main {
     int date[] = new int[3];
 
     public Main() {
-        I.HP = 4;
+        I.HP = 100;
+        I.maxHP = 100;
         I.Stamina = 5;
         I.Power = 100;
+        I.Defense = 10;
         I.Intelligence = 30;
+        I.Karma = 20;
         I.init();
 
 
@@ -110,6 +114,8 @@ public class Main {
                         return shop[1];
                     case Scene.DOWN:
                         return meziha[2];
+                    case Scene.ACTION:
+                        return shop[6];
                 }
                 return null;
             }
@@ -141,6 +147,8 @@ public class Main {
                         return shop[2];
                     case Scene.DOWN:
                         return meziha[2];
+                    case Scene.ACTION:
+                        return shop[6];
                 }
                 return null;
             }
@@ -172,11 +180,12 @@ public class Main {
                         return shop[3];
                     case Scene.DOWN:
                         return meziha[2];
+                    case Scene.ACTION:
+                        return shop[6];
                 }
                 return null;
             }
         });
-
 
         shop[5] = new Scene();
         shop[5].setChangeStatus(false);
@@ -211,6 +220,17 @@ public class Main {
             }
         });
 
+        shop[6] = new Scene();
+        shop[6].setChangeStatus(false);
+        shop[6].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                shop[6].setConsoleText(shop[6].getPrevScene().getConsoleText());
+                shop[6].setConsoleName(shop[6].getPrevScene().getConsoleName());
+                shop[6].setPlayImg(shop[6].getPrevScene().getPlayImg());
+            }
+        });
+
 
         /*---------------------------------------------------------------戦闘シーン---------------------------------------------------------*/
 
@@ -223,7 +243,7 @@ public class Main {
                 enemy.addItem(wrongSword);
                 battle[0].setConsoleText(enemy.getName() + "が現れた");
                 battle[0].setPlayImg(enemy.getImg());
-                enemy.setStatus(4, 5, 10, 10);
+                enemy.setStatus(10, 5, 30, 10, 10);
                 wrongSword = enemy.getRandomItem();
             }
         });
@@ -329,7 +349,10 @@ public class Main {
                     public void run() {
                         battle[3].setConsoleText(battle[3].getConsoleText() + "あなたはダメージを受けた。");
                         MainActivity.setConsole(battle[3]);
-                        I.HP--;
+                        I.HP -= setDamage(enemy.getPower(), I.Defense);
+                        if (I.HP < 0) {
+                            I.HP = 0;
+                        }
                         MainActivity.setPlayImg(R.drawable.damage);
                         MainActivity.setHP(I.HP);
                     }
@@ -353,7 +376,7 @@ public class Main {
         battle[3].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
-                if (I.HP <= -1) {
+                if (I.HP <= 0) {
                     return dead;
                 } else {
                     return battle[1];
@@ -368,25 +391,7 @@ public class Main {
             public void init(final int dir) {
                 battle[4].setPlayImg(enemy.getImg());
 
-                final int powerDiff = I.Power - enemy.getPower();
                 final int intelligenceDiff = I.Intelligence - enemy.getIntelligence();
-
-                int attackmoto = 1;
-                if (powerDiff > 0) {
-                    attackmoto = (int) Math.floor(Math.random() * powerDiff);
-                    if (attackmoto <= 25) {
-                        attackmoto = 1;
-                    } else if (attackmoto > 25 && attackmoto <= 50) {
-                        attackmoto = 2;
-                    } else if (attackmoto > 50 && attackmoto <= 75) {
-                        attackmoto = 3;
-                    } else if (attackmoto > 75) {
-                        attackmoto = 4;
-                    }
-                }
-
-                final int attack = attackmoto;
-                System.out.println(attack);
 
                 int myHandmoto = 0;
 
@@ -428,14 +433,15 @@ public class Main {
                             case Player.GU:
                                 break;
                             case Player.CHOKI:
-                                enemy.decHP(attack);
+                                enemy.decHP(setDamage(I.Power, enemy.getDefense()));
                                 text = enemy.getName() + "にダメージ。";
                                 imgmoto = R.drawable.attack;
                                 break;
                             case Player.PA:
-                                I.HP--;
-                                if (I.HP <= -1) {
+                                I.HP -= setDamage(enemy.getPower(), I.Defense);
+                                if (I.HP <= 0) {
                                     I.Stamina = -1;
+                                    I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
@@ -446,9 +452,10 @@ public class Main {
                         battle[4].setConsoleText("攻撃！");
                         switch (enemyHand) {
                             case Player.GU:
-                                I.HP--;
-                                if (I.HP <= -1) {
+                                I.HP -= setDamage(enemy.getPower(), I.Defense);
+                                if (I.HP <= 0) {
                                     I.Stamina = -1;
+                                    I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
@@ -456,14 +463,14 @@ public class Main {
                             case Player.CHOKI:
                                 I.Stamina--;
                                 if (I.Stamina <= 0) {
-                                    I.HP--;
-                                    if (I.HP > -1) {
+                                    I.HP /= 2;
+                                    if (I.HP > 0) {
                                         I.Stamina = 20;
                                     }
                                 }
                                 break;
                             case Player.PA:
-                                enemy.decHP(attack);
+                                enemy.decHP(setDamage(I.Power, enemy.getDefense()));
                                 text = enemy.getName() + "にダメージ。";
                                 imgmoto = R.drawable.attack;
                                 break;
@@ -474,14 +481,15 @@ public class Main {
 
                         switch (enemyHand) {
                             case Player.GU:
-                                enemy.decHP(attack);
+                                enemy.decHP(setDamage(I.Power, enemy.getDefense()));
                                 text = enemy.getName() + "にダメージ。";
                                 imgmoto = R.drawable.attack;
                                 break;
                             case Player.CHOKI:
-                                I.HP--;
-                                if (I.HP <= -1) {
+                                I.HP -= setDamage(enemy.getPower(), I.Defense);
+                                if (I.HP <= 0) {
                                     I.Stamina = -1;
+                                    I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
                                 imgmoto = R.drawable.damage;
@@ -489,8 +497,8 @@ public class Main {
                             case Player.PA:
                                 I.Stamina--;
                                 if (I.Stamina <= 0) {
-                                    I.HP--;
-                                    if (I.HP > -1) {
+                                    I.HP /= 2;
+                                    if (I.HP > 0) {
                                         I.Stamina = 20;
                                     }
                                 }
@@ -556,7 +564,7 @@ public class Main {
             public Scene next(int dir) {
                 if (enemy.getHP() <= 0) {
                     return battle[5];
-                } else if (I.HP <= -1) { //戦死
+                } else if (I.HP <= 0) { //戦死
                     return dead;
                 } else {
                     return battle[1];
@@ -578,6 +586,7 @@ public class Main {
             public void finish(int dir) {
                 switch (dir) {
                     case Scene.DOWN:
+                        I.maxHP++;
                         I.Power++;
                         I.Intelligence++;
                         break;
@@ -625,7 +634,10 @@ public class Main {
                     public void run() {
                         battle[6].setConsoleText(battle[6].getConsoleText() + "あなたはダメージを受けた。");
                         MainActivity.setConsole(battle[6]);
-                        I.HP--;
+                        I.HP -= setDamage(enemy.getPower(), I.Defense);
+                        if (I.HP < 0) {
+                            I.HP = 0;
+                        }
                         MainActivity.setPlayImg(R.drawable.damage);
                         MainActivity.setHP(I.HP);
                     }
@@ -649,7 +661,7 @@ public class Main {
         battle[6].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
-                if (I.HP <= -1) { //戦死
+                if (I.HP <= 0) { //戦死
                     return dead;
                 } else {
                     return battle[1];
@@ -673,6 +685,7 @@ public class Main {
             public void finish(int dir) {
                 switch (dir) {
                     case Scene.DOWN:
+                        I.maxHP++;
                         I.Power++;
                         I.Intelligence++;
                 }
@@ -720,6 +733,7 @@ public class Main {
         battle[8].setFinish(new FinishListener() {
             @Override
             public void finish(int dir) {
+                I.maxHP++;
                 I.Power++;
                 I.Intelligence++;
             }
@@ -748,6 +762,30 @@ public class Main {
         dead.setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
+                return null;
+            }
+        });
+
+        coffeeBreak = new Scene("探索", "休息", "やめる", "食事");
+        coffeeBreak.setConsoleText("何をする？");
+        coffeeBreak.setChangeStatus(false);
+        coffeeBreak.setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                coffeeBreak.setPlayImg(coffeeBreak.getPrevScene().getPlayImg());
+
+            }
+        });
+        coffeeBreak.setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                    case Scene.RIGHT:
+                    case Scene.DOWN:
+                        return coffeeBreak.getPrevScene();
+                    case Scene.LEFT:
+                }
                 return null;
             }
         });
@@ -810,7 +848,10 @@ public class Main {
             @Override
             public void init(int dir) {
                 I.meziha_1 = true;
-                I.HP--;
+                I.HP -= 10;
+                if (I.HP < 0) {
+                    I.HP = 0;
+                }
                 MainActivity.setHP(I.HP);
             }
         });
@@ -819,7 +860,7 @@ public class Main {
             public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
-                        if (I.HP <= -1) {
+                        if (I.HP <= 0) {
                             return dead;
                         } else {
                             return meziha[2];
@@ -860,7 +901,9 @@ public class Main {
         meziha[2].setInit(new InitListener() {
             @Override
             public void init(int dir) {
-
+                if (!I.meziha_1) {
+                    MainActivity.setActionButton(true);
+                }
             }
         });
         meziha[2].setNext(new NextListener() {
@@ -878,6 +921,9 @@ public class Main {
                     case Scene.ACTION:
                         if (!I.meziha_1) {
                             return meziha_Lynch[0];
+                        } else {
+                            coffeeBreak.setPrevScene(meziha[2]);
+                            return coffeeBreak;
                         }
                 }
                 return null;
@@ -899,6 +945,7 @@ public class Main {
         meziha_Armor.setConsoleName("防具屋");
         meziha_Armor.setConsoleText("いらっしゃい。防具屋だよ〜");
         meziha_Armor.setPlayImg(R.drawable.f);
+        meziha_Armor.setChangeStatus(false);
         meziha_Armor.setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -954,6 +1001,14 @@ public class Main {
         });
 
 
+    }
+
+    int setDamage(int IPower, int youPower) {
+        int value = IPower - youPower;
+        if (value <= 0) {
+            value = 1;
+        }
+        return value;
     }
 
     Item getSameLevelItem(int level) {
