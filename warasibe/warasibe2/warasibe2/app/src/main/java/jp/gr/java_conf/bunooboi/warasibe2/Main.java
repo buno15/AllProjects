@@ -1,6 +1,11 @@
 package jp.gr.java_conf.bunooboi.warasibe2;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main {
+
+    Context context;
 
     Scene meziha[] = new Scene[100];
 
@@ -18,7 +25,7 @@ public class Main {
 
     Scene battle[] = new Scene[9];
     //battleは直前のfinishから設定。nextSceneも設定する
-    Scene shop[] = new Scene[9];
+    Scene shop[] = new Scene[12];
 
     Scene coffeeBreak;
     Scene dead;
@@ -50,11 +57,14 @@ public class Main {
     int time[] = new int[2];
     int date[] = new int[3];
 
-    public Main() {
+    public Main(final Context context) {
+        this.context = context;
+
+
         I.HP = 100;
         I.maxHP = 100;
         I.Stamina = 5;
-        I.Power = 100;
+        I.Power = 20;
         I.Defense = 10;
         I.Intelligence = 30;
         I.Karma = 20;
@@ -101,7 +111,7 @@ public class Main {
                 youHave = clerk.getItem(0);
                 IHave = clerk.getItem(0).getExchange();
                 shop[0].setConsoleText(youHave.getName() + "はいかがかね？\n" + IHave.getName() + "と交換だよ。");
-                shop[5].setPrevScene(shop[0]);
+                shop[5].setNextScene(shop[0]);
             }
         });
         shop[0].setNext(new NextListener() {
@@ -113,7 +123,7 @@ public class Main {
                     case Scene.RIGHT:
                         return shop[1];
                     case Scene.DOWN:
-                        return meziha[2];
+                        return shop[0].getNextScene();
                     case Scene.ACTION:
                         return shop[6];
                 }
@@ -132,7 +142,7 @@ public class Main {
                 youHave = clerk.getItem(1);
                 IHave = clerk.getItem(1).getExchange();
                 shop[1].setConsoleText(youHave.getName() + "はいかがかね？\n" + IHave.getName() + "と交換だよ。");
-                shop[5].setPrevScene(shop[1]);
+                shop[5].setNextScene(shop[1]);
             }
         });
         shop[1].setNext(new NextListener() {
@@ -165,7 +175,7 @@ public class Main {
                 youHave = clerk.getItem(2);
                 IHave = clerk.getItem(2).getExchange();
                 shop[2].setConsoleText(youHave.getName() + "はいかがかね？\n" + IHave.getName() + "と交換だよ。");
-                shop[5].setPrevScene(shop[2]);
+                shop[5].setNextScene(shop[2]);
             }
         });
         shop[2].setNext(new NextListener() {
@@ -216,20 +226,167 @@ public class Main {
         shop[5].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
-                return shop[5].getPrevScene();
+                return shop[5].getNextScene();
             }
         });
 
-        shop[6] = new Scene();
+
+        shop[6] = new Scene("盗む", "脅迫", "やめる", "交渉");
         shop[6].setChangeStatus(false);
         shop[6].setInit(new InitListener() {
             @Override
             public void init(int dir) {
-                shop[6].setConsoleText(shop[6].getPrevScene().getConsoleText());
-                shop[6].setConsoleName(shop[6].getPrevScene().getConsoleName());
-                shop[6].setPlayImg(shop[6].getPrevScene().getPlayImg());
+                shop[6].setConsoleText(shop[5].getNextScene().getConsoleText());
+                shop[6].setConsoleName(shop[5].getNextScene().getConsoleName());
+                shop[6].setPlayImg(shop[5].getNextScene().getPlayImg());
             }
         });
+        shop[6].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return shop[7];
+                    case Scene.RIGHT:
+                        return shop[8];
+                    case Scene.LEFT:
+                        //return shop[9];
+                    case Scene.DOWN:
+                        return shop[5].getNextScene();
+                }
+                return null;
+            }
+        });
+
+        shop[7] = new Scene();
+        shop[7].setChangeStatus(false);
+        shop[7].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                shop[7].setConsoleText("どろぼーう！！！\n\n" + youHave.getName() + "を手に入れた。");
+                shop[7].setConsoleName(shop[5].getNextScene().getConsoleName());
+                shop[7].setPlayImg(shop[5].getNextScene().getPlayImg());
+                if (I.getItemSize() >= I.getMaxItemSize()) {
+                    I.exchange(youHave, I.ITEM1);
+                } else {
+                    I.addItem(youHave);
+                }
+                I.Karma += 10;
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.next(dir);
+                    }
+                }, 2000);
+            }
+        });
+        shop[7].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return shop[0].getNextScene();
+            }
+        });
+
+        shop[8] = new Scene();
+        shop[8].setChangeStatus(false);
+        shop[8].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                shop[8].setConsoleName(shop[5].getNextScene().getConsoleName());
+                shop[8].setPlayImg(shop[5].getNextScene().getPlayImg());
+                if (clerk.getPower() < I.Power) {
+                    shop[8].setSceneText("もらう", "", "やめる", "");
+                    shop[8].setConsoleText("ひえー！差し上げるので、\nお助けをーーーーー！！！");
+                    shop[8].setNext(new NextListener() {
+                        @Override
+                        public Scene next(int dir) {
+                            switch (dir) {
+                                case Scene.UP:
+                                    return shop[9];
+                                case Scene.DOWN:
+                                    return shop[6];
+                            }
+                            return null;
+                        }
+                    });
+                } else {
+                    MainActivity.setButtonUnable();
+                    shop[8].setConsoleText("さっさと出ていけーーー！！！\n\n手配値が上がった。");
+                    I.Karma += 2;
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainActivity.next(dir);
+                        }
+                    }, 1200);
+                    shop[8].setNext(new NextListener() {
+                        @Override
+                        public Scene next(int dir) {
+                            return shop[0].getNextScene();
+                        }
+                    });
+                }
+            }
+        });
+
+        shop[9] = new Scene();
+        shop[9].setChangeStatus(false);
+        shop[9].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                shop[9].setConsoleName(shop[5].getNextScene().getConsoleName());
+                shop[9].setPlayImg(shop[5].getNextScene().getPlayImg());
+
+
+                if (I.getItemSize() >= I.getMaxItemSize()) {
+                    MainActivity.setDialog(context, "どれを捨てますか？");
+                    MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                            MainActivity.setConsole(shop[9]);
+                            I.exchange(IHave, youHave);
+                            I.Karma += 10;
+                            MainActivity.updateStatus(shop[9]);
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    shop[9].setConsoleText("");
+                                    MainActivity.next(dir);
+                                }
+                            }, 2400);
+                        }
+                    });
+                } else {
+                    shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                    MainActivity.setConsole(shop[9]);
+                    I.addItem(youHave);
+                    I.Karma += 10;
+                    MainActivity.updateStatus(shop[9]);
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            shop[9].setConsoleText("");
+                            MainActivity.next(dir);
+                        }
+                    }, 2000);
+                }
+
+            }
+        });
+        shop[9].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return shop[5].getNextScene();
+            }
+        });
+
 
 
         /*---------------------------------------------------------------戦闘シーン---------------------------------------------------------*/
@@ -772,7 +929,7 @@ public class Main {
         coffeeBreak.setInit(new InitListener() {
             @Override
             public void init(int dir) {
-                coffeeBreak.setPlayImg(coffeeBreak.getPrevScene().getPlayImg());
+                coffeeBreak.setPlayImg(coffeeBreak.getNextScene().getPlayImg());
 
             }
         });
@@ -783,7 +940,7 @@ public class Main {
                     case Scene.UP:
                     case Scene.RIGHT:
                     case Scene.DOWN:
-                        return coffeeBreak.getPrevScene();
+                        return coffeeBreak.getNextScene();
                     case Scene.LEFT:
                 }
                 return null;
@@ -922,7 +1079,7 @@ public class Main {
                         if (!I.meziha_1) {
                             return meziha_Lynch[0];
                         } else {
-                            coffeeBreak.setPrevScene(meziha[2]);
+                            coffeeBreak.setNextScene(meziha[2]);
                             return coffeeBreak;
                         }
                 }
@@ -955,6 +1112,7 @@ public class Main {
                 clerk.addItem(wrongShield);
                 clerk.addItem(wrongSpear);
                 clerk.addItem(wrongBlade);
+                shop[0].setNextScene(meziha[2]);
             }
         });
         meziha_Armor.setNext(new NextListener() {
@@ -980,11 +1138,13 @@ public class Main {
             @Override
             public void init(int dir) {
                 clerk = new Player("武器屋", R.drawable.bukiya);
+                clerk.setStatus(10, 10, 10, 10, 10);
                 clerk.addItem(wrongSword);
                 clerk.addItem(wrongBow);
                 clerk.addItem(wrongAxe);
                 clerk.addItem(wrongSpear);
                 clerk.addItem(wrongBlade);
+                shop[0].setNextScene(meziha[2]);
             }
         });
         meziha_Weapon.setNext(new NextListener() {

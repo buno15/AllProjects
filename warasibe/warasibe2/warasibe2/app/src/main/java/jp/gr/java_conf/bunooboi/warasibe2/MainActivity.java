@@ -1,17 +1,30 @@
 package jp.gr.java_conf.bunooboi.warasibe2;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     static TextView consoleText, consoleName;
@@ -33,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     static Scene nowScene;
     static Scene predScene;
 
+    static AlertDialog dialog;
+    static ListView listView;
+
     static Main main;
 
     @Override
@@ -43,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
 
-        main = new Main();
+        main = new Main(this);
 
         playImg = findViewById(R.id.playImg);
 
@@ -182,16 +198,21 @@ public class MainActivity extends AppCompatActivity {
         item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCC");
+                setDialog(MainActivity.this, "何を持ちますか？");
+                changeMyItem();
             }
         });
         item2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("ffffffffffffffffffffffffff");
+                setDialog(MainActivity.this, "何を持ちますか？");
+                changeMyItem();
             }
         });
+
+
     }
+
 
     static void next(int dir) {
         predScene = nowScene;
@@ -214,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         defense.setText(String.valueOf(I.Defense));
         intelligence.setText(String.valueOf(I.Intelligence));
         karma.setText(String.valueOf(I.Karma));
+        setItemButton(false);
         if (s.isChangeStatus()) {
             if (main.time[0] == 23 && main.time[1] == 3) {
                 main.time[0] = 0;
@@ -256,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
             time.setText(main.time[0] + ":" + main.time[1] + "0");
             setStamina(I.Stamina);
             setHP(I.HP);
+            setItemButton(true);
         }
         item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
         item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
@@ -317,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     static void setButton(Scene s) {
         if (s.isNext(Scene.UP)) {
             up.setEnabled(true);
@@ -361,6 +385,64 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    static void setItemButton(final boolean on) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (on) {
+                    item1.setEnabled(true);
+                    item2.setEnabled(true);
+                } else {
+                    item1.setEnabled(false);
+                    item2.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    static void setDialog(Context context, String title) {                                    //setOnDismissListenerでSceneごとに処理を決める
+        CustomAdapter adapter = new CustomAdapter(context, 0, I.getItem());
+        listView = new ListView(context);
+        listView.setAdapter(adapter);
+        listView.setVerticalScrollBarEnabled(false);
+
+        TextView titleView = new TextView(context);
+        titleView.setText(title);
+        titleView.setTextSize(24 * DisplayManager.getScaleSize(context));
+        titleView.setTextColor(Color.WHITE);
+        titleView.setBackgroundColor(Color.BLACK);
+        titleView.setPadding(20, 20, 20, 20);
+        titleView.setGravity(Gravity.CENTER);
+
+        MainActivity.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                main.IHave = I.getItem().get(position);
+                MainActivity.dialog.dismiss();
+            }
+        });
+
+        dialog = new AlertDialog.Builder(context)
+                .setCustomTitle(titleView)
+                .setView(listView).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    static void changeMyItem() {                                                                    //手持ちの変更
+        MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Item item = main.IHave;
+                I.removeItem(main.IHave);
+                I.addItemFirst(item);
+
+                item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+                item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+            }
+        });
     }
 
     static void setHP(final int now) {
@@ -513,5 +595,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    static class CustomAdapter extends ArrayAdapter<Item> {
+        private LayoutInflater inflater;
+        Context context;
+
+        public CustomAdapter(Context context, int resource, ArrayList<Item> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            Item item = (Item) getItem(position);
+            if (null == v) v = inflater.inflate(R.layout.custom_listview, null);
+
+            ImageView imageView = v.findViewById(R.id.img);
+            imageView.setImageResource(item.getImg());
+
+            TextView textView = (TextView) v.findViewById(R.id.name);
+            textView.setText(item.getName());
+            textView.setTextSize(30 * DisplayManager.getScaleSize(context));
+            textView.setTextColor(Color.parseColor("#000000"));
+            return v;
+        }
     }
 }
