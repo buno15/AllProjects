@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,6 +29,10 @@ public class Main {
     Scene shop[] = new Scene[12];
 
     Scene coffeeBreak;
+    Scene eat;
+    Scene sleep;
+    Scene search;
+
     Scene dead;
 
     Handler handler = new Handler();
@@ -36,52 +41,61 @@ public class Main {
     Player clerk;
 
 
-    Item wrongSword = new Item("ボロイ剣", R.drawable.horse, 1);
-    Item wrongBow = new Item("ボロイ弓", R.drawable.a, 1);
-    Item wrongAxe = new Item("ボロイ斧", R.drawable.b, 1);
-    Item wrongSpear = new Item("ボロイ槍", R.drawable.heisi, 1);
-    Item wrongBlade = new Item("ボロイ刀", R.drawable.bukiya, 1);
+    Item wrongSword = new Item("ボロイ剣", R.drawable.horse, 10, 1, Item.WEAPON);
+    Item wrongBow = new Item("ボロイ弓", R.drawable.a, 10, 1, Item.WEAPON);
+    Item wrongAxe = new Item("ボロイ斧", R.drawable.b, 10, 1, Item.WEAPON);
+    Item wrongSpear = new Item("ボロイ槍", R.drawable.heisi, 10, 1, Item.WEAPON);
+    Item wrongBlade = new Item("ボロイ刀", R.drawable.bukiya, 10, 1, Item.WEAPON);
 
 
-    Item treeBranch = new Item("木の枝", R.drawable.boss, 1);
+    Item treeBranch = new Item("木の枝", R.drawable.boss, 10, 1, Item.MATERIAL);
 
-    Item wrongHelmet = new Item("ボロイ兜", R.drawable.c, 1);
-    Item wrongArmor = new Item("ボロイ鎧", R.drawable.d, 1);
-    Item wrongShield = new Item("ボロイ盾", R.drawable.f, 1);
+    Item wrongHelmet = new Item("ボロイ兜", R.drawable.c, 10, 1, Item.ARMOR);
+    Item wrongArmor = new Item("ボロイ鎧", R.drawable.d, 10, 1, Item.ARMOR);
+    Item wrongShield = new Item("ボロイ盾", R.drawable.f, 10, 1, Item.ARMOR);
+
+    Item apple = new Item("りんご", R.drawable.stamina_no_1, 10, 1, Item.FOOD);
 
     Item IHave;
     Item youHave;
 
     static ArrayList<Item> items = new ArrayList<>();
 
-    int time[] = new int[2];
-    int date[] = new int[3];
+    Calendar calendar;
+
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minute;
 
     public Main(final Context context) {
         this.context = context;
 
 
-        I.HP = 100;
+        I.HP = 60;
         I.maxHP = 100;
-        I.Stamina = 5;
+        I.Stamina = 15;
         I.Power = 20;
         I.Defense = 10;
         I.Intelligence = 30;
         I.Karma = 20;
         I.init();
 
-
-        time[0] = 22;
-        time[1] = 0;
-
-        date[0] = 500;
-        date[1] = 12;
-        date[2] = 30;
+        calendar = Calendar.getInstance();
+        calendar.set(500, 12, 30, 22, 00);
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
 
 
         wrongSword.setExchange(treeBranch);
         wrongBow.setExchange(wrongBlade);
         wrongAxe.setExchange(wrongSpear);
+        wrongSpear.setExchange(treeBranch);
+        wrongBlade.setExchange(treeBranch);
 
         wrongHelmet.setExchange(treeBranch);
         wrongArmor.setExchange(treeBranch);
@@ -94,7 +108,7 @@ public class Main {
         items.add(wrongBlade);
 
 
-        I.addItem(wrongBlade);
+        I.addItem(apple);
         I.addItem(treeBranch);
 
 
@@ -156,7 +170,7 @@ public class Main {
                     case Scene.RIGHT:
                         return shop[2];
                     case Scene.DOWN:
-                        return meziha[2];
+                        return shop[0].getNextScene();
                     case Scene.ACTION:
                         return shop[6];
                 }
@@ -189,7 +203,69 @@ public class Main {
                     case Scene.RIGHT:
                         return shop[3];
                     case Scene.DOWN:
-                        return meziha[2];
+                        return shop[0].getNextScene();
+                    case Scene.ACTION:
+                        return shop[6];
+                }
+                return null;
+            }
+        });
+        shop[3] = new Scene("交換", "→", "やめる", "←");
+        shop[3].setChangeStatus(false);
+        shop[3].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                shop[3].setPlayImg(clerk.getImg());
+                shop[3].setConsoleName(clerk.getName());
+
+                youHave = clerk.getItem(3);
+                IHave = clerk.getItem(3).getExchange();
+                shop[3].setConsoleText(youHave.getName() + "はいかがかね？\n" + IHave.getName() + "と交換だよ。");
+                shop[5].setNextScene(shop[3]);
+            }
+        });
+        shop[3].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return shop[5];
+                    case Scene.LEFT:
+                        return shop[2];
+                    case Scene.RIGHT:
+                        return shop[4];
+                    case Scene.DOWN:
+                        return shop[0].getNextScene();
+                    case Scene.ACTION:
+                        return shop[6];
+                }
+                return null;
+            }
+        });
+        shop[4] = new Scene("交換", "", "やめる", "←");
+        shop[4].setChangeStatus(false);
+        shop[4].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                shop[4].setPlayImg(clerk.getImg());
+                shop[4].setConsoleName(clerk.getName());
+
+                youHave = clerk.getItem(4);
+                IHave = clerk.getItem(4).getExchange();
+                shop[4].setConsoleText(youHave.getName() + "はいかがかね？\n" + IHave.getName() + "と交換だよ。");
+                shop[5].setNextScene(shop[4]);
+            }
+        });
+        shop[4].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return shop[5];
+                    case Scene.LEFT:
+                        return shop[3];
+                    case Scene.DOWN:
+                        return shop[0].getNextScene();
                     case Scene.ACTION:
                         return shop[6];
                 }
@@ -202,25 +278,34 @@ public class Main {
         shop[5].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
+                MainActivity.setButtonUnable();
                 shop[5].setPlayImg(clerk.getImg());
                 shop[5].setConsoleName(clerk.getName());
 
-                int time = 0;
                 if (I.findItem(IHave)) {
+                    shop[5].setConsoleText("毎度あり！\n\n" + youHave.getName() + "を手に入れた。");
+                    MainActivity.setConsole(shop[5]);
                     I.exchange(IHave, youHave);
-                    shop[5].setConsoleText("毎度あり！");
-                    time = 2000;
+                    MainActivity.updateStatus(shop[5]);
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            shop[5].setConsoleText("");
+                            MainActivity.next(dir);
+                        }
+                    }, 2000);
                 } else {
                     shop[5].setConsoleText("冷やかしかい");
-                    time = 1200;
+                    MainActivity.setButtonUnable();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainActivity.next(dir);
+                        }
+                    }, 1200);
                 }
-                MainActivity.setButtonUnable();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.next(dir);
-                    }
-                }, time);
+
             }
         });
         shop[5].setNext(new NextListener() {
@@ -250,7 +335,7 @@ public class Main {
                     case Scene.RIGHT:
                         return shop[8];
                     case Scene.LEFT:
-                        //return shop[9];
+                        return shop[10];
                     case Scene.DOWN:
                         return shop[5].getNextScene();
                 }
@@ -264,13 +349,15 @@ public class Main {
             @Override
             public void init(final int dir) {
                 MainActivity.setButtonUnable();
-                shop[7].setConsoleText("どろぼーう！！！\n\n" + youHave.getName() + "を手に入れた。");
                 shop[7].setConsoleName(shop[5].getNextScene().getConsoleName());
                 shop[7].setPlayImg(shop[5].getNextScene().getPlayImg());
                 if (I.getItemSize() >= I.getMaxItemSize()) {
+                    Item item = I.getItem(I.ITEM1);
                     I.exchange(youHave, I.ITEM1);
+                    shop[7].setConsoleText("どろぼーう！！！\n\n" + youHave.getName() + "を手に入れた。\nはずみで" + item.getName() + "を落とした。");
                 } else {
                     I.addItem(youHave);
+                    shop[7].setConsoleText("どろぼーう！！！\n\n" + youHave.getName() + "を手に入れた。");
                 }
                 I.Karma += 10;
 
@@ -341,16 +428,27 @@ public class Main {
                 shop[9].setConsoleName(shop[5].getNextScene().getConsoleName());
                 shop[9].setPlayImg(shop[5].getNextScene().getPlayImg());
 
+                final String str;
+                if (shop[9].getPrevScene().equals(shop[8])) {
+                    str = "何を捨てますか？";
+                } else {
+                    str = "どれと交換しますか？";
+                }
+
 
                 if (I.getItemSize() >= I.getMaxItemSize()) {
-                    MainActivity.setDialog(context, "どれを捨てますか？");
+                    MainActivity.setDialog(context, str);
                     MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                            if (shop[9].getPrevScene().equals(shop[8])) {
+                                shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                                I.Karma += 10;
+                            } else {
+                                shop[9].setConsoleText("毎度あり！\n\n" + youHave.getName() + "を手に入れた。");
+                            }
                             MainActivity.setConsole(shop[9]);
                             I.exchange(IHave, youHave);
-                            I.Karma += 10;
                             MainActivity.updateStatus(shop[9]);
 
                             handler.postDelayed(new Runnable() {
@@ -359,14 +457,18 @@ public class Main {
                                     shop[9].setConsoleText("");
                                     MainActivity.next(dir);
                                 }
-                            }, 2400);
+                            }, 2000);
                         }
                     });
                 } else {
-                    shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                    if (shop[9].getPrevScene().equals(shop[8])) {
+                        shop[9].setConsoleText("まっ毎度あり〜・・・\n\n" + youHave.getName() + "を手に入れた。\n手配値が上がった。");
+                        I.Karma += 10;
+                    } else {
+                        shop[9].setConsoleText("毎度あり！\n\n" + youHave.getName() + "を手に入れた。");
+                    }
                     MainActivity.setConsole(shop[9]);
                     I.addItem(youHave);
-                    I.Karma += 10;
                     MainActivity.updateStatus(shop[9]);
 
                     handler.postDelayed(new Runnable() {
@@ -387,6 +489,48 @@ public class Main {
             }
         });
 
+
+        shop[10] = new Scene();
+        shop[10].setChangeStatus(false);
+        shop[10].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                shop[10].setConsoleName(shop[5].getNextScene().getConsoleName());
+                shop[10].setPlayImg(shop[5].getNextScene().getPlayImg());
+                if (clerk.getIntelligence() < I.Intelligence) {
+                    shop[10].setSceneText("交換", "", "やめる", "");
+                    shop[10].setConsoleText("それなら仕方ない、\nあんたが持ってるものと交換でいいよ。");
+                    shop[10].setNext(new NextListener() {
+                        @Override
+                        public Scene next(int dir) {
+                            switch (dir) {
+                                case Scene.UP:
+                                    return shop[9];
+                                case Scene.DOWN:
+                                    return shop[6];
+                            }
+                            return null;
+                        }
+                    });
+                } else {
+                    MainActivity.setButtonUnable();
+                    shop[10].setConsoleText("悪いが" + IHave.getName() + "としか交換できない。");
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainActivity.next(dir);
+                        }
+                    }, 1200);
+                    shop[10].setNext(new NextListener() {
+                        @Override
+                        public Scene next(int dir) {
+                            return shop[6];
+                        }
+                    });
+                }
+            }
+        });
 
 
         /*---------------------------------------------------------------戦闘シーン---------------------------------------------------------*/
@@ -902,6 +1046,8 @@ public class Main {
             }
         });
 
+        /*---------------------------------------------------------------------戦闘シーン終わり----------------------------------------------------------------------*/
+
         dead = new Scene();
         dead.setConsoleText("あなたは死んだ");
         dead.setInit(new InitListener() {
@@ -910,7 +1056,8 @@ public class Main {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        MainActivity.setStamina(-1);
+                        MainActivity.setHP(0);
+                        MainActivity.setStamina(0);
                     }
                 });
 
@@ -923,14 +1070,13 @@ public class Main {
             }
         });
 
-        coffeeBreak = new Scene("探索", "休息", "やめる", "食事");
+        coffeeBreak = new Scene("探索", "睡眠", "やめる", "食事");                        //その場アクション Scene毎にcoffeeBreak.setNextSceneで戻るSceneを設定する
         coffeeBreak.setConsoleText("何をする？");
         coffeeBreak.setChangeStatus(false);
         coffeeBreak.setInit(new InitListener() {
             @Override
             public void init(int dir) {
                 coffeeBreak.setPlayImg(coffeeBreak.getNextScene().getPlayImg());
-
             }
         });
         coffeeBreak.setNext(new NextListener() {
@@ -939,11 +1085,124 @@ public class Main {
                 switch (dir) {
                     case Scene.UP:
                     case Scene.RIGHT:
+                        return sleep;
                     case Scene.DOWN:
                         return coffeeBreak.getNextScene();
                     case Scene.LEFT:
+                        if (I.getItemSize() != 0)
+                            return eat;
                 }
                 return null;
+            }
+        });
+
+
+        sleep = new Scene();
+        sleep.setChangeStatus(false);
+        sleep.setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                sleep.setConsoleText("あなたは眠った。\n\n");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sleep.setConsoleText(sleep.getConsoleText() + "6時間後・・・");
+                        MainActivity.setConsole(sleep);
+                        MainActivity.updateTime(Calendar.HOUR, 6);
+                        MainActivity.setDateText();
+                    }
+                }, 2400);
+
+
+                final int rand = (int) Math.floor(Math.random() * 100);
+                if (rand == 13) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            I.HP = 0;
+                            MainActivity.next(dir);
+                        }
+                    }, 4800);
+                } else {
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            final String str;
+                            if (rand % 3 == 0 && I.getItemSize() >= 1) {
+                                str = "持ち物を盗まれた！\n\nスタミナが回復した。";
+                                if (I.getItemSize() >= 2)
+                                    I.removeItem(I.ITEM2);
+                                I.removeItem(I.ITEM1);
+                            } else {
+                                str = "スッキリ目覚めた。\n\nスタミナが回復した。";
+                            }
+                            sleep.setConsoleText(str);
+                            MainActivity.setConsole(sleep);
+                            MainActivity.updateHealth(20 - I.Stamina);
+                            MainActivity.updateStatus(sleep);
+                        }
+                    }, 4800);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainActivity.next(dir);
+                        }
+                    }, 7200);
+                }
+            }
+        });
+        sleep.setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                if (I.HP <= 0) {
+                    return dead;
+                } else {
+                    return coffeeBreak;
+                }
+            }
+        });
+
+        eat = new Scene();
+        eat.setChangeStatus(false);
+        eat.setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                eat.setPlayImg(coffeeBreak.getNextScene().getPlayImg());
+                MainActivity.setDialog(context, "何を食べますか？");
+                MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        final int time;
+                        if (IHave.getKind() == Item.FOOD) {
+                            eat.setConsoleText(IHave.getName() + "を食べた。\nスタミナが" + IHave.getAdd() + "回復した。");
+                            MainActivity.updateHealth(IHave.getAdd());
+                            I.removeItem(IHave);
+                            time = 2400;
+                        } else {
+                            eat.setConsoleText("それは食べ物ではありません。");
+                            time = 1200;
+                        }
+                        MainActivity.setConsole(eat);
+
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                eat.setConsoleText("");
+                                MainActivity.next(dir);
+                            }
+                        }, time);
+                    }
+                });
+            }
+        });
+        eat.setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return coffeeBreak;
             }
         });
 
@@ -1094,7 +1353,14 @@ public class Main {
         meziha[3].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
-                return meziha[2];
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha[2];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[3]);
+                        return coffeeBreak;
+                }
+                return null;
             }
         });
 
@@ -1138,7 +1404,7 @@ public class Main {
             @Override
             public void init(int dir) {
                 clerk = new Player("武器屋", R.drawable.bukiya);
-                clerk.setStatus(10, 10, 10, 10, 10);
+                clerk.setStatus(10, 10, 10, 10, 40);
                 clerk.addItem(wrongSword);
                 clerk.addItem(wrongBow);
                 clerk.addItem(wrongAxe);

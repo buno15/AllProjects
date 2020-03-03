@@ -21,8 +21,13 @@ public class I {
 
     private static boolean horse;
     private static boolean cart;
+    private static boolean safe;
 
     static boolean meziha_1;
+
+    private I() {
+
+    }
 
 
     public static void init() {
@@ -35,6 +40,7 @@ public class I {
 
     public static void addItemFirst(Item i) {
         item.add(0, i);
+        haveItem(i);
     }
 
     public static Item getItem(int i) {
@@ -56,17 +62,51 @@ public class I {
         item.remove(i);
     }
 
+    public static void removeItem(int i) {
+        item.remove(i);
+    }
+
     public static int getItemSize() {
         return item.size();
     }
 
     public static void exchange(Item item, int i) {
+        dropItem(I.item.get(i));
         I.item.set(i, item);
     }
 
     public static void exchange(Item IHave, Item youHave) {
+        dropItem(IHave);
         item.remove(IHave);
         item.add(youHave);
+    }
+
+    static void haveItem(Item item) {
+        switch (item.getKind()) {
+            case Item.WEAPON:
+                I.Power += item.getAdd();
+                break;
+            case Item.ARMOR:
+                I.Defense += item.getAdd();
+                break;
+            case Item.MIND:
+                I.Intelligence += item.getAdd();
+                break;
+        }
+    }
+
+    static void dropItem(Item item) {
+        switch (item.getKind()) {
+            case Item.WEAPON:
+                I.Power -= item.getAdd();
+                break;
+            case Item.ARMOR:
+                I.Defense -= item.getAdd();
+                break;
+            case Item.MIND:
+                I.Intelligence -= item.getAdd();
+                break;
+        }
     }
 
     public static void setHorse(boolean horse) {
@@ -75,6 +115,10 @@ public class I {
 
     public static void setCart(boolean cart) {
         I.cart = cart;
+    }
+
+    public static void setSafe(boolean safe) {
+        I.safe = safe;
     }
 
     public static int getMaxItemSize() {
@@ -94,6 +138,10 @@ public class I {
 
     public static boolean haveCart() {
         return cart;
+    }
+
+    public static boolean isSafe() {
+        return safe;
     }
 
     public static boolean isCriminal() {

@@ -21,10 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     static TextView consoleText, consoleName;
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         date = findViewById(R.id.date);
         date.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         date.setTextColor(Color.WHITE);
-        date.setText(main.date[0] + "年 " + main.date[1] + "/" + main.date[2]);
+        date.setText(main.year + "年 " + main.month + "/" + main.day);
         time = findViewById(R.id.time);
         time.setTextSize(24 * DisplayManager.getScaleSize(getApplicationContext()));
         time.setTextColor(Color.WHITE);
@@ -198,19 +197,23 @@ public class MainActivity extends AppCompatActivity {
         item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDialog(MainActivity.this, "何を持ちますか？");
-                changeMyItem();
+                if (I.getItemSize() != 0) {
+                    setDialog(MainActivity.this, "何を持ちますか？");
+                    changeMyItem();
+                }
             }
         });
         item2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDialog(MainActivity.this, "何を持ちますか？");
-                changeMyItem();
+                if (I.getItemSize() != 0) {
+                    setDialog(MainActivity.this, "何を持ちますか？");
+                    changeMyItem();
+                }
             }
         });
 
-
+        updateHealth(0);
     }
 
 
@@ -235,54 +238,25 @@ public class MainActivity extends AppCompatActivity {
         defense.setText(String.valueOf(I.Defense));
         intelligence.setText(String.valueOf(I.Intelligence));
         karma.setText(String.valueOf(I.Karma));
-        setItemButton(false);
-        if (s.isChangeStatus()) {
-            if (main.time[0] == 23 && main.time[1] == 3) {
-                main.time[0] = 0;
-                main.time[1] = 0;
-                main.date[2]++;
-                if (main.date[2] == 32) {
-                    main.date[2] = 1;
-                    main.date[1]++;
-                    if (main.date[1] == 13) {
-                        main.date[1] = 1;
-                        main.date[0]++;
-                    }
-                }
-                I.Stamina--;
-                if (I.Stamina <= 0) {
-                    I.HP /= 2;
-                    if (I.HP <= 0) {
-                        dead();
-                    } else {
-                        I.Stamina = 20;
-                    }
-                }
-            } else {
-                main.time[1] += 3;
-                if (main.time[1] == 6) {
-                    main.time[0]++;
-                    main.time[1] = 0;
-                    I.Stamina--;
-                    if (I.Stamina <= 0) {
-                        I.HP /= 2;
-                        if (I.HP <= 0) {
-                            dead();
-                        } else {
-                            I.Stamina = 20;
-                        }
-                    }
-                }
-            }
-            date.setText(main.date[0] + "年 " + main.date[1] + "/" + main.date[2]);
-            time.setText(main.time[0] + ":" + main.time[1] + "0");
-            setStamina(I.Stamina);
-            setHP(I.HP);
-            setItemButton(true);
+        setItemButtonUnable(false);
+        if (s.isChangeTime()) {
+            updateTime(Calendar.MINUTE, 30);
+            setItemButtonUnable(true);
         }
-        item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
-        item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+        if (I.getItemSize() >= 1) {
+            item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+        } else {
+            item1.setBackgroundResource(R.drawable.action0);
+        }
+        if (I.getItemSize() >= 2) {
+            item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+        } else {
+            item2.setBackgroundResource(R.drawable.action0);
+        }
+
     }
+
+
 
     static void dead() {
         Handler handler = new Handler();
@@ -297,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
                 consoleText.setText("あなたは死んだ");
                 consoleName.setText("");
-                setStamina(-1);
+                setStamina(0);
                 setHP(0);
             }
         });
@@ -387,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    static void setItemButton(final boolean on) {
+    static void setItemButtonUnable(final boolean on) {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -439,10 +413,62 @@ public class MainActivity extends AppCompatActivity {
                 I.removeItem(main.IHave);
                 I.addItemFirst(item);
 
-                item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
-                item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+                if (I.getItemSize() >= 1) {
+                    item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+                } else {
+                    item1.setBackgroundResource(R.drawable.action0);
+                }
+                if (I.getItemSize() >= 2) {
+                    item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+                } else {
+                    item2.setBackgroundResource(R.drawable.action0);
+                }
             }
         });
+    }
+
+    static void updateHealth(int changeStamina) {
+        I.Stamina += changeStamina;
+        if (I.Stamina > 20) {
+            I.Stamina = I.Stamina - 20;
+            I.HP += 10;
+            if (I.HP > I.maxHP) {
+                I.HP = I.maxHP;
+            }
+        } else if (I.Stamina <= 0) {
+            I.HP /= 2;
+            if (I.HP <= 0) {
+                dead();
+            } else {
+                I.Stamina = 20;
+            }
+        }
+        MainActivity.setStamina(I.Stamina);
+        MainActivity.setHP(I.HP);
+    }
+
+    static void updateTime(int field, int add) {
+        main.calendar.add(field, add);
+        main.year = main.calendar.get(Calendar.YEAR);
+        main.month = main.calendar.get(Calendar.MONTH) + 1;
+        main.day = main.calendar.get(Calendar.DAY_OF_MONTH);
+        main.hour = main.calendar.get(Calendar.HOUR_OF_DAY);
+        main.minute = main.calendar.get(Calendar.MINUTE);
+
+        if (main.minute == 0) {
+            updateHealth(-1);
+        }
+        setDateText();
+    }
+
+    static void setDateText() {
+        date.setText(main.year + "年 " + main.month + "/" + main.day);
+        if (main.minute == 0) {
+            time.setText(main.hour + ":" + main.minute + "0");
+        } else {
+            time.setText(main.hour + ":" + main.minute);
+        }
+
     }
 
     static void setHP(final int now) {

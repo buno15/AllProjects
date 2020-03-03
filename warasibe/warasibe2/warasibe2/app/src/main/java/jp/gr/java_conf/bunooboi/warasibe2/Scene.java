@@ -45,7 +45,7 @@ public class Scene {
         changeStatus = change;
     }
 
-    public boolean isChangeStatus() {
+    public boolean isChangeTime() {
         return changeStatus;
     }
 
