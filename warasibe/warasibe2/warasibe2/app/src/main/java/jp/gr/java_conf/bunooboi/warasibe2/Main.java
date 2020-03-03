@@ -31,7 +31,7 @@ public class Main {
     Scene coffeeBreak;
     Scene eat;
     Scene sleep;
-    Scene search;
+    Scene search[] = new Scene[2];
 
     Scene dead;
 
@@ -110,6 +110,9 @@ public class Main {
 
         I.addItem(apple);
         I.addItem(treeBranch);
+
+        MainActivity.predItem1 = I.getItem(I.ITEM1);
+        MainActivity.predItem2 = I.getItem(I.ITEM2);
 
 
         /*---------------------------------------------------------------店シーン---------------------------------------------------------*/
@@ -393,7 +396,7 @@ public class Main {
                                 case Scene.UP:
                                     return shop[9];
                                 case Scene.DOWN:
-                                    return shop[6];
+                                    return shop[5].getNextScene();
                             }
                             return null;
                         }
@@ -434,9 +437,7 @@ public class Main {
                 } else {
                     str = "どれと交換しますか？";
                 }
-
-
-                if (I.getItemSize() >= I.getMaxItemSize()) {
+                if (I.getItemSize() >= I.getMaxItemSize() || shop[9].getPrevScene().equals(shop[10])) {
                     MainActivity.setDialog(context, str);
                     MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
@@ -479,7 +480,6 @@ public class Main {
                         }
                     }, 2000);
                 }
-
             }
         });
         shop[9].setNext(new NextListener() {
@@ -507,7 +507,7 @@ public class Main {
                                 case Scene.UP:
                                     return shop[9];
                                 case Scene.DOWN:
-                                    return shop[6];
+                                    return shop[5].getNextScene();
                             }
                             return null;
                         }
@@ -544,7 +544,7 @@ public class Main {
                 enemy.addItem(wrongSword);
                 battle[0].setConsoleText(enemy.getName() + "が現れた");
                 battle[0].setPlayImg(enemy.getImg());
-                enemy.setStatus(10, 5, 30, 10, 10);
+                enemy.setStatus(100, 5, 30, 10, 10);
                 wrongSword = enemy.getRandomItem();
             }
         });
@@ -1079,11 +1079,19 @@ public class Main {
                 coffeeBreak.setPlayImg(coffeeBreak.getNextScene().getPlayImg());
             }
         });
+        coffeeBreak.setFinish(new FinishListener() {
+            @Override
+            public void finish(int dir) {
+                MainActivity.updateTime(Calendar.MINUTE, -30);
+                MainActivity.updateHealth(1);
+            }
+        });
         coffeeBreak.setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
+                        return search[0];
                     case Scene.RIGHT:
                         return sleep;
                     case Scene.DOWN:
@@ -1096,6 +1104,106 @@ public class Main {
             }
         });
 
+        search[0] = new Scene();
+        search[0].setChangeStatus(false);
+        search[0].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                search[0].setConsoleText("付近を探索中・・・");
+                search[0].setPlayImg(R.drawable.search1);
+                MainActivity.setPlayImg(search[0]);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        search[0].setPlayImg(R.drawable.search2);
+                        MainActivity.setPlayImg(search[0]);
+                        if (Math.floor(Math.random() * 20) == 10) {
+                            youHave = getLowLevelItem(I.getLevel());
+                            if (I.getItemSize() >= I.getMaxItemSize()) {
+                                search[0].setConsoleText(youHave.getName() + "を見つけた。");
+                                search[0].setSceneText("交換", "", "やめる", "");
+                                MainActivity.setButton(search[0]);
+                                MainActivity.setText(search[0]);
+                                search[0].setSceneText("", "", "", "");
+                            } else {
+                                search[0].setConsoleText(youHave.getName() + "を手に入れた。");
+                                MainActivity.setConsole(search[0]);
+                                I.addItem(youHave);
+                                MainActivity.updateStatus(search[0]);
+
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        MainActivity.next(-1);
+                                    }
+                                }, 3600);
+                            }
+                        } else {
+                            search[0].setConsoleText("何もなかった。");
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MainActivity.next(-1);
+                                }
+                            }, 3600);
+                        }
+                        MainActivity.setConsole(search[0]);
+                        MainActivity.updateTime(Calendar.HOUR, 1);
+                        MainActivity.updateHealth(-1);
+                        MainActivity.setDateText();
+                    }
+                }, 2400);
+            }
+        });
+        search[0].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return search[1];
+                    case Scene.RIGHT:
+                    case Scene.LEFT:
+                    case Scene.ACTION:
+                        return null;
+                }
+                return coffeeBreak;
+            }
+        });
+
+        search[1] = new Scene();
+        search[1].setPlayImg(R.drawable.search2);
+        search[1].setChangeStatus(false);
+        search[1].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                MainActivity.setDialog(context, "何と交換しますか？");
+                MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        search[1].setConsoleText(youHave.getName() + "を手に入れた。");
+                        MainActivity.setConsole(search[1]);
+                        I.exchange(IHave, youHave);
+                        MainActivity.updateStatus(search[1]);
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                search[1].setConsoleText("");
+                                MainActivity.next(dir);
+                            }
+                        }, 2000);
+                    }
+                });
+            }
+        });
+        search[1].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return coffeeBreak;
+            }
+        });
 
         sleep = new Scene();
         sleep.setChangeStatus(false);
@@ -1299,13 +1407,18 @@ public class Main {
         meziha[1].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
-                if (dir == Scene.DOWN) {
-                    if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
-                        return meziha_Lynch[0];
-                    } else {
+                switch (dir) {
+                    case Scene.UP:
                         battle[0].setNextScene(meziha[2]);
                         return battle[0];
-                    }
+                    case Scene.RIGHT:
+                        return meziha[11];
+                    case Scene.DOWN:
+                        if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
+                            return meziha_Lynch[0];
+                        } else {
+                            return meziha[2];
+                        }
                 }
                 return null;
             }
@@ -1358,6 +1471,59 @@ public class Main {
                         return meziha[2];
                     case Scene.ACTION:
                         coffeeBreak.setNextScene(meziha[3]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+
+        meziha[11] = new Scene("東", "", "広場へ", "食品店");
+        meziha[11].setConsoleText("後ろから広場の賑やかな音がする。");
+        meziha[11].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha[12];
+                    case Scene.DOWN:
+                        return meziha[1];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[11]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+
+        meziha[12] = new Scene("東", "南", "西", "北");
+        meziha[12].setConsoleText("十字路だ");
+        meziha[12].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha[13];
+                    case Scene.DOWN:
+                        return meziha[11];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[12]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+        meziha[13] = new Scene("東", "", "西", "宿屋");
+        meziha[13].setConsoleText("宿屋がある");
+        meziha[13].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+
+                    case Scene.DOWN:
+                        return meziha[12];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[13]);
                         return coffeeBreak;
                 }
                 return null;
@@ -1429,8 +1595,8 @@ public class Main {
 
     }
 
-    int setDamage(int IPower, int youPower) {
-        int value = IPower - youPower;
+    int setDamage(int IPower, int youDefense) {
+        int value = IPower - youDefense;
         if (value <= 0) {
             value = 1;
         }
@@ -1441,6 +1607,15 @@ public class Main {
         while (true) {
             int index = new Random().nextInt(items.size());
             if (items.get(index).getLevel() == level) {
+                return items.get(index);
+            }
+        }
+    }
+
+    Item getLowLevelItem(int level) {
+        while (true) {
+            int index = new Random().nextInt(items.size());
+            if (items.get(index).getLevel() <= level) {
                 return items.get(index);
             }
         }

@@ -12,6 +12,7 @@ public class I {
     static int Defense;                             //防御力
     static int Intelligence;                            // 洞察力
     static int Karma;                                //民心
+    static int level;                                  //レベル（手に入れたアイテムの最大レベル）
 
     private static ArrayList<Item> item;
 
@@ -36,11 +37,12 @@ public class I {
 
     public static void addItem(Item i) {
         item.add(i);
+        I.setLevel(Math.max(I.getLevel(), i.getLevel()));
     }
 
     public static void addItemFirst(Item i) {
         item.add(0, i);
-        haveItem(i);
+        I.setLevel(Math.max(I.getLevel(), i.getLevel()));
     }
 
     public static Item getItem(int i) {
@@ -71,14 +73,14 @@ public class I {
     }
 
     public static void exchange(Item item, int i) {
-        dropItem(I.item.get(i));
         I.item.set(i, item);
+        I.setLevel(Math.max(I.getLevel(), item.getLevel()));
     }
 
     public static void exchange(Item IHave, Item youHave) {
-        dropItem(IHave);
         item.remove(IHave);
         item.add(youHave);
+        I.setLevel(Math.max(I.getLevel(), IHave.getLevel()));
     }
 
     static void haveItem(Item item) {
@@ -149,5 +151,13 @@ public class I {
             return true;
         }
         return false;
+    }
+
+    public static void setLevel(int level) {
+        I.level = level;
+    }
+
+    public static int getLevel() {
+        return level;
     }
 }

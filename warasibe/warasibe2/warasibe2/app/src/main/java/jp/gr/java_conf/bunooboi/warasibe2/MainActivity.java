@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     static TextView consoleText, consoleName;
-    static ImageView item1, item2;
+    static ImageView itemButton1, itemButton2;
     static ImageView playImg;
     static ImageView stamina[] = new ImageView[4];
     ImageView injury, fracture, sick;
@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     static Main main;
 
+    static Item predItem1;
+    static Item predItem2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         consoleName.setTextSize(20 * DisplayManager.getScaleSize(getApplicationContext()));
         consoleName.setTextColor(Color.BLACK);
 
-        item1 = findViewById(R.id.item1);
-        item2 = findViewById(R.id.item2);
+        itemButton1 = findViewById(R.id.item1);
+        itemButton2 = findViewById(R.id.item2);
 
 
         stamina[0] = (ImageView) findViewById(R.id.stamina1);
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        item1.setOnClickListener(new View.OnClickListener() {
+        itemButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (I.getItemSize() != 0) {
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        item2.setOnClickListener(new View.OnClickListener() {
+        itemButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (I.getItemSize() != 0) {
@@ -234,28 +237,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void updateStatus(Scene s) {
-        power.setText(String.valueOf(I.Power));
-        defense.setText(String.valueOf(I.Defense));
-        intelligence.setText(String.valueOf(I.Intelligence));
-        karma.setText(String.valueOf(I.Karma));
         setItemButtonUnable(false);
         if (s.isChangeTime()) {
             updateTime(Calendar.MINUTE, 30);
             setItemButtonUnable(true);
         }
+        if (I.getItemSize() == 0) {
+            I.dropItem(predItem1);
+            I.dropItem(predItem2);
+            predItem1 = new Item("", 0, 0, 0, 0);
+            predItem2 = new Item("", 0, 0, 0, 0);
+        }
         if (I.getItemSize() >= 1) {
-            item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+            itemButton1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+            if (!predItem1.equals(I.getItem(I.ITEM1))) {
+                I.dropItem(predItem1);
+                I.haveItem(I.getItem(I.ITEM1));
+                predItem1 = I.getItem(I.ITEM1);
+            }
         } else {
-            item1.setBackgroundResource(R.drawable.action0);
+            itemButton1.setBackgroundResource(R.drawable.action0);
         }
         if (I.getItemSize() >= 2) {
-            item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+            itemButton2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+            if (!predItem2.equals(I.getItem(I.ITEM2))) {
+                I.dropItem(predItem2);
+                I.haveItem(I.getItem(I.ITEM2));
+                predItem2 = I.getItem(I.ITEM2);
+            }
         } else {
-            item2.setBackgroundResource(R.drawable.action0);
+            itemButton2.setBackgroundResource(R.drawable.action0);
         }
-
+        power.setText(String.valueOf(I.Power));
+        defense.setText(String.valueOf(I.Defense));
+        intelligence.setText(String.valueOf(I.Intelligence));
+        karma.setText(String.valueOf(I.Karma));
     }
-
 
 
     static void dead() {
@@ -366,11 +383,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (on) {
-                    item1.setEnabled(true);
-                    item2.setEnabled(true);
+                    itemButton1.setEnabled(true);
+                    itemButton2.setEnabled(true);
                 } else {
-                    item1.setEnabled(false);
-                    item2.setEnabled(false);
+                    itemButton1.setEnabled(false);
+                    itemButton2.setEnabled(false);
                 }
             }
         });
@@ -414,14 +431,14 @@ public class MainActivity extends AppCompatActivity {
                 I.addItemFirst(item);
 
                 if (I.getItemSize() >= 1) {
-                    item1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
+                    itemButton1.setBackgroundResource(I.getItem(I.ITEM1).getImg());
                 } else {
-                    item1.setBackgroundResource(R.drawable.action0);
+                    itemButton1.setBackgroundResource(R.drawable.action0);
                 }
                 if (I.getItemSize() >= 2) {
-                    item2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
+                    itemButton2.setBackgroundResource(I.getItem(I.ITEM2).getImg());
                 } else {
-                    item2.setBackgroundResource(R.drawable.action0);
+                    itemButton2.setBackgroundResource(R.drawable.action0);
                 }
             }
         });
@@ -455,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
         main.hour = main.calendar.get(Calendar.HOUR_OF_DAY);
         main.minute = main.calendar.get(Calendar.MINUTE);
 
-        if (main.minute == 0) {
+        if (field == Calendar.MINUTE && main.minute == 0) {
             updateHealth(-1);
         }
         setDateText();
