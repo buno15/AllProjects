@@ -24,6 +24,7 @@ public class I {
     private static boolean cart;
     private static boolean safe;
 
+    static boolean inn;
     static boolean meziha_1;
 
     private I() {

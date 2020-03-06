@@ -13,8 +13,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d77a2db-fe67-44fb-9a5f-7017f3e566e3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/search1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/search2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/apple.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/inn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/treebranch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/wronghelmet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/wrongsword.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -31,7 +37,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5X_API_28" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="J4AXB761B1412UM" />
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -44,8 +50,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2611">
-              <caret line="474" column="43" selection-start-line="474" selection-start-column="43" selection-end-line="474" selection-end-column="43" />
+            <state relative-caret-position="-12">
+              <caret line="317" column="5" lean-forward="true" selection-start-line="317" selection-start-column="5" selection-end-line="317" selection-end-column="5" />
+              <folding>
+                <element signature="e#11209#11565#0" expanded="true" />
+                <element signature="e#11564#11565#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,84 +63,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="1070" column="11" lean-forward="true" selection-start-line="1070" selection-start-column="11" selection-end-line="1070" selection-end-column="11" />
+            <state relative-caret-position="-189">
+              <caret line="316" column="11" lean-forward="true" selection-start-line="316" selection-start-column="11" selection-end-line="316" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#14763#17511#0" expanded="true" />
-                <element signature="e#17510#17511#0" expanded="true" />
-                <element signature="e#40283#40543#0" expanded="true" />
-                <element signature="e#40542#40543#0" expanded="true" />
-                <element signature="e#40947#43457#0" expanded="true" />
-                <element signature="e#41285#43425#0" expanded="true" />
-                <element signature="e#42446#42699#0" expanded="true" />
-                <element signature="e#42698#42699#0" expanded="true" />
-                <element signature="e#42884#43117#0" expanded="true" />
-                <element signature="e#43116#43117#0" expanded="true" />
-                <element signature="e#43424#43425#0" expanded="true" />
-                <element signature="e#43456#43457#0" expanded="true" />
-                <element signature="e#43486#43906#0" expanded="true" />
-                <element signature="e#43905#43906#0" expanded="true" />
-                <element signature="e#44061#45107#0" expanded="true" />
-                <element signature="e#44317#45081#0" expanded="true" />
-                <element signature="e#44757#45033#0" expanded="true" />
-                <element signature="e#45032#45033#0" expanded="true" />
-                <element signature="e#45080#45081#0" expanded="true" />
-                <element signature="e#45106#45107#0" expanded="true" />
-                <element signature="e#45136#45279#0" expanded="true" />
-                <element signature="e#45278#45279#0" expanded="true" />
-                <element signature="e#45372#47617#0" expanded="true" />
-                <element signature="e#45599#45982#0" expanded="true" />
-                <element signature="e#45981#45982#0" expanded="true" />
-                <element signature="e#46139#46371#0" expanded="true" />
-                <element signature="e#46370#46371#0" expanded="true" />
-                <element signature="e#46446#47324#0" expanded="true" />
-                <element signature="e#47323#47324#0" expanded="true" />
-                <element signature="e#47373#47567#0" expanded="true" />
-                <element signature="e#47566#47567#0" expanded="true" />
-                <element signature="e#47616#47617#0" expanded="true" />
-                <element signature="e#47642#47898#0" expanded="true" />
-                <element signature="e#47897#47898#0" expanded="true" />
-                <element signature="e#47985#49433#0" expanded="true" />
-                <element signature="e#48313#49407#0" expanded="true" />
-                <element signature="e#49089#49359#0" expanded="true" />
-                <element signature="e#49358#49359#0" expanded="true" />
-                <element signature="e#49406#49407#0" expanded="true" />
-                <element signature="e#49432#49433#0" expanded="true" />
-                <element signature="e#49456#49599#0" expanded="true" />
-                <element signature="e#49598#49599#0" expanded="true" />
-                <element signature="e#49885#50153#0" expanded="true" />
-                <element signature="e#50152#50153#0" expanded="true" />
-                <element signature="e#50458#50726#0" expanded="true" />
-                <element signature="e#50725#50726#0" expanded="true" />
-                <element signature="e#51021#51289#0" expanded="true" />
-                <element signature="e#51288#51289#0" expanded="true" />
-                <element signature="e#51530#51821#0" expanded="true" />
-                <element signature="e#51820#51821#0" expanded="true" />
-                <element signature="e#51856#52263#0" expanded="true" />
-                <element signature="e#52262#52263#0" expanded="true" />
-                <element signature="e#52603#53280#0" expanded="true" />
-                <element signature="e#53279#53280#0" expanded="true" />
-                <element signature="e#53450#53665#0" expanded="true" />
-                <element signature="e#53664#53665#0" expanded="true" />
-                <element signature="e#53694#54507#0" expanded="true" />
-                <element signature="e#54506#54507#0" expanded="true" />
-                <element signature="e#54675#55081#0" expanded="true" />
-                <element signature="e#55080#55081#0" expanded="true" />
-                <element signature="e#55222#55708#0" expanded="true" />
-                <element signature="e#55707#55708#0" expanded="true" />
-                <element signature="e#55834#56321#0" expanded="true" />
-                <element signature="e#56320#56321#0" expanded="true" />
-                <element signature="e#56440#56927#0" expanded="true" />
-                <element signature="e#56926#56927#0" expanded="true" />
-                <element signature="e#57205#57634#0" expanded="true" />
-                <element signature="e#57633#57634#0" expanded="true" />
-                <element signature="e#57666#58005#0" expanded="true" />
-                <element signature="e#58004#58005#0" expanded="true" />
-                <element signature="e#58298#58779#0" expanded="true" />
-                <element signature="e#58778#58779#0" expanded="true" />
-                <element signature="e#58812#59151#0" expanded="true" />
-                <element signature="e#59150#59151#0" expanded="true" />
+                <element signature="e#22236#22410#0" expanded="true" />
+                <element signature="e#22409#22410#0" expanded="true" />
+                <element signature="e#39995#40281#0" expanded="true" />
+                <element signature="e#40280#40281#0" expanded="true" />
+                <element signature="e#54210#54368#0" expanded="true" />
+                <element signature="e#54367#54368#0" expanded="true" />
+                <element signature="e#63816#64614#0" expanded="true" />
+                <element signature="e#64352#64566#0" expanded="true" />
+                <element signature="e#64565#64566#0" expanded="true" />
+                <element signature="e#64613#64614#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -139,20 +85,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+            <state relative-caret-position="275">
+              <caret line="143" column="20" lean-forward="true" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main.xml">
-          <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="4170">
               <caret line="278" column="22" selection-start-line="278" selection-start-column="22" selection-end-line="278" selection-end-column="53" />
             </state>
           </provider>
+          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -171,10 +117,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="75" column="28" lean-forward="true" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="28" />
+            <state relative-caret-position="-15">
+              <caret line="26" column="23" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
               <folding>
+                <element signature="e#3611#3612#0" expanded="true" />
                 <element signature="e#3642#3643#0" expanded="true" />
+                <element signature="e#3678#3679#0" expanded="true" />
                 <element signature="e#3706#3707#0" expanded="true" />
               </folding>
             </state>
@@ -184,7 +132,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Item.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
+            <state relative-caret-position="135">
               <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
               <folding>
                 <element signature="e#992#993#0" expanded="true" />
@@ -248,9 +196,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -392,11 +340,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="0" y="25" width="1920" height="990" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.20844914" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.21382637" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
@@ -408,8 +356,8 @@
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50027794" side_tool="true" weight="0.32857144" />
-      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.4991662" weight="0.33846155" />
-      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49972206" weight="0.32857144" />
+      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.4991662" weight="0.3408284" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49972206" weight="0.32781065" />
       <window_info anchor="bottom" id="Logcat" order="6" sideWeight="0.49972206" weight="0.32857144" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info anchor="bottom" id="Debug" order="8" />
@@ -472,12 +420,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/custom_listview.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/action1.png">
       <provider selected="true" editor-type-id="images" />
@@ -494,20 +442,13 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/action0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4170">
           <caret line="278" column="22" selection-start-line="278" selection-start-column="22" selection-end-line="278" selection-end-column="53" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Player.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -520,9 +461,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-15">
+          <caret line="26" column="23" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
+          <folding>
+            <element signature="e#3611#3612#0" expanded="true" />
+            <element signature="e#3642#3643#0" expanded="true" />
+            <element signature="e#3678#3679#0" expanded="true" />
+            <element signature="e#3706#3707#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Item.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
+        <state relative-caret-position="135">
           <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
           <folding>
             <element signature="e#992#993#0" expanded="true" />
@@ -531,104 +485,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="75" column="28" lean-forward="true" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="28" />
-          <folding>
-            <element signature="e#3642#3643#0" expanded="true" />
-            <element signature="e#3706#3707#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="275">
+          <caret line="143" column="20" lean-forward="true" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2611">
-          <caret line="474" column="43" selection-start-line="474" selection-start-column="43" selection-end-line="474" selection-end-column="43" />
+        <state relative-caret-position="-12">
+          <caret line="317" column="5" lean-forward="true" selection-start-line="317" selection-start-column="5" selection-end-line="317" selection-end-column="5" />
+          <folding>
+            <element signature="e#11209#11565#0" expanded="true" />
+            <element signature="e#11564#11565#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="1070" column="11" lean-forward="true" selection-start-line="1070" selection-start-column="11" selection-end-line="1070" selection-end-column="11" />
+        <state relative-caret-position="-189">
+          <caret line="316" column="11" lean-forward="true" selection-start-line="316" selection-start-column="11" selection-end-line="316" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#14763#17511#0" expanded="true" />
-            <element signature="e#17510#17511#0" expanded="true" />
-            <element signature="e#40283#40543#0" expanded="true" />
-            <element signature="e#40542#40543#0" expanded="true" />
-            <element signature="e#40947#43457#0" expanded="true" />
-            <element signature="e#41285#43425#0" expanded="true" />
-            <element signature="e#42446#42699#0" expanded="true" />
-            <element signature="e#42698#42699#0" expanded="true" />
-            <element signature="e#42884#43117#0" expanded="true" />
-            <element signature="e#43116#43117#0" expanded="true" />
-            <element signature="e#43424#43425#0" expanded="true" />
-            <element signature="e#43456#43457#0" expanded="true" />
-            <element signature="e#43486#43906#0" expanded="true" />
-            <element signature="e#43905#43906#0" expanded="true" />
-            <element signature="e#44061#45107#0" expanded="true" />
-            <element signature="e#44317#45081#0" expanded="true" />
-            <element signature="e#44757#45033#0" expanded="true" />
-            <element signature="e#45032#45033#0" expanded="true" />
-            <element signature="e#45080#45081#0" expanded="true" />
-            <element signature="e#45106#45107#0" expanded="true" />
-            <element signature="e#45136#45279#0" expanded="true" />
-            <element signature="e#45278#45279#0" expanded="true" />
-            <element signature="e#45372#47617#0" expanded="true" />
-            <element signature="e#45599#45982#0" expanded="true" />
-            <element signature="e#45981#45982#0" expanded="true" />
-            <element signature="e#46139#46371#0" expanded="true" />
-            <element signature="e#46370#46371#0" expanded="true" />
-            <element signature="e#46446#47324#0" expanded="true" />
-            <element signature="e#47323#47324#0" expanded="true" />
-            <element signature="e#47373#47567#0" expanded="true" />
-            <element signature="e#47566#47567#0" expanded="true" />
-            <element signature="e#47616#47617#0" expanded="true" />
-            <element signature="e#47642#47898#0" expanded="true" />
-            <element signature="e#47897#47898#0" expanded="true" />
-            <element signature="e#47985#49433#0" expanded="true" />
-            <element signature="e#48313#49407#0" expanded="true" />
-            <element signature="e#49089#49359#0" expanded="true" />
-            <element signature="e#49358#49359#0" expanded="true" />
-            <element signature="e#49406#49407#0" expanded="true" />
-            <element signature="e#49432#49433#0" expanded="true" />
-            <element signature="e#49456#49599#0" expanded="true" />
-            <element signature="e#49598#49599#0" expanded="true" />
-            <element signature="e#49885#50153#0" expanded="true" />
-            <element signature="e#50152#50153#0" expanded="true" />
-            <element signature="e#50458#50726#0" expanded="true" />
-            <element signature="e#50725#50726#0" expanded="true" />
-            <element signature="e#51021#51289#0" expanded="true" />
-            <element signature="e#51288#51289#0" expanded="true" />
-            <element signature="e#51530#51821#0" expanded="true" />
-            <element signature="e#51820#51821#0" expanded="true" />
-            <element signature="e#51856#52263#0" expanded="true" />
-            <element signature="e#52262#52263#0" expanded="true" />
-            <element signature="e#52603#53280#0" expanded="true" />
-            <element signature="e#53279#53280#0" expanded="true" />
-            <element signature="e#53450#53665#0" expanded="true" />
-            <element signature="e#53664#53665#0" expanded="true" />
-            <element signature="e#53694#54507#0" expanded="true" />
-            <element signature="e#54506#54507#0" expanded="true" />
-            <element signature="e#54675#55081#0" expanded="true" />
-            <element signature="e#55080#55081#0" expanded="true" />
-            <element signature="e#55222#55708#0" expanded="true" />
-            <element signature="e#55707#55708#0" expanded="true" />
-            <element signature="e#55834#56321#0" expanded="true" />
-            <element signature="e#56320#56321#0" expanded="true" />
-            <element signature="e#56440#56927#0" expanded="true" />
-            <element signature="e#56926#56927#0" expanded="true" />
-            <element signature="e#57205#57634#0" expanded="true" />
-            <element signature="e#57633#57634#0" expanded="true" />
-            <element signature="e#57666#58005#0" expanded="true" />
-            <element signature="e#58004#58005#0" expanded="true" />
-            <element signature="e#58298#58779#0" expanded="true" />
-            <element signature="e#58778#58779#0" expanded="true" />
-            <element signature="e#58812#59151#0" expanded="true" />
-            <element signature="e#59150#59151#0" expanded="true" />
+            <element signature="e#22236#22410#0" expanded="true" />
+            <element signature="e#22409#22410#0" expanded="true" />
+            <element signature="e#39995#40281#0" expanded="true" />
+            <element signature="e#40280#40281#0" expanded="true" />
+            <element signature="e#54210#54368#0" expanded="true" />
+            <element signature="e#54367#54368#0" expanded="true" />
+            <element signature="e#63816#64614#0" expanded="true" />
+            <element signature="e#64352#64566#0" expanded="true" />
+            <element signature="e#64565#64566#0" expanded="true" />
+            <element signature="e#64613#64614#0" expanded="true" />
           </folding>
         </state>
       </provider>

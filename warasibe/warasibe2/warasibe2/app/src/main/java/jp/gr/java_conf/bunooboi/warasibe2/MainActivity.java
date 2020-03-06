@@ -7,6 +7,9 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Process;
+import android.renderscript.RenderScript;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     static Item predItem1;
     static Item predItem2;
 
+    static HandlerThread handlerThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main);
+
+
+        handlerThread = new HandlerThread("other");
+        handlerThread.start();
+
 
         main = new Main(this);
 
@@ -316,16 +326,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static void setButtonUnable() {
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                action.setImageResource(R.drawable.action0);
                 up.setEnabled(false);
                 down.setEnabled(false);
                 left.setEnabled(false);
                 right.setEnabled(false);
                 action.setEnabled(false);
-                action.setImageResource(R.drawable.action0);
             }
         });
 
@@ -446,18 +455,25 @@ public class MainActivity extends AppCompatActivity {
 
     static void updateHealth(int changeStamina) {
         I.Stamina += changeStamina;
-        if (I.Stamina > 20) {
-            I.Stamina = I.Stamina - 20;
-            I.HP += 10;
-            if (I.HP > I.maxHP) {
-                I.HP = I.maxHP;
-            }
-        } else if (I.Stamina <= 0) {
-            I.HP /= 2;
-            if (I.HP <= 0) {
-                dead();
-            } else {
-                I.Stamina = 20;
+        if (I.Stamina >= 20 && I.HP == I.maxHP) {
+            I.Stamina = 20;
+        } else {
+            if (I.Stamina > 20) {
+                I.Stamina = I.Stamina - 20;
+                if (I.inn)
+                    I.HP *= 2;
+                else
+                    I.HP += 10;
+                if (I.HP > I.maxHP) {
+                    I.HP = I.maxHP;
+                }
+            } else if (I.Stamina <= 0) {
+                I.HP /= 2;
+                if (I.HP <= 0) {
+                    dead();
+                } else {
+                    I.Stamina = 20;
+                }
             }
         }
         MainActivity.setStamina(I.Stamina);

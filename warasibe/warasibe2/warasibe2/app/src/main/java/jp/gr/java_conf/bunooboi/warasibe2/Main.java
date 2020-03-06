@@ -3,9 +3,6 @@ package jp.gr.java_conf.bunooboi.warasibe2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +18,7 @@ public class Main {
 
     Scene meziha_Weapon;
     Scene meziha_Armor;
+    Scene meziha_Inn[] = new Scene[7];
 
     Scene meziha_Lynch[] = new Scene[4];
 
@@ -41,20 +39,20 @@ public class Main {
     Player clerk;
 
 
-    Item wrongSword = new Item("ボロイ剣", R.drawable.horse, 10, 1, Item.WEAPON);
+    Item wrongSword = new Item("ボロイ剣", R.drawable.wrongsword, 10, 1, Item.WEAPON);
     Item wrongBow = new Item("ボロイ弓", R.drawable.a, 10, 1, Item.WEAPON);
     Item wrongAxe = new Item("ボロイ斧", R.drawable.b, 10, 1, Item.WEAPON);
     Item wrongSpear = new Item("ボロイ槍", R.drawable.heisi, 10, 1, Item.WEAPON);
     Item wrongBlade = new Item("ボロイ刀", R.drawable.bukiya, 10, 1, Item.WEAPON);
 
 
-    Item treeBranch = new Item("木の枝", R.drawable.boss, 10, 1, Item.MATERIAL);
+    Item treeBranch = new Item("木の枝", R.drawable.treebranch, 10, 1, Item.MATERIAL);
 
-    Item wrongHelmet = new Item("ボロイ兜", R.drawable.c, 10, 1, Item.ARMOR);
+    Item wrongHelmet = new Item("ボロイ兜", R.drawable.wronghelmet, 10, 1, Item.ARMOR);
     Item wrongArmor = new Item("ボロイ鎧", R.drawable.d, 10, 1, Item.ARMOR);
     Item wrongShield = new Item("ボロイ盾", R.drawable.f, 10, 1, Item.ARMOR);
 
-    Item apple = new Item("りんご", R.drawable.stamina_no_1, 10, 1, Item.FOOD);
+    Item apple = new Item("りんご", R.drawable.apple, 10, 1, Item.FOOD);
 
     Item IHave;
     Item youHave;
@@ -594,31 +592,20 @@ public class Main {
             }
         });
         battle[2] = new Scene();
-        battle[2].setConsoleText("逃げ切れた");
+        battle[2].setConsoleText("逃げ切れた。");
         battle[2].setChangeStatus(false);
         battle[2].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
                 battle[2].setPlayImg(enemy.getImg());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.setButtonUnable();
-                    }
-                });
-                Timer t = new Timer();
-                t.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                MainActivity.next(dir);
-                            }
-                        });
+                MainActivity.setButtonUnable();
 
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.next(dir);
                     }
-                }, 1500);
+                }, 2400);
             }
         });
         battle[2].setNext(new NextListener() {
@@ -741,7 +728,7 @@ public class Main {
                             case Player.PA:
                                 I.HP -= setDamage(enemy.getPower(), I.Defense);
                                 if (I.HP <= 0) {
-                                    I.Stamina = -1;
+                                    I.Stamina = 0;
                                     I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
@@ -755,7 +742,7 @@ public class Main {
                             case Player.GU:
                                 I.HP -= setDamage(enemy.getPower(), I.Defense);
                                 if (I.HP <= 0) {
-                                    I.Stamina = -1;
+                                    I.Stamina = 0;
                                     I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
@@ -789,7 +776,7 @@ public class Main {
                             case Player.CHOKI:
                                 I.HP -= setDamage(enemy.getPower(), I.Defense);
                                 if (I.HP <= 0) {
-                                    I.Stamina = -1;
+                                    I.Stamina = 0;
                                     I.HP = 0;
                                 }
                                 text = "あなたはダメージを受けた。";
@@ -1053,13 +1040,6 @@ public class Main {
         dead.setInit(new InitListener() {
             @Override
             public void init(int dir) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.setHP(0);
-                        MainActivity.setStamina(0);
-                    }
-                });
 
             }
         });
@@ -1082,8 +1062,10 @@ public class Main {
         coffeeBreak.setFinish(new FinishListener() {
             @Override
             public void finish(int dir) {
-                MainActivity.updateTime(Calendar.MINUTE, -30);
-                MainActivity.updateHealth(1);
+                if (dir == Scene.DOWN) {
+                    MainActivity.updateTime(Calendar.MINUTE, -30);
+                    MainActivity.updateHealth(1);
+                }
             }
         });
         coffeeBreak.setNext(new NextListener() {
@@ -1210,6 +1192,8 @@ public class Main {
         sleep.setInit(new InitListener() {
             @Override
             public void init(final int dir) {
+                final int prevHP = I.HP;
+
                 MainActivity.setButtonUnable();
                 sleep.setConsoleText("あなたは眠った。\n\n");
                 handler.postDelayed(new Runnable() {
@@ -1222,39 +1206,65 @@ public class Main {
                     }
                 }, 2400);
 
-
-                final int rand = (int) Math.floor(Math.random() * 100);
-                if (rand == 13) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            I.HP = 0;
-                            MainActivity.next(dir);
-                        }
-                    }, 4800);
-                } else {
-
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            final String str;
-                            if (rand % 3 == 0 && I.getItemSize() >= 1) {
-                                str = "持ち物を盗まれた！\n\nスタミナが回復した。";
-                                if (I.getItemSize() >= 2)
-                                    I.removeItem(I.ITEM2);
-                                I.removeItem(I.ITEM1);
-                            } else {
-                                str = "スッキリ目覚めた。\n\nスタミナが回復した。";
+                if (sleep.getPrevScene().equals(coffeeBreak)) {                                        //coffeeBreakからsleep
+                    final int rand = (int) Math.floor(Math.random() * 100);
+                    if (rand == 13) {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                I.HP = 0;
+                                MainActivity.next(dir);
                             }
-                            sleep.setConsoleText(str);
+                        }, 4800);
+                    } else {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.updateHealth(15);
+
+                                final String str;
+                                if (rand % 3 == 0 && I.getItemSize() >= 1) {
+                                    if (I.HP != prevHP)
+                                        str = "持ち物を盗まれた！\n\nスタミナが回復した。\n体力が少し回復した。";
+                                    else
+                                        str = "持ち物を盗まれた！\n\nスタミナが回復した。";
+                                    if (I.getItemSize() >= 2)
+                                        I.removeItem(I.ITEM2);
+                                    I.removeItem(I.ITEM1);
+                                } else {
+                                    if (I.HP != prevHP)
+                                        str = "スッキリ目覚めた。\n\nスタミナが回復した。\n体力が少し回復した。";
+                                    else
+                                        str = "スッキリ目覚めた。\n\nスタミナが回復した。";
+                                }
+                                sleep.setConsoleText(str);
+                                MainActivity.setConsole(sleep);
+
+
+                                MainActivity.updateStatus(sleep);
+                            }
+                        }, 4800);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.next(dir);
+                            }
+                        }, 7200);
+                    }
+                } else {                                                                              //ベッドでsleep
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sleep.setConsoleText("スッキリ目覚めた。\n\nスタミナが回復した。\n体力が回復した。");
                             MainActivity.setConsole(sleep);
-                            MainActivity.updateHealth(20 - I.Stamina);
+                            MainActivity.updateHealth(30);
                             MainActivity.updateStatus(sleep);
                         }
                     }, 4800);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            I.inn = false;
                             MainActivity.next(dir);
                         }
                     }, 7200);
@@ -1266,8 +1276,10 @@ public class Main {
             public Scene next(int dir) {
                 if (I.HP <= 0) {
                     return dead;
-                } else {
+                } else if (sleep.getPrevScene().equals(coffeeBreak)) {
                     return coffeeBreak;
+                } else {
+                    return sleep.getPrevScene();
                 }
             }
         });
@@ -1366,6 +1378,7 @@ public class Main {
 
         meziha_Lynch[3] = new Scene("次へ", "", "", "");
         meziha_Lynch[3].setConsoleName("");
+        meziha_Lynch[3].setChangeStatus(false);
         meziha_Lynch[3].setConsoleText("ダメージを受けた");
         meziha_Lynch[3].setPlayImg(R.drawable.heisi);
         meziha_Lynch[3].setInit(new InitListener() {
@@ -1401,7 +1414,7 @@ public class Main {
         meziha[1].setInit(new InitListener() {
             @Override
             public void init(int dir) {
-
+                MainActivity.setActionButton(true);
             }
         });
         meziha[1].setNext(new NextListener() {
@@ -1409,7 +1422,7 @@ public class Main {
             public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
-                        battle[0].setNextScene(meziha[2]);
+                        battle[0].setNextScene(meziha[1]);
                         return battle[0];
                     case Scene.RIGHT:
                         return meziha[11];
@@ -1419,6 +1432,8 @@ public class Main {
                         } else {
                             return meziha[2];
                         }
+                    case Scene.ACTION:
+                        return null;
                 }
                 return null;
             }
@@ -1479,6 +1494,7 @@ public class Main {
 
         meziha[11] = new Scene("東", "", "広場へ", "食品店");
         meziha[11].setConsoleText("後ろから広場の賑やかな音がする。");
+        meziha[11].setPlayImg(R.drawable.meziha11);
         meziha[11].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
@@ -1497,6 +1513,7 @@ public class Main {
 
         meziha[12] = new Scene("東", "南", "西", "北");
         meziha[12].setConsoleText("十字路だ");
+        meziha[12].setPlayImg(R.drawable.meziha12);
         meziha[12].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
@@ -1514,12 +1531,14 @@ public class Main {
         });
         meziha[13] = new Scene("東", "", "西", "宿屋");
         meziha[13].setConsoleText("宿屋がある");
+        meziha[13].setPlayImg(R.drawable.meziha13);
         meziha[13].setNext(new NextListener() {
             @Override
             public Scene next(int dir) {
                 switch (dir) {
                     case Scene.UP:
-
+                    case Scene.LEFT:
+                        return meziha_Inn[0];
                     case Scene.DOWN:
                         return meziha[12];
                     case Scene.ACTION:
@@ -1592,6 +1611,152 @@ public class Main {
             }
         });
 
+        meziha_Inn[0] = new Scene("カウンター", "テーブル", "外へ", "二階へ");
+        meziha_Inn[0].setConsoleText("宿屋だ。");
+        meziha_Inn[0].setChangeStatus(false);
+        meziha_Inn[0].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+
+            }
+        });
+        meziha_Inn[0].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha_Inn[1];
+                    case Scene.LEFT:
+                        return meziha_Inn[3];
+                    case Scene.RIGHT:
+
+                    case Scene.DOWN:
+                        return meziha[13];
+                }
+                return null;
+            }
+        });
+
+        meziha_Inn[1] = new Scene("泊まる", "", "やめる", "");
+        meziha_Inn[1].setConsoleName("宿屋");
+        meziha_Inn[1].setChangeStatus(false);
+        meziha_Inn[1].setPlayImg(R.drawable.inn);
+        meziha_Inn[1].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                if (I.inn) {
+                    meziha_Inn[1].setConsoleText("お部屋は二階です。\nどうぞごゆっくり。");
+                } else {
+                    if (I.getItemSize() == 0) {
+                        meziha_Inn[1].setConsoleText("交換できるものがない人は止められないよ。");
+                    } else {
+                        meziha_Inn[1].setConsoleText("泊まってくかい？\nあんたの持ってるものと交換だよ。");
+                    }
+                }
+            }
+        });
+        meziha_Inn[1].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        if (I.getItemSize() == 0) {
+                            return null;
+                        } else if (I.inn) {
+                            return null;
+                        } else {
+                            return meziha_Inn[2];
+                        }
+                    case Scene.DOWN:
+                        return meziha_Inn[0];
+                }
+                return null;
+            }
+        });
+        meziha_Inn[2] = new Scene();
+        meziha_Inn[2].setChangeStatus(false);
+        meziha_Inn[2].setPlayImg(R.drawable.inn);
+        meziha_Inn[2].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                MainActivity.setDialog(context, "どれと交換しますか？");
+                MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        I.removeItem(IHave);
+                        meziha_Inn[2].setConsoleText("お部屋は二階です。\nどうぞごゆっくり。");
+                        meziha_Inn[2].setConsoleName("宿屋");
+                        MainActivity.setConsole(meziha_Inn[2]);
+                        MainActivity.updateStatus(meziha_Inn[2]);
+                        I.inn = true;
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.next(dir);
+                            }
+                        }, 2400);
+                    }
+                });
+            }
+        });
+        meziha_Inn[2].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return meziha_Inn[0];
+            }
+        });
+
+        meziha_Inn[3] = new Scene("101", "102", "一階へ", "");
+        meziha_Inn[3].setConsoleText("二階には寝室があるようだ。");
+        meziha_Inn[3].setChangeStatus(false);
+        meziha_Inn[3].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+
+            }
+        });
+        meziha_Inn[3].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        if (I.inn)
+                            return meziha_Inn[4];
+                        else
+                            return null;
+                    case Scene.DOWN:
+                        return meziha_Inn[0];
+                }
+                return null;
+            }
+        });
+        meziha_Inn[4] = new Scene("", "ベッド", "部屋を出る", "");
+        meziha_Inn[4].setConsoleText("101号室だ。");
+        meziha_Inn[4].setChangeStatus(false);
+        meziha_Inn[4].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+
+            }
+        });
+        meziha_Inn[4].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.RIGHT:
+                        if (I.inn)
+                            return sleep;
+                        else
+                            return null;
+                    case Scene.DOWN:
+                        return meziha_Inn[3];
+
+                }
+                return null;
+            }
+        });
 
     }
 
