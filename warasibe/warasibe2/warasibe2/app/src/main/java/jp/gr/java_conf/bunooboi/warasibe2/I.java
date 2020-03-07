@@ -27,6 +27,8 @@ public class I {
     static boolean inn;
     static boolean meziha_1;
 
+    static int innTime;
+
     private I() {
 
     }

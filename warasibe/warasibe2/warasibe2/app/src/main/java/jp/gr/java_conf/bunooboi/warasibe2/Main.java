@@ -22,12 +22,12 @@ public class Main {
 
     Scene meziha_Lynch[] = new Scene[4];
 
-    Scene battle[] = new Scene[9];
-    //battleは直前のfinishから設定。nextSceneも設定する
+    Scene battle[] = new Scene[9];                                                          //battleは直前のfinishから設定。nextSceneも設定する
     Scene shop[] = new Scene[12];
 
     Scene coffeeBreak;
     Scene eat;
+    Scene eatIn[] = new Scene[2];
     Scene sleep;
     Scene search[] = new Scene[2];
 
@@ -1064,7 +1064,7 @@ public class Main {
             public void finish(int dir) {
                 if (dir == Scene.DOWN) {
                     MainActivity.updateTime(Calendar.MINUTE, -30);
-                    MainActivity.updateHealth(1);
+                    MainActivity.updateHealth(1, 0);
                 }
             }
         });
@@ -1132,7 +1132,7 @@ public class Main {
                         }
                         MainActivity.setConsole(search[0]);
                         MainActivity.updateTime(Calendar.HOUR, 1);
-                        MainActivity.updateHealth(-1);
+                        MainActivity.updateHealth(-1, 0);
                         MainActivity.setDateText();
                     }
                 }, 2400);
@@ -1220,7 +1220,7 @@ public class Main {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                MainActivity.updateHealth(15);
+                                MainActivity.updateHealth(15, 10);
 
                                 final String str;
                                 if (rand % 3 == 0 && I.getItemSize() >= 1) {
@@ -1257,7 +1257,7 @@ public class Main {
                         public void run() {
                             sleep.setConsoleText("スッキリ目覚めた。\n\nスタミナが回復した。\n体力が回復した。");
                             MainActivity.setConsole(sleep);
-                            MainActivity.updateHealth(30);
+                            MainActivity.updateHealth(30, 0);
                             MainActivity.updateStatus(sleep);
                         }
                     }, 4800);
@@ -1298,7 +1298,7 @@ public class Main {
                         final int time;
                         if (IHave.getKind() == Item.FOOD) {
                             eat.setConsoleText(IHave.getName() + "を食べた。\nスタミナが" + IHave.getAdd() + "回復した。");
-                            MainActivity.updateHealth(IHave.getAdd());
+                            MainActivity.updateHealth(IHave.getAdd(), 10);
                             I.removeItem(IHave);
                             time = 2400;
                         } else {
@@ -1323,6 +1323,70 @@ public class Main {
             @Override
             public Scene next(int dir) {
                 return coffeeBreak;
+            }
+        });
+
+
+        eatIn[0] = new Scene("食事", "", "やめる", "");
+        eatIn[0].setChangeStatus(false);
+        eatIn[0].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                if (I.getItemSize() <= 0) {
+                    eatIn[0].setConsoleText("何も持ってない人には食事を出せないよ。");
+                } else {
+                    eatIn[0].setConsoleText("お食事になさいますか？");
+                }
+            }
+        });
+        eatIn[0].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        if (I.getItemSize() <= 0)
+                            return null;
+                        else
+                            return eatIn[1];
+                    case Scene.DOWN:
+                        return eatIn[0].getPrevScene();
+                }
+                return null;
+            }
+        });
+
+        eatIn[1] = new Scene();
+        eatIn[1].setChangeStatus(false);
+        eatIn[1].setInit(new InitListener() {
+            @Override
+            public void init(final int dir) {
+                MainActivity.setButtonUnable();
+                eatIn[1].setPlayImg(eatIn[0].getPlayImg());
+                MainActivity.setDialog(context, "どれと交換しますか？");
+                MainActivity.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        eatIn[1].setConsoleText("食事をした。\n\nスタミナが回復した。\n体力が回復した。");
+                        MainActivity.updateHealth(25, 20);
+                        I.removeItem(IHave);
+                        MainActivity.setConsole(eatIn[1]);
+
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                eatIn[1].setConsoleText("");
+                                MainActivity.next(dir);
+                            }
+                        }, 2400);
+                    }
+                });
+            }
+        });
+        eatIn[1].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                return eatIn[0].getPrevScene();
             }
         });
 
@@ -1617,7 +1681,8 @@ public class Main {
         meziha_Inn[0].setInit(new InitListener() {
             @Override
             public void init(int dir) {
-
+                eatIn[0].setConsoleName("宿屋");
+                eatIn[0].setPlayImg(R.drawable.inn);
             }
         });
         meziha_Inn[0].setNext(new NextListener() {
@@ -1629,7 +1694,7 @@ public class Main {
                     case Scene.LEFT:
                         return meziha_Inn[3];
                     case Scene.RIGHT:
-
+                        return eatIn[0];
                     case Scene.DOWN:
                         return meziha[13];
                 }
@@ -1648,7 +1713,7 @@ public class Main {
                     meziha_Inn[1].setConsoleText("お部屋は二階です。\nどうぞごゆっくり。");
                 } else {
                     if (I.getItemSize() == 0) {
-                        meziha_Inn[1].setConsoleText("交換できるものがない人は止められないよ。");
+                        meziha_Inn[1].setConsoleText("何も持ってない人は泊められないよ。");
                     } else {
                         meziha_Inn[1].setConsoleText("泊まってくかい？\nあんたの持ってるものと交換だよ。");
                     }

@@ -13,14 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d77a2db-fe67-44fb-9a5f-7017f3e566e3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/apple.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/inn.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/meziha13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/treebranch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/wronghelmet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/wrongsword.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/bunooboi.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -47,36 +40,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12">
-              <caret line="317" column="5" lean-forward="true" selection-start-line="317" selection-start-column="5" selection-end-line="317" selection-end-column="5" />
-              <folding>
-                <element signature="e#11209#11565#0" expanded="true" />
-                <element signature="e#11564#11565#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="359">
+              <caret line="500" column="13" lean-forward="true" selection-start-line="500" selection-start-column="13" selection-end-line="500" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-189">
-              <caret line="316" column="11" lean-forward="true" selection-start-line="316" selection-start-column="11" selection-end-line="316" selection-end-column="11" />
+            <state relative-caret-position="354">
+              <caret line="67" column="15" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#22236#22410#0" expanded="true" />
-                <element signature="e#22409#22410#0" expanded="true" />
-                <element signature="e#39995#40281#0" expanded="true" />
-                <element signature="e#40280#40281#0" expanded="true" />
-                <element signature="e#54210#54368#0" expanded="true" />
-                <element signature="e#54367#54368#0" expanded="true" />
-                <element signature="e#63816#64614#0" expanded="true" />
-                <element signature="e#64352#64566#0" expanded="true" />
-                <element signature="e#64565#64566#0" expanded="true" />
-                <element signature="e#64613#64614#0" expanded="true" />
+                <element signature="e#10405#10559#0" expanded="true" />
+                <element signature="e#10558#10559#0" expanded="true" />
+                <element signature="e#51039#51278#0" expanded="true" />
+                <element signature="e#51277#51278#0" expanded="true" />
+                <element signature="e#51397#51856#0" expanded="true" />
+                <element signature="e#51855#51856#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="143" column="20" lean-forward="true" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
+            <state relative-caret-position="1545">
+              <caret line="143" column="20" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -117,14 +102,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15">
-              <caret line="26" column="23" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
-              <folding>
-                <element signature="e#3611#3612#0" expanded="true" />
-                <element signature="e#3642#3643#0" expanded="true" />
-                <element signature="e#3678#3679#0" expanded="true" />
-                <element signature="e#3706#3707#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="390">
+              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -132,7 +111,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Item.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
+            <state relative-caret-position="225">
               <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
               <folding>
                 <element signature="e#992#993#0" expanded="true" />
@@ -176,9 +155,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/CustomAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_listview.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Item.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java" />
       </list>
     </option>
   </component>
@@ -197,8 +176,8 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -344,7 +323,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.21382637" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.2165059" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
@@ -356,7 +335,7 @@
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50027794" side_tool="true" weight="0.32857144" />
-      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.4991662" weight="0.3408284" />
+      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.4991662" visible="true" weight="0.34201184" />
       <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49972206" weight="0.32781065" />
       <window_info anchor="bottom" id="Logcat" order="6" sideWeight="0.49972206" weight="0.32857144" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
@@ -442,6 +421,13 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/action0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1545">
+          <caret line="143" column="20" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4170">
@@ -461,22 +447,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15">
-          <caret line="26" column="23" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
-          <folding>
-            <element signature="e#3611#3612#0" expanded="true" />
-            <element signature="e#3642#3643#0" expanded="true" />
-            <element signature="e#3678#3679#0" expanded="true" />
-            <element signature="e#3706#3707#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Item.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
+        <state relative-caret-position="225">
           <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
           <folding>
             <element signature="e#992#993#0" expanded="true" />
@@ -485,41 +458,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Scene.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="143" column="20" lean-forward="true" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="20" />
+        <state relative-caret-position="354">
+          <caret line="67" column="15" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10405#10559#0" expanded="true" />
+            <element signature="e#10558#10559#0" expanded="true" />
+            <element signature="e#51039#51278#0" expanded="true" />
+            <element signature="e#51277#51278#0" expanded="true" />
+            <element signature="e#51397#51856#0" expanded="true" />
+            <element signature="e#51855#51856#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12">
-          <caret line="317" column="5" lean-forward="true" selection-start-line="317" selection-start-column="5" selection-end-line="317" selection-end-column="5" />
-          <folding>
-            <element signature="e#11209#11565#0" expanded="true" />
-            <element signature="e#11564#11565#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/gr/java_conf/bunooboi/warasibe2/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-189">
-          <caret line="316" column="11" lean-forward="true" selection-start-line="316" selection-start-column="11" selection-end-line="316" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#22236#22410#0" expanded="true" />
-            <element signature="e#22409#22410#0" expanded="true" />
-            <element signature="e#39995#40281#0" expanded="true" />
-            <element signature="e#40280#40281#0" expanded="true" />
-            <element signature="e#54210#54368#0" expanded="true" />
-            <element signature="e#54367#54368#0" expanded="true" />
-            <element signature="e#63816#64614#0" expanded="true" />
-            <element signature="e#64352#64566#0" expanded="true" />
-            <element signature="e#64565#64566#0" expanded="true" />
-            <element signature="e#64613#64614#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="359">
+          <caret line="500" column="13" lean-forward="true" selection-start-line="500" selection-start-column="13" selection-end-line="500" selection-end-column="13" />
         </state>
       </provider>
     </entry>

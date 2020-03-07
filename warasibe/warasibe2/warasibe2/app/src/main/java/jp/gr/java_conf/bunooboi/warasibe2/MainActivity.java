@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        updateHealth(0);
+        updateHealth(0, 0);
     }
 
 
@@ -282,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
         defense.setText(String.valueOf(I.Defense));
         intelligence.setText(String.valueOf(I.Intelligence));
         karma.setText(String.valueOf(I.Karma));
+
+
     }
 
 
@@ -453,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    static void updateHealth(int changeStamina) {
+    static void updateHealth(int changeStamina, int changeHP) {
         I.Stamina += changeStamina;
         if (I.Stamina >= 20 && I.HP == I.maxHP) {
             I.Stamina = 20;
@@ -463,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
                 if (I.inn)
                     I.HP *= 2;
                 else
-                    I.HP += 10;
+                    I.HP += changeHP;
                 if (I.HP > I.maxHP) {
                     I.HP = I.maxHP;
                 }
@@ -488,8 +490,15 @@ public class MainActivity extends AppCompatActivity {
         main.hour = main.calendar.get(Calendar.HOUR_OF_DAY);
         main.minute = main.calendar.get(Calendar.MINUTE);
 
-        if (field == Calendar.MINUTE && main.minute == 0) {
-            updateHealth(-1);
+        if (field == Calendar.MINUTE && main.minute == 0) {                                          //１時間毎の処理
+            updateHealth(-1, 0);
+            if (I.inn) {
+                if (I.innTime >= 12) {
+                    I.inn = false;
+                    I.innTime = 0;
+                }
+                I.innTime++;
+            }
         }
         setDateText();
     }
