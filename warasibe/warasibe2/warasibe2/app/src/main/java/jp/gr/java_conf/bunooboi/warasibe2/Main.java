@@ -7,18 +7,19 @@ import android.os.Handler;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Main {
 
     Context context;
 
-    Scene meziha[] = new Scene[100];
+    ArrayList<City> city = new ArrayList<>();
+
+    Scene meziha[] = new Scene[50];
 
     Scene meziha_Weapon;
     Scene meziha_Armor;
     Scene meziha_Inn[] = new Scene[7];
+    Scene meziha_Jack[] = new Scene[10];
 
     Scene meziha_Lynch[] = new Scene[4];
 
@@ -31,12 +32,17 @@ public class Main {
     Scene sleep;
     Scene search[] = new Scene[2];
 
+    Scene request[] = new Scene[5];
+
     Scene dead;
 
     Handler handler = new Handler();
 
     Player enemy = new Player("トカ聖兵", R.drawable.heisi);
     Player clerk;
+    Player reqP[] = new Player[5];
+
+    Request req[] = new Request[5];
 
 
     Item wrongSword = new Item("ボロイ剣", R.drawable.wrongsword, 10, 1, Item.WEAPON);
@@ -69,6 +75,13 @@ public class Main {
 
     public Main(final Context context) {
         this.context = context;
+
+        city.add(new City("メジハ"));
+        city.add(new City("ギツ"));
+        city.add(new City("セク"));
+        city.add(new City("アクアトーソ"));
+        city.add(new City("アチン"));
+        city.add(new City("ザウコ村"));
 
 
         I.HP = 60;
@@ -104,6 +117,8 @@ public class Main {
         items.add(wrongAxe);
         items.add(wrongSpear);
         items.add(wrongBlade);
+        items.add(apple);
+        items.add(treeBranch);
 
 
         I.addItem(apple);
@@ -1035,8 +1050,76 @@ public class Main {
 
         /*---------------------------------------------------------------------戦闘シーン終わり----------------------------------------------------------------------*/
 
+
+        request[0] = new Scene("", "→", "もどる", "");
+        request[0].setChangeStatus(false);
+        request[0].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                request[0].setConsoleName(req[0].getEnemyName());
+                switch (req[0].getMode()) {
+                    case Request.EXCHANGE:
+                        request[0].setConsoleText(req[0].getEnemy().getItem(0).getName() + "が必要なのです。\n私の" + req[0].getItemName() + "と交換してくれる人を探しています。\nどなたかいらっしゃいませんか？");
+                        break;
+                    case Request.SP:
+                        request[0].setConsoleText("私を" + req[0].getCity().getName() + "まで連れて行ってください。\n報酬は" + req[0].getItemName() + "です。\nよろしくお願いします。");
+                        break;
+                    case Request.FRIEND:
+                        request[0].setConsoleText("");
+                        break;
+                }
+            }
+        });
+        request[0].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.RIGHT:
+                        return request[1];
+                    case Scene.DOWN:
+                        return request[0].getNextScene();
+                }
+                return null;
+            }
+        });
+
+        request[1] = new Scene("", "→", "もどる", "←");
+        request[1].setChangeStatus(false);
+        request[1].setInit(new InitListener() {
+            @Override
+            public void init(int dir) {
+                request[1].setConsoleName(req[1].getEnemyName());
+                switch (req[1].getMode()) {
+                    case Request.EXCHANGE:
+                        request[1].setConsoleText(req[1].getEnemy().getItem(0).getName() + "が必要なのです。\n私の" + req[1].getItemName() + "と交換してくれる人を探しています。\nどなたかいらっしゃいませんか？");
+                        break;
+                    case Request.SP:
+                        request[1].setConsoleText("私を" + req[1].getCity().getName() + "まで連れて行ってください。\n報酬は" + req[1].getItemName() + "です。\nよろしくお願いします。");
+                        break;
+                    case Request.FRIEND:
+                        request[1].setConsoleText("");
+                        break;
+                }
+            }
+        });
+        request[1].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.RIGHT:
+                    case Scene.LEFT:
+                        return request[0];
+                    case Scene.DOWN:
+                        return request[0].getNextScene();
+                }
+                return null;
+            }
+        });
+
+        /*---------------------------------------------------------------------依頼シーン終わり----------------------------------------------------------------------*/
+
         dead = new Scene();
-        dead.setConsoleText("あなたは死んだ");
+        dead.setConsoleText("あなたは死んだ。");
         dead.setInit(new InitListener() {
             @Override
             public void init(int dir) {
@@ -1188,7 +1271,6 @@ public class Main {
         });
 
         sleep = new Scene();
-        sleep.setChangeStatus(false);
         sleep.setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -1239,8 +1321,6 @@ public class Main {
                                 }
                                 sleep.setConsoleText(str);
                                 MainActivity.setConsole(sleep);
-
-
                                 MainActivity.updateStatus(sleep);
                             }
                         }, 4800);
@@ -1285,7 +1365,6 @@ public class Main {
         });
 
         eat = new Scene();
-        eat.setChangeStatus(false);
         eat.setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -1335,7 +1414,7 @@ public class Main {
                 if (I.getItemSize() <= 0) {
                     eatIn[0].setConsoleText("何も持ってない人には食事を出せないよ。");
                 } else {
-                    eatIn[0].setConsoleText("お食事になさいますか？");
+                    eatIn[0].setConsoleText("食事にするかい？\n持ってるものと交換だよ。");
                 }
             }
         });
@@ -1356,7 +1435,6 @@ public class Main {
         });
 
         eatIn[1] = new Scene();
-        eatIn[1].setChangeStatus(false);
         eatIn[1].setInit(new InitListener() {
             @Override
             public void init(final int dir) {
@@ -1479,6 +1557,28 @@ public class Main {
             @Override
             public void init(int dir) {
                 MainActivity.setActionButton(true);
+
+                for (int i = 0; i < 5; i++) {
+                    reqP[i] = new Player("トカ聖兵", R.drawable.heisi);
+                    reqP[i].addItem(getSameLevelItem(I.level));
+                    int nextCity = 0;
+
+                    while (true) {
+                        nextCity = (int) Math.floor(Math.random() * city.size());
+                        if (!city.get(nextCity).getName().equals("メジハ")) {
+                            break;
+                        }
+                    }
+
+                    Item reward;
+                    while (true) {
+                        reward = getSameLevelItem(I.level);
+                        if (!reward.equals(reqP[i].getItem(0))) {
+                            break;
+                        }
+                    }
+                    req[i] = new Request(reward, reqP[i], city.get(nextCity), (int) Math.floor(Math.random() * 3));
+                }
             }
         });
         meziha[1].setNext(new NextListener() {
@@ -1490,6 +1590,8 @@ public class Main {
                         return battle[0];
                     case Scene.RIGHT:
                         return meziha[11];
+                    case Scene.LEFT:
+                        return meziha[10];
                     case Scene.DOWN:
                         if (Math.floor(Math.random() * 2) == 1 && !I.meziha_1) {
                             return meziha_Lynch[0];
@@ -1497,7 +1599,8 @@ public class Main {
                             return meziha[2];
                         }
                     case Scene.ACTION:
-                        return null;
+                        request[0].setNextScene(meziha[1]);
+                        return request[0];
                 }
                 return null;
             }
@@ -1550,6 +1653,67 @@ public class Main {
                         return meziha[2];
                     case Scene.ACTION:
                         coffeeBreak.setNextScene(meziha[3]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+
+        meziha[9] = new Scene("西", "北", "東", "南");
+        meziha[9].setConsoleText("路地がある。");
+        meziha[9].setPlayImg(R.drawable.meziha12);
+        meziha[9].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return null;
+                    case Scene.DOWN:
+                        return meziha[10];
+                    case Scene.RIGHT:
+                        return meziha[21];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[9]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+
+        meziha[10] = new Scene("西", "雑貨屋", "広場へ", "");
+        meziha[10].setConsoleText("後ろから広場の賑やかな音がする。");
+        meziha[10].setPlayImg(R.drawable.meziha11);
+        meziha[10].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return meziha[9];
+                    case Scene.DOWN:
+                        return meziha[1];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[10]);
+                        return coffeeBreak;
+                }
+                return null;
+            }
+        });
+
+        meziha[21] = new Scene("北", "雑貨屋裏口", "大通りへ", "西");
+        meziha[21].setConsoleText("路地裏だ。");
+        meziha[21].setPlayImg(R.drawable.meziha11);
+        meziha[21].setNext(new NextListener() {
+            @Override
+            public Scene next(int dir) {
+                switch (dir) {
+                    case Scene.UP:
+                        return null;
+                    case Scene.DOWN:
+                        return meziha[9];
+                    case Scene.RIGHT:
+                        return meziha_Jack[0];
+                    case Scene.ACTION:
+                        coffeeBreak.setNextScene(meziha[21]);
                         return coffeeBreak;
                 }
                 return null;
@@ -1759,6 +1923,7 @@ public class Main {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                meziha_Inn[2].setConsoleText("");
                                 MainActivity.next(dir);
                             }
                         }, 2400);
@@ -1822,6 +1987,9 @@ public class Main {
                 return null;
             }
         });
+
+        meziha_Jack[0] = new Scene("", "", "", "");
+
 
     }
 

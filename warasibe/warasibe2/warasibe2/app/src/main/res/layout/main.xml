@@ -105,7 +105,7 @@
                 android:breakStrategy="simple"
                 android:paddingLeft="15dp"
                 android:paddingTop="5dp"
-                android:paddingRight="5dp" />
+                android:paddingRight="15dp" />
         </LinearLayout>
 
 
@@ -144,7 +144,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="3"
-                android:background="@drawable/power"
+                android:background="@drawable/defense"
                 android:gravity="center" />
 
             <TextView
@@ -168,7 +168,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="3"
-                android:background="@drawable/power"
+                android:background="@drawable/karma"
                 android:gravity="center" />
 
             <TextView
@@ -363,7 +363,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/fracture" />
+                        android:src="@drawable/injury" />
 
                     <ImageView
                         android:id="@+id/fracture"
@@ -474,7 +474,7 @@
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/horse" />
+                        android:src="@drawable/cart" />
                 </LinearLayout>
 
                 <LinearLayout

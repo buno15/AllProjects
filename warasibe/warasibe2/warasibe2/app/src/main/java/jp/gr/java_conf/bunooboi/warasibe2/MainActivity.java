@@ -141,7 +141,11 @@ public class MainActivity extends AppCompatActivity {
         sick = (ImageView) findViewById(R.id.sick);
 
         friendImg = (ImageView) findViewById(R.id.friendimg);
+        friendImg.setBackgroundResource(R.drawable.friend);
+
         soldierImg = (ImageView) findViewById(R.id.soldierimg);
+        soldierImg.setBackgroundResource(R.drawable.soldier);
+
         horseImg = (ImageView) findViewById(R.id.horseimg);
         cartImg = (ImageView) findViewById(R.id.cartimg);
 
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         soldier.setTextSize(18 * DisplayManager.getScaleSize(getApplicationContext()));
         soldier.setTextColor(Color.WHITE);
         soldier.setText("100000");
+
 
         up = (Button) findViewById(R.id.up);
         up.setTextSize(22 * DisplayManager.getScaleSize(getApplicationContext()));
@@ -477,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
                     I.Stamina = 20;
                 }
             }
+            System.out.println(I.Stamina);
         }
         MainActivity.setStamina(I.Stamina);
         MainActivity.setHP(I.HP);

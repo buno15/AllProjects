@@ -13,6 +13,15 @@ public class I {
     static int Intelligence;                            // 洞察力
     static int Karma;                                //民心
     static int level;                                  //レベル（手に入れたアイテムの最大レベル）
+    static int job;                                    //仕事
+
+    static Player Boss;
+    static ArrayList<Player> Friend = new ArrayList<>();
+    static int Soldier;
+
+    static boolean meziha;
+    static boolean gitu;
+    static boolean seku;
 
     private static ArrayList<Item> item;
 

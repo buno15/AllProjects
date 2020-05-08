@@ -14,6 +14,10 @@ public class Player {
 
     private ArrayList<Item> item;
 
+    private Player Boss;
+    private ArrayList<Player> Friend = new ArrayList<>();
+    private int Soldier;
+
     public static final int GU = 1;
     public static final int CHOKI = 2;
     public static final int PA = 3;
