@@ -98,6 +98,7 @@ public class ActivityMain extends AppCompatActivity {
             alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     stopService(new Intent(getApplicationContext(), MainService.class));
+                    finish();
                 }
             });
             alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
