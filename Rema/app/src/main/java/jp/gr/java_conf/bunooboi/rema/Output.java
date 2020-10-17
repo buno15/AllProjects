@@ -29,13 +29,7 @@ public class Output {
         try {
             osw = new OutputStreamWriter(new FileOutputStream(App.DataPath + "/data.txt", false), "UTF-8");
             for (int i = 0; i < App.titles.size(); i++) {
-                String m = App.titles.get(i);
-                osw.write(m + "\n");
-            }
-            osw.flush();
-            osw = new OutputStreamWriter(new FileOutputStream(App.DataPath + "/answer.txt", false), "UTF-8");
-            for (int i = 0; i < App.answers.size(); i++) {
-                String m = App.answers.get(i);
+                String m = App.answers.get(i) + "=" + App.titles.get(i);
                 osw.write(m + "\n");
             }
             osw.flush();

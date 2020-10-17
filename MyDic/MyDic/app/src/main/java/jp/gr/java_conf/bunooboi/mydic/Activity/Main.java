@@ -158,10 +158,10 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
             }
         });
 
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        /*mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
 
-        loadRewardedVideoAd();
+        loadRewardedVideoAd();*/
 
         game = findViewById(R.id.game);
         game.setOnClickListener(new View.OnClickListener() {
@@ -189,8 +189,8 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
     }
 
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-2096872993008006/3682950090", new AdRequest.Builder().build());
-        //mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());//テスト
+        //mRewardedVideoAd.loadAd("ca-app-pub-2096872993008006/3682950090", new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());//テスト
     }
 
     public void search(String search) {//タグ検索

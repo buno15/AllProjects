@@ -5,7 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
@@ -22,6 +25,7 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
     Handler handler = new Handler();
     TextToSpeech ttsJ;
     TextToSpeech ttsE;
+    NotificationManager nm;
     NotificationCompat.Builder builder;
     int timeCount = 0;
     int random = 0;
@@ -40,7 +44,7 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
         super.onCreate();
 
         NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
-        NotificationManager nm = getSystemService(NotificationManager.class);
+        nm = getSystemService(NotificationManager.class);
         nm.createNotificationChannel(mChannel);
 
         random = (int) Math.floor(Math.random() * App.titles.size());
@@ -50,8 +54,11 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
         builder.setSmallIcon(R.drawable.icon);
         builder.setContentTitle("Rema");
         builder.setContentText("Start Rema");
+        builder.setAutoCancel(true);
         Notification note = builder.build();
-        startForeground(1, note);
+        note.flags |= Notification.FLAG_AUTO_CANCEL;
+        nm.notify(1, note);
+        startForeground(2, note);
 
 
         ttsJ = new TextToSpeech(this, this);
@@ -64,6 +71,8 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        final int japID = 2;
+        final int engID = 3;
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -75,28 +84,37 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
                             builder = new NotificationCompat.Builder(getApplicationContext(), id);
                             builder.setSmallIcon(R.drawable.icon);
                             builder.setContentTitle(App.titles.get(random));
+                            builder.setContentText("");
                             builder.setPriority(NotificationCompat.PRIORITY_MAX);
                             builder.setCategory(NotificationCompat.CATEGORY_MESSAGE);
                             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                            builder.setAutoCancel(true);
                             Notification note = builder.build();
-                            startForeground(1, note);
+                            note.flags |= Notification.FLAG_AUTO_CANCEL;
+                            nm.notify(1, note);
 
                             speechJapanText(App.titles.get(random));
 
                         }
+
+
                         if (timeCount % 8 == 0) {
+                            nm.cancel(1);
                             builder = new NotificationCompat.Builder(getApplicationContext(), id);
                             builder.setSmallIcon(R.drawable.icon);
                             builder.setContentTitle(App.answers.get(random));
+                            builder.setContentText("");
                             builder.setPriority(NotificationCompat.PRIORITY_MAX);
                             builder.setCategory(NotificationCompat.CATEGORY_MESSAGE);
                             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                            builder.setAutoCancel(true);
                             Notification note = builder.build();
-                            startForeground(1, note);
+                            note.flags |= Notification.FLAG_AUTO_CANCEL;
+                            nm.notify(1, note);
 
                             speechEngText(App.answers.get(random));
 
-                            timeCount = 0;
+
                             if (App.indexes.size() == App.titles.size()) {
                                 App.indexes.clear();
                             }
@@ -108,6 +126,12 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
                                 }
                             }
                         }
+
+                        if (timeCount % 9 == 0) {
+                            nm.cancel(1);
+                            timeCount = 0;
+                        }
+
                     }
                 });
             }
@@ -173,6 +197,7 @@ public class MainService extends Service implements TextToSpeech.OnInitListener 
             //ttsのリソース解放する
             ttsE.shutdown();
         }
+        nm.cancel(1);
         stopForeground(Service.STOP_FOREGROUND_DETACH);
         NotificationManager nm = getSystemService(NotificationManager.class);
         nm.deleteNotificationChannel(id);

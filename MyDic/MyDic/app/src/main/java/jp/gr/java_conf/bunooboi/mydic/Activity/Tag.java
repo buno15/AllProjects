@@ -41,7 +41,7 @@ public class Tag extends AppCompatActivity {
         setTitle("Tags");
         setContentView(R.layout.tag);
 
-        MobileAds.initialize(this, "ca-app-pub-2096872993008006~2033814746");
+        /*MobileAds.initialize(this, "ca-app-pub-2096872993008006~2033814746");
         mInterstitialAd = new InterstitialAd(this);
         // mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");//テスト広告
         mInterstitialAd.setAdUnitId("ca-app-pub-2096872993008006/5901919326");
@@ -65,7 +65,7 @@ public class Tag extends AppCompatActivity {
                     }
                 });
             }
-        }, 2000, 1000);
+        }, 2000, 1000);*/
 
         Button button = findViewById(R.id.button);
         button.setText("New");

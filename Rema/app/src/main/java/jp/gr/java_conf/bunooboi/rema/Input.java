@@ -36,7 +36,11 @@ public class Input {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(App.DataPath + "/data.txt"), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
-                titles.add(line);
+                if (line.equals(""))
+                    continue;
+                String s[] = line.split("=");
+                titles.add(s[1]);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,10 +58,13 @@ public class Input {
         ArrayList<String> answers = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(App.DataPath + "/answer.txt"), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(App.DataPath + "/data.txt"), "UTF-8"));
             String line = "";
             while ((line = br.readLine()) != null) {
-                answers.add(line);
+                if (line.equals(""))
+                    continue;
+                String s[] = line.split("=");
+                answers.add(s[0]);
             }
         } catch (IOException e) {
             e.printStackTrace();
