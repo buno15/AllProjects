@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>謝罪文自動作成機</title>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" href="src/css/base.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="title">
+			<h1>謝罪文自動作成機</h1>
+			<img src="img/title.png"/>
+		</div>
+		<div id="who"></div>
+		<div id="level"></div>
+		<div id="why"></div>
+		<div id="how"></div>
+		<div id="app"></div>
+		<h1>{{ message }}</h1>
+		</div>
+		<script>
+			var app = new Vue({
+				el : '#app',
+				data : {
+					message : '謝罪'
+				}
+			})
+		</script>
+	</body>
+</html>
