@@ -8,13 +8,111 @@
 	</head>
 	<body>
 		<div id="title">
-			<h1>謝罪文自動作成機</h1>
-			<img src="img/title.png"/>
+			<section class="wrapper">
+				<div class="container">
+					<div class="content">
+						<div class="content-item">
+							<img src="img/title.png" class="image">
+						</div>
+						<div class="content-item">
+							<div class="text">
+								<h1 class="heading">謝罪文自動作成機
+								<br>
+								あなたの代わりに作文します。 </h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</div>
-		<div id="who"></div>
-		<div id="level"></div>
-		<div id="why"></div>
-		<div id="how"></div>
+		<div id="body">
+			<div class="select" id="who">
+				<div class="content">
+					<h2 class="heading">WHO</h2>
+					<div class="list">
+						<div class="list-item">
+							<input type="image" src="img/boss.png" class="image">
+							<div class="text">
+								上司
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/colleague.png" class="image">
+							<div class="text">
+								同僚
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/family.png" class="image">
+							<div class="text">
+								家族
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="select" id="level">
+				<div class="content">
+					<h2 class="heading">LEVEL</h2>
+					<div class="list">
+						<div class="list-item">
+							<input type="image" src="img/serious.png" class="image">
+							<div class="text">
+								真剣
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/normal.png" class="image">
+							<div class="text">
+								普通
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/easy.png" class="image">
+							<div class="text">
+								気軽
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="select" id="why">
+				<div class="content">
+					<h2 class="heading">WHY</h2>
+					<div class="list">
+						<div class="list-item">
+							<input type="image" src="img/late.png" class="image">
+							<div class="text">
+								遅刻
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/vacation.png" class="image">
+							<div class="text">
+								休暇
+							</div>
+						</div>
+						<div class="list-item">
+							<img src="img/miss.png" class="image">
+							<div class="text">
+								ミス
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="edit">
+				<div id="content">
+					<textarea id="text" rows="6" readonly>この度は、大変申し訳ございませんでした。
+遅刻する事態となり、お詫びのしようもございません。
+今後、二度とこのようなことのないように十分注意いたします。
+重ねて申し訳ございませんでした。</textarea>																																													
+
+ <input type="button" value="コピー" id="button"/>
+				</div>
+			</div>
+		</div>
 		<div id="app"></div>
 		<h1>{{ message }}</h1>
 		</div>

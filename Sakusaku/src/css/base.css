@@ -5,6 +5,146 @@
 	padding: 0;
 	word-break: break-all;
 }
-div#title {
-	background-color: #8cbdee;
+hr {
+	clear: both;
+	width: 100%;
+}
+
+.wrapper {
+	width: 100%;
+	background-color: #88beea;
+}
+.wrapper .container {
+	max-width: 1200px;
+	margin: 0px auto;
+	padding: 80px 0px;
+}
+.wrapper .container .content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.wrapper .content {
+	flex-direction: row-reverse;
+}
+.wrapper .content-item {
+	width: 50%;
+}
+.wrapper .image {
+	display: block;
+	max-width: 200px;
+	margin: 0px auto;
+}
+.wrapper .text {
+	padding: 50px;
+}
+.wrapper .text .heading {
+	margin: 0px 0px 0px 0px;
+	font-size: 30px;
+	text-align: left;
+	color: #0c1f6b;
+}
+
+@media (max-width: 992px) {
+	.wrapper .text .heading {
+		font-size: 26px;
+		padding-left: 20px;
+	}
+	.wrapper .image {
+		max-width: 150px;
+	}
+}
+
+/*****************************************/
+
+div.select {
+	width: 100%;
+}
+
+div#who {
+	background-color: #6e9fd1;
+}
+
+div#level {
+	background-color: #176cb6;
+}
+
+div#why {
+	background-color: #11449d;
+}
+
+div.select .content {
+	max-width: 1200px;
+	margin: 0px auto;
+	padding: 80px 0px;
+}
+
+.select .content .heading {
+	margin: 0px 0px 40px 0px;
+	font-size: 34px;
+	text-align: center;
+	color: #ffffff;
+}
+.select .content .list {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.select .list-item {
+	padding: 0px 50px;
+	text-align: center;
+	margin: 0px;
+	width: calc(100% / 3);
+}
+
+.select .list-item .image {
+	display: block;
+	width: 40%;
+	max-width: 300px;
+	margin: 0px auto 20px auto;
+	padding: 30px;
+	border-radius: 100%;
+	background-color: #ffffff;
+}
+
+.select .list-item .image:active {
+	background-color: #dcd255;
+}
+
+.select .list-item .text {
+	line-height: 1.8 rem;
+	font-size: 26px;
+	color: #ffffff;
+}
+
+/******************************/
+
+div#edit {
+	width: 100%;
+	background-color: #88beea;
+	padding-bottom: 200px;
+}
+
+div#edit #content {
+	width: 1000px;
+	margin: 0px auto;
+	text-align: center;
+}
+
+div#edit #content #text {
+	width: 90%;
+	font-size: 20px;
+	resize: none;
+	padding: 10px;
+	margin: 50px auto;
+	display: inline-block;
+}
+
+input#button {
+	width: 200px;
+	font-size: 30px;
+	padding: 5px 30px;
+	margin: 10px auto;
+	display: inline-block;
 }
