@@ -5,124 +5,258 @@
 		<meta charset="UTF-8"/>
 		<link rel="stylesheet" href="src/css/base.css"/>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue-clipboard2@0.3.1/dist/vue-clipboard.min.js"></script>
 	</head>
 	<body>
-		<div id="title">
-			<section class="wrapper">
-				<div class="container">
+		<div id="app">
+			<div id="title">
+				<section class="wrapper">
+					<div class="container">
+						<div class="content">
+							<div class="content-item">
+								<img src="img/title.png" class="image">
+							</div>
+							<div class="content-item">
+								<div class="text">
+									<h1 class="heading">謝罪文自動作成機
+									<br>
+									あなたの代わりに作文します。 </h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div id="body">
+				<div class="select" id="who">
 					<div class="content">
-						<div class="content-item">
-							<img src="img/title.png" class="image">
-						</div>
-						<div class="content-item">
-							<div class="text">
-								<h1 class="heading">謝罪文自動作成機
-								<br>
-								あなたの代わりに作文します。 </h1>
+						<h2 class="heading">WHO</h2>
+						<div class="list">
+							<div class="list-item">
+								<img src="img/boss.png" class="image" v-on:click="getSentence(0)" v-bind:class="{yellow:active[0].flag}">
+								<div class="text">
+									上司
+								</div>
+							</div>
+							<div class="list-item">
+								<img src="img/colleague.png" class="image" v-on:click="getSentence(1)" v-bind:class="{yellow:active[1].flag}">
+								<div class="text">
+									同僚
+								</div>
+							</div>
+							<div class="list-item">
+								<img src="img/family.png" class="image" v-on:click="getSentence(2)" v-bind:class="{yellow:active[2].flag}">
+								<div class="text">
+									家族
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</section>
-		</div>
-		<div id="body">
-			<div class="select" id="who">
-				<div class="content">
-					<h2 class="heading">WHO</h2>
-					<div class="list">
-						<div class="list-item">
-							<input type="image" src="img/boss.png" class="image">
-							<div class="text">
-								上司
+				<div class="select" id="level">
+					<div class="content">
+						<h2 class="heading">LEVEL</h2>
+						<div class="list">
+							<div class="list-item">
+								<img src="img/serious.png" class="image" v-on:click="getSentence(3)" v-bind:class="{yellow:active[3].flag}">
+								<div class="text">
+									真剣
+								</div>
 							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/colleague.png" class="image">
-							<div class="text">
-								同僚
+							<div class="list-item">
+								<img src="img/normal.png" class="image" v-on:click="getSentence(4)" v-bind:class="{yellow:active[4].flag}">
+								<div class="text">
+									普通
+								</div>
 							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/family.png" class="image">
-							<div class="text">
-								家族
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="select" id="level">
-				<div class="content">
-					<h2 class="heading">LEVEL</h2>
-					<div class="list">
-						<div class="list-item">
-							<input type="image" src="img/serious.png" class="image">
-							<div class="text">
-								真剣
-							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/normal.png" class="image">
-							<div class="text">
-								普通
-							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/easy.png" class="image">
-							<div class="text">
-								気軽
+							<div class="list-item">
+								<img src="img/easy.png" class="image" v-on:click="getSentence(5)" v-bind:class="{yellow:active[5].flag}">
+								<div class="text">
+									気軽
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="select" id="why">
-				<div class="content">
-					<h2 class="heading">WHY</h2>
-					<div class="list">
-						<div class="list-item">
-							<input type="image" src="img/late.png" class="image">
-							<div class="text">
-								遅刻
+				<div class="select" id="why">
+					<div class="content">
+						<h2 class="heading">WHY</h2>
+						<div class="list">
+							<div class="list-item">
+								<img src="img/late.png" class="image" v-on:click="getSentence(6)" v-bind:class="{yellow:active[6].flag}">
+								<div class="text">
+									遅刻
+								</div>
 							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/vacation.png" class="image">
-							<div class="text">
-								休暇
+							<div class="list-item">
+								<img src="img/vacation.png" class="image" v-on:click="getSentence(7)" v-bind:class="{yellow:active[7].flag}">
+								<div class="text">
+									休暇
+								</div>
 							</div>
-						</div>
-						<div class="list-item">
-							<img src="img/miss.png" class="image">
-							<div class="text">
-								ミス
+							<div class="list-item">
+								<img src="img/miss.png" class="image" v-on:click="getSentence(8)" v-bind:class="{yellow:active[8].flag}">
+								<div class="text">
+									ミス
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div id="edit">
-				<div id="content">
-					<textarea id="text" rows="6" readonly>この度は、大変申し訳ございませんでした。
-遅刻する事態となり、お詫びのしようもございません。
-今後、二度とこのようなことのないように十分注意いたします。
-重ねて申し訳ございませんでした。</textarea>																																													
-
- <input type="button" value="コピー" id="button"/>
+				<div id="edit">
+					<div id="content">
+						<textarea id="text" rows="6" readonly>{{sentence}}</textarea>
+						<button id="copy" v-clipboard:copy="sentence" v-clipboard:success="onCopy" v-clipboard:error="onError">
+							コピー
+						</button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="app"></div>
-		<h1>{{ message }}</h1>
 		</div>
 		<script>
+			const VueClipboard = window['VueClipboard'];
+			Vue.use(VueClipboard);
+
 			var app = new Vue({
 				el : '#app',
 				data : {
-					message : '謝罪'
+					sentence : "",
+					active : [{
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}, {
+						flag : false
+					}],
+				},
+				methods : {
+					onCopy : function(e) {
+						alert('コピーしました。');
+					},
+					onError : function(e) {
+						alert('コピーできませんでした。');
+					},
+
+					getSentence : function(num) {
+						switch(num) {
+						case 0:
+							this.active[0].flag = true;
+							this.active[1].flag = false;
+							this.active[2].flag = false;
+							break;
+						case 1:
+							this.active[0].flag = false;
+							this.active[1].flag = true;
+							this.active[2].flag = false;
+							break;
+						case 2:
+							this.active[0].flag = false;
+							this.active[1].flag = false;
+							this.active[2].flag = true;
+							break;
+						case 3:
+							this.active[3].flag = true;
+							this.active[4].flag = false;
+							this.active[5].flag = false;
+							break;
+						case 4:
+							this.active[3].flag = false;
+							this.active[4].flag = true;
+							this.active[5].flag = false;
+							break;
+						case 5:
+							this.active[3].flag = false;
+							this.active[4].flag = false;
+							this.active[5].flag = true;
+							break;
+						case 6:
+							this.active[6].flag = true;
+							this.active[7].flag = false;
+							this.active[8].flag = false;
+							break;
+						case 7:
+							this.active[6].flag = false;
+							this.active[7].flag = true;
+							this.active[8].flag = false;
+							break;
+						case 8:
+							this.active[6].flag = false;
+							this.active[7].flag = false;
+							this.active[8].flag = true;
+							break;
+						}
+
+						if (this.active[0].flag && this.active[3].flag && this.active[6].flag) {
+							this.sentence = "この度は、大変申し訳ございませんでした。\n遅刻する事態となり、お詫びのしようもございません。\n今後、二度とこのようなことのないように十分注意いたします。\n重ねて申し訳ございませんでした。";
+						} else if (this.active[0].flag && this.active[3].flag && this.active[7].flag) {
+							this.sentence = "大変申し訳ございませんが、休暇をいただきたいと思っております。\n休暇中、ご迷惑をお掛けいたしますが、よろしくお願いを申し上げます。\n業務に支障をきたさないようにしてまいりますので、よろしくお願いを申し上げます。\n重ねて申し訳ございませんでした。";
+						} else if (this.active[0].flag && this.active[3].flag && this.active[8].flag) {
+							this.sentence = "この度は、大変申し訳ございませんでした。\n私のミスで、ご迷惑をお掛けし、お詫びのしようもございません。\n今後、二度とこのようなことのないように十分注意いたします。\n重ねて申し訳ございませんでした。";
+						} else if (this.active[0].flag && this.active[4].flag && this.active[6].flag) {
+							this.sentence = "遅刻してしまい、申し訳ありませんでした。\n今後、十分に注意いたします。\n申し訳ありませんでした。";
+						} else if (this.active[0].flag && this.active[4].flag && this.active[7].flag) {
+							this.sentence = "休暇をいただきたいと思っております。\n申し訳ありませんが、休暇中、よろしくお願いいたします。\nご迷惑をお掛けいたします。";
+						} else if (this.active[0].flag && this.active[4].flag && this.active[8].flag) {
+							this.sentence = "申し訳ありませんでした。\n私のミスでご迷惑をお掛けしました。\n今後、十分に注意いたします。\n申し訳ありませんでした。";
+						} else if (this.active[0].flag && this.active[5].flag && this.active[6].flag) {
+							this.sentence = "遅刻して、申し訳ありません。\n次回は、遅くならないように、十分に注意いたします。\nすいませんでした。";
+						} else if (this.active[0].flag && this.active[5].flag && this.active[7].flag) {
+							this.sentence = "申し訳ありません。\n休暇をいただきます。\n休暇中、よろしくお願いします。";
+						} else if (this.active[0].flag && this.active[5].flag && this.active[8].flag) {
+							this.sentence = "申し訳ありません。\nこの度は、ご迷惑をお掛けいたしました。\n今後十分注意いたします。";
+						} else if (this.active[1].flag && this.active[3].flag && this.active[6].flag) {
+							this.sentence = "この度は、大変申し訳ございませんでした。\n遅刻してしまい、お詫び申し上げます。\n今後、このようなことのないように十分注意いたします。\n申し訳ございませんでした。";
+						} else if (this.active[1].flag && this.active[3].flag && this.active[7].flag) {
+							this.sentence = "申し訳ありませんが、休暇をいただきたいと思っております。\n申し訳ありません、休暇中、よろしくお願いいたします。\nご迷惑をお掛けいたします。";
+						} else if (this.active[1].flag && this.active[3].flag && this.active[8].flag) {
+							this.sentence = "この度は、大変申し訳ございませんでした。\n私のミスで、ご迷惑をお掛けし、お詫び申し上げます。\n今後、このようなことのないように十分注意いたします。\n申し訳ございませんでした。";
+						} else if (this.active[1].flag && this.active[4].flag && this.active[6].flag) {
+							this.sentence = "遅刻して、申し訳ありません。\n次回は、遅くならないように十分注意いたします。\nすいませんでした。";
+						} else if (this.active[1].flag && this.active[4].flag && this.active[7].flag) {
+							this.sentence = "申し訳ありません。\n休暇をいただきます。\n休暇中、よろしくお願いします。";
+						} else if (this.active[1].flag && this.active[4].flag && this.active[8].flag) {
+							this.sentence = "申し訳ありません。\n私のミスでご迷惑をお掛けしました。\n次回は、十分注意いたします。\nすいませんでした。";
+						} else if (this.active[1].flag && this.active[5].flag && this.active[6].flag) {
+							this.sentence = "遅刻して、ごめんなさい。\n次からは遅れないようにします。\nごめんなさい。";
+						} else if (this.active[1].flag && this.active[5].flag && this.active[7].flag) {
+							this.sentence = "すいません。\n休暇をいただきます。\nよろしくお願いします。";
+						} else if (this.active[1].flag && this.active[5].flag && this.active[8].flag) {
+							this.sentence = "すいません。\nこの度は、ご迷惑をお掛けいたしました。\n今後十分注意いたします。";
+						} else if (this.active[2].flag && this.active[3].flag && this.active[6].flag) {
+							this.sentence = "本当に、ごめんなさい。\n遅刻してしまい、申し訳なかったです。\n今後、このようなことのないように十分注意します。\n申し訳ありませんでした。";
+						} else if (this.active[2].flag && this.active[3].flag && this.active[7].flag) {
+							this.sentence = "本当にごめんなさい。\n休暇をいただきます。\n休暇中、よろしくお願いします。\n申し訳ありません。";
+						} else if (this.active[2].flag && this.active[3].flag && this.active[8].flag) {
+							this.sentence = "本当に、ごめんなさい。\n私のミスで、迷惑をかけてしまい、申し訳なかったです。\n今後、このようなことのないように十分注意します。\n申し訳ありませんでした。";
+						} else if (this.active[2].flag && this.active[4].flag && this.active[6].flag) {
+							this.sentence = "遅刻して、ごめんなさい。\n次からは遅れないようにします。\nごめんなさい。";
+						} else if (this.active[2].flag && this.active[4].flag && this.active[7].flag) {
+							this.sentence = "ごめんね。\n休暇をいただきます。\nよろしくお願いします。";
+						} else if (this.active[2].flag && this.active[4].flag && this.active[8].flag) {
+							this.sentence = "ごめんなさい。\n私のミスで、迷惑をお掛けしました。\n次回は、十分注意いたします。";
+						} else if (this.active[2].flag && this.active[5].flag && this.active[6].flag) {
+							this.sentence = "遅刻ごめんなさい。\n遅れないようにします。";
+						} else if (this.active[2].flag && this.active[5].flag && this.active[7].flag) {
+							this.sentence = "お休みします。\nよろしくね。";
+						} else if (this.active[2].flag && this.active[5].flag && this.active[8].flag) {
+							this.sentence = "ごめんなさい。\n私のミスです。\nすいませんでした。";
+						}
+					},
 				}
-			})
+			});
 		</script>
 	</body>
 </html>

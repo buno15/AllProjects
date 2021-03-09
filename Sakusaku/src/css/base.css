@@ -47,7 +47,7 @@ hr {
 
 @media (max-width: 992px) {
 	.wrapper .text .heading {
-		font-size: 26px;
+		font-size: 20px;
 		padding-left: 20px;
 	}
 	.wrapper .image {
@@ -108,7 +108,7 @@ div.select .content {
 	background-color: #ffffff;
 }
 
-.select .list-item .image:active {
+.select .list-item .yellow {
 	background-color: #dcd255;
 }
 
@@ -127,7 +127,7 @@ div#edit {
 }
 
 div#edit #content {
-	width: 1000px;
+	max-width: 1000px;
 	margin: 0px auto;
 	text-align: center;
 }
@@ -141,7 +141,13 @@ div#edit #content #text {
 	display: inline-block;
 }
 
-input#button {
+@media (max-width: 992px) {
+	div#edit #content #text {
+		font-size: 14px;
+	}
+}
+
+button#copy {
 	width: 200px;
 	font-size: 30px;
 	padding: 5px 30px;
