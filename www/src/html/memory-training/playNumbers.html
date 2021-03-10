@@ -1,195 +1,206 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<link rel="stylesheet" href="../../css/base.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
-<link rel="stylesheet" href="../../css/table.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
-<link rel="shortcut icon" href="../../../img/icon.ico" />
-<title>Numbers｜bunooboi</title>
-</head>
-<body>
-	<div id="pagebody">
-		<div id="head">
-			<h1>
-				<a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a>
-			</h1>
-		</div>
-		<ul id="menu">
-			<li><a href="../../../index.html">Home</a></li>
-			<li><a href="../app-game.html">App/Game</a></li>
-			<li><a href="../memory.html">MemoryTraining</a></li>
-			<li><a href="../feedback.html">Message</a></li>
-		</ul>
-		<div class="trainNum">
-			<h2 id="count"></h2>
-			<h1 id="number"></h1>
-		</div>
-		<div class="button">
-			<button id="retry" type="button" onClick="start()">retry</button>
-		</div>
-		<div class="each">
-			<p></p>
-			<hr />
-		</div>
-		<div id="copy">
-			<small>&copy; bunooboi</small>
-		</div>
-		<script type="text/javascript">
-			var second = 0;
-			var digit = 0;
-			var group = 0;
-			var count = 0;
-			var length = 0;
-			var numbers = new Array();
-			var r = document.cookie.split(';');
-			for (var i = 0; i < r.length; i++) {
-				var s = r[i].split('=');
-				if (s[0].trim() == 'secondNum') {
-					second = parseFloat(s[1].trim());
-				} else if (s[0].trim() == 'digit') {
-					digit = parseInt(s[1].trim());
-				} else if (s[0].trim() == 'groupNum') {
-					group = parseInt(s[1].trim());
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="../../css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
+		<link rel="stylesheet" href="../../css/table.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
+		<link rel="shortcut icon" href="../../../img/icon.ico" />
+		<title>Numbers｜bunooboi</title>
+	</head>
+	<body>
+		<div id="pagebody">
+			<div id="head">
+				<h1><a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a></h1>
+			</div>
+			<ul id="menu">
+				<li>
+					<a href="../../../index.html">Home</a>
+				</li>
+				<li>
+					<a href="../app-game.html">App/Game</a>
+				</li>
+				<li>
+					<a href="../web.html">Web Application</a>
+				</li>
+				<li>
+					<a href="../feedback.html">Message</a>
+				</li>
+			</ul>
+			<div class="trainNum">
+				<h2 id="count"></h2>
+				<h1 id="number"></h1>
+			</div>
+			<div class="button">
+				<button id="retry" type="button" onClick="start()">
+					retry
+				</button>
+			</div>
+			<div class="each">
+				<p></p>
+				<hr />
+			</div>
+			<div id="copy">
+				<small>&copy; bunooboi</small>
+			</div>
+			<script type="text/javascript">
+				var second = 0;
+				var digit = 0;
+				var group = 0;
+				var count = 0;
+				var length = 0;
+				var numbers = new Array();
+				var r = document.cookie.split(';');
+				for (var i = 0; i < r.length; i++) {
+					var s = r[i].split('=');
+					if (s[0].trim() == 'secondNum') {
+						second = parseFloat(s[1].trim());
+					} else if (s[0].trim() == 'digit') {
+						digit = parseInt(s[1].trim());
+					} else if (s[0].trim() == 'groupNum') {
+						group = parseInt(s[1].trim());
+					}
 				}
-			}
-			if (digit != 2 && digit != 3) {
-				digit = 2;
-			}
-			if (group != 1 && group != 2) {
-				group = 1;
-			}
-			if (second <= 0) {
-				second = 0.1;
-			}
-			if (digit == 2) {
-				if (group == 1) {
-					length = 100;
+				if (digit != 2 && digit != 3) {
+					digit = 2;
+				}
+				if (group != 1 && group != 2) {
+					group = 1;
+				}
+				if (second <= 0) {
+					second = 0.1;
+				}
+				if (digit == 2) {
+					if (group == 1) {
+						length = 100;
+					} else {
+						length = 10000;
+					}
 				} else {
-					length = 10000;
+					if (group == 1) {
+						length = 1000;
+					} else {
+						length = 1000000;
+					}
 				}
-			} else {
-				if (group == 1) {
-					length = 1000;
-				} else {
-					length = 1000000;
-				}
-			}
 
-			function imgTimer() {
-				if (count >= length) {
-					numbers = new Array();
-					document.getElementById("retry").disabled = false;
-				} else {
-					var index;
-					while (true) {
+				function imgTimer() {
+					if (count >= length) {
+						numbers = new Array();
+						document.getElementById("retry").disabled = false;
+					} else {
+						var index;
+						while (true) {
+							if (group == 1) {
+								if (digit == 2) {
+									index = Math.floor(Math.random() * 100);
+								} else if (digit == 3) {
+									index = Math.floor(Math.random() * 1000);
+								}
+								if (numbers.indexOf(index) == -1) {
+									numbers.push(index);
+									break;
+								}
+							} else {
+								if (digit == 2) {
+									index = Math.floor(Math.random() * 10000);
+								} else {
+									index = Math.floor(Math.random() * 1000000);
+								}
+								if (numbers.indexOf(index) == -1) {
+									numbers.push(index);
+									break;
+								}
+							}
+						}
 						if (group == 1) {
 							if (digit == 2) {
-								index = Math.floor(Math.random() * 100);
-							} else if (digit == 3) {
-								index = Math.floor(Math.random() * 1000);
-							}
-							if (numbers.indexOf(index) == -1) {
-								numbers.push(index);
-								break;
-							}
-						} else {
-							if (digit == 2) {
-								index = Math.floor(Math.random() * 10000);
-							} else {
-								index = Math.floor(Math.random() * 1000000);
-							}
-							if (numbers.indexOf(index) == -1) {
-								numbers.push(index);
-								break;
-							}
-						}
-					}
-					if (group == 1) {
-						if (digit == 2) {
-							if (index < 10)
-								document.getElementById('number').innerHTML = "0" + index;
-							else
-								document.getElementById('number').innerHTML = index;
-						} else if (digit == 3) {
-							if (index < 100) {
 								if (index < 10)
-									document.getElementById('number').innerHTML = "00" + index;
-								else
 									document.getElementById('number').innerHTML = "0" + index;
-							} else
-								document.getElementById('number').innerHTML = index;
-						}
-					} else {
-						var digit1;
-						var digit2;
-						if (digit == 2) {
-							digit1 = index % 100;
-							digit2 = Math.floor(index / 100);
-							if (digit1 < 10) {
-								if (digit2 < 10) {
-									document.getElementById('number').innerHTML = "0" + index % 100 + " 0" + digit2;
-								} else {
-									document.getElementById('number').innerHTML = "0" + index % 100 + " " + digit2;
-								}
-							} else {
-								if (digit2 < 10) {
-									document.getElementById('number').innerHTML = "" + index % 100 + " 0" + digit2;
-								} else {
-									document.getElementById('number').innerHTML = "" + index % 100 + " " + digit2;
-								}
+								else
+									document.getElementById('number').innerHTML = index;
+							} else if (digit == 3) {
+								if (index < 100) {
+									if (index < 10)
+										document.getElementById('number').innerHTML = "00" + index;
+									else
+										document.getElementById('number').innerHTML = "0" + index;
+								} else
+									document.getElementById('number').innerHTML = index;
 							}
 						} else {
-							digit1 = index % 1000;
-							digit2 = Math.floor(index / 1000);
-							var string1 = "";
-							var string2 = "";
-							if (digit1 < 100) {
+							var digit1;
+							var digit2;
+							if (digit == 2) {
+								digit1 = index % 100;
+								digit2 = Math.floor(index / 100);
 								if (digit1 < 10) {
-									string1 = "00" + digit1;
+									if (digit2 < 10) {
+										document.getElementById('number').innerHTML = "0" + index % 100 + " 0" + digit2;
+									} else {
+										document.getElementById('number').innerHTML = "0" + index % 100 + " " + digit2;
+									}
 								} else {
-									string1 = "0" + digit1;
+									if (digit2 < 10) {
+										document.getElementById('number').innerHTML = "" + index % 100 + " 0" + digit2;
+									} else {
+										document.getElementById('number').innerHTML = "" + index % 100 + " " + digit2;
+									}
 								}
 							} else {
-								string1 = digit1;
-							}
-							if (digit2 < 100) {
-								if (digit2 < 10) {
-									string2 = "00" + digit2;
+								digit1 = index % 1000;
+								digit2 = Math.floor(index / 1000);
+								var string1 = "";
+								var string2 = "";
+								if (digit1 < 100) {
+									if (digit1 < 10) {
+										string1 = "00" + digit1;
+									} else {
+										string1 = "0" + digit1;
+									}
 								} else {
-									string2 = "0" + digit2;
+									string1 = digit1;
 								}
-							} else {
-								string2 = digit2;
+								if (digit2 < 100) {
+									if (digit2 < 10) {
+										string2 = "00" + digit2;
+									} else {
+										string2 = "0" + digit2;
+									}
+								} else {
+									string2 = digit2;
+								}
+								document.getElementById('number').innerHTML = string1 + " " + string2;
 							}
-							document.getElementById('number').innerHTML = string1 + " " + string2;
 						}
+						setTimeout("imgTimer()", parseFloat(second) * 1000);
+						count++;
 					}
-					setTimeout("imgTimer()", parseFloat(second) * 1000);
-					count++;
 				}
-			}
-			function startTimer() {
-				if (count <= 0) {
-					count = 0;
-					document.getElementById('count').innerHTML = "";
-					setTimeout("imgTimer()", 0);
-				} else {
-					document.getElementById('number').innerHTML = "";
-					document.getElementById('count').innerHTML = count;
+
+				function startTimer() {
+					if (count <= 0) {
+						count = 0;
+						document.getElementById('count').innerHTML = "";
+						setTimeout("imgTimer()", 0);
+					} else {
+						document.getElementById('number').innerHTML = "";
+						document.getElementById('count').innerHTML = count;
+						setTimeout("startTimer()", 1000);
+						count--;
+					}
+				}
+
+				function start() {
+					document.getElementById("retry").disabled = true;
+					count = 3;
 					setTimeout("startTimer()", 1000);
-					count--;
 				}
-			}
-			function start() {
-				document.getElementById("retry").disabled = true;
-				count = 3;
-				setTimeout("startTimer()", 1000);
-			}
-			start();
-		</script>
-	</div>
-</body>
+
+				start();
+			</script>
+		</div>
+	</body>
 </html>

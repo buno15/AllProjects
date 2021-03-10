@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<link rel="stylesheet" href="../../css/base.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
-<link rel="stylesheet" href="../../css/table.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
-<link rel="shortcut icon" href="../../../img/icon.ico" />
-<title>Cards｜bunooboi</title>
-</head>
-<body><div id="pagebody">
-		<div id="head">
-			<h1>
-				<a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a>
-			</h1>
-		</div>
-		<ul id="menu">
-			<li><a href="../../../index.html">Home</a></li>
-			<li><a href="../app-game.html">App/Game</a></li>
-			<li><a href="../memory.html">MemoryTraining</a></li>
-			<li><a href="../feedback.html">Message</a></li>
-		</ul>
-		<div class="title">
-			<img src="../../../img/cards.jpg" alt="カードのアイコン画像" />
-			<h2>Cards</h2>
-		</div>
-		<div id="text">
-			<table class="table">
-				<tr>
-					<th>Per card</th>
-					<td><input id="second" type="number" value="1"></td>
-					<th>second</th>
-				</tr>
-				<tr>
-					<th>Groups</th>
-					<td><input id="group" type="number" value="1"></td>
-					<th>1 or 2</th>
-				</tr>
-			</table>
-			<div class="button">
-				<button id="ok" type="button" onClick="ok()")>OK</button>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="../../css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
+		<link rel="stylesheet" href="../../css/table.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
+		<link rel="shortcut icon" href="../../../img/icon.ico" />
+		<title>Cards｜bunooboi</title>
+	</head>
+	<body>
+		<div id="pagebody">
+			<div id="head">
+				<h1><a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a></h1>
 			</div>
+			<ul id="menu">
+				<li>
+					<a href="../../../index.html">Home</a>
+				</li>
+				<li>
+					<a href="../app-game.html">App/Game</a>
+				</li>
+				<li>
+					<a href="../web.html">Web Application</a>
+				</li>
+				<li>
+					<a href="../feedback.html">Message</a>
+				</li>
+			</ul>
+			<div class="title">
+				<img src="../../../img/cards.jpg" alt="カードのアイコン画像" />
+				<h2>Cards</h2>
+			</div>
+			<div id="text">
+				<table class="table">
+					<tr>
+						<th>Per card</th>
+						<td>
+						<input id="second" type="number" value="1">
+						</td>
+						<th>second</th>
+					</tr>
+					<tr>
+						<th>Groups</th>
+						<td>
+						<input id="group" type="number" value="1">
+						</td>
+						<th>1 or 2</th>
+					</tr>
+				</table>
+				<div class="button">
+					<button id="ok" type="button" onClick="ok()")>
+						OK
+					</button>
+				</div>
+			</div>
+			<div class="each">
+				<p></p>
+				<hr />
+			</div>
+			<div id="copy">
+				<small>&copy; bunooboi</small>
+			</div>
+			<script type="text/javascript" src="../../js/cards.js"></script>
+			<noscript>
+				<p>
+					<font color="red">javascriptが無効です。</font>
+				</p>
+			</noscript>
 		</div>
-		<div class="each">
-			<p></p>
-			<hr />
-		</div>
-		<div id="copy">
-			<small>&copy; bunooboi</small>
-		</div>
-		<script type="text/javascript" src="../../js/cards.js"></script>
-		<noscript>
-			<p>
-				<font color="red">javascriptが無効です。</font>
-			</p>
-		</noscript>
-	</div>
-</body>
+	</body>
 </html>

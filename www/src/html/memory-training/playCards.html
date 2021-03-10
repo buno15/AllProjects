@@ -1,172 +1,181 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<link rel="stylesheet" href="../../css/base.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
-<link rel="stylesheet" href="../../css/table.css" />
-<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
-<link rel="shortcut icon" href="../../../img/icon.ico" />
-<title>Cards｜bunooboi</title>
-</head>
-<body>
-	<div id="pagebody">
-		<div id="head">
-			<h1>
-				<a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a>
-			</h1>
-		</div>
-		<ul id="menu">
-			<li><a href="../../../index.html">Home</a></li>
-			<li><a href="../app-game.html">App/Game</a></li>
-			<li><a href="../memory.html">MemoryTraining</a></li>
-			<li><a href="../feedback.html">Message</a></li>
-		</ul>
-		<div class="trainCard">
-			<img id="cards1" /> <img id="cards3" /><img id="cards2" />
-		</div>
-		<div class="button">
-			<button id="retry" type="button" onClick="start()">retry</button>
-		</div>
-		<div class="each">
-			<p></p>
-			<hr />
-		</div>
-		<div id="copy">
-			<small>&copy; bunooboi</small>
-		</div>
-		<script type="text/javascript">
-			var img = new Array();
-			var count = 0;
-			var index = 0;
-			var second = '';
-			var group = '';
-			var cards = new Array();
-			for (var i = 0; i < 4; i++) {
-				for (var j = 1; j <= 13; j++) {
-					var string = "../../../img/trump/";
-					if (i == 0) {
-						string += "c" + j + ".png";
-					} else if (i == 1) {
-						string += "d" + j + ".png";
-					} else if (i == 2) {
-						string += "h" + j + ".png";
-					} else if (i == 3) {
-						string += "s" + j + ".png";
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="../../css/base.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/base_smart.css" />
+		<link rel="stylesheet" href="../../css/table.css" />
+		<link rel="stylesheet" media="screen and (max-width:800px)" href="../../css/table_smart.css" />
+		<link rel="shortcut icon" href="../../../img/icon.ico" />
+		<title>Cards｜bunooboi</title>
+	</head>
+	<body>
+		<div id="pagebody">
+			<div id="head">
+				<h1><a href="../../../index.html"><img src="../../../img/title.png" alt="bunooboi" /></a></h1>
+			</div>
+			<ul id="menu">
+				<li>
+					<a href="../../../index.html">Home</a>
+				</li>
+				<li>
+					<a href="../app-game.html">App/Game</a>
+				</li>
+				<li>
+					<a href="../web.html">Web Application</a>
+				</li>
+				<li>
+					<a href="../feedback.html">Message</a>
+				</li>
+			</ul>
+			<div class="trainCard">
+				<img id="cards1" /><img id="cards3" /><img id="cards2" />
+			</div>
+			<div class="button">
+				<button id="retry" type="button" onClick="start()">
+					retry
+				</button>
+			</div>
+			<div class="each">
+				<p></p>
+				<hr />
+			</div>
+			<div id="copy">
+				<small>&copy; bunooboi</small>
+			</div>
+			<script type="text/javascript">
+				var img = new Array();
+				var count = 0;
+				var index = 0;
+				var second = '';
+				var group = '';
+				var cards = new Array();
+				for (var i = 0; i < 4; i++) {
+					for (var j = 1; j <= 13; j++) {
+						var string = "../../../img/trump/";
+						if (i == 0) {
+							string += "c" + j + ".png";
+						} else if (i == 1) {
+							string += "d" + j + ".png";
+						} else if (i == 2) {
+							string += "h" + j + ".png";
+						} else if (i == 3) {
+							string += "s" + j + ".png";
+						}
+						img.push(string)
 					}
-					img.push(string)
 				}
-			}
-			var r = document.cookie.split(';');
-			for (var i = 0; i < r.length; i++) {
-				var s = r[i].split('=');
-				if (s[0].trim() == 'secondCard') {
-					second = s[1].trim();
-				} else if (s[0].trim() == 'groupCard') {
-					group = s[1].trim();
+				var r = document.cookie.split(';');
+				for (var i = 0; i < r.length; i++) {
+					var s = r[i].split('=');
+					if (s[0].trim() == 'secondCard') {
+						second = s[1].trim();
+					} else if (s[0].trim() == 'groupCard') {
+						group = s[1].trim();
+					}
 				}
-			}
-			if (group != 1 && group != 2) {
-				group = 1;
-			}
-			if (second < 0.2) {
-				second = 1;
-			}
+				if (group != 1 && group != 2) {
+					group = 1;
+				}
+				if (second < 0.2) {
+					second = 1;
+				}
 
-			function imgTimer() {
-				if (group == 1) {
-					if (index >= 52) {
-						index = 0;
-						document.getElementById("retry").disabled = false;
+				function imgTimer() {
+					if (group == 1) {
+						if (index >= 52) {
+							index = 0;
+							document.getElementById("retry").disabled = false;
+						} else {
+							document.getElementById("cards1").src = img[cards[index]];
+							setTimeout("imgTimer()", parseFloat(second) * 1000);
+							index++;
+						}
 					} else {
-						document.getElementById("cards1").src = img[cards[index]];
-						setTimeout("imgTimer()", parseFloat(second) * 1000);
-						index++;
-					}
-				} else {
-					if (index >= 2691) {
-						index = 0;
-						document.getElementById("retry").disabled = false;
-					} else {
-						var c1 = Math.floor(cards[index] / 52);
-						var c2 = cards[index] % 52;
-						document.getElementById("cards1").src = img[c1];
-						document.getElementById("cards2").src = img[c2];
-						setTimeout("imgTimer()", parseFloat(second) * 1000);
-						index++;
-					}
-				}
-			}
-
-			function startTimer() {
-				if (count <= 0) {
-					setTimeout("imgTimer()", 0);
-					document.getElementById("cards3").src = " ../../../img/none.png";
-					if (parseInt(document.getElementById("pagebody").getBoundingClientRect().width) <= 800) {
-						if (group != 2) {
-							document.getElementById("cards1").style.width = "40%"
-							document.getElementById("cards2").style.width = "0%"
-							document.getElementById("cards3").style.width = "0%"
+						if (index >= 2691) {
+							index = 0;
+							document.getElementById("retry").disabled = false;
+						} else {
+							var c1 = Math.floor(cards[index] / 52);
+							var c2 = cards[index] % 52;
+							document.getElementById("cards1").src = img[c1];
+							document.getElementById("cards2").src = img[c2];
+							setTimeout("imgTimer()", parseFloat(second) * 1000);
+							index++;
 						}
 					}
-				} else {
-					var path = "../../../img/";
-					if (count == 3) {
-						document.getElementById("cards1").src = " ../../../img/none.png";
-						if (group == 2) {
-							document.getElementById("cards2").src = " ../../../img/none.png";
-						} else {
-							if (parseInt(document.getElementById("pagebody").getBoundingClientRect().width) <= 800) {
-								document.getElementById("cards1").style.width = "0%"
+				}
+
+				function startTimer() {
+					if (count <= 0) {
+						setTimeout("imgTimer()", 0);
+						document.getElementById("cards3").src = " ../../../img/none.png";
+						if (parseInt(document.getElementById("pagebody").getBoundingClientRect().width) <= 800) {
+							if (group != 2) {
+								document.getElementById("cards1").style.width = "40%"
 								document.getElementById("cards2").style.width = "0%"
-								document.getElementById("cards3").style.width = "10%"
+								document.getElementById("cards3").style.width = "0%"
 							}
 						}
-						document.getElementById("cards3").src = path + "three.png";
-					} else if (count == 2) {
-						document.getElementById("cards3").src = path + "two.png";
-					} else if (count == 1) {
-						document.getElementById("cards3").src = path + "one.png";
+					} else {
+						var path = "../../../img/";
+						if (count == 3) {
+							document.getElementById("cards1").src = " ../../../img/none.png";
+							if (group == 2) {
+								document.getElementById("cards2").src = " ../../../img/none.png";
+							} else {
+								if (parseInt(document.getElementById("pagebody").getBoundingClientRect().width) <= 800) {
+									document.getElementById("cards1").style.width = "0%"
+									document.getElementById("cards2").style.width = "0%"
+									document.getElementById("cards3").style.width = "10%"
+								}
+							}
+							document.getElementById("cards3").src = path + "three.png";
+						} else if (count == 2) {
+							document.getElementById("cards3").src = path + "two.png";
+						} else if (count == 1) {
+							document.getElementById("cards3").src = path + "one.png";
+						}
+						setTimeout("startTimer()", 1000);
+						count--;
 					}
-					setTimeout("startTimer()", 1000);
-					count--;
 				}
-			}
 
-			function start() {
-				count = 0;
-				cards = new Array();
-				var index;
-				if (group == 1) {
-					while (true) {
-						index = Math.floor(Math.random() * 52);
-						if (cards.indexOf(index) == -1) {
-							cards.push(index);
-							count++;
+				function start() {
+					count = 0;
+					cards = new Array();
+					var index;
+					if (group == 1) {
+						while (true) {
+							index = Math.floor(Math.random() * 52);
+							if (cards.indexOf(index) == -1) {
+								cards.push(index);
+								count++;
+							}
+							if (count >= 52) {
+								break;
+							}
 						}
-						if (count >= 52) {
-							break;
+					} else {
+						while (true) {
+							index = Math.floor(Math.random() * 2704);
+							if (cards.indexOf(index) == -1 && Math.floor(index / 52) != index % 52) {
+								cards.push(index);
+								count++;
+							}
+							if (count >= 2652) {
+								break;
+							}
 						}
 					}
-				} else {
-					while (true) {
-						index = Math.floor(Math.random() * 2704);
-						if (cards.indexOf(index) == -1 && Math.floor(index / 52) != index % 52) {
-							cards.push(index);
-							count++;
-						}
-						if (count >= 2652) {
-							break;
-						}
-					}
+					document.getElementById("retry").disabled = true;
+					count = 3;
+					setTimeout("startTimer()", 1000);
 				}
-				document.getElementById("retry").disabled = true;
-				count = 3;
-				setTimeout("startTimer()", 1000);
-			}
-			start();
-		</script>
-	</div>
-</body>
+
+				start();
+			</script>
+		</div>
+	</body>
 </html>
