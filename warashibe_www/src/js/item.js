@@ -1,18 +1,25 @@
-class Item {
-	constructor(name, value, level) {
-		this.name = name;
-		this.value = value;
-		this.level = level;
+var Item = function(name, value, level) {
+	if (!(this instanceof Item)) {
+		return new Item(name, value, level);
 	}
+	this.name = name;
+	this.value = value;
+	this.level = level;
+};
 
-	getName() {
-		console.log(this.name);
-	}
+Item.prototype = {
+	getName : function() {
+		return this.name;
+	},
 
-}
+	getValue : function() {
+		return this.value;
+	},
 
-const item = new Item("木の枝", 12);
+	getLevel : function() {
+		return this.level;
+	},
+};
 
-item.getName();
-//Good Morning!!
+
 
