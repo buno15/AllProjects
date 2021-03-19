@@ -1,29 +1,53 @@
-var item;
-
 var hp = -1;
 var damage = -1;
 var power = -1;
 var brain = -1;
-var item_have;
+var item_have1;
+var item_have2;
 var add = -1;
-
-function init() {
-	item = new Array();
-	item.push(new Item("なし", -1, -1));
-	item.push(new Item("木の枝", 12, 1));
-
-	item_have = item[0];
-	load();
-};
+var level = -1;
 
 function save() {
-	localStorage.setItem("hp", hp);
+    localStorage.setItem("hp", hp);
 }
 
 function load() {
-	hp = localStorage.getItem("hp");
+    hp = localStorage.getItem("hp");
+    damage = 10;
+    power = 10;
+    brain = 10;
 }
 
-init();
+function itemDrop(id) {
+    if (id == 1) {
+        item_have1 = item[0];
+    } else if (id == 2) {
+        item_have2 = item[0];
+    } else if (id == 3) {
+        item_have1 = item[0];
+        item_have2 = item[0];
+    }
+}
 
+function getYesNo() {
+    var random = Math.round(Math.random() * 99) + 1;
+    if (random <= brain) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function setLevel() {
+    if ((hp >= 75 && hp < 200) || (power >= 75 && power < 200) || (brain >= 75 && brain < 200)) {
+        level = 4;
+    } else if ((hp >= 50 && hp < 75) || (power >= 50 && power < 75) || (brain >= 50 && brain < 75)) {
+        level = 3;
+    } else if ((hp >= 25 && hp < 50) || (power >= 25 && power < 50) || (brain >= 25 && brain < 50)) {
+        level = 2;
+    } else {
+        level = 1;
+    }
+
+}
 

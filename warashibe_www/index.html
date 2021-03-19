@@ -45,7 +45,7 @@
 								</div>
 							</div>
 							<div class="item left">
-								<button class="button">
+								<button class="button"  v-on:click="next('left');" :disabled="Disabled">
 									{{left}}
 								</button>
 							</div>
@@ -63,14 +63,24 @@
 						</div>
 						<div class="content-item">
 							<div class="item right">
-								<div class="right-item"></div>
+								<div class="right-item">
+									<div class="item-img"><img  src="res/img/item.png"/>
+									</div>
+									<div class="item-text">
+										<button class="item" v-on:click="next('item1');" :disabled="Disabled">
+											{{item_text1}}
+										</button>
+									</div>
+								</div>
 							</div>
 							<div class="item right">
 								<div class="right-item">
 									<div class="item-img"><img  src="res/img/item.png"/>
 									</div>
-									<div class="item-text">
-										<h1 id="item">{{item_text}}</h1>
+									<div class="item-text"  >
+										<button class="item"  v-on:click.prevent="next('item2');" :disabled="Disabled">
+											{{item_text2}}
+										</button>
 									</div>
 								</div>
 							</div>
@@ -78,7 +88,7 @@
 								<div class="right-item"></div>
 							</div>
 							<div class="item right" >
-								<button class="button" v-on:click="next">
+								<button class="button" v-on:click="next('right');" :disabled="Disabled">
 									{{right}}
 								</button>
 							</div>
