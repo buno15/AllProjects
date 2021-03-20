@@ -9,10 +9,11 @@ init();
 var app = new Vue({
     el : "#app",
     data : {
-        status : 1,
+        status : 101,
         image_src : "res/img/sougenn.png",
         left : "地平線に向かって走り続ける",
         right : "暗雲に向かって走り続ける",
+        name_text : "ならず者のボス",
         console_text : "どこへ行こう？",
         damage_text : damage,
         hp_text : hp,
@@ -22,8 +23,44 @@ var app = new Vue({
         item_text2 : item_have2.getName(),
 
         Disabled : false,
+        flag_key1 : false,
+        flag_key2 : false,
     },
+
+    mounted : function() {
+        window.addEventListener('keydown', this.keyActionDown, false);
+        window.addEventListener('keyup', this.keyActionUp, false);
+    },
+
+    destroyed : function() {
+        window.removeEventListener('keydown', this.keyActionDown, false);
+        window.removeEventListener('keydown', this.keyActionUp, false);
+    },
+
     methods : {
+        keyActionDown : function(event) {
+            if (!this.flag_key1) {
+                this.flag_key1 = true;
+                this.flag_key2 = true;
+                console.log(event.keyCode);
+                if (event.keyCode === 39) {
+                    app.next('right');
+                } else if (event.keyCode === 37) {
+                    app.next('left');
+                } else if (event.keyCode === 38) {
+                    app.next('item1');
+                } else if (event.keyCode === 40) {
+                    app.next('item2');
+                }
+            }
+        },
+
+        keyActionUp : function(event) {
+            if (this.flag_key) {
+
+            }
+        },
+
         reload : function() {
             this.damage_text = damage;
             this.hp_text = hp;
@@ -37,10 +74,28 @@ var app = new Vue({
             this.left = "";
             this.right = "";
             this.Disabled = true;
+            this.flag_key1 = true;
         },
 
         buttonEnabled : function() {
-            this.Disabled = false;
+            if (this.flag_key2) {
+                this.Disabled = false;
+                this.flag_key1 = false;
+                console.log("ffffffffffffffff");
+            }
+        },
+
+        readyFlag : function() {
+            this.flag_key2 = true;
+        },
+
+        setImageSrc : function(img) {
+            this.image_src = "res/img/" + img;
+        },
+
+        setTime : function(button, time) {
+            setTimeout(this.next, time, button);
+            setTimeout(this.readyFlag, time);
         },
 
         next : function(button) {
@@ -49,30 +104,31 @@ var app = new Vue({
             var itemID;
             //1=item1 2=item2 3=both
 
-            if (this.status == 1) {
-                this.status = 101;
-            }
-
-            this.buttonEnabled();
+            this.name_text = "---";
 
             switch(this.status) {
             case 1:
                 //移動
+                this.setImageSrc("sougenn.png");
+                this.left = "地平線に向かって走り続ける";
+                this.right = "暗雲に向かって走り続ける";
+                this.console_text = "どこへ行こう？";
+                this.status = 101;
                 break;
             case 101:
                 //戦闘
                 level = 1;
                 this.enemy = getEnemy(level);
-                this.image_src = "res/img/" + this.enemy.getImg();
+                this.setImageSrc(this.enemy.getImg() + "");
                 this.console_text = this.enemy.getName() + "が現れた";
                 this.left = "攻撃";
-                this.right = "防御 or 突進";
+                this.right = "知の一撃";
                 this.status = 111;
                 break;
             case 102:
                 this.console_text = "どうする？";
                 this.left = "攻撃";
-                this.right = "防御 or 突進";
+                this.right = "知の一撃";
                 this.status = 111;
                 break;
             case 111:
@@ -83,9 +139,9 @@ var app = new Vue({
                             this.itemID = 1;
                         } else {
                             this.console_text = "今は使えない";
-                            this.buttonDisabled();
                             this.status = 102;
-                            setTimeout(this.next, 1000, "");
+                            this.buttonDisabled();
+                            this.setTime("", 1000);
                             return;
                         }
                     } else {
@@ -94,9 +150,9 @@ var app = new Vue({
                             this.itemID = 2;
                         } else {
                             this.console_text = "今は使えない";
-                            this.buttonDisabled();
                             this.status = 102;
-                            setTimeout(this.next, 1000, "");
+                            this.buttonDisabled();
+                            this.setTime("", 1000);
                             return;
                         }
                     }
@@ -105,6 +161,7 @@ var app = new Vue({
                     this.status = 112;
                 } else if (button == "left" || button == "right") {
                     this.status = 131;
+                    this.next(button);
                 }
                 break;
             case 112:
@@ -119,30 +176,43 @@ var app = new Vue({
                 }
                 break;
             case 113:
-                if (false) {
-
-                } else {
-                    this.console_text = this.enemy.getName() + "「こんなもので命乞いとは笑わせてくれる！」";
-                    this.buttonDisabled();
-                    if (this.itemID == 1) {
-                        itemDrop(1);
-                    } else if (this.itemID == 2) {
-                        itemDrop(2);
-                    }
-                    this.status = 102;
-                    setTimeout(this.next, 1500, "");
+                this.name_text = this.enemy.getName();
+                var flag = false;
+                if (item_have1.getName() == "なし" || item_have2.getName() == "なし") {
+                    flag = true;
                 }
+                if (getYesNo() || flag) {
+                    this.console_text = "「よかろう！見逃してやる」";
+                    this.status = 1;
+                } else {
+                    this.console_text = "「こんなもので命乞いとは笑わせてくれる！」";
+                    this.status = 102;
+                }
+                if (this.itemID == 1) {
+                    itemDrop(1);
+                } else if (this.itemID == 2) {
+                    itemDrop(2);
+                }
+                this.buttonDisabled();
+                this.flag_key2 = false;
+                this.setTime("", 1500);
+                return;
+            case 131:
+                this.buttonDisabled();
+                if (button == "left") {
 
-                break;
-            case 105:
-                break;
+                } else if (button == "right") {
 
+                }
+                break;
             case 3:
                 //交換
                 break;
             }
             console.log(this.status);
             this.reload();
+
+            setTimeout(this.buttonEnabled, 250);
         },
     },
 });

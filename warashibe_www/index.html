@@ -55,9 +55,14 @@
 								<div id="content"><img id="screen" v-bind:src="image_src"/>
 								</div>
 							</div>
+							<div id="nameCon">
+								<p id="name">
+									{{name_text}}
+								</p>
+							</div>
 							<div id="consoleCon">
-								<p id="console">
-									{{console_text}}
+								<p id="console" style="white-space: pre-wrap;" v-text="console_text">
+
 								</p>
 							</div>
 						</div>
@@ -67,7 +72,7 @@
 									<div class="item-img"><img  src="res/img/item.png"/>
 									</div>
 									<div class="item-text">
-										<button class="item" v-on:click="next('item1');" :disabled="Disabled">
+										<button class="item" v-on:click.prevent="next('item1');" :disabled="Disabled">
 											{{item_text1}}
 										</button>
 									</div>
