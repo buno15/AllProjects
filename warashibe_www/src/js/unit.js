@@ -7,19 +7,23 @@ var Unit = function(name, img, level, animal) {
     this.level = level;
     this.animal = animal;
 
-    this.item = this.setItem(this.level);
-    this.hp = this.setHP(this.level);
-    this.power = this.setPower(this.level);
+    this.init();
 };
 
 Unit.prototype = {
+    init : function() {
+        this.item = this.setItem(this.level);
+        this.hp = this.setHP(this.level);
+        this.power = this.setPower(this.level);
+    },
+
     setItem : function(level) {
         if (level == 1) {
             return item[1];
         }
     },
 
-    setHP : function(level) {
+    setHP : function(level) {//HP初期化
         switch(level) {
         case 1:
             return Math.round(Math.random() * 15) + 10;
@@ -34,6 +38,11 @@ Unit.prototype = {
             break;
         }
     },
+
+    addDamage : function(damage) {
+        this.hp -= damage;
+    },
+
     getName : function() {
         return this.name;
     },
@@ -43,8 +52,16 @@ Unit.prototype = {
     getLevel : function() {
         return this.level;
     },
-
-    getAnimal : function() {
+    getItem : function() {
+        return this.item;
+    },
+    getHP : function() {
+        return this.hp;
+    },
+    getPower : function() {
+        return this.power;
+    },
+    isAnimal : function() {
         return this.animal;
     }
 };
@@ -59,6 +76,7 @@ function getEnemy(level) {
     var random = Math.round(Math.random() * 3);
     switch(level) {
     case 1:
+        unit[random].init();
         return unit[random];
         break;
     }

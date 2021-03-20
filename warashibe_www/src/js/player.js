@@ -4,7 +4,12 @@ var power = -1;
 var brain = -1;
 var item_have1;
 var item_have2;
-var add = -1;
+var addHP1 = -1;
+var addPower1 = -1;
+var addBrain1 = -1;
+var addHP2 = -1;
+var addPower2 = -1;
+var addBrain2 = -1;
 var level = -1;
 
 function save() {
@@ -13,6 +18,7 @@ function save() {
 
 function load() {
     hp = localStorage.getItem("hp");
+    hp = 10;
     damage = 10;
     power = 10;
     brain = 10;
