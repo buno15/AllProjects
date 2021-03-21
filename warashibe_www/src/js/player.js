@@ -19,7 +19,7 @@ function save() {
 function load() {
     hp = localStorage.getItem("hp");
     hp = 10;
-    damage = 10;
+    damage = 9;
     power = 10;
     brain = 10;
 }
@@ -37,7 +37,7 @@ function itemDrop(id) {
 
 function getYesNo() {
     var random = Math.round(Math.random() * 99) + 1;
-    if (random <= brain) {
+    if (random <= (brain + addBrain1 + addBrain2)) {
         return true;
     } else {
         return false;

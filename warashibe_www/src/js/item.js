@@ -59,7 +59,7 @@ item.push(new Item("イス", 0, 1, false));
 item.push(new Item("テーブル", 0, 1, false));
 item.push(new Item("ナベ", 0, 1, false));
 item.push(new Item("笛", 0, 1, false));
-item.push(new Item("寝袋", 1, 1, false));
+item.push(new Item("寝袋", 1, 1, true));
 item.push(new Item("ボロイ弓", 3, 1, false));
 item.push(new Item("ボロイ槍", 5, 1, false));
 item.push(new Item("ボロイ剣", 4, 1, false));

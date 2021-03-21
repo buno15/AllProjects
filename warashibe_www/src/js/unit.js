@@ -11,15 +11,19 @@ var Unit = function(name, img, level, animal) {
 };
 
 Unit.prototype = {
-    init : function() {
-        this.item = this.setItem(this.level);
+    init : function(noitem) {
+        this.item = this.setItem(this.level, noitem);
         this.hp = this.setHP(this.level);
         this.power = this.setPower(this.level);
+        this.brain = this.setBrain(this.level);
     },
 
-    setItem : function(level) {
-        if (level == 1) {
-            return item[1];
+    setItem : function(level, noitem) {//noitem=自分アイテムとの重複禁止
+        while (true) {
+            var random = Math.round(Math.random() * (item.length - 1));
+            if (item[random].getLevel() == level && item[random].getName() != noitem) {
+                return item[random];
+            }
         }
     },
 
@@ -35,6 +39,13 @@ Unit.prototype = {
         switch(level) {
         case 1:
             return Math.round(Math.random() * 2) + 1;
+            break;
+        }
+    },
+    setBrain : function(level) {
+        switch(level) {
+        case 1:
+            return Math.round(Math.random() * 15) + 10;
             break;
         }
     },
@@ -61,6 +72,11 @@ Unit.prototype = {
     getPower : function() {
         return this.power;
     },
+
+    getBrain : function() {
+        return this.brain;
+    },
+
     isAnimal : function() {
         return this.animal;
     }
@@ -72,11 +88,11 @@ unit.push(new Unit("酔っぱらい", "yopparai.png", 1, false));
 unit.push(new Unit("異国の兵士", "heisi.png", 1, false));
 unit.push(new Unit("クマ", "kuma.png", 1, true));
 
-function getEnemy(level) {
+function getEnemy(level, noitem) {
     var random = Math.round(Math.random() * 3);
     switch(level) {
     case 1:
-        unit[random].init();
+        unit[random].init(noitem);
         return unit[random];
         break;
     }
