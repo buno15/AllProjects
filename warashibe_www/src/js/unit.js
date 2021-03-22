@@ -30,7 +30,19 @@ Unit.prototype = {
     setHP : function(level) {//HP初期化
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 15) + 10;
+            return Math.round(Math.random() * 15) + 15;
+            break;
+        case 2:
+            return Math.round(Math.random() * 15) + 75;
+            break;
+        case 3:
+            return Math.round(Math.random() * 50) + 150;
+            break;
+        case 4:
+            return Math.round(Math.random() * 100) + 200;
+            break;
+        case 5:
+            return 1000;
             break;
         }
     },
@@ -38,7 +50,19 @@ Unit.prototype = {
     setPower : function(level) {
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 2) + 1;
+            return Math.round(Math.random() * 3) + 1;
+            break;
+        case 2:
+            return Math.round(Math.random() * 10) + 5;
+            break;
+        case 3:
+            return Math.round(Math.random() * 15) + 10;
+            break;
+        case 4:
+            return Math.round(Math.random() * 5) + 15;
+            break;
+        case 5:
+            return 30;
             break;
         }
     },
@@ -46,6 +70,18 @@ Unit.prototype = {
         switch(level) {
         case 1:
             return Math.round(Math.random() * 15) + 10;
+            break;
+        case 2:
+            return Math.round(Math.random() * 20) + 30;
+            break;
+        case 3:
+            return Math.round(Math.random() * 25) + 50;
+            break;
+        case 4:
+            return Math.round(Math.random() * 25) + 75;
+            break;
+        case 5:
+            return 200;
             break;
         }
     },
@@ -88,12 +124,40 @@ unit.push(new Unit("酔っぱらい", "yopparai.png", 1, false));
 unit.push(new Unit("異国の兵士", "heisi.png", 1, false));
 unit.push(new Unit("クマ", "kuma.png", 1, true));
 
+unit.push(new Unit("ゴブリン", "goburinn.png", 2, true));
+unit.push(new Unit("オーガ", "ooga.png", 2, true));
+unit.push(new Unit("ならず者のボス", "naraboss.png", 2, false));
+unit.push(new Unit("バイス将軍", "vice.png", 2, false));
+
+unit.push(new Unit("キマイラ", "kimaira.png", 3, true));
+unit.push(new Unit("ミノタウロス", "minotaurosu.png", 3, true));
+unit.push(new Unit("サイクロプス", "saikuropusu.png", 3, true));
+unit.push(new Unit("吸血鬼", "kyuuketuki.png", 3, false));
+
+unit.push(new Unit("ヒュドラー", "hyudora.png", 4, true));
+unit.push(new Unit("ヨルムンガンド", "yorumunnganndo.png", 4, true));
+unit.push(new Unit("ベヒーモス", "behimosu.png", 4, true));
+unit.push(new Unit("リヴァイアサン", "ribaiasann.png", 4, true));
+
+unit.push(new Unit("恐怖の大王", "daiou.png", 5, true));
+
 function getEnemy(level, noitem) {
     var random = Math.round(Math.random() * 3);
-    switch(level) {
+    switch(level) {//相手の設定の仕方むりくりしてる
     case 1:
         unit[random].init(noitem);
         return unit[random];
-        break;
+    case 2:
+        random += 4;
+        unit[random].init(noitem);
+        return unit[random];
+    case 3:
+        random += 8;
+        unit[random].init(noitem);
+        return unit[random];
+    case 4:
+        random += 12;
+        unit[random].init(noitem);
+        return unit[random];
     }
 }

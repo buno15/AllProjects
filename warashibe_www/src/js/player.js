@@ -18,10 +18,12 @@ function save() {
 
 function load() {
     hp = localStorage.getItem("hp");
-    hp = 10;
-    damage = 9;
-    power = 10;
-    brain = 10;
+    hp = 50;
+    damage = 50;
+    power = 50;
+    brain = 50;
+    item_have1 = item[20];
+    item_have2 = item[21];
 }
 
 function itemDrop(id) {
@@ -45,11 +47,11 @@ function getYesNo() {
 }
 
 function setLevel() {
-    if ((hp >= 75 && hp < 200) || (power >= 75 && power < 200) || (brain >= 75 && brain < 200)) {
+    if ((hp > 75 && hp <= 1000) || (power > 75 && power <= 1000) || (brain > 75 && brain <= 1000)) {
         level = 4;
-    } else if ((hp >= 50 && hp < 75) || (power >= 50 && power < 75) || (brain >= 50 && brain < 75)) {
+    } else if ((hp > 50 && hp <= 75) || (power > 50 && power <= 75) || (brain > 50 && brain <= 75)) {
         level = 3;
-    } else if ((hp >= 25 && hp < 50) || (power >= 25 && power < 50) || (brain >= 25 && brain < 50)) {
+    } else if ((hp > 25 && hp <= 50) || (power > 25 && power <= 50) || (brain > 25 && brain <= 50)) {
         level = 2;
     } else {
         level = 1;

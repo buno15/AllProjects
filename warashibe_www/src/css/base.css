@@ -53,8 +53,8 @@ div#app {
 	justify-content:center;
 }
 #screenCon #content #screen {
-	width:80%;
-	height:80%;
+	width:75%;
+	height:75%;
 	margin:0px auto;
 	background-color:#333333;
 	padding:20px;
@@ -68,7 +68,7 @@ div#app {
 	width:30%;
 	text-align:center;
 	background-color:#a9a9a9;
-	font-size:15px;
+	font-size:16px;
 	padding:5px 20px 5px 20px;
 	border-left:7px solid #333333;
 	border-right:7px solid #333333;
@@ -82,10 +82,11 @@ div#app {
 }
 #consoleCon #console {
 	width:80%;
-	height:120px;
+	height:150px;
 	margin:0px auto 20px auto;
 	background-color:#dddddd;
 	padding:20px;
+	padding-top:10px;
 	font-size:20px;
 }
 /******************************************************/

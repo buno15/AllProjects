@@ -1,12 +1,19 @@
 var enemy;
 //敵unit Instance
+
 var itemID = -1;
 //1=item1 2=item2 3=both
 var workID = -1;
 
-var move_random;
+var page = -1;
 
-var event_random = new Array(101);
+var move_random;
+var event_random = new Array(101, 201, 301, 401, 501, 601, 701, 801, 901, 101);
+var prev_event_random = -1;
+var scam_random;
+var en_count = 0;
+
+var flag_kengou = false;
 
 var sound_attack;
 var sound_brainattack;
@@ -14,8 +21,7 @@ var sound_damage;
 var sound_recovery;
 
 function init() {
-    item_have1 = item[1];
-    item_have2 = item[2];
+    page = 1;
     load();
     sound_attack = new Audio('res/raw/attack.mp3');
     sound_brainattack = new Audio('res/raw/brainattack.mp3');
@@ -28,8 +34,6 @@ init();
 var app = new Vue({
     el : "#app",
     data : {
-        status : 1,
-
         image_src : "res/img/tiheisenn.png",
         left : "地平線に向かって走り続ける",
         right : "暗雲に向かって走り続ける",
@@ -202,17 +206,17 @@ var app = new Vue({
                 break;
             case 4:
                 //通常攻撃終
-                this.status = 102;
+                page = 102;
                 this.setTimer("", 100);
                 break;
             case 11:
                 //相手死亡
-                this.status = 131;
+                page = 131;
                 this.setTimer("", 100);
                 break;
             case 12:
                 //自分死亡
-                this.status = -1;
+                page = -1;
                 setTimeout(this.next, 100, "");
                 break;
             }
@@ -268,18 +272,18 @@ var app = new Vue({
                 break;
             case 14:
                 //知の一撃終
-                this.status = 102;
+                page = 102;
                 this.setTimer("", 100);
                 break;
             case 21:
                 //相手死亡
-                this.status = 131;
+                page = 131;
                 this.setImageSrc("attack.png");
                 this.setTimer("", 100);
                 break;
             case 22:
                 //自分死亡
-                this.status = -1;
+                page = -1;
                 setTimeout(this.next, 100, "");
                 break;
             }
@@ -308,7 +312,7 @@ var app = new Vue({
             case 3:
                 this.setImageSrc("umi.png");
                 if (item_have1.getName() == "なし" && item_have2.getName() == "なし") {
-                    this.console.text = "ネクタルという伝説の薬があるらしい。";
+                    this.console_text = "ネクタルという伝説の薬があるらしい。";
                     this.left = "伝説さ";
                     this.right = "噂さ";
                 } else {
@@ -337,35 +341,70 @@ var app = new Vue({
         },
 
         setNextEvent : function() {
-
+            while (true) {
+                var random = Math.round(Math.random() * (event_random.length - 1));
+                if (prev_event_random == random)
+                    continue;
+                if (random == 1 || random == 5 || random == 7) {
+                    if (item_have1.getName() != "なし" || item_have2.getName() != "なし" || item_have1.getName() != "えんまく" || item_have2.getName() != "えんまく") {
+                        if (random == 7) {
+                            if (damage < hp / 2) {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                } else if (random == 6) {
+                    if (item_have1.getName() == "笛" || item_have2.getName() == "笛" || item_have1.getName() == "たいこ" || item_have2.getName() == "たいこ" || item_have1.getName() == "バイオリン" || item_have2.getName() == "バイオリン" || item_have1.getName() == "ピアノ" || item_have2.getName() == "ピアノ") {
+                        break;
+                    }
+                } else if (random == 8) {
+                    if (damage < hp / 2) {
+                        break;
+                    } else {
+                        random = 0;
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+            console.log(random);
+            prev_event_random = random;
+            return event_random[random];
         },
 
         nextIsMove : function() {
-            this.status = 1;
+            page = 1;
             this.next("");
         },
 
         nextIsMoveAnime : function() {
             this.buttonDisabled();
-            this.status = 1;
+            page = 1;
             this.setTimer("", 2000);
         },
 
         next : function(button) {
             this.name_text = "---";
 
-            switch(this.status) {//this.next()の後はreturn
+            switch(page) {//this.next()の後はreturn
             case 1:
                 /********************************************************移動***********************************************************/
                 setLevel();
+                en_count++;
                 //自分のレベルを設定
                 move_random = Math.round(Math.random() * 5);
                 this.setMoveEvent(move_random);
-                this.status = 2;
+                page = 2;
                 this.next("");
                 break;
             case 2:
                 this.setMoveEvent(move_random);
+                if (item_have1.getName() == "なし" && item_have2.getName() == "なし" && en_count % 10 == 0) {
+                    item_have1 = item[1];
+                }
 
                 if (button == "item1" || button == "item2") {
                     if (button == "item1") {
@@ -373,39 +412,55 @@ var app = new Vue({
                     } else if (button == "item2") {
                         itemID = 2;
                     }
-                    this.status = 3;
+                    page = 3;
                     this.next(button);
                     return;
                 } else if (button == "left" || button == "right") {
-                    this.status = 301;
+                    page = this.setNextEvent();
                     this.next(button);
                     return;
                 }
                 break;
             case 3:
                 if (itemID == 1) {
-                    if (item_have1.isFood() && damage < hp) {
-                        this.console_text = item_have1.getName() + "を使用しますか？";
-                        this.status = 4;
-                        this.left = "はい";
-                        this.right = "いいえ";
+                    if (item_have1.isFood()) {
+                        if (damage < hp) {
+                            this.console_text = item_have1.getName() + "を使用しますか？";
+                            page = 4;
+                            this.left = "はい";
+                            this.right = "いいえ";
+                        } else {
+                            this.console_text = "十分に回復している。";
+                            this.buttonDisabled();
+                            page = 2;
+                            this.setTimer("", 1000);
+                            return;
+                        }
                     } else {
                         this.console_text = "今は使えない。";
                         this.buttonDisabled();
-                        this.status = 2;
+                        page = 2;
                         this.setTimer("", 1000);
                         return;
                     }
                 } else if (itemID == 2) {
-                    if (item_have2.isFood() && damage < hp) {
-                        this.console_text = item_have2.getName() + "を使用しますか？";
-                        this.status = 4;
-                        this.left = "はい";
-                        this.right = "いいえ";
+                    if (item_have2.isFood()) {
+                        if (damage < hp) {
+                            this.console_text = item_have2.getName() + "を使用しますか？";
+                            page = 4;
+                            this.left = "はい";
+                            this.right = "いいえ";
+                        } else {
+                            this.console_text = "十分に回復している。";
+                            this.buttonDisabled();
+                            page = 2;
+                            this.setTimer("", 1000);
+                            return;
+                        }
                     } else {
                         this.console_text = "今は使えない。";
                         this.buttonDisabled();
-                        this.status = 2;
+                        page = 2;
                         this.setTimer("", 1000);
                         return;
                     }
@@ -419,7 +474,7 @@ var app = new Vue({
                         if (damage > hp) {
                             damage = hp;
                         }
-                        if (item_have1.getName() != "寝袋" && item_have1.getName() != "家" && item_have1.getName() != "城") {
+                        if (item_have1.getName() != "寝袋" && item_have1.getName() != "上級寝袋" && item_have1.getName() != "家" && item_have1.getName() != "城") {
                             itemDrop(1);
                         }
                     } else {
@@ -428,63 +483,70 @@ var app = new Vue({
                         if (damage > hp) {
                             damage = hp;
                         }
-                        if (item_have2.getName() != "寝袋" && item_have2.getName() != "家" && item_have2.getName() != "城") {
+                        if (item_have2.getName() != "寝袋" && item_have2.getName() != "上級寝袋" && item_have2.getName() != "家" && item_have2.getName() != "城") {
                             itemDrop(2);
                         }
                     }
                     this.buttonDisabled();
-                    this.status = 2;
+                    page = 2;
                     this.setTimer("", 2000);
                     return;
                 } else if (button == "right") {
-                    this.status = 2;
+                    page = 2;
                     this.next("");
                     return;
                 }
                 break;
             case 101:
                 /********************************************************戦闘***********************************************************/
-                level = 1;
                 this.enemy = getEnemy(level, "");
                 this.setImageSrc(this.enemy.getImg() + "");
                 this.console_text = this.enemy.getName() + "が現れた";
                 this.left = "攻撃";
                 this.right = "知の一撃";
-                this.status = 111;
+                page = 111;
                 break;
             case 102:
                 this.console_text = "どうする？";
                 this.left = "攻撃";
                 this.right = "知の一撃";
-                this.status = 111;
+                page = 111;
                 break;
             case 111:
                 //降参
                 if (button == "item1" || button == "item2") {
                     if (button == "item1") {
                         if (!item_have1.isNone()) {
-                            if (this.enemy.isAnimal())
-                                this.console_text = item_have1.getName() + "を囮に逃げますか？";
-                            else
-                                this.console_text = item_have1.getName() + "を差し出して降参しますか？";
+                            if (item_have1.getName() == "えんまく") {
+                                this.console_text = "えんまくを使用しますか？";
+                            } else {
+                                if (this.enemy.isAnimal())
+                                    this.console_text = item_have1.getName() + "を囮に逃げますか？";
+                                else
+                                    this.console_text = item_have1.getName() + "を差し出して降参しますか？";
+                            }
                             itemID = 1;
                         } else {
                             this.console_text = "今は使えない";
-                            this.status = 102;
+                            page = 102;
                             this.buttonDisabled();
                             this.setTimer("item1", 1000);
                             return;
                         }
                     } else {
                         if (!item_have2.isNone()) {
-                            if (this.enemy.isAnimal())
-                                this.console_text = item_have2.getName() + "を囮に逃げますか？";
-                            else
-                                this.console_text = item_have2.getName() + "を差し出して降参しますか？";
+                            if (item_have2.getName() == "えんまく") {
+                                this.console_text = "えんまくを使用しますか？";
+                            } else {
+                                if (this.enemy.isAnimal())
+                                    this.console_text = item_have2.getName() + "を囮に逃げますか？";
+                                else
+                                    this.console_text = item_have2.getName() + "を差し出して降参しますか？";
+                            }
                             itemID = 2;
                         } else {
                             this.console_text = "今は使えない";
-                            this.status = 102;
+                            page = 102;
                             this.buttonDisabled();
                             this.setTimer("item2", 1000);
                             return;
@@ -492,20 +554,20 @@ var app = new Vue({
                     }
                     this.left = "はい";
                     this.right = "いいえ";
-                    this.status = 112;
+                    page = 112;
                 } else if (button == "left" || button == "right") {
-                    this.status = 121;
+                    page = 121;
                     this.next(button);
                     return;
                 }
                 break;
             case 112:
                 if (button == "left") {
-                    this.status = 113;
+                    page = 113;
                     this.next(button);
                     return;
                 } else if (button == "right") {
-                    this.status = 102;
+                    page = 102;
                     this.next("");
                     return;
                 }
@@ -516,6 +578,9 @@ var app = new Vue({
                 var flag = false;
                 if (this.enemy.isAnimal()) {
                     if ((itemID == 1 && item_have1.isFood()) || (itemID == 2 && item_have2.isFood())) {
+                        flag = true;
+                    }
+                    if ((itemID == 1 && item_have1.getName() == "えんまく") || (itemID == 2 && item_have2.getName() == "えんまく")) {
                         flag = true;
                     }
                     if (itemID == 1) {
@@ -534,6 +599,14 @@ var app = new Vue({
                     if (item_have1.getName() == "なし" || item_have2.getName() == "なし") {
                         flag = true;
                     }
+
+                    if ((itemID == 1 && item_have1.getName() == "えんまく") || (itemID == 2 && item_have2.getName() == "えんまく")) {
+                        this.name_text = this.enemy.getName();
+                        this.console_text = "「うわーーー」";
+                        this.nextIsMoveAnime();
+                        return;
+                    }
+
                     if (itemID == 1) {
                         itemDrop(1);
                     } else if (itemID == 2) {
@@ -543,6 +616,7 @@ var app = new Vue({
                     if (getYesNo() || flag) {
                         this.console_text = "「よかろう！見逃してやる」";
                         this.nextIsMoveAnime();
+                        return;
                     } else {
                         this.console_text = "「こんなもので命乞いとは笑わせてくれる！」";
                         setTimeout(this.normalAttack, 800, 1);
@@ -568,7 +642,7 @@ var app = new Vue({
                 this.console_text += this.enemy.getName() + "を倒した。";
                 this.left = "旅を続ける";
                 this.right = "身ぐるみ剥ぐ";
-                this.status = 132;
+                page = 132;
                 break;
             case 132:
                 if (button == "left") {
@@ -577,11 +651,11 @@ var app = new Vue({
                 } else if (button == "right") {
                     var random = Math.round(Math.random() * 9);
                     if (random < 8) {
-                        this.status = 133;
+                        page = 133;
                         this.next("");
                         return;
                     } else {
-                        this.status = 141;
+                        page = 141;
                         this.next("");
                         return;
                     }
@@ -591,7 +665,7 @@ var app = new Vue({
                 this.console_text = this.enemy.getName() + "は" + this.enemy.getItem().getName() + "を持っていた。\n";
                 if (item_have1.getName() == "なし" || item_have2.getName() == "なし") {
                     this.buttonDisabled();
-                    this.status = 1;
+                    page = 1;
                     this.console_text += this.enemy.getItem().getName() + "を手に入れた。";
                     if (item_have1.getName() == "なし") {
                         item_have1 = this.enemy.getItem();
@@ -602,32 +676,9 @@ var app = new Vue({
                     return;
                 } else {
                     this.console_text += "手持ちと交換しますか？";
-                    this.status = 134;
-                    this.left = "はい";
-                    this.right = "いいえ";
-                }
-                break;
-            case 134:
-                if (button == "left") {
-                    this.console_text = this.enemy.getItem().getName() + "と何を交換しますか？";
-                    this.status = 135;
-                    this.left = item_have1.getName();
-                    this.right = item_have2.getName();
-                } else if (button == "right") {
-                    this.nextIsMove();
-                }
-                break;
-            case 135:
-                if (button == "left" || button == "right") {
-                    if (button == "left") {
-                        item_have1 = this.enemy.getItem();
-                    } else if (button == "right") {
-                        item_have2 = this.enemy.getItem();
-                    }
-                    this.buttonDisabled();
-                    this.status = 1;
-                    this.console_text = this.enemy.getItem().getName() + "を手に入れた。";
-                    this.setTimer("", 2000);
+                    page = 2001;
+                    this.next("");
+                    return;
                 }
                 break;
             case 141:
@@ -677,7 +728,7 @@ var app = new Vue({
                     this.right = "ご勘弁を";
                     this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "がわしには必要なのじゃ。\n譲ると申すなら代わりに、\n" + this.enemy.getItem().getName() + "を授けるぞ。";
                 }
-                this.status = 202;
+                page = 202;
                 break;
             case 202:
                 if (button == "left") {
@@ -686,10 +737,8 @@ var app = new Vue({
                     } else {
                         item_have2 = this.enemy.getItem();
                     }
-                    this.buttonDisabled();
                     this.console_text = this.enemy.getItem().getName() + "を手に入れた。";
-                    this.status = 1;
-                    this.setTimer("", 2000);
+                    this.nextIsMoveAnime();
                 } else if (button == "right") {
                     this.nextIsMove();
                     return;
@@ -765,7 +814,7 @@ var app = new Vue({
                     this.setImageSrc("gyokuza.png");
                     this.right = "お断りします";
                 }
-                this.status = 302;
+                page = 302;
                 break;
             case 302:
                 if (button == "left") {
@@ -890,24 +939,503 @@ var app = new Vue({
                 break;
             case 401:
                 //宝探し
+                this.enemy = getEnemy(level);
+                if (level == 1) {
+                    this.console_text = "何かが埋まっている。\n掘りますか？";
+                    this.setImageSrc("ana1.png");
+                    this.left = "掘る";
+                } else if (level == 2) {
+                    this.console_text = "宝箱がある。\n開けますか？";
+                    this.setImageSrc("takarabako1.png");
+                    this.left = "開ける";
+                } else if (level == 3) {
+                    this.console_text = "迷いの森だ。\n進みますか？";
+                    this.setImageSrc("mori1.png");
+                    this.left = "進む";
+                } else if (level == 4) {
+                    this.console_text = "大迷宮の入り口だ。\n入りますか？";
+                    this.setImageSrc("meikyuu1.png");
+                    this.left = "入る";
+                }
+                this.right = "やめとく";
+                page = 402;
+                break;
+            case 402:
+                if (button == "left") {
+                    var random = Math.round(Math.random() * 9);
+                    if (level == 1) {
+                        if (item_have1.getName() == "シャベル" || item_have2.getName() == "シャベル") {
+                            this.setImageSrc("ana2.png");
+                            if (random < 5) {
+                                this.console_text = "何もなかった・・・";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        } else {
+                            if (random < 8) {
+                                this.setImageSrc("ana1.png");
+                                this.console_text = "うまく掘れなかった。\nシャベルがあると良いかも。";
+                                this.nextIsMoveAnime();
+                                return;
+                            } else {
+                                this.setImageSrc("ana2.png");
+                            }
+                        }
+                    } else if (level == 2) {
+                        if (item_have1.getName() == "鍵開け道具" || item_have2.getName() == "鍵開け道具") {
+                            this.setImageSrc("takarabako2.png");
+                            if (random < 5) {
+                                this.console_text = "空っぽだった・・・";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        } else {
+                            if (random < 8) {
+                                this.setImageSrc("takarabako1.png");
+                                this.console_text = "開けられない。\n鍵開け道具があると良いかも。";
+                                this.nextIsMoveAnime();
+                                return;
+                            } else {
+                                this.setImageSrc("takarabako2.png");
+                            }
+                        }
+                    } else if (level == 3) {
+                        this.setImageSrc("mori2.png");
+                        if (item_have1.getName() == "森の地図" || item_have2.getName() == "森の地図") {
+                            if (random < 5) {
+                                this.console_text = "迷った・・・";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        } else {
+                            if (random < 8) {
+                                this.console_text = "迷った・・・\n森の地図があると良いかも。";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        }
+                    } else if (level == 4) {
+                        this.setImageSrc("meikyuu2.png");
+                        if (item_have1.getName() == "精霊" || item_have2.getName() == "精霊") {
+                            if (random < 5) {
+                                this.console_text = "行き止まりだ・・・";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        } else {
+                            if (random < 8) {
+                                this.console_text = "行き止まりだ・・・\n精霊がいると良いかも。";
+                                this.nextIsMoveAnime();
+                                return;
+                            }
+                        }
+                    }
+                    if (item_have1.getName() == "なし" || item_have2.getName() == "なし") {
+                        this.console_text = this.enemy.getItem().getName() + "を手に入れた。";
+                        if (item_have1.getName() == "なし") {
+                            item_have1 = this.enemy.getItem();
+                        } else {
+                            item_have2 = this.enemy.getItem();
+                        }
+                        this.nextIsMoveAnime();
+                        return;
+                    } else {
+                        this.console_text = this.enemy.getItem().getName() + "を見つけた。\n手持ちと交換しますか？";
+                        page = 2001;
+                        this.next("");
+                        return;
+                    }
+
+                } else if (button == "right") {
+                    this.nextIsMove();
+                    return;
+                }
                 break;
             case 501:
-                //賭け事
+                /******************************************************賭け事******************************************************/
+                scam_random = Math.round(Math.random() * 1);
+                //勝ち負けの設定 0=勝ち 1=負け
+                var random = Math.round(Math.random * 24);
+                //未来を読めるかの値
+
+                if (item_have1.getName() == "なし" && item_have2.getName() == "なし") {
+                    flag_kengou = true;
+                    this.setImageSrc("kenngou.png");
+                    this.name_text = "剣豪";
+                    this.console_text = "そなたに決闘を申し込む！\nそなたが勝てば我が家宝をくれてやる。\n決闘するか？";
+                    this.left = "命かける";
+                    this.right = "やっぱやだ";
+                    if (random <= brain % 25) {
+                        if (scam_random == 0) {
+                            this.console_text += "\n\n（勝てる気がする）";
+                        } else {
+                            this.console_text += "\n\n（負ける気がする）";
+                        }
+                    } else {
+                        if (scam_random == 0) {
+                            this.console_text += "\n\n（負ける気がする）";
+                        } else {
+                            this.console_text += "\n\n（勝てる気がする）";
+                        }
+                    }
+                } else {
+                    flag_kengou = false;
+                    var random = Math.round(Math.random() * 1);
+                    if (random == 0) {
+                        itemID = 1;
+                        if (item_have1.getName() == "なし") {
+                            itemID = 2;
+                        }
+                    } else {
+                        itemID = 2;
+                        if (item_have2.getName() == "なし") {
+                            itemID = 1;
+                        }
+                    }
+                    var nlevel = level + 1;
+                    if (level >= 4)
+                        nlevel = 4;
+                    enemy = getEnemy(nlevel, (itemID == 1 ? item_have1.getName() : item_have2.getName()));
+                    this.left = "いいよ";
+                    this.right = "いやだ";
+                    if (level == 1) {
+                        this.setImageSrc("man.png");
+                        this.name_text = "男";
+                        this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "を欲しがってる奴がいるんだ。\n後で代わりのアイテムをあげるから、\n私に預けてくれないか？";
+                    } else if (level == 2) {
+                        this.setImageSrc("syounenn.png");
+                        this.name_text = "少年";
+                        this.console_text = "おおーそれは" + (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "ですね！\n後ほどお礼の品を差し上げるので、\n私にくださいませんか？";
+                    } else if (level == 3) {
+                        this.setImageSrc("urabuguya.png");
+                        this.name_text = "裏商人";
+                        this.console_text = "君の" + (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "を譲ってくれないか？\n支払いは後になるけど。";
+                    } else if (level == 4) {
+                        this.setImageSrc("ruretto.png");
+                        this.name_text = "カジノ支配人";
+                        this.console_text = "ルーレットやっていきませんか。\n当たれば豪華賞品をプレゼント！\nはずれるとアイテム没収！";
+                        this.left = "やる";
+                        this.right = "やらない";
+                    }
+                    if (random <= brain % 25) {
+                        if (scam_random == 0) {
+                            if (level == 4)
+                                this.console_text += "\n\n（勝てる気がする）";
+                            else
+                                this.console_text += "\n\n（この人の言うことは本当かも）";
+                        } else {
+                            if (level == 4)
+                                this.console_text += "\n\n（負ける気がする）";
+                            else
+                                this.console_text += "\n\n（この人の言うことは嘘かも）";
+                        }
+                    } else {
+                        if (scam_random == 0) {
+                            if (level == 4)
+                                this.console_text += "\n\n（負ける気がする）";
+                            else
+                                this.console_text += "\n\n（この人の言うことは嘘かも）";
+                        } else {
+                            if (level == 4)
+                                this.console_text += "\n\n（勝てる気がする）";
+                            else
+                                this.console_text += "\n\n（この人の言うことは本当かも）";
+                        }
+                    }
+                }
+                page = 502;
                 break;
+            case 502:
+                if (flag_kengou) {
+                    this.name_text = "剣豪";
+                } else {
+                    if (level == 1) {
+                        this.name_text = "男";
+                    } else if (level == 2) {
+                        this.name_text = "少年";
+                    } else if (level == 3) {
+                        this.name_text = "裏商人";
+                    } else if (level == 4) {
+                        this.name_text = "カジノ支配人";
+                    }
+                }
+                if (button == "left") {
+                    this.buttonDisabled();
+                    if (flag_kengou) {
+                        this.console_text = "まいる！！！";
+                    } else {
+                        if (level == 1) {
+                            this.console_text = "ちょっと待っていてくれ";
+                        } else if (level == 2) {
+                            this.console_text = "それでは少々お待ちください";
+                        } else if (level == 3) {
+                            this.console_text = "ありがとよ\nちょいと待ってくれ";
+                        } else if (level == 4) {
+                            this.console_text = "それではまいります！";
+                        }
+                        if (itemID == 1) {
+                            itemDrop(1);
+                        } else {
+                            itemDrop(2);
+                        }
+
+                    }
+                    page = 503;
+                    setTimeout(this.next, 2000);
+                } else if (button == "right") {
+                    this.nextIsMove();
+                    return;
+                }
+                break;
+            case 503:
+                this.setImageSrc("attack.png");
+                this.console_text = "・・";
+                page = 504;
+                setTimeout(this.next, 1000);
+                return;
+                break;
+            case 504:
+                this.console_text += "・・";
+                page = 505;
+                setTimeout(this.next, 1000);
+                return;
+                break;
+            case 505:
+                this.console_text += "・・";
+                page = 506;
+                setTimeout(this.next, 1000);
+                return;
+                break;
+            case 506:
+                if (scam_random == 0) {
+                    if (flag_kengou) {
+                        this.console_text = "剣豪を倒した。\n\n" + enemy.getItem().getName() + "を手に入れた。";
+                        item_have1 = enemy.getItem();
+                    } else {
+                        if (itemID == 1) {
+                            item_have1 = enemy.getItem();
+                        } else if (itemID == 2) {
+                            item_have2 = enemy.getItem();
+                        }
+                        if (level == 1) {
+                            this.setImageSrc("man.png");
+                            this.name_text = "男";
+                            this.console_text = "約束の物だ。\n\n" + enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 2) {
+                            this.setImageSrc("syounenn.png");
+                            this.name_text = "少年";
+                            this.console_text = "こちらがお礼の品です。\n\n" + enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 3) {
+                            this.setImageSrc("urabuguya.png");
+                            this.name_text = "裏商人";
+                            this.console_text = "これが支払いの品だ。\n\n" + enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 4) {
+                            this.setImageSrc("ruretto.png");
+                            this.name_text = "カジノ支配人";
+                            this.console_text = "大当たり！\nこちらが景品です。\n\n" + enemy.getItem().getName() + "を手に入れた。";
+                        }
+                    }
+                } else {
+                    if (flag_kengou) {
+                        page = -1;
+                        this.next("");
+                        return;
+                    } else {
+                        if (level == 1) {
+                            this.console_text = "持ち逃げされた・・・";
+                        } else if (level == 2) {
+                            this.console_text = "少年は消えた・・・";
+                        } else if (level == 3) {
+                            this.console_text = "持ち逃げされた・・・";
+                        } else if (level == 4) {
+                            this.setImageSrc("ruretto.png");
+                            this.name_text = "カジノ支配人";
+                            this.console_text = "ハズレです。\nアイテムは没収でーす。";
+                        }
+                    }
+                }
+                this.reload();
+                this.nextIsMoveAnime();
+                return;
             case 601:
-                //損得交換（アイテムは必ず持ってると仮定）
+                /****************************************************損得交換（アイテムは必ず持ってると仮定）************************************************************/
+                var random = Math.round(Math.random() * 1);
+                if (random == 0) {
+                    itemID = 1;
+                    if (item_have1.getName() == "なし") {
+                        itemID = 2;
+                    }
+                } else {
+                    itemID = 2;
+                    if (item_have2.getName() == "なし") {
+                        itemID = 1;
+                    }
+                }
+                var nlevel = level + 1;
+                if (level >= 4)
+                    nlevel = 4;
+                this.enemy = getEnemy(nlevel, (itemID == 1 ? item_have1.getName() : item_have2.getName()));
+                if (level == 1) {
+                    this.setImageSrc("huzinn.png");
+                    this.name_text = "ご婦人";
+                    this.left = "いいよ";
+                    this.right = "いやだ";
+                    this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "をくれないかい？";
+                } else if (level == 2) {
+                    this.setImageSrc("wakamono.png");
+                    this.name_text = "若者";
+                    this.left = "あげる";
+                    this.right = "やらん";
+                    this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "を譲ってくれないかい？";
+                } else if (level == 3) {
+                    this.setImageSrc("reizyou.png");
+                    this.name_text = "令嬢";
+                    this.left = "どうそ";
+                    this.right = "お断りします";
+                    this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "を譲っていただける？";
+                } else if (level == 4) {
+                    this.setImageSrc("himenokerai.png");
+                    this.name_text = "家来";
+                    this.left = "仰せのままに";
+                    this.right = "ご勘弁を";
+                    this.console_text = (itemID == 1 ? item_have1.getName() : item_have2.getName()) + "を姫がご所望だ。";
+                }
+                page = 602;
                 break;
+            case 602:
+                if (button == "left") {
+                    if (level == 1) {
+                        this.name_text = "ご婦人";
+                    } else if (level == 2) {
+                        this.name_text = "若者";
+                    } else if (level == 3) {
+                        this.name_text = "令嬢";
+                    } else if (level == 4) {
+                        this.name_text = "家来";
+                    }
+                    var random = Math.round(Math.random() * 1);
+                    if (random == 0) {
+                        if (itemID == 1) {
+                            itemDrop(1);
+                        } else {
+                            itemDrop(2);
+                        }
+                        if (level == 1) {
+                            this.console_text = "ありがとね";
+                        } else if (level == 2) {
+                            this.console_text = "どうもありがとう";
+                        } else if (level == 3) {
+                            this.console_text = "ありがとう、うれしいわ";
+                        } else if (level == 4) {
+                            this.console_text = "ご苦労";
+                        }
+                    } else {
+                        if (itemID == 1) {
+                            item_have1 = this.enemy.getItem();
+                        } else {
+                            item_have2 = this.enemy.getItem();
+                        }
+                        if (level == 1) {
+                            this.console_text = "ありがとう\nこれはお礼よ。\n\n" + this.enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 2) {
+                            this.console_text = "ありがとう\n代わりにこれを貰ってくれ。\n\n" + this.enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 3) {
+                            this.console_text = "ありがとう\n代わりにこれを受け取って。\n\n" + this.enemy.getItem().getName() + "を手に入れた。";
+                        } else if (level == 4) {
+                            this.console_text = "代わりにこれを与える。\n\n" + this.enemy.getItem().getName() + "を手に入れた。";
+                        }
+                    }
+                    this.reload();
+                    this.nextIsMoveAnime();
+                } else if (button == "right") {
+                    this.reload();
+                    this.nextIsMove();
+                }
+                return;
             case 701:
-                //演奏（楽器は必ず持ってると仮定）
+                /**************************************************************演奏（楽器は必ず持ってると仮定）************************************************************/
+                if (level == 1) {
+                    this.name_text = "道具屋";
+                    this.console_text = "店の前で演奏して、\n客を呼び込んでくれんかね。";
+                    this.left = "いいよ";
+                    this.right = "いやだ";
+                    this.setImageSrc("douguya.png");
+                } else if (level == 2) {
+                    this.name_text = "武具屋";
+                    this.console_text = "店先で演奏して、\n呼び込みをしてくれ。";
+                    this.left = "いいよ";
+                    this.right = "いやだ";
+                    this.setImageSrc("bukiya.png");
+                } else if (level == 3) {
+                    this.name_text = "地主";
+                    this.console_text = "今宵の宴で演奏してくれぬか。";
+                    this.left = "承知した";
+                    this.right = "無理です";
+                    this.setImageSrc("zinusi.png");
+                } else if (level == 4) {
+                    this.name_text = "摂政";
+                    this.console_text = "わしのために、\nそなたの音色を聞かせてくれぬか。";
+                    this.left = "かしこまりました";
+                    this.right = "荷が重いです";
+                    this.setImageSrc("sessyou.png");
+                }
+                page = 702;
                 break;
+            case 702:
+                if (button == "left") {
+                    var random = Math.round(Math.random() * 9);
+                    var add;
+                    if (level == 1) {
+                        this.name_text = "道具屋";
+                        add = 1;
+                    } else if (level == 2) {
+                        this.name_text = "武具屋";
+                        add = 2;
+                    } else if (level == 3) {
+                        this.name_text = "地主";
+                        add = 3;
+                    } else if (level == 4) {
+                        this.name_text = "摂政";
+                        add = 5;
+                    }
+                    if (random < 8 || (damage - (add * 2)) < 1) {
+                        var ability_random = Math.round(Math.random() * 2);
+                        if (level == 1) {
+                            this.console_text = "君のおかげで繁盛したよ。\nありがとう\n\n";
+                        } else if (level == 2) {
+                            this.console_text = "助かったよ。\nありがとう\n\n";
+                        } else if (level == 3) {
+                            this.console_text = "良い演奏だったぞ。\n\n";
+                        } else if (level == 4) {
+                            this.console_text = "見事な音色じゃった。\n\n";
+                        }
+                        if (ability_random == 0) {
+                            hp += add;
+                            this.console_text += "体力がついた。";
+                        } else if (ability_random == 1) {
+                            power += add;
+                            this.console_text += "力が上がった。";
+                        } else if (ability_random == 2) {
+                            brain += add;
+                            this.console_text += "知力が上がった。";
+                        }
+                    } else {
+                        this.console_text = "つかえない奴め！\nボゴッ　ドスッ　バコッ\n\n" + (add * 2) + "ダメージ。";
+                        damage -= (add * 2);
+                    }
+                    this.nextIsMoveAnime();
+                } else if (button == "right") {
+                    this.nextIsMove();
+                }
+                return;
             case 801:
-                //宿屋
+                /*************************************************************宿屋*******************************************************************/
                 this.setImageSrc("yadoya.png");
                 this.name_text = "宿屋";
                 this.console_text = "いらっしゃい\n泊まっていくかい？\nあんたの持ってるものを、\n宿代としてもらうよ。";
                 this.left = "はい";
                 this.right = "いいえ";
-                this.status = 802;
+                page = 802;
                 break;
             case 802:
                 this.name_text = "宿屋";
@@ -961,7 +1489,34 @@ var app = new Vue({
                 }
                 this.left = "ありがとう";
                 this.right = "Thank you";
-                this.status = 1;
+                page = 1;
+                break;
+            case 2001:
+                /*******************************************************手持ちとのアイテム交換**********************************************************/
+                this.left = "はい";
+                this.right = "いいえ";
+                page = 2002;
+                break;
+            case 2002:
+                if (button == "left") {
+                    this.console_text = this.enemy.getItem().getName() + "と何を交換しますか？";
+                    this.left = item_have1.getName();
+                    this.right = item_have2.getName();
+                    page = 2003;
+                } else if (button == "right") {
+                    this.nextIsMove();
+                }
+                break;
+            case 2003:
+                if (button == "left" || button == "right") {
+                    if (button == "left") {
+                        item_have1 = this.enemy.getItem();
+                    } else if (button == "right") {
+                        item_have2 = this.enemy.getItem();
+                    }
+                    this.console_text = this.enemy.getItem().getName() + "を手に入れた。";
+                    this.nextIsMoveAnime();
+                }
                 break;
             case -1:
                 //死亡
@@ -970,7 +1525,7 @@ var app = new Vue({
                 this.buttonDisabled();
                 break;
             }
-            console.log(this.status);
+            console.log(page);
             this.reload();
 
             setTimeout(this.buttonEnabled, 250);
