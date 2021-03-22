@@ -18,12 +18,12 @@ function save() {
 
 function load() {
     hp = localStorage.getItem("hp");
-    hp = 50;
-    damage = 50;
-    power = 50;
-    brain = 50;
-    item_have1 = item[20];
-    item_have2 = item[21];
+    hp = 80;
+    damage = 80;
+    power = 80;
+    brain = 80;
+    item_have1 = item[30];
+    item_have2 = item[33];
 }
 
 function itemDrop(id) {

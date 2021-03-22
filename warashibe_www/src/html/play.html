@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>わらしべ〜道なき道〜</title>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" href="../css/base.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="../js/item.js"></script>
+		<script src="../js/unit.js"></script>
+		<script src="../js/player.js"></script>
+		<link rel="shortcut icon" href="../../res/img/icon.ico" />
+	</head>
+	<body>
+		<div id="app">
+			<div id="header"></div>
+			<div id="main">
+				<div class="wrapper">
+					<div class="container">
+						<div class="content-item">
+							<div class="item left">
+								<div class="left-item">
+									<div class="item-img"><img  src="../../res/img/heart.png"/>
+									</div>
+									<div class="item-text">
+										<h1 id="heart">{{damage_text}}/{{hp_text}}</h1>
+									</div>
+								</div>
+							</div>
+							<div class="item left">
+								<div class="left-item">
+									<div class="item-img"><img  src="../../res/img/power.png"/>
+									</div>
+									<div class="item-text">
+										<h1 id="power">{{power_text}}</h1>
+									</div>
+								</div>
+							</div>
+							<div class="item left">
+								<div class="left-item">
+									<div class="item-img"><img  src="../../res/img/brain.png"/>
+									</div>
+									<div class="item-text">
+										<h1 id="brain">{{brain_text}}</h1>
+									</div>
+								</div>
+							</div>
+							<div class="item left">
+								<button class="button"  v-on:click="next('left');" :disabled="Disabled">
+									{{left}}
+								</button>
+							</div>
+						</div>
+						<div class="content-item">
+							<div id="screenCon">
+								<div id="content"><img id="screen" v-bind:src="image_src"/>
+								</div>
+							</div>
+							<div id="nameCon">
+								<p id="name">
+									{{name_text}}
+								</p>
+							</div>
+							<div id="consoleCon">
+								<p id="console" style="white-space: pre-wrap;" v-text="console_text">
+
+								</p>
+							</div>
+						</div>
+						<div class="content-item">
+							<div class="item right">
+								<div class="right-item">
+									<div class="item-img"><img  src="../../res/img/item.png"/>
+									</div>
+									<div class="item-text">
+										<button class="item" v-on:click.prevent="next('item1');" :disabled="Disabled">
+											{{item_text1}}
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="item right">
+								<div class="right-item">
+									<div class="item-img"><img  src="../../res/img/item.png"/>
+									</div>
+									<div class="item-text"  >
+										<button class="item"  v-on:click.prevent="next('item2');" :disabled="Disabled">
+											{{item_text2}}
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="item right">
+								<div class="right-item"></div>
+							</div>
+							<div class="item right" >
+								<button class="button" v-on:click="next('right');" :disabled="Disabled">
+									{{right}}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/main.js"></script>
+	</body>
+</html>

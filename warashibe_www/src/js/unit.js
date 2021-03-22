@@ -137,7 +137,7 @@ unit.push(new Unit("吸血鬼", "kyuuketuki.png", 3, false));
 unit.push(new Unit("ヒュドラー", "hyudora.png", 4, true));
 unit.push(new Unit("ヨルムンガンド", "yorumunnganndo.png", 4, true));
 unit.push(new Unit("ベヒーモス", "behimosu.png", 4, true));
-unit.push(new Unit("リヴァイアサン", "ribaiasann.png", 4, true));
+unit.push(new Unit("ドラゴン", "ribaiasann.png", 4, true));
 
 unit.push(new Unit("恐怖の大王", "daiou.png", 5, true));
 

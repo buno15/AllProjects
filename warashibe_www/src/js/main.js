@@ -23,10 +23,10 @@ var sound_recovery;
 function init() {
     page = 1;
     load();
-    sound_attack = new Audio('res/raw/attack.mp3');
-    sound_brainattack = new Audio('res/raw/brainattack.mp3');
-    sound_damage = new Audio('res/raw/damage.mp3');
-    sound_recovery = new Audio('res/raw/recovery.mp3');
+    sound_attack = new Audio('../../res/raw/attack.mp3');
+    sound_brainattack = new Audio('../../res/raw/brainattack.mp3');
+    sound_damage = new Audio('../../res/raw/damage.mp3');
+    sound_recovery = new Audio('../../res/raw/recovery.mp3');
 };
 
 init();
@@ -34,7 +34,7 @@ init();
 var app = new Vue({
     el : "#app",
     data : {
-        image_src : "res/img/tiheisenn.png",
+        image_src : "../../res/img/tiheisenn.png",
         left : "地平線に向かって走り続ける",
         right : "暗雲に向かって走り続ける",
         name_text : "---",
@@ -159,7 +159,7 @@ var app = new Vue({
         },
 
         setImageSrc : function(img) {//画像表示
-            this.image_src = "res/img/" + img;
+            this.image_src = "../../res/img/" + img;
         },
 
         setTimer : function(button, time) {//場面転換時の画面遷移用のタイマー buttonをenabledにしたい時呼び出す
@@ -346,7 +346,7 @@ var app = new Vue({
                 if (prev_event_random == random)
                     continue;
                 if (random == 1 || random == 5 || random == 7) {
-                    if (item_have1.getName() != "なし" || item_have2.getName() != "なし" || item_have1.getName() != "えんまく" || item_have2.getName() != "えんまく") {
+                    if (item_have1.getName() != "なし" || item_have2.getName() != "なし") {
                         if (random == 7) {
                             if (damage < hp / 2) {
                                 break;
@@ -403,7 +403,14 @@ var app = new Vue({
             case 2:
                 this.setMoveEvent(move_random);
                 if (item_have1.getName() == "なし" && item_have2.getName() == "なし" && en_count % 10 == 0) {
-                    item_have1 = item[1];
+                    if (level == 1)
+                        item_have1 = item[1];
+                    else if (level == 2)
+                        item_have1 = item[2];
+                    else if (level == 3)
+                        item_have1 = item[3];
+                    else if (level == 4)
+                        item_have1 = item[4];
                 }
 
                 if (button == "item1" || button == "item2") {
@@ -424,7 +431,7 @@ var app = new Vue({
             case 3:
                 if (itemID == 1) {
                     if (item_have1.isFood()) {
-                        if (damage < hp) {
+                        if (damage < (hp + addHP1 + addHP2)) {
                             this.console_text = item_have1.getName() + "を使用しますか？";
                             page = 4;
                             this.left = "はい";
@@ -445,7 +452,7 @@ var app = new Vue({
                     }
                 } else if (itemID == 2) {
                     if (item_have2.isFood()) {
-                        if (damage < hp) {
+                        if (damage < (hp + addHP1 + addHP2)) {
                             this.console_text = item_have2.getName() + "を使用しますか？";
                             page = 4;
                             this.left = "はい";
@@ -471,8 +478,8 @@ var app = new Vue({
                     if (itemID == 1) {
                         this.console_text = item_have1.getName() + "を使用した。\n体力が" + item_have1.getValue() + "回復した。";
                         damage += item_have1.getValue();
-                        if (damage > hp) {
-                            damage = hp;
+                        if (damage > (hp + addHP1 + addHP2)) {
+                            damage = (hp + addHP1 + addHP2);
                         }
                         if (item_have1.getName() != "寝袋" && item_have1.getName() != "上級寝袋" && item_have1.getName() != "家" && item_have1.getName() != "城") {
                             itemDrop(1);
@@ -480,8 +487,8 @@ var app = new Vue({
                     } else {
                         this.console_text = item_have2.getName() + "を使用した。\n体力が" + item_have2.getValue() + "回復した。";
                         damage += item_have2.getValue();
-                        if (damage > hp) {
-                            damage = hp;
+                        if (damage > (hp + addHP1 + addHP2)) {
+                            damage = (hp + addHP1 + addHP2);
                         }
                         if (item_have2.getName() != "寝袋" && item_have2.getName() != "上級寝袋" && item_have2.getName() != "家" && item_have2.getName() != "城") {
                             itemDrop(2);
@@ -820,16 +827,21 @@ var app = new Vue({
                 if (button == "left") {
                     var random = Math.round(Math.random() * 9);
                     var add;
+                    var addD;
                     if (level == 1) {
                         add = 1;
+                        addD = 2;
                     } else if (level == 2) {
                         add = 2;
+                        addD = 5;
                     } else if (level == 3) {
                         add = 3;
+                        addD = 10;
                     } else if (level == 4) {
                         add = 5;
+                        addD = 20;
                     }
-                    if (random < 8 || (damage - (add * 2)) < 1) {
+                    if (random < 8 || (damage - addD) < 1) {
                         if (level == 1) {
                             if (workID == 0) {
                                 this.console_text = "あなたは一生懸命働いた。\n体力がついた。";
@@ -899,8 +911,8 @@ var app = new Vue({
                         } else if (level == 4) {
                             this.name_text = "王";
                         }
-                        this.console_text = "つかえない奴め！\nボゴッ　ドスッ　バコッ\n\n" + (add * 2) + "ダメージ。";
-                        damage -= (add * 2);
+                        this.console_text = "つかえない奴め！\nボゴッ　ドスッ　バコッ\n\n" + addD + "ダメージ。";
+                        damage -= addD;
                     }
                     this.nextIsMoveAnime();
                     return;
@@ -1385,20 +1397,25 @@ var app = new Vue({
                 if (button == "left") {
                     var random = Math.round(Math.random() * 9);
                     var add;
+                    var addD;
                     if (level == 1) {
                         this.name_text = "道具屋";
                         add = 1;
+                        addD = 2;
                     } else if (level == 2) {
                         this.name_text = "武具屋";
                         add = 2;
+                        addD = 5;
                     } else if (level == 3) {
                         this.name_text = "地主";
                         add = 3;
+                        addD = 10;
                     } else if (level == 4) {
                         this.name_text = "摂政";
                         add = 5;
+                        addD = 20;
                     }
-                    if (random < 8 || (damage - (add * 2)) < 1) {
+                    if (random < 8 || (damage - addD) < 1) {
                         var ability_random = Math.round(Math.random() * 2);
                         if (level == 1) {
                             this.console_text = "君のおかげで繁盛したよ。\nありがとう\n\n";
@@ -1420,8 +1437,8 @@ var app = new Vue({
                             this.console_text += "知力が上がった。";
                         }
                     } else {
-                        this.console_text = "つかえない奴め！\nボゴッ　ドスッ　バコッ\n\n" + (add * 2) + "ダメージ。";
-                        damage -= (add * 2);
+                        this.console_text = "つかえない奴め！\nボゴッ　ドスッ　バコッ\nn" + addD + "ダメージ。";
+                        damage -= addD;
                     }
                     this.nextIsMoveAnime();
                 } else if (button == "right") {
@@ -1477,9 +1494,9 @@ var app = new Vue({
                     this.name_text = "ご婦人";
                     this.console_text = "あんた疲れているね。\n休んでくといいよ。\n\n体力が回復した。";
                     this.setImageSrc("gohuzinn.png");
-                    damage += (hp / 2);
-                    if (damage > hp) {
-                        damage = hp;
+                    damage += ((hp + addHP1 + addHP2) / 2);
+                    if (damage > (hp + addHP1 + addHP2)) {
+                        damage = (hp + addHP1 + addHP2);
                     }
                 } else {
                     this.name_text = "シスター";
