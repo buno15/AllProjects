@@ -27,22 +27,32 @@ Unit.prototype = {
         }
     },
 
+    setItemIsName : function(name) {
+        for (var i = 0; i < item.length; i++) {
+            if (item[i].getName() == name) {
+                this.item = item[i];
+                return;
+            }
+        }
+        this.item = item[0];
+    },
+
     setHP : function(level) {//HP初期化
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 15) + 15;
+            return Math.round(Math.random() * 20) + 30;
             break;
         case 2:
-            return Math.round(Math.random() * 15) + 75;
+            return Math.round(Math.random() * 50) + 100;
             break;
         case 3:
-            return Math.round(Math.random() * 50) + 150;
+            return Math.round(Math.random() * 50) + 175;
             break;
         case 4:
             return Math.round(Math.random() * 100) + 200;
             break;
         case 5:
-            return 1000;
+            return 10;
             break;
         }
     },
@@ -50,16 +60,16 @@ Unit.prototype = {
     setPower : function(level) {
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 3) + 1;
+            return Math.round(Math.random() * 20) + 15;
             break;
         case 2:
-            return Math.round(Math.random() * 10) + 5;
+            return Math.round(Math.random() * 25) + 30;
             break;
         case 3:
-            return Math.round(Math.random() * 15) + 10;
+            return Math.round(Math.random() * 25) + 65;
             break;
         case 4:
-            return Math.round(Math.random() * 5) + 15;
+            return Math.round(Math.random() * 25) + 90;
             break;
         case 5:
             return 30;
@@ -69,16 +79,16 @@ Unit.prototype = {
     setBrain : function(level) {
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 15) + 10;
+            return Math.round(Math.random() * 20) + 15;
             break;
         case 2:
-            return Math.round(Math.random() * 20) + 30;
+            return Math.round(Math.random() * 25) + 40;
             break;
         case 3:
-            return Math.round(Math.random() * 25) + 50;
+            return Math.round(Math.random() * 25) + 65;
             break;
         case 4:
-            return Math.round(Math.random() * 25) + 75;
+            return Math.round(Math.random() * 25) + 90;
             break;
         case 5:
             return 200;
@@ -124,7 +134,7 @@ unit.push(new Unit("酔っぱらい", "yopparai.png", 1, false));
 unit.push(new Unit("異国の兵士", "heisi.png", 1, false));
 unit.push(new Unit("クマ", "kuma.png", 1, true));
 
-unit.push(new Unit("ゴブリン", "goburinn.png", 2, true));
+unit.push(new Unit("ゴブリン", "goburinn.png", 2, false));
 unit.push(new Unit("オーガ", "ooga.png", 2, true));
 unit.push(new Unit("ならず者のボス", "naraboss.png", 2, false));
 unit.push(new Unit("バイス将軍", "vice.png", 2, false));

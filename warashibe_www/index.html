@@ -3,6 +3,29 @@
 	<head>
 		<title>わらしべ〜道なき道〜</title>
 		<meta charset="UTF-8"/>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="src/js/memory.js"></script>
+		<link rel="shortcut icon" href="res/img/icon.ico" />
 	</head>
-	<body></body>
+	<body>
+		<div id="app">
+			<a href="src/html/play.html" v-on:click="new_game">はじめから</a>
+			<a href="src/html/play.html" v-on:click="load_game">つづきから</a>
+		</div>
+		<script>
+            var app = new Vue({
+                el : "#app",
+                data : {
+                },
+                methods : {
+                    new_game : function() {
+                        localStorage.setItem("n_flag", "1");
+                    },
+                    load_game : function() {
+                        localStorage.setItem("n_flag", "2");
+                    }
+                },
+            });
+		</script>
+	</body>
 </html>

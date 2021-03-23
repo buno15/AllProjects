@@ -12,18 +12,33 @@ var addPower2 = -1;
 var addBrain2 = -1;
 var level = -1;
 
-function save() {
+var enemyID = "";
+var n_flag;
+//はじめからかどうか
+
+function save(name) {
     localStorage.setItem("hp", hp);
+    localStorage.setItem("damage", damage);
+    localStorage.setItem("power", power);
+    localStorage.setItem("brain", brain);
+    localStorage.setItem("item_have1", item_have1.getName());
+    localStorage.setItem("item_have2", item_have2.getName());
+    localStorage.setItem("n_flag", n_flag);
+    localStorage.setItem("enemyID", name);
+}
+
+function saveBattle(name) {
+    localStorage.setItem("enemyID", name);
 }
 
 function load() {
-    hp = localStorage.getItem("hp");
-    hp = 80;
-    damage = 80;
-    power = 80;
-    brain = 80;
-    item_have1 = item[30];
-    item_have2 = item[33];
+    hp = parseInt(localStorage.getItem("hp"));
+    damage = parseInt(localStorage.getItem("damage"));
+    power = parseInt(localStorage.getItem("power"));
+    brain = parseInt(localStorage.getItem("brain"));
+    item_have1 = getItemIsName(localStorage.getItem("item_have1"));
+    item_have2 = getItemIsName(localStorage.getItem("item_have2"));
+    enemyID = localStorage.getItem("enemyID");
 }
 
 function itemDrop(id) {
@@ -47,11 +62,11 @@ function getYesNo() {
 }
 
 function setLevel() {
-    if ((hp > 75 && hp <= 1000) || (power > 75 && power <= 1000) || (brain > 75 && brain <= 1000)) {
+    if ((hp > 750 && hp <= 1000) || (power > 75 && power <= 500) || (brain > 75 && brain <= 500)) {
         level = 4;
-    } else if ((hp > 50 && hp <= 75) || (power > 50 && power <= 75) || (brain > 50 && brain <= 75)) {
+    } else if ((hp > 500 && hp <= 750) || (power > 50 && power <= 75) || (brain > 50 && brain <= 75)) {
         level = 3;
-    } else if ((hp > 25 && hp <= 50) || (power > 25 && power <= 50) || (brain > 25 && brain <= 50)) {
+    } else if ((hp > 250 && hp <= 500) || (power > 25 && power <= 50) || (brain > 25 && brain <= 50)) {
         level = 2;
     } else {
         level = 1;
