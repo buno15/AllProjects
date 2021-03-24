@@ -3,29 +3,42 @@
 	<head>
 		<title>わらしべ〜道なき道〜</title>
 		<meta charset="UTF-8"/>
+		<link rel="stylesheet" href="src/css/main.css"/>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-		<script src="src/js/memory.js"></script>
 		<link rel="shortcut icon" href="res/img/icon.ico" />
 	</head>
 	<body>
+
 		<div id="app">
-			<a href="src/html/play.html" v-on:click="new_game">はじめから</a>
-			<a href="src/html/play.html" v-on:click="load_game">つづきから</a>
+			<div id="header">
+				<div id="icon-div">
+					<a href="index.html"> <img id="icon" src="res/img/icon.png"> </a>
+				</div>
+				<div id="title-div">
+					<h1>わらしべ〜道なき道〜</h1>
+				</div>
+				<div id="help-div">
+					<a href="src/html/help.html"> <img id="icon" src="res/img/help.png"> </a>
+				</div>
+			</div>
+			<div id="main">
+				<div id="img-content">
+					<img src="res/img/senndenn.png">
+				</div>
+				<div id="button-div">
+					<div class="button-content">
+						<button class="button" v-on:click="new_game" :disabled="Disabled1">
+							はじめから
+						</button>
+					</div>
+					<div class="button-content">
+						<button class="button" v-on:click="load_game" :disabled="Disabled2">
+							つづきから
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
-		<script>
-            var app = new Vue({
-                el : "#app",
-                data : {
-                },
-                methods : {
-                    new_game : function() {
-                        localStorage.setItem("n_flag", "1");
-                    },
-                    load_game : function() {
-                        localStorage.setItem("n_flag", "2");
-                    }
-                },
-            });
-		</script>
+		<script src="src/js/memory.js"></script>
 	</body>
 </html>

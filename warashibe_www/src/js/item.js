@@ -141,4 +141,5 @@ item.push(new Item("デンセツノ剣", 40, 4, false, false));
 item.push(new Item("デンセツノ鎧", 200, 4, false, false));
 item.push(new Item("デンセツノ兜", 150, 4, false, false));
 item.push(new Item("テラインサイト", 30, 4, false, false));
+//72
 

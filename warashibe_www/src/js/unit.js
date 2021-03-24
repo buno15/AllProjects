@@ -49,10 +49,10 @@ Unit.prototype = {
             return Math.round(Math.random() * 50) + 175;
             break;
         case 4:
-            return Math.round(Math.random() * 100) + 200;
+            return Math.round(Math.random() * 250) + 250;
             break;
         case 5:
-            return 10;
+            return 2000;
             break;
         }
     },
@@ -60,29 +60,10 @@ Unit.prototype = {
     setPower : function(level) {
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 20) + 15;
+            return Math.round(Math.random() * 15) + 15;
             break;
         case 2:
-            return Math.round(Math.random() * 25) + 30;
-            break;
-        case 3:
-            return Math.round(Math.random() * 25) + 65;
-            break;
-        case 4:
-            return Math.round(Math.random() * 25) + 90;
-            break;
-        case 5:
-            return 30;
-            break;
-        }
-    },
-    setBrain : function(level) {
-        switch(level) {
-        case 1:
-            return Math.round(Math.random() * 20) + 15;
-            break;
-        case 2:
-            return Math.round(Math.random() * 25) + 40;
+            return Math.round(Math.random() * 25) + 25;
             break;
         case 3:
             return Math.round(Math.random() * 25) + 65;
@@ -92,6 +73,25 @@ Unit.prototype = {
             break;
         case 5:
             return 200;
+            break;
+        }
+    },
+    setBrain : function(level) {
+        switch(level) {
+        case 1:
+            return Math.round(Math.random() * 10) + 5;
+            break;
+        case 2:
+            return Math.round(Math.random() * 20) + 10;
+            break;
+        case 3:
+            return Math.round(Math.random() * 20) + 30;
+            break;
+        case 4:
+            return Math.round(Math.random() * 35) + 40;
+            break;
+        case 5:
+            return 80;
             break;
         }
     },

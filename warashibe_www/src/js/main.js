@@ -23,11 +23,11 @@ var flag_kengou = false;
 var flag_daiou = false;
 var flag_sleep = false;
 
-var sound_start;
 var sound_attack1;
 var sound_attack2;
 var sound_brainattack;
 var sound_damage;
+var sound_damageboss;
 var sound_recovery;
 var sound_item_compare;
 var sound_item_get;
@@ -58,16 +58,13 @@ function init() {
     } else {
         page = 9003;
         load();
-        if (enemyID != "none") {
-            page = 101;
-        }
     }
 
-    sound_start = new Audio('../../res/raw/start.mp3');
     sound_attack1 = new Audio('../../res/raw/attack_1.mp3');
     sound_attack2 = new Audio('../../res/raw/attack_2.mp3');
     sound_brainattack = new Audio('../../res/raw/brainattack.mp3');
     sound_damage = new Audio('../../res/raw/damage.mp3');
+    sound_damageboss = new Audio('../../res/raw/damage_boss.mp3');
     sound_recovery = new Audio('../../res/raw/recovery.mp3');
     sound_item_compare = new Audio('../../res/raw/item_compare.mp3');
     sound_item_get = new Audio('../../res/raw/item_get.mp3');
@@ -157,11 +154,6 @@ var app = new Vue({
             this.damage_text = damage;
             this.item_text1 = item_have1.getName();
             this.item_text2 = item_have2.getName();
-            if (hp == 1000 || power >= 100 || brain >= 100) {
-                flag_daiou = true;
-            } else {
-                flag_daiou = false;
-            }
             console.log(damage + " " + hp + " " + power + " " + brain);
         },
 
@@ -246,7 +238,11 @@ var app = new Vue({
                 break;
             case 1:
                 //相手の攻撃始
-                sound_damage.play();
+                if (flag_daiou) {
+                    sound_damageboss.play();
+                } else {
+                    sound_damage.play();
+                }
                 this.setImageSrc(this.enemy.getImg());
                 this.console_text = this.enemy.getName() + "の攻撃！\n" + this.enemy.getPower() + "ダメージ。";
                 setTimeout(this.normalAttack, 800, 2);
@@ -295,7 +291,11 @@ var app = new Vue({
                     this.enemy.addDamage(power + addPower1 + addPower2 + brain + addBrain1 + addBrain2);
                     setTimeout(this.brainAttack, 500, 1);
                 } else {
-                    sound_damage.play();
+                    if (flag_daiou) {
+                        sound_damageboss.play();
+                    } else {
+                        sound_damage.play();
+                    }
                     this.console_text = this.enemy.getName() + "の攻撃！\n" + this.enemy.getPower() + "ダメージ。";
                     setTimeout(this.brainAttack, 800, 11);
                 }
@@ -352,6 +352,11 @@ var app = new Vue({
         },
 
         setMoveEvent : function(i) {
+            if (hp == 1000 || power >= 100 || brain >= 100) {
+                flag_daiou = true;
+            } else {
+                flag_daiou = false;
+            }
             if (flag_daiou) {
                 this.setImageSrc("bosstf.png");
                 this.left = "旅を続ける";
@@ -526,6 +531,16 @@ var app = new Vue({
                         item_have1 = item[5];
                     else if (level == 4)
                         item_have1 = item[6];
+                    this.console_text += "\nえんまくを手に入れた！";
+                }
+
+                if (this.atleastOneNoItem() && en_count % 5 == 0) {
+                    if (item_have1.getName() == "なし") {
+                        item_have1 = item[11];
+                    } else if (item_have2.getName() == "なし") {
+                        item_have2 = item[11];
+                    }
+                    this.console_text += "\n木の枝を拾った！";
                 }
 
                 if (button == "item1" || button == "item2") {
@@ -679,6 +694,18 @@ var app = new Vue({
                     this.setImageSrc("moneyclear.png");
                     this.console_text = "先帝からの禅譲により、あなたは帝位についた。\nあなたが建国した帝国は、\nこの後２８９年栄えたと言われている。";
                     this.buttonDisabled();
+                    sound_bgm_move.pause();
+                    sound_bgm_move.currentTime = 0;
+                    sound_bgm_battle.pause();
+                    sound_bgm_battle.currentTime = 0;
+                    sound_bgm_battleboss.pause();
+                    sound_bgm_battleboss.currentTime = 0;
+                    sound_bgm_event.pause();
+                    sound_bgm_event.currentTime = 0;
+
+                    page = 152;
+                    n_flag = "1";
+                    save("");
                 } else if (button == "right") {
                     page = 2;
                     this.next("");
@@ -690,11 +717,6 @@ var app = new Vue({
                 sound_bgm_move.pause();
                 sound_bgm_move.currentTime = 0;
 
-                sound_bgm_battle.addEventListener('ended', function() {
-                    this.play();
-                });
-                sound_bgm_battle.play();
-
                 for (var i = 0; i < unit.length; i++) {
                     if (unit[i].getName() == enemyID) {
                         this.enemy = unit[i];
@@ -703,8 +725,16 @@ var app = new Vue({
                 }
                 if (flag_daiou) {
                     this.enemy = unit[16];
+                    sound_bgm_battleboss.addEventListener('ended', function() {
+                        this.play();
+                    });
+                    sound_bgm_battleboss.play();
                 } else if (enemyID == "none") {
                     this.enemy = getEnemy(level, "");
+                    sound_bgm_battle.addEventListener('ended', function() {
+                        this.play();
+                    });
+                    sound_bgm_battle.play();
                 }
                 saveBattle(this.enemy.getName());
                 this.setImageSrc(this.enemy.getImg() + "");
@@ -834,6 +864,12 @@ var app = new Vue({
                     if ((itemID == 1 && item_have1.getName() == "えんまく") || (itemID == 2 && item_have2.getName() == "えんまく")) {
                         sound_escape.play();
 
+                        if (itemID == 1) {
+                            itemDrop(1);
+                        } else if (itemID == 2) {
+                            itemDrop(2);
+                        }
+
                         this.name_text = this.enemy.getName();
                         this.console_text = "「うわーーー」";
                         this.nextIsMoveAnime();
@@ -902,6 +938,8 @@ var app = new Vue({
 
                 this.console_text += this.enemy.getName() + "を倒した。";
                 if (flag_daiou) {
+                    sound_bgm_battleboss.pause();
+                    sound_bgm_battleboss.currentTime = 0;
                     this.console_text += "\n世界は救われた。";
                     this.left = "英雄になる";
                     this.right = "旅を終わる";
@@ -974,6 +1012,15 @@ var app = new Vue({
                 return;
             case 151:
                 if (button == "left" || button == "right") {
+                    sound_bgm_battle.pause();
+                    sound_bgm_battle.currentTime = 0;
+                    sound_bgm_battleboss.pause();
+                    sound_bgm_battleboss.currentTime = 0;
+                    sound_bgm_event.pause();
+                    sound_bgm_event.currentTime = 0;
+
+                    n_flag = "1";
+                    save("");
                     this.setImageSrc("clear.png");
                     this.console_text = "恐怖の大王を討伐したあなたは、\n英雄として讃えられた。\nその名は永遠に語り継がれるだろう。";
                     this.buttonDisabled();
@@ -1438,7 +1485,6 @@ var app = new Vue({
                         }
                     }
                 } else {
-                    console.log(nlevel);
                     this.enemy = getEnemy(nlevel, (itemID == 1 ? item_have1.getName() : item_have2.getName()));
                     flag_kengou = false;
                     var random = Math.round(Math.random() * 1);
@@ -1730,6 +1776,11 @@ var app = new Vue({
                 return;
             case 701:
                 /**************************************************************演奏（楽器は必ず持ってると仮定）************************************************************/
+                sound_bgm_event.addEventListener('ended', function() {
+                    this.play();
+                });
+                sound_bgm_event.play();
+
                 if (level == 1) {
                     this.name_text = "道具屋";
                     this.console_text = "「店の前で演奏して、\n客を呼び込んでくれんかね。」";
@@ -1813,7 +1864,7 @@ var app = new Vue({
                         sound_powerup.play();
                     } else {
                         sound_damage.play();
-                        this.console_text = "「つかえない奴め！」\nボゴッ　ドスッ　バコッ\nn" + addD + "ダメージ。";
+                        this.console_text = "「つかえない奴め！」\nボゴッ　ドスッ　バコッ\n\n" + addD + "ダメージ。";
                         damage -= addD;
                     }
                     this.nextIsMoveAnime();
@@ -1949,7 +2000,12 @@ var app = new Vue({
                 break;
             case 9004:
                 if (button == "left" || button == "right") {
-                    this.nextIsMove();
+                    if (enemyID != "none") {
+                        page = 101;
+                        this.next("");
+                    } else {
+                        this.nextIsMove();
+                    }
                     return;
                 }
                 break;
