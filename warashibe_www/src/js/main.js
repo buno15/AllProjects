@@ -101,12 +101,14 @@ var app = new Vue({
         Disabled : false,
         flag_key1 : false,
         flag_key2 : false, //animationの後にボタンをenableする補助flag
+        windowWidth : 0,
     },
 
     created : function() {
     },
 
     mounted : function() {
+        this.windowWidth = window.innerWidth;
         window.addEventListener('keydown', this.keyActionDown, false);
         window.addEventListener('keyup', this.keyActionUp, false);
         this.next("");
@@ -729,8 +731,9 @@ var app = new Vue({
                         this.play();
                     });
                     sound_bgm_battleboss.play();
-                } else if (enemyID == "none") {
-                    this.enemy = getEnemy(level, "");
+                } else {
+                    if (enemyID == "none")
+                        this.enemy = getEnemy(level, "");
                     sound_bgm_battle.addEventListener('ended', function() {
                         this.play();
                     });

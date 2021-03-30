@@ -40,16 +40,16 @@ Unit.prototype = {
     setHP : function(level) {//HP初期化
         switch(level) {
         case 1:
-            return Math.round(Math.random() * 20) + 30;
+            return Math.round(Math.random() * 45) + 30;
             break;
         case 2:
-            return Math.round(Math.random() * 50) + 100;
+            return Math.round(Math.random() * 50) + 150;
             break;
         case 3:
-            return Math.round(Math.random() * 50) + 175;
+            return Math.round(Math.random() * 50) + 200;
             break;
         case 4:
-            return Math.round(Math.random() * 250) + 250;
+            return Math.round(Math.random() * 250) + 275;
             break;
         case 5:
             return 2000;
@@ -91,7 +91,7 @@ Unit.prototype = {
             return Math.round(Math.random() * 35) + 40;
             break;
         case 5:
-            return 80;
+            return 200;
             break;
         }
     },

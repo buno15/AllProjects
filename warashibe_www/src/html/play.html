@@ -4,6 +4,7 @@
 		<title>わらしべ〜道なき道〜</title>
 		<meta charset="UTF-8"/>
 		<link rel="stylesheet" href="../css/base.css"/>
+		<link rel="stylesheet" media="screen and (max-width:990px)" href="../css/base_smart.css" />
 		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 		<script src="../js/item.js"></script>
 		<script src="../js/unit.js"></script>
@@ -23,7 +24,7 @@
 					<a href="help.html"> <img id="icon" src="../../res/img/help.png"> </a>
 				</div>
 			</div>
-			<div id="main">
+			<div id="main" v-if="this.windowWidth >= 990">
 				<div class="wrapper">
 					<div class="container">
 						<div class="content-item">
@@ -71,9 +72,7 @@
 								</p>
 							</div>
 							<div id="consoleCon">
-								<p id="console" style="white-space: pre-wrap;" v-text="console_text">
-
-								</p>
+								<p id="console" style="white-space: pre-wrap;" v-text="console_text"></p>
 							</div>
 						</div>
 						<div class="content-item">
@@ -108,6 +107,63 @@
 								</button>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div id="main" v-if="this.windowWidth < 990">
+				<div id="top">
+					<div class="top-text">
+						<h1 id="heart">体力：{{damage_text}}/{{hp_text}}</h1>
+					</div>
+					<div class="top-text">
+						<h1 id="power">攻撃力：{{power_text}}</h1>
+					</div>
+					<div class="top-text">
+						<h1 id="brain">知力：{{brain_text}}</h1>
+					</div>
+				</div>
+				<div id="middle">
+					<div id="screenCon">
+						<div id="content"><img id="screen" v-bind:src="image_src"/>
+						</div>
+					</div>
+					<div id="nameCon">
+						<p id="name">
+							{{name_text}}
+						</p>
+					</div>
+					<div id="consoleCon">
+						<p id="console" style="white-space: pre-wrap;" v-text="console_text"></p>
+					</div>
+				</div>
+				<div id="item_div">
+					<div class="item-text">
+						<div class="space"></div>
+						<div class="item-img"><img  src="../../res/img/item.png"/>
+						</div>
+						<button class="item" v-on:click.prevent="next('item1');" :disabled="Disabled">
+							{{item_text1}}
+						</button>
+					</div>
+					<div class="item-text">
+						<div class="space"></div>
+						<div class="item-img"><img  src="../../res/img/item.png"/>
+						</div>
+						<button class="item"  v-on:click.prevent="next('item2');" :disabled="Disabled">
+							{{item_text2}}
+						</button>
+					</div>
+				</div>
+				<div id="button_div">
+					<div class="button_content">
+						<button class="button"  v-on:click="next('left');" :disabled="Disabled">
+							{{left}}
+						</button>
+					</div>
+					<div class="button_content">
+						<button class="button" v-on:click="next('right');" :disabled="Disabled">
+							{{right}}
+						</button>
 					</div>
 				</div>
 			</div>

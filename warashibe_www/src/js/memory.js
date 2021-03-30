@@ -5,9 +5,11 @@ var app = new Vue({
     data : {
         Disabled1 : false,
         Disabled2 : false,
+        windowWidth : 0,
     },
 
     mounted : function() {
+        this.windowWidth = window.innerWidth;
         var n_flag = localStorage.getItem("n_flag");
         console.log(n_flag);
         if (n_flag == "" || n_flag == undefined || n_flag == "1" || n_flag == null) {
