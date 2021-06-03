@@ -19,6 +19,9 @@
         <activity android:name=".SelectEventActivity">
 
         </activity>
+        <activity android:name=".SetRuleActivity">
+
+        </activity>
     </application>
 
 </manifest>

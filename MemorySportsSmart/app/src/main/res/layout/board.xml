@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:autoSizeTextType="uniform"
         android:background="#008080"
         android:gravity="center"
         android:textColor="#ffffff" />
@@ -23,5 +24,5 @@
         android:layout_height="0dp"
         android:layout_weight="6"
         android:background="@drawable/button_custom1"
-        android:scaleType="fitStart" />
+        android:scaleType="fitCenter" />
 </LinearLayout>

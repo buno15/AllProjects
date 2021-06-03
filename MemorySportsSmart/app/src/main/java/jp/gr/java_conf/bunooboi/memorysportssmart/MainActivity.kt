@@ -27,5 +27,7 @@ class MainActivity : AppCompatActivity() {
         board2.imageButton.setOnClickListener {
             startActivity(Intent(this, SelectEventActivity::class.java))
         }
+
+
     }
 }
