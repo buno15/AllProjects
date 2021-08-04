@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SelectEventActivity::class.java))
         }
 
+        Main.initCard()
+        Main.initNumber()
+
 
     }
 }

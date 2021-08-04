@@ -22,6 +22,9 @@
         <activity android:name=".SetRuleActivity">
 
         </activity>
+        <activity android:name=".PlayActivity">
+
+        </activity>
     </application>
 
 </manifest>

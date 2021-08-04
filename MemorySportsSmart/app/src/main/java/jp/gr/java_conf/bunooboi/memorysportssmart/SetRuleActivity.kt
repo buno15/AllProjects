@@ -1,13 +1,12 @@
 package jp.gr.java_conf.bunooboi.memorysportssmart
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.floor
 
 class SetRuleActivity : AppCompatActivity() {
 
@@ -43,6 +42,10 @@ class SetRuleActivity : AppCompatActivity() {
         val textView1: TextView = findViewById(R.id.text1)
         textView1.text = "seconds"
 
+        val editText: EditText = findViewById(R.id.editText)
+        editText.setText(Main.autoTime.toString())
+
+
         var button = listOf<Button>(
             findViewById(R.id.button1),
             findViewById(R.id.button2),
@@ -55,8 +58,46 @@ class SetRuleActivity : AppCompatActivity() {
         button[2].text = "+ 0.1"
         button[3].text = "+ 1"
 
+        button[0].setOnClickListener {
+            val nTime = editText.text.toString().toDouble()
+            if (nTime - 1.0 > 0) {
+                var aTime = floor((editText.text.toString().toDouble() - 1.0) * 10.0) / 10.0
+                editText.setText(aTime.toString())
+            }
+        }
+
+        button[1].setOnClickListener {
+            val nTime = editText.text.toString().toDouble()
+            if (nTime - 0.1 > 0) {
+                var aTime = floor((editText.text.toString().toDouble() - 0.1) * 10.0) / 10.0
+                editText.setText(aTime.toString())
+            }
+        }
+
+        button[2].setOnClickListener {
+            val aTime = floor((editText.text.toString().toDouble() + 0.1) * 10.0) / 10.0
+            editText.setText(aTime.toString())
+        }
+
+        button[3].setOnClickListener {
+            val aTime = floor((editText.text.toString().toDouble() + 1.0) * 10.0) / 10.0
+            editText.setText(aTime.toString())
+        }
+
         val startButton: Button = findViewById(R.id.start)
         startButton.text = "Start"
+        startButton.setOnClickListener {
+            try {
+                val aTime: String = editText.text.toString()
+                Main.autoTime = floor(aTime.toDouble() * 10.0) / 10.0
+                if (Main.autoTime <= 0)
+                    Main.autoTime = 1.0
+            } catch (nfe: NumberFormatException) {
+                nfe.printStackTrace()
+                Main.autoTime = 1.0
+            }
+            startActivity(Intent(this, PlayActivity::class.java))
+        }
 
     }
 
