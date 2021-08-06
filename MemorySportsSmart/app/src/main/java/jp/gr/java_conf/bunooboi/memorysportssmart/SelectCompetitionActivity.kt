@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class SelectEventActivity : AppCompatActivity() {
+class SelectCompetitionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_competition)
 
         val board1: Board = findViewById(R.id.board1)
         val board2: Board = findViewById(R.id.board2)
@@ -20,10 +20,12 @@ class SelectEventActivity : AppCompatActivity() {
         board2.imageButton.setImageResource(R.mipmap.number)
 
         board1.imageButton.setOnClickListener {
+            Main.competitionType = Main.TYPE_CARD
             startActivity(Intent(this, SetRuleActivity::class.java))
         }
 
         board2.imageButton.setOnClickListener {
+            Main.competitionType = Main.TYPE_NUMBER
             startActivity(Intent(this, SetRuleActivity::class.java))
         }
 

@@ -7,12 +7,15 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.floor
+import kotlin.math.round
 
 class SetRuleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rule)
+
+        Main.operationType = Main.TYPE_AUTO
 
         val board1: Board = findViewById(R.id.board1)
         val board2: Board = findViewById(R.id.board2)
@@ -28,12 +31,14 @@ class SetRuleActivity : AppCompatActivity() {
         setDisable(board1.imageButton)
 
         board1.imageButton.setOnClickListener {
+            Main.operationType = Main.TYPE_AUTO
             setDisable(board1.imageButton)
             setEnable(board2.imageButton)
             settingLayout.visibility = View.VISIBLE
         }
 
         board2.imageButton.setOnClickListener {
+            Main.operationType = Main.TYPE_MANUAL
             setDisable(board2.imageButton)
             setEnable(board1.imageButton)
             settingLayout.visibility = View.INVISIBLE
@@ -61,7 +66,7 @@ class SetRuleActivity : AppCompatActivity() {
         button[0].setOnClickListener {
             val nTime = editText.text.toString().toDouble()
             if (nTime - 1.0 > 0) {
-                var aTime = floor((editText.text.toString().toDouble() - 1.0) * 10.0) / 10.0
+                var aTime = round((editText.text.toString().toDouble() - 1.0) * 10.0) / 10.0
                 editText.setText(aTime.toString())
             }
         }
@@ -69,24 +74,29 @@ class SetRuleActivity : AppCompatActivity() {
         button[1].setOnClickListener {
             val nTime = editText.text.toString().toDouble()
             if (nTime - 0.1 > 0) {
-                var aTime = floor((editText.text.toString().toDouble() - 0.1) * 10.0) / 10.0
+                var aTime = round((editText.text.toString().toDouble() - 0.1) * 10.0) / 10.0
                 editText.setText(aTime.toString())
             }
         }
 
         button[2].setOnClickListener {
-            val aTime = floor((editText.text.toString().toDouble() + 0.1) * 10.0) / 10.0
+            val aTime = round((editText.text.toString().toDouble() + 0.1) * 10.0) / 10.0
             editText.setText(aTime.toString())
         }
 
         button[3].setOnClickListener {
-            val aTime = floor((editText.text.toString().toDouble() + 1.0) * 10.0) / 10.0
+            val aTime = round((editText.text.toString().toDouble() + 1.0) * 10.0) / 10.0
             editText.setText(aTime.toString())
         }
 
         val startButton: Button = findViewById(R.id.start)
         startButton.text = "Start"
         startButton.setOnClickListener {
+            when (Main.competitionType) {
+                Main.TYPE_CARD -> Main.initCard()
+                Main.TYPE_NUMBER -> Main.initNumber()
+            }
+
             try {
                 val aTime: String = editText.text.toString()
                 Main.autoTime = floor(aTime.toDouble() * 10.0) / 10.0
