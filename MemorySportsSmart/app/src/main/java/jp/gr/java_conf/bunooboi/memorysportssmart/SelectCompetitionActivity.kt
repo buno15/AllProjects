@@ -21,12 +21,20 @@ class SelectCompetitionActivity : AppCompatActivity() {
 
         board1.imageButton.setOnClickListener {
             Main.competitionType = Main.TYPE_CARD
-            startActivity(Intent(this, SetRuleActivity::class.java))
+            if (Main.methodType == Main.TYPE_MEMORY) {
+                Main.operationType = Main.TYPE_MANUAL
+                startActivity(Intent(this, AnsActivity::class.java))
+            } else if (Main.methodType == Main.TYPE_TRAINING)
+                startActivity(Intent(this, SetRuleActivity::class.java))
         }
 
         board2.imageButton.setOnClickListener {
             Main.competitionType = Main.TYPE_NUMBER
-            startActivity(Intent(this, SetRuleActivity::class.java))
+            if (Main.methodType == Main.TYPE_MEMORY) {
+                Main.operationType = Main.TYPE_MANUAL
+                startActivity(Intent(this, PlayActivity::class.java))
+            } else if (Main.methodType == Main.TYPE_TRAINING)
+                startActivity(Intent(this, SetRuleActivity::class.java))
         }
 
 

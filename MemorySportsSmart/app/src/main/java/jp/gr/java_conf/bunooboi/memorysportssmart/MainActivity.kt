@@ -22,10 +22,12 @@ class MainActivity : AppCompatActivity() {
         board2.imageButton.setImageResource(R.mipmap.training)
 
         board1.imageButton.setOnClickListener {
+            Main.methodType = Main.TYPE_MEMORY
             startActivity(Intent(this, SelectCompetitionActivity::class.java))
         }
 
         board2.imageButton.setOnClickListener {
+            Main.methodType = Main.TYPE_TRAINING
             startActivity(Intent(this, SelectCompetitionActivity::class.java))
         }
 

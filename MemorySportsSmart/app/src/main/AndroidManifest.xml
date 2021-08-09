@@ -9,20 +9,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectCompetitionActivity">
+        <activity
+            android:name=".SelectCompetitionActivity"
+            android:launchMode="singleTask">
 
         </activity>
-        <activity android:name=".SetRuleActivity">
+        <activity
+            android:name=".SetRuleActivity"
+            android:launchMode="singleTask">
 
         </activity>
-        <activity android:name=".PlayActivity">
+        <activity
+            android:name=".PlayActivity"
+            android:launchMode="singleTask">
+
+        </activity>
+        <activity
+            android:name=".AnsActivity"
+            android:launchMode="singleTask">
 
         </activity>
     </application>

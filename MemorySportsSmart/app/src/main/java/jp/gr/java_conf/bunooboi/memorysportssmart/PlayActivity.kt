@@ -1,7 +1,10 @@
 package jp.gr.java_conf.bunooboi.memorysportssmart
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.TextViewCompat
 import kotlinx.android.synthetic.main.activity_play.*
 import java.util.*
 
@@ -22,8 +26,15 @@ class PlayActivity : AppCompatActivity() {
 
     var timeView: TextView? = null
     var cardView: MutableList<ImageView>? = mutableListOf()
+    var numberView: TextView? = null
+
+    var left: Button? = null
+    var right: Button? = null
 
     var cardIndex = 0
+    var numberIndex = 0
+
+    var finish: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,25 +66,41 @@ class PlayActivity : AppCompatActivity() {
                 )
             }
         } else if (Main.competitionType == Main.TYPE_NUMBER) {
+            numberView = TextView(this)
+            numberView!!.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
+            numberView!!.gravity = Gravity.CENTER
 
+            val param = numberView!!.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(15, 15, 15, 15)
+            numberView!!.layoutParams = param
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                numberView!!, 1, 70, 1, TypedValue.COMPLEX_UNIT_DIP
+            )
+            mainLayout.addView(numberView)
         }
 
 
-        val left: Button = findViewById(R.id.left)
-        left.text = "<-"
-        left.setOnClickListener {
+        left = findViewById(R.id.left)
+        left!!.text = "<"
+        left!!.setOnClickListener {
             change(Main.LEFT)
         }
 
-        val right: Button = findViewById(R.id.right)
-        right.text = "->"
-        right.setOnClickListener {
+        right = findViewById(R.id.right)
+        right!!.text = ">"
+        right!!.setOnClickListener {
             change(Main.RIGHT)
         }
 
         if (Main.operationType == Main.TYPE_AUTO) {
-            left.visibility = View.INVISIBLE
-            right.visibility = View.INVISIBLE
+            left!!.visibility = View.INVISIBLE
+            right!!.visibility = View.INVISIBLE
+        } else if (Main.operationType == Main.TYPE_MANUAL) {
+            left!!.isEnabled = false
+            right!!.isEnabled = false
         }
 
         start()
@@ -89,9 +116,75 @@ class PlayActivity : AppCompatActivity() {
                 handler.post {
                     if (count <= 0) {
                         stop(startTimer!!)
-                        if (Main.operationType == Main.TYPE_MANUAL)
+
+                        if (Main.operationType == Main.TYPE_MANUAL) {
+                            right!!.isEnabled = true
+                        }
+
+                        if (Main.operationType == Main.TYPE_MANUAL) {
                             playTime()
-                        else if (Main.operationType == Main.TYPE_AUTO) {
+                            if (Main.competitionType == Main.TYPE_CARD) {
+                                for (i in 0 until Main.pairCard) {
+                                    if (cardIndex < 52)
+                                        cardView!![i].setImageResource(Main.cardData[Main.Card[cardIndex++]].img)
+                                    else
+                                        cardView!![i].visibility = View.INVISIBLE
+                                }
+                            } else if (Main.competitionType == Main.TYPE_NUMBER) {
+                                when (Main.pairNum) {
+                                    Main.TWO -> {
+                                        numberView!!.text =
+                                            Main.Number.substring(numberIndex, numberIndex + 2)
+                                        numberIndex += 2
+                                    }
+                                    Main.THREE -> {
+                                        if (numberIndex + 3 >= 100) {
+                                            numberView!!.text =
+                                                Main.Number.substring(numberIndex, 100)
+                                            numberIndex = 100
+                                        } else {
+                                            numberView!!.text =
+                                                Main.Number.substring(numberIndex, numberIndex + 3)
+                                            numberIndex += 3
+                                        }
+                                    }
+                                    Main.FOUR -> {
+                                        numberView!!.text =
+                                            Main.Number.substring(numberIndex, numberIndex + 4)
+                                        numberIndex += 4
+                                    }
+                                    Main.TWOTWO -> {
+                                        numberView!!.text =
+                                            Main.Number.substring(
+                                                numberIndex,
+                                                numberIndex + 2
+                                            ) + "  " + Main.Number.substring(
+                                                numberIndex + 2,
+                                                numberIndex + 4
+                                            )
+                                        numberIndex += 4
+                                    }
+                                    Main.THREETHREE -> {
+                                        if (numberIndex + 6 >= 100) {
+                                            numberView!!.text = Main.Number.substring(
+                                                numberIndex, numberIndex + 3
+                                            ) + "  " + Main.Number.substring(numberIndex + 3, 100)
+                                            numberIndex = 100
+                                        } else {
+                                            numberView!!.text =
+                                                Main.Number.substring(
+                                                    numberIndex,
+                                                    numberIndex + 3
+                                                ) + "  " + Main.Number.substring(
+                                                    numberIndex + 3,
+                                                    numberIndex + 6
+                                                )
+                                            numberIndex += 6
+                                        }
+                                    }
+                                }
+                            }
+                        } else if (Main.operationType == Main.TYPE_AUTO) {
                             timeView!!.visibility = View.INVISIBLE
                             autoTime()
                         }
@@ -130,16 +223,77 @@ class PlayActivity : AppCompatActivity() {
         autoTimer!!.schedule(object : TimerTask() {
             override fun run() {
                 handler.post {
-                    if (cardIndex >= 52) {
-                        timeView!!.visibility = View.VISIBLE
-                        timeView!!.text = "Done"
-                        stop(autoTimer!!)
-                    } else {
-                        for (i in 0 until Main.pairCard) {
-                            if (cardIndex < 52)
-                                cardView!![i].setImageResource(Main.cardData[Main.Card[cardIndex++]].img)
-                            else
-                                cardView!![i].visibility = View.INVISIBLE
+                    if (Main.competitionType == Main.TYPE_CARD) {
+                        if (cardIndex >= 52) {
+                            timeView!!.visibility = View.VISIBLE
+                            timeView!!.text = "Done"
+                            stop(autoTimer!!)
+                        } else {
+                            for (i in 0 until Main.pairCard) {
+                                if (cardIndex < 52)
+                                    cardView!![i].setImageResource(Main.cardData[Main.Card[cardIndex++]].img)
+                                else
+                                    cardView!![i].visibility = View.INVISIBLE
+                            }
+                        }
+                    } else if (Main.competitionType == Main.TYPE_NUMBER) {
+                        if (numberIndex >= 100) {
+                            timeView!!.visibility = View.VISIBLE
+                            timeView!!.text = "Done"
+                            stop(autoTimer!!)
+                        } else {
+                            when (Main.pairNum) {
+                                Main.TWO -> {
+                                    numberView!!.text =
+                                        Main.Number.substring(numberIndex, numberIndex + 2)
+                                    numberIndex += 2
+                                }
+                                Main.THREE -> {
+                                    if (numberIndex + 3 >= 100) {
+                                        numberView!!.text =
+                                            Main.Number.substring(numberIndex, 100)
+                                        numberIndex = 100
+                                    } else {
+                                        numberView!!.text =
+                                            Main.Number.substring(numberIndex, numberIndex + 3)
+                                        numberIndex += 3
+                                    }
+                                }
+                                Main.FOUR -> {
+                                    numberView!!.text =
+                                        Main.Number.substring(numberIndex, numberIndex + 4)
+                                    numberIndex += 4
+                                }
+                                Main.TWOTWO -> {
+                                    numberView!!.text =
+                                        Main.Number.substring(
+                                            numberIndex,
+                                            numberIndex + 2
+                                        ) + "  " + Main.Number.substring(
+                                            numberIndex + 2,
+                                            numberIndex + 4
+                                        )
+                                    numberIndex += 4
+                                }
+                                Main.THREETHREE -> {
+                                    if (numberIndex + 6 >= 100) {
+                                        numberView!!.text = Main.Number.substring(
+                                            numberIndex, numberIndex + 3
+                                        ) + "  " + Main.Number.substring(numberIndex + 3, 100)
+                                        numberIndex = 100
+                                    } else {
+                                        numberView!!.text =
+                                            Main.Number.substring(
+                                                numberIndex,
+                                                numberIndex + 3
+                                            ) + "  " + Main.Number.substring(
+                                                numberIndex + 3,
+                                                numberIndex + 6
+                                            )
+                                        numberIndex += 6
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -149,9 +303,250 @@ class PlayActivity : AppCompatActivity() {
 
     private fun change(dir: Int) {
         if (dir == Main.LEFT) {
+            if (finish) {
+                finish = false
+                right!!.text = "->"
+                for (i in 0 until Main.pairCard) {
+                    cardView!![i].visibility = View.VISIBLE
+                }
+            }
+            if (Main.competitionType == Main.TYPE_CARD) {
+                if (cardIndex - Main.pairCard <= 0) {
+                    left!!.isEnabled = false
+                } else {
+                    left!!.isEnabled = true
+                    right!!.isEnabled = true
+                    cardIndex -= if (cardIndex >= 52 && Main.pairCard == 3) {
+                        Main.pairCard + 1
+                    } else
+                        Main.pairCard * 2
+                    println(cardIndex)
+                    for (i in 0 until Main.pairCard) {
+                        if (cardIndex in 0..51)
+                            cardView!![i].setImageResource(Main.cardData[Main.Card[cardIndex++]].img)
+                        else
+                            cardView!![i].visibility = View.INVISIBLE
+                    }
+                    if (cardIndex - Main.pairCard <= 0) {
+                        left!!.isEnabled = false
+                    }
+                }
+            } else if (Main.competitionType == Main.TYPE_NUMBER) {
+                if (numberIndex < 0) {
+                    left!!.isEnabled = false
+                } else {
+                    left!!.isEnabled = true
+                    right!!.isEnabled = true
+                    when (Main.pairNum) {
+                        Main.TWO -> {
+                            numberIndex -= 4
+                            if (numberIndex < 0) {
+                                numberIndex = 2
+                            } else {
+                                if (numberIndex <= 0) {
+                                    left!!.isEnabled = false
+                                }
+                                numberView!!.text =
+                                    Main.Number.substring(numberIndex, numberIndex + 2)
+                                numberIndex += 2
+                            }
+                        }
+                        Main.THREE -> {
+                            numberIndex -= if (numberIndex >= 100)
+                                4
+                            else
+                                6
+                            if (numberIndex < 0) {
+                                numberIndex = 3
+                            } else {
+                                if (numberIndex <= 0) {
+                                    left!!.isEnabled = false
+                                }
+                                if (numberIndex + 3 >= 100) {
+                                    numberView!!.text =
+                                        Main.Number.substring(numberIndex, 100)
+                                    numberIndex = 100
+                                } else {
+                                    numberView!!.text =
+                                        Main.Number.substring(numberIndex, numberIndex + 3)
+                                    numberIndex += 3
+                                }
+                            }
+                        }
+                        Main.FOUR -> {
+                            numberIndex -= 8
+                            if (numberIndex < 0) {
+                                numberIndex = 4
+                            } else {
+                                if (numberIndex <= 0) {
+                                    left!!.isEnabled = false
+                                }
+                                numberView!!.text =
+                                    Main.Number.substring(numberIndex, numberIndex + 4)
+                                numberIndex += 4
+                            }
+                        }
+                        Main.TWOTWO -> {
+                            numberIndex -= 8
+                            if (numberIndex < 0) {
+                                numberIndex = 4
+                            } else {
+                                if (numberIndex <= 0) {
+                                    left!!.isEnabled = false
+                                }
+                                numberView!!.text =
+                                    Main.Number.substring(
+                                        numberIndex,
+                                        numberIndex + 2
+                                    ) + "  " + Main.Number.substring(
+                                        numberIndex + 2,
+                                        numberIndex + 4
+                                    )
+                                numberIndex += 4
+                            }
+                        }
+                        Main.THREETHREE -> {
+                            numberIndex -= if (numberIndex >= 100)
+                                10
+                            else
+                                12
+                            if (numberIndex < 0) {
+                                numberIndex = 6
+                            } else {
+                                if (numberIndex <= 0) {
+                                    left!!.isEnabled = false
+                                }
 
+                                if (numberIndex + 6 >= 100) {
+                                    numberView!!.text = Main.Number.substring(
+                                        numberIndex, numberIndex + 3
+                                    ) + "  " + Main.Number.substring(numberIndex + 3, 100)
+                                    numberIndex = 100
+                                } else {
+                                    numberView!!.text =
+                                        Main.Number.substring(
+                                            numberIndex,
+                                            numberIndex + 3
+                                        ) + "  " + Main.Number.substring(
+                                            numberIndex + 3,
+                                            numberIndex + 6
+                                        )
+                                    numberIndex += 6
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else if (dir == Main.RIGHT) {
+            if (finish) {
+                stop(playTimer!!)
+                startActivity(Intent(this, AnsActivity::class.java))
+                finish()
+            }
 
+            if (Main.competitionType == Main.TYPE_CARD) {
+                left!!.isEnabled = true
+                right!!.isEnabled = true
+                for (i in 0 until Main.pairCard) {
+                    if (cardIndex < 52)
+                        cardView!![i].setImageResource(Main.cardData[Main.Card[cardIndex++]].img)
+                    else
+                        cardView!![i].visibility = View.INVISIBLE
+                }
+                if (cardIndex >= 52) {
+                    setFin()
+                }
+            } else if (Main.competitionType == Main.TYPE_NUMBER) {
+                if (numberIndex >= 100) {
+                    right!!.isEnabled = false
+                    timeView!!.setTextColor(Color.RED)
+                    stop(playTimer!!)
+                } else {
+                    left!!.isEnabled = true
+                    right!!.isEnabled = true
+                    when (Main.pairNum) {
+                        Main.TWO -> {
+                            if (numberIndex + 2 >= 100) {
+                                setFin()
+                            }
+                            numberView!!.text =
+                                Main.Number.substring(numberIndex, numberIndex + 2)
+                            numberIndex += 2
+                        }
+                        Main.THREE -> {
+                            if (numberIndex + 3 >= 100) {
+                                numberView!!.text =
+                                    Main.Number.substring(numberIndex, 100)
+                                numberIndex = 100
+                                setFin()
+                            } else {
+                                numberView!!.text =
+                                    Main.Number.substring(numberIndex, numberIndex + 3)
+                                numberIndex += 3
+                            }
+                        }
+                        Main.FOUR -> {
+                            if (numberIndex + 4 >= 100) {
+                                setFin()
+                            }
+                            numberView!!.text =
+                                Main.Number.substring(numberIndex, numberIndex + 4)
+                            numberIndex += 4
+                        }
+                        Main.TWOTWO -> {
+                            if (numberIndex + 4 >= 100) {
+                                numberView!!.text = Main.Number.substring(
+                                    numberIndex, numberIndex + 2
+                                ) + "  " + Main.Number.substring(numberIndex + 2, 100)
+                                numberIndex = 100
+                                setFin()
+                            } else {
+                                numberView!!.text =
+                                    Main.Number.substring(
+                                        numberIndex,
+                                        numberIndex + 2
+                                    ) + "  " + Main.Number.substring(
+                                        numberIndex + 2,
+                                        numberIndex + 4
+                                    )
+                                numberIndex += 4
+                            }
+                        }
+                        Main.THREETHREE -> {
+                            println(numberIndex)
+                            if (numberIndex + 6 >= 100) {
+                                numberView!!.text = Main.Number.substring(
+                                    numberIndex, numberIndex + 3
+                                ) + "  " + Main.Number.substring(numberIndex + 3, 100)
+                                numberIndex = 100
+                                setFin()
+                            } else {
+                                numberView!!.text =
+                                    Main.Number.substring(
+                                        numberIndex,
+                                        numberIndex + 3
+                                    ) + "  " + Main.Number.substring(
+                                        numberIndex + 3,
+                                        numberIndex + 6
+                                    )
+                                numberIndex += 6
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setFin() {
+        timeView!!.setTextColor(Color.RED)
+        if (Main.methodType == Main.TYPE_TRAINING) {
+            right!!.isEnabled = false
+            stop(playTimer!!)
+        } else if (Main.methodType == Main.TYPE_MEMORY) {
+            right!!.text = "Fin"
+            finish = true
         }
     }
 }
