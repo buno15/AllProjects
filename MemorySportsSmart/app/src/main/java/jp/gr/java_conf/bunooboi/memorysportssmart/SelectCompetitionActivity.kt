@@ -23,7 +23,7 @@ class SelectCompetitionActivity : AppCompatActivity() {
             Main.competitionType = Main.TYPE_CARD
             if (Main.methodType == Main.TYPE_MEMORY) {
                 Main.operationType = Main.TYPE_MANUAL
-                startActivity(Intent(this, AnsActivity::class.java))
+                startActivity(Intent(this, SetConfigActivity::class.java))
             } else if (Main.methodType == Main.TYPE_TRAINING)
                 startActivity(Intent(this, SetRuleActivity::class.java))
         }
@@ -32,7 +32,7 @@ class SelectCompetitionActivity : AppCompatActivity() {
             Main.competitionType = Main.TYPE_NUMBER
             if (Main.methodType == Main.TYPE_MEMORY) {
                 Main.operationType = Main.TYPE_MANUAL
-                startActivity(Intent(this, PlayActivity::class.java))
+                startActivity(Intent(this, SetConfigActivity::class.java))
             } else if (Main.methodType == Main.TYPE_TRAINING)
                 startActivity(Intent(this, SetRuleActivity::class.java))
         }

@@ -30,10 +30,5 @@ class MainActivity : AppCompatActivity() {
             Main.methodType = Main.TYPE_TRAINING
             startActivity(Intent(this, SelectCompetitionActivity::class.java))
         }
-
-        Main.initCard()
-        Main.initNumber()
-
-
     }
 }

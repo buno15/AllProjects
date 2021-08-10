@@ -1,5 +1,6 @@
 package jp.gr.java_conf.bunooboi.memorysportssmart
 
+import java.io.Console
 import java.lang.StringBuilder
 import kotlin.random.Random
 
@@ -18,6 +19,9 @@ class Main {
 
         var Card = MutableList(52) { it }
         var Number = ""
+
+        var ansCard = MutableList(52) { "" }
+        var ansNumber = ""
 
         const val TYPE_CARD = 1
         const val TYPE_NUMBER = 2
@@ -103,11 +107,31 @@ class Main {
 
         fun initNumber() {
             val sb = StringBuilder()
-            for (i in 0..100) {
+            for (i in 0 until 100) {
                 val randomInt = Random.nextInt(10)
                 sb.append(randomInt)
             }
             Number = sb.toString()
+        }
+
+        fun checkAns(): Int {
+            var ans = 0
+            if (competitionType == TYPE_CARD) {
+                for (i in 0 until 52) {
+                    if (ansCard[i] == cardData[Card[i]].name) {
+                        ans++
+                    }
+                }
+            } else if (competitionType == TYPE_NUMBER) {
+                var ansNum = ansNumber.toCharArray()
+                var Num = Number.toCharArray()
+                for (i in 0 until 100) {
+                    if (ansNum[i] == Num[i]) {
+                        ans++
+                    }
+                }
+            }
+            return ans
         }
     }
 }

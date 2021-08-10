@@ -1,20 +1,20 @@
 package jp.gr.java_conf.bunooboi.memorysportssmart
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.text.method.TextKeyListener.clear
 import android.util.TypedValue
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.TextViewCompat
-import kotlinx.android.synthetic.main.activity_play.*
 import java.util.*
 
 
@@ -197,7 +197,8 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun stop(timer: Timer) {
-        timer?.cancel()
+        if (timer != null)
+            timer?.cancel()
     }
 
     private fun playTime() {
@@ -548,5 +549,53 @@ class PlayActivity : AppCompatActivity() {
             right!!.text = "Fin"
             finish = true
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.back, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.back -> {
+                AlertDialog.Builder(this).setMessage("Are you sure you want to go back to main?")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        startActivity(Intent(this, MainActivity::class.java))
+                        if (autoTimer != null)
+                            stop(autoTimer!!)
+                        if (startTimer != null)
+                            stop(startTimer!!)
+                        if (playTimer != null)
+                            stop(playTimer!!)
+                        finish()
+                    }
+                    .setNegativeButton("No") { dialog, which ->
+                    }
+                    .show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder(this).setMessage("Are you sure you want to go back to main?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    startActivity(Intent(this, MainActivity::class.java))
+                    if (autoTimer != null)
+                        stop(autoTimer!!)
+                    if (startTimer != null)
+                        stop(startTimer!!)
+                    if (playTimer != null)
+                        stop(playTimer!!)
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                }
+                .show()
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

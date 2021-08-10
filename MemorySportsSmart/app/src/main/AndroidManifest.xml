@@ -20,24 +20,22 @@
         </activity>
         <activity
             android:name=".SelectCompetitionActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".SetRuleActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".SetConfigActivity"
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".PlayActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".AnsActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".ResultActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>
