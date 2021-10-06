@@ -17,7 +17,7 @@ class SetConfigActivity : AppCompatActivity() {
         val board1: Board = findViewById(R.id.board1)
 
         if (Main.competitionType == Main.TYPE_CARD) {
-            board1.textView.text = "Cards"
+            board1.textView.text = "Unko"
             board1.imageButton.setImageResource(R.mipmap.card)
         } else if (Main.competitionType == Main.TYPE_NUMBER) {
             board1.textView.text = "Numbers"
