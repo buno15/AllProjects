@@ -1,0 +1,123 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:2:1-61:12
+	package
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:3:11-58
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:5:11-36
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:4:11-34
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:2:11-69
+uses-sdk
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:7:5-9:40
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+	android:targetSdkVersion
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:9:9-38
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:8:9-35
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml
+application
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:11:5-59:19
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+	android:label
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:14:9-41
+	android:allowBackup
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:12:9-35
+	android:icon
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:13:9-45
+	android:theme
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:15:9-40
+activity#jp.gr.java_conf.bunooboi.englishtower.Start
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:16:9-25:20
+	android:label
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:18:13-45
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:19:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:17:13-34
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:20:13-24:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:21:17-68
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:21:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:23:17-76
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:23:27-74
+activity#jp.gr.java_conf.bunooboi.englishtower.Main
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:26:9-28:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:28:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:27:13-33
+activity#jp.gr.java_conf.bunooboi.englishtower.Setting
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:29:9-31:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:31:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:30:13-36
+activity#jp.gr.java_conf.bunooboi.englishtower.Practice
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:32:9-34:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:34:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:33:13-37
+activity#jp.gr.java_conf.bunooboi.englishtower.Practice_End
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:35:9-37:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:37:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:36:13-41
+activity#jp.gr.java_conf.bunooboi.englishtower.Practice_Setting
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:38:9-40:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:40:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:39:13-45
+activity#jp.gr.java_conf.bunooboi.englishtower.Dictionary_List
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:41:9-43:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:43:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:42:13-44
+activity#jp.gr.java_conf.bunooboi.englishtower.Dictionary_Overview
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:44:9-46:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:46:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:45:13-48
+activity#jp.gr.java_conf.bunooboi.englishtower.Help
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:47:9-49:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:49:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:48:13-33
+activity#jp.gr.java_conf.bunooboi.englishtower.Tower
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:50:9-52:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:52:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:51:13-34
+activity#jp.gr.java_conf.bunooboi.englishtower.Over
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:53:9-55:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:55:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:54:13-33
+activity#jp.gr.java_conf.bunooboi.englishtower.Clear
+ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:56:9-58:46
+	android:launchMode
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:58:13-44
+	android:name
+		ADDED from C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\src\main\AndroidManifest.xml:57:13-34

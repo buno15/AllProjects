@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerPremium_studio\app\build\intermediates\exploded-aar\BadmintonManagerPremium_studio\GAMS\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="926f031f71e99a76dbc98b93062194cfd2b64270">
+        <dex dex="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerPremium_studio\app\build\intermediates\pre-dexed\release\BadmintonManagerPremium_studio-GAMS-unspecified_345e1c125de1106d279a0e33966cb159bdf61c14.jar" />
+    </item>
+
+</items>

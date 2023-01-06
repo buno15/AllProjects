@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000000"
+	android:orientation="vertical" >
+
+	<LinearLayout
+		android:id="@+id/root"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:background="#ffdd99"
+		android:orientation="vertical" >
+
+		<EditText
+			android:id="@+id/GameName"
+			android:layout_width="fill_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:hint="@string/gamename"
+			android:inputType="text" />
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="0dp"
+			android:layout_weight="3"
+			android:orientation="horizontal" >
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="fill_parent"
+				android:layout_weight="1"
+				android:background="@drawable/back_teamdivide"
+				android:orientation="vertical" >
+
+				<EditText
+					android:id="@+id/team1"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@+string/team1"
+					android:inputType="text" />
+
+				<EditText
+					android:id="@+id/player1"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@string/player1"
+					android:inputType="text" />
+
+				<EditText
+					android:id="@+id/player2"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@string/player2"
+					android:inputType="text" />
+
+				<Spinner
+					android:id="@+id/team1color"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="fill_parent"
+				android:layout_weight="1"
+				android:background="@drawable/back_teamdivide"
+				android:orientation="vertical" >
+
+				<EditText
+					android:id="@+id/team2"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@+string/team2"
+					android:inputType="text" />
+
+				<EditText
+					android:id="@+id/player3"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@string/player3"
+					android:inputType="text" />
+
+				<EditText
+					android:id="@+id/player4"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1"
+					android:hint="@string/player4"
+					android:inputType="text" />
+
+				<Spinner
+					android:id="@+id/team2color"
+					android:layout_width="fill_parent"
+					android:layout_height="0dp"
+					android:layout_weight="1" />
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="0dp"
+			android:layout_weight="2"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:orientation="horizontal" >
+
+				<RadioGroup
+					android:id="@+id/singlesdoubles"
+					android:layout_width="0dp"
+					android:layout_height="fill_parent"
+					android:layout_weight="2"
+					android:background="#99ffaa"
+					android:orientation="horizontal" >
+
+					<RadioButton
+						android:id="@+id/singles"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1"
+						android:checked="true" />
+
+					<RadioButton
+						android:id="@+id/doubles"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1" />
+				</RadioGroup>
+
+				<LinearLayout
+					android:layout_width="0dp"
+					android:layout_height="fill_parent"
+					android:layout_weight="2"
+					android:background="#99bbff"
+					android:orientation="horizontal" >
+
+					<Button
+						android:id="@+id/button1"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_margin="5dp"
+						android:layout_weight="1"
+						android:background="@drawable/button_custom" />
+
+					<Button
+						android:id="@+id/button2"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_margin="5dp"
+						android:layout_weight="1"
+						android:background="@drawable/button_custom" />
+				</LinearLayout>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:orientation="horizontal" >
+
+				<RadioGroup
+					android:id="@+id/score"
+					android:layout_width="0dp"
+					android:layout_height="fill_parent"
+					android:layout_weight="2"
+					android:background="#ff99ee"
+					android:orientation="horizontal" >
+
+					<RadioButton
+						android:id="@+id/eleven"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1" />
+
+					<RadioButton
+						android:id="@+id/fifteen"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1" />
+
+					<RadioButton
+						android:id="@+id/twentyone"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1"
+						android:checked="true" />
+				</RadioGroup>
+
+				<RadioGroup
+					android:id="@+id/game"
+					android:layout_width="0dp"
+					android:layout_height="fill_parent"
+					android:layout_weight="2"
+					android:background="#9999ee"
+					android:orientation="horizontal" >
+
+					<RadioButton
+						android:id="@+id/one"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1" />
+
+					<RadioButton
+						android:id="@+id/three"
+						android:layout_width="0dp"
+						android:layout_height="fill_parent"
+						android:layout_weight="1"
+						android:checked="true" />
+				</RadioGroup>
+
+				<LinearLayout
+					android:layout_width="0dp"
+					android:layout_height="fill_parent"
+					android:layout_weight="1"
+					android:background="#99bbff"
+					android:orientation="horizontal" >
+
+					<Button
+						android:id="@+id/button3"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						android:layout_margin="5dp"
+						android:layout_weight="1"
+						android:background="@drawable/button_custom" />
+				</LinearLayout>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+
+</LinearLayout>

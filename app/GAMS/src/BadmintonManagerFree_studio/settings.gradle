@@ -1,0 +1,2 @@
+include ':app', ':GAMS'
+project(':GAMS').projectDir = new File(settingsDir, '../GAMS/GAMS')

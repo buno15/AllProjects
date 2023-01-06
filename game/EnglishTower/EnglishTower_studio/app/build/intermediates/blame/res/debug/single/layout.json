@@ -1,0 +1,54 @@
+[
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\start.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\start.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\clear.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\clear.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\setting.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\setting.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\practiceend.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\practiceend.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\dictionaryoverview.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\dictionaryoverview.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\tower.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\tower.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\practicesetting.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\practicesetting.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\practice.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\practice.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\over.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\over.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\adapter.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\adapter.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\mydialog.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\mydialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\dictionarylist.xml",
+        "source": "C:\\Users\\hiro\\ankigame\\EnglishTower\\EnglishTower_studio\\app\\src\\main\\res\\layout\\dictionarylist.xml"
+    }
+]

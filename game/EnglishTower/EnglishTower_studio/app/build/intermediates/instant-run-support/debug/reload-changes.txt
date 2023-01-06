@@ -1,0 +1,15 @@
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$YesNoTimer$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$LifeTimer$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$YesNoTimer$1$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\android\tools\fd\runtime\AppPatchesLoaderImpl.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$6$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$MeterTimer$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$LifeTimer$1$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$MeterTimer$1$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$4$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$Meter$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$MoveTimer$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\BuildConfig$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$5$override.class
+CHANGED,C:\Users\hiro\ankigame\EnglishTower\EnglishTower_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\englishtower\Tower$MoveTimer$1$override.class

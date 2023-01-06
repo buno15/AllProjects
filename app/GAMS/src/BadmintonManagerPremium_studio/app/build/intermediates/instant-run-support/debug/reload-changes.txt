@@ -1,0 +1,3 @@
+CHANGED,C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerPremium_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\android\tools\fd\runtime\AppPatchesLoaderImpl.class
+CHANGED,C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerPremium_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\gams\Manager$override.class
+CHANGED,C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerPremium_studio\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\jp\gr\java_conf\bunooboi\gams\Manager$1$override.class

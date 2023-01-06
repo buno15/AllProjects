@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.gr.java_conf.bunooboi.englishtower.test">
+
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19" />
+
+    <application>
+        <uses-library android:name="android.test.runner" />
+    </application>
+
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+                     android:targetPackage="jp.gr.java_conf.bunooboi.englishtower"
+                     android:handleProfiling="false"
+                     android:functionalTest="false"
+                     android:label="Tests for jp.gr.java_conf.bunooboi.englishtower"/>
+</manifest>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="armeabi-v7a,armeabi"
+    api-level="21"
+    density="xhdpi"
+    format="7"
+    timestamp="453608417282050"
+    token="6656159092151375853" >
+
+    <task
+        name="javac"
+        duration="1986" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="719" />
+    <task
+        name="verifier"
+        duration="58" />
+
+    <artifact
+        location="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerFree_studio\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
+        type="DEX" />
+    <artifact
+        location="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerFree_studio\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_8\classes.dex"
+        type="DEX" />
+
+    <build timestamp="453443044403254" >
+        <artifact
+            location="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerFree_studio\app\build\outputs\apk\app-debug.apk"
+            type="MAIN" />
+    </build>
+    <build timestamp="453608417282050" >
+        <artifact
+            location="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerFree_studio\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
+            type="DEX" />
+        <artifact
+            location="C:\Users\hiro\GAMS\GAMS\src\BadmintonManagerFree_studio\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_8\classes.dex"
+            type="DEX" />
+    </build>
+
+</instant-run>

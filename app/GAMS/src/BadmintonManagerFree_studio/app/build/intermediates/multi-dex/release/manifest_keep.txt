@@ -1,0 +1,40 @@
+-keep class jp.gr.java_conf.bunooboi.bmf.Start { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Config { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Main { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.History { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Download { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Overview { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.ScoreTable { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Larry { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Gallery { <init>(); }
+-keep class com.google.android.gms.ads.AdActivity { <init>(); }
+-keep class jp.gr.java_conf.bunooboi.bmf.Broadcast { <init>(); }
+-keep class com.google.android.gms.ads.purchase.InAppPurchaseActivity { <init>(); }
+-keep class com.google.android.gms.common.api.GoogleApiActivity { <init>(); }
+-keep class com.google.android.gms.appinvite.PreviewActivity { <init>(); }
+-keep class com.google.android.gms.auth.api.signin.internal.SignInHubActivity { <init>(); }
+-keep class com.google.android.gms.auth.api.signin.RevocationBoundService { <init>(); }
+-keep class com.google.android.gms.cast.framework.media.MediaIntentReceiver { <init>(); }
+-keep class com.google.android.gms.cast.framework.media.MediaNotificationService { <init>(); }
+-keep class com.google.android.gms.cast.framework.ReconnectionService { <init>(); }
+-keep class com.google.firebase.iid.FirebaseInstanceIdReceiver { <init>(); }
+-keep class com.google.firebase.iid.FirebaseInstanceIdInternalReceiver { <init>(); }
+-keep class com.google.firebase.iid.FirebaseInstanceIdService { <init>(); }
+-keep class com.google.firebase.provider.FirebaseInitProvider { <init>(); }
+-keep class com.google.firebase.crash.internal.service.FirebaseCrashReceiverService { <init>(); }
+-keep class com.google.firebase.crash.internal.service.FirebaseCrashSenderService { <init>(); }
+-keep class com.google.android.gms.measurement.AppMeasurementReceiver { <init>(); }
+-keep class com.google.android.gms.measurement.AppMeasurementService { <init>(); }
+-keep class com.google.firebase.messaging.FirebaseMessagingService { <init>(); }
+-keep class com.google.android.gms.tagmanager.TagManagerService { <init>(); }
+-keep class com.google.android.gms.tagmanager.TagManagerPreviewActivity { <init>(); }
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+-keep public class * extends java.lang.annotation.Annotation {
+    *;
+}
+-keep class com.android.tools.fd.** {
+    *;
+}
+-dontnote com.android.tools.fd.**,android.support.multidex.MultiDexExtractor

@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\teamcolor_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\teamcolor_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ace_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\ace_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\teamcolor_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\teamcolor_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\ace_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\ace_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\miss_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\miss_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\miss_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\GAMS\\GAMS\\build\\intermediates\\bundles\\debug\\res\\layout\\miss_selected.xml"
+    }
+]

@@ -1,0 +1,66 @@
+[
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\ace_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\ace_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\larry.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\larry.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\download.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\download.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\scoretable.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\scoretable.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\overview.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\overview.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\ace_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\ace_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\teamcolor_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\teamcolor_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\miss_item.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\miss_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\start.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\start.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\config.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\config.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\mreaddate.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\mreaddate.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\teamcolor_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\teamcolor_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\gallery.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\gallery.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\miss_selected.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\exploded-aar\\BadmintonManagerPremium_studio\\GAMS\\unspecified\\res\\layout\\miss_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\build\\intermediates\\res\\merged\\debug\\layout\\history.xml",
+        "source": "C:\\Users\\hiro\\GAMS\\GAMS\\src\\BadmintonManagerPremium_studio\\app\\src\\main\\res\\layout\\history.xml"
+    }
+]
