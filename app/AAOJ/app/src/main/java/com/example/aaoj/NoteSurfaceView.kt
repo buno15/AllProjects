@@ -2,10 +2,10 @@ package com.example.aaoj
 
 import android.content.Context
 import android.graphics.*
-import android.view.MotionEvent
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.view.WindowManager
+import android.util.Log
+import android.view.*
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import java.util.*
 import kotlin.collections.ArrayDeque
 
@@ -25,7 +25,9 @@ class NoteSurfaceView : SurfaceView, SurfaceHolder.Callback {
     private val mUndoStack: ArrayDeque<Path> = ArrayDeque<Path>()
     private val mRedoStack: ArrayDeque<Path> = ArrayDeque<Path>()
 
+
     constructor(context: Context, surfaceView: SurfaceView) : super(context) {
+
         surfaceHolder = surfaceView.holder
 
         /// display の情報（高さ 横）を取得
@@ -48,12 +50,12 @@ class NoteSurfaceView : SurfaceView, SurfaceHolder.Callback {
 
         /// ペイント関連の設定
         paint = Paint()
-        color = Color.BLACK
+        color = Color.RED
         paint!!.color = color as Int
         paint!!.style = Paint.Style.STROKE
         paint!!.strokeCap = Paint.Cap.ROUND
         paint!!.isAntiAlias = true
-        paint!!.strokeWidth = 15F
+        paint!!.strokeWidth = 10F
     }
 
     private fun draw(pathInfo: PathInfo) {
@@ -170,6 +172,32 @@ class NoteSurfaceView : SurfaceView, SurfaceHolder.Callback {
         clearLastDrawBitmap()
         val canvas: Canvas = surfaceHolder!!.lockCanvas()
         canvas.drawColor(0, PorterDuff.Mode.CLEAR)
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
+    }
+
+    fun invisible() {
+        val canvas: Canvas = surfaceHolder!!.lockCanvas()
+        canvas.drawColor(0, PorterDuff.Mode.CLEAR)
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
+    }
+
+    fun visible() {
+        val canvas: Canvas = surfaceHolder!!.lockCanvas()
+
+        // キャンバスをクリアします。
+        canvas.drawColor(0, PorterDuff.Mode.CLEAR)
+
+        // 描画状態を保持するBitmapをクリアします。
+        clearLastDrawBitmap()
+
+        // パスを描画します。
+        for (path in mUndoStack) {
+            Log.v("", path.toString())
+            canvas.drawPath(path, paint!!)
+            prevCanvas!!.drawPath(path, paint!!)
+        }
+
+        // ロックを外します。
         surfaceHolder!!.unlockCanvasAndPost(canvas)
     }
 

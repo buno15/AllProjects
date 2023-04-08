@@ -11,7 +11,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=""
         android:supportsRtl="true"
         android:theme="@style/Theme.AAOJ"
         android:usesCleartextTraffic="true"
@@ -19,7 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label=""
             android:theme="@style/Theme.AAOJ.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

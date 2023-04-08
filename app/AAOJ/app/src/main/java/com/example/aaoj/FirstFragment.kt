@@ -6,10 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
+import android.view.View.*
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -23,6 +26,7 @@ import com.example.aaoj.databinding.FragmentFirstBinding
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
+    private val viewModel: MainViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,8 +42,52 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        var noteSurfaceView = NoteSurfaceView(requireContext(), binding.surfaceView)
+        binding.surfaceView.setOnTouchListener { v, event ->
+            noteSurfaceView.onTouch(event)
+        }
+
+        binding.scrollView.elevation = 2F
+        binding.surfaceView.elevation = 1F
+        binding.fabRedo.visibility = INVISIBLE
+        binding.fabUndo.visibility = INVISIBLE
+        binding.fabReset.visibility = INVISIBLE
+
+        binding.fabChange.setOnClickListener {
+            if (binding.scrollView.elevation < binding.surfaceView.elevation) {
+                binding.scrollView.elevation = 2F
+                binding.surfaceView.elevation = 1F
+                binding.fabRedo.visibility = INVISIBLE
+                binding.fabUndo.visibility = INVISIBLE
+                binding.fabReset.visibility = INVISIBLE
+                noteSurfaceView.invisible()
+                binding.fabChange.setImageResource(R.drawable.baseline_edit_24)
+            } else {
+                binding.scrollView.elevation = 1F
+                binding.surfaceView.elevation = 2F
+                binding.fabRedo.visibility = VISIBLE
+                binding.fabUndo.visibility = VISIBLE
+                binding.fabReset.visibility = VISIBLE
+                noteSurfaceView.visible()
+                binding.fabChange.setImageResource(R.drawable.baseline_close_24)
+            }
+        }
+
+        binding.fabUndo.setOnClickListener {
+            noteSurfaceView.undo()
+        }
+
+        binding.fabRedo.setOnClickListener {
+            noteSurfaceView.redo()
+        }
+
+        binding.fabReset.setOnClickListener {
+            noteSurfaceView.reset()
+        }
+
+        viewModel.pid.observe(requireActivity()) {
+            Log.v("as", it.toString())
+            loadProblem(it.toString())
         }
 
         val webSettings: WebSettings = binding.webView.settings
@@ -57,9 +105,11 @@ class FirstFragment : Fragment() {
         }
 
         binding.webView.setOnTouchListener(OnTouchListener { v, event -> event.action == MotionEvent.ACTION_MOVE })
+    }
 
+    fun loadProblem(pid: String) {
         val queue = Volley.newRequestQueue(activity)
-        val url = "https://judgeapi.u-aizu.ac.jp/resources/descriptions/ja/ITP1_10_D"
+        val url = "https://judgeapi.u-aizu.ac.jp/resources/descriptions/ja/$pid"
 
 
         val request = JsonObjectRequest(Request.Method.GET, url, null, { response ->
@@ -76,7 +126,7 @@ class FirstFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }) { binding.webView.loadData("That didn't work!", "text/html", "utf-8") }
+        }) { binding.webView.loadData("That problem doesn't exist.", "text/html", "utf-8") }
         queue.add(request)
     }
 
