@@ -22,7 +22,8 @@ private val LightColorPalette = lightColors(primary = Purple500, primaryVariant 
 @Composable
 fun GhostWriterTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        //DarkColorPalette
+        LightColorPalette
     } else {
         LightColorPalette
     }
