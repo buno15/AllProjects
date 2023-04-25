@@ -25,11 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.ArrayList;
 
@@ -38,7 +33,7 @@ import jp.gr.java_conf.bunooboi.mydic.R;
 import jp.gr.java_conf.bunooboi.mydic.Values;
 import jp.gr.java_conf.bunooboi.mydic.Word;
 
-public class Main extends AppCompatActivity implements RewardedVideoAdListener {
+public class Main extends AppCompatActivity {
     ListView listView;
     EditText editText;
     ImageButton search;
@@ -53,10 +48,6 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
     static int clickState = 0;// clickState=0,dictionary clickState=1,tag
 
     ArrayList<Word> delete = new ArrayList<>();
-
-    private RewardedVideoAd mRewardedVideoAd;
-
-    //ca-app-pub-2096872993008006~2033814746 app ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,16 +149,10 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
             }
         });
 
-        /*mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-
-        loadRewardedVideoAd();*/
-
         game = findViewById(R.id.game);
         game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mRewardedVideoAd.show();
                 startActivity(new Intent(getApplicationContext(), GameStart.class));
                 finish();
             }
@@ -186,11 +171,6 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
             search(selectWord);
         }
         listHeight();
-    }
-
-    private void loadRewardedVideoAd() {
-        //mRewardedVideoAd.loadAd("ca-app-pub-2096872993008006/3682950090", new AdRequest.Builder().build());
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());//テスト
     }
 
     public void search(String search) {//タグ検索
@@ -477,46 +457,5 @@ public class Main extends AppCompatActivity implements RewardedVideoAdListener {
         Point size = new Point();
         disp.getSize(size);
         return size.y / 100 * value;
-    }
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        startActivity(new Intent(getApplicationContext(), GameStart.class));
-        finish();
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
     }
 }

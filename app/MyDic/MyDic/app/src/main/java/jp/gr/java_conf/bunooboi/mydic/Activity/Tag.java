@@ -20,10 +20,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +29,6 @@ import jp.gr.java_conf.bunooboi.mydic.Values;
 
 public class Tag extends AppCompatActivity {
     ListView listView;
-    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
