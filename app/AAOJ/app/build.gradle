@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.aaoj'
+    namespace 'com.bunooboi.aaoj'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.aaoj"
+        applicationId "com.bunooboi.aaoj"
         minSdk 31
         targetSdk 33
         versionCode 1
