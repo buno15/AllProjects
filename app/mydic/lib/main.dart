@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:mydic/edit_card.dart';
 
-void main() {
+import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_core/firebase_core.dart";
+import "firebase_options.dart";
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -35,13 +42,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  String _email = "email";
+  String _password = "pass";
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +71,44 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              ':asdfadf',
-            ),
             Text(
-              '$_counter',
+              'Hello Flutter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final User? user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password)).user;
+                    if (user != null) {
+                      print("登録完了");
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: const Text("Register")),
+            ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final User? user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password)).user;
+                    if (user != null) {
+                      print("Login shita");
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: const Text("Login")),
+            ElevatedButton(
+                onPressed: () async {
+                  try {
+                    (await FirebaseAuth.instance.sendPasswordResetEmail(email: _email));
+                    print("send mail");
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: const Text("Reset pass"))
           ],
         ),
       ),
