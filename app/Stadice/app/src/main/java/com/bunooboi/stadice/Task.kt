@@ -1,5 +1,8 @@
 package com.bunooboi.stadice
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-data class Task(val id: Int, val name: String, val finished: Boolean, val date: Date)
+@Entity(tableName = "tasks")
+data class Task(@PrimaryKey val id: Int, val name: String, var finished: Boolean, val date: Date)

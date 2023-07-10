@@ -1,6 +1,8 @@
 package com.bunooboi.stadice
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -30,95 +32,121 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bunooboi.stadice.ui.theme.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val viewModel: AppViewModel = viewModel()
 
             StadiceTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     NavHost(navController = navController, startDestination = "main") {
                         composable("main") {
-                            MainScreen(navController)
+                            MainScreen(navController, viewModel, applicationContext)
                         }
                         composable("add") {
-                            AddScreen(navController)
+                            AddScreen(navController, viewModel, applicationContext)
                         }
                         composable("history") {
-                            HistoryScreen(navController)
+                            HistoryScreen(navController, viewModel)
                         }
                     }
                 }
             }
         }
+
     }
 }
 
+
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, viewModel: AppViewModel, context: Context) {
     Scaffold(modifier = Modifier.background(color = Body), scaffoldState = rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Open)), topBar = { DeleteTopBar(navController) }, content = { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            MainBodyContent()
+            MainBodyContent(viewModel, context)
         }
-    }, bottomBar = { BottomBar(navController) }, floatingActionButtonPosition = FabPosition.Center, isFloatingActionButtonDocked = true, floatingActionButton = { BottomFAB() })
+    }, bottomBar = { BottomBar(navController) }, floatingActionButtonPosition = FabPosition.Center, isFloatingActionButtonDocked = true, floatingActionButton = { BottomFAB(viewModel) })
 }
 
 @Composable
-fun MainBodyContent() {
+fun MainBodyContent(viewModel: AppViewModel, context: Context) {
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Body)) {
+        .background(Body)
+        .padding(bottom = 10.dp)) {
         var selectedIndex by remember { mutableStateOf(-1) }
+        var showDialog by remember { mutableStateOf(false) }
 
-        val viewModel: AppViewModel = viewModel()
         val tasks = viewModel.tasks.observeAsState(mutableListOf()).value
 
-        TaskList(tasks = tasks) { selectedIndex = it }
+        TaskList(viewModel = viewModel, context) {
+            selectedIndex = it
+            showDialog = true
+        }
 
-        if (selectedIndex >= 0) {
-            AlertDialog(onDismissRequest = { selectedIndex = -1 }, confirmButton = {
-                TextButton(onClick = { selectedIndex = -1 }) {
+        if (showDialog) {
+            AlertDialog(onDismissRequest = { showDialog = false }, confirmButton = {
+                Button(onClick = {
+                    viewModel.deleteTask(tasks[selectedIndex])
+                    showDialog = false
+                }, colors = ButtonDefaults.textButtonColors(backgroundColor = Green300, contentColor = Color.White)) {
                     Text("OK")
                 }
-            }, text = { Text("Index $selectedIndex is clicked.") })
+            }, dismissButton = {
+                TextButton(onClick = { showDialog = false }, colors = ButtonDefaults.textButtonColors(contentColor = Green300)) {
+                    Text("NO")
+                }
+            }, text = { Text("${tasks[selectedIndex].name} を削除しますか？") })
         }
     }
 }
 
 @Composable
-fun TaskList(tasks: MutableList<Task>, onClickItem: (Int) -> Unit = {}) {
+fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit = {}) {
+    val tasks = viewModel.tasks.observeAsState(mutableListOf()).value
+
     LazyColumn(modifier = Modifier
         .background(Body)
-        .fillMaxSize(), verticalArrangement = Arrangement.spacedBy(5.dp), contentPadding = PaddingValues(5.dp)) {
+        .fillMaxSize(), contentPadding = PaddingValues(5.dp)) {
         itemsIndexed(tasks) { index, task ->
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, start = 15.dp, end = 15.dp)
-                .background(Color.White, RoundedCornerShape(10.dp))) {
-                IconButton(onClick = { onClickItem(index) }, modifier = Modifier
-                    .padding(10.dp)
-                    .size(40.dp)
-                    .weight(1f)) {
-                    Icon(painter = painterResource(id = if (task.finished) {
-                        R.drawable.baseline_check_circle_30
-                    } else {
-                        R.drawable.baseline_circle_30
-                    }), modifier = Modifier.size(35.dp), contentDescription = null, tint = if (task.finished) {
-                        Green300
-                    } else {
-                        Circle
-                    })
-                }
-                Text(text = "${task.name}", fontSize = 18.sp, modifier = Modifier.weight(4f))
-                IconButton(onClick = { onClickItem(index) }, modifier = Modifier
-                    .padding(10.dp)
-                    .size(30.dp)
-                    .weight(1f)) {
-                    Icon(painter = painterResource(id = R.drawable.baseline_delete_outline_30), contentDescription = null)
+            if (!task.finished) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
+                    .background(Color.White, RoundedCornerShape(10.dp))) {
+                    IconButton(onClick = {
+                        val updatedTask = task.copy(finished = !task.finished, date = Date())
+                        viewModel.updateTask(updatedTask)
+                        Toast.makeText(context, "${task.name} を完了しました", Toast.LENGTH_SHORT).show()
+                    }, modifier = Modifier
+                        .padding(10.dp)
+                        .size(40.dp)
+                        .weight(1f)) {
+                        Icon(painter = painterResource(id = if (task.finished) {
+                            R.drawable.baseline_check_circle_30
+                        } else {
+                            R.drawable.baseline_check_circle_30
+                        }), modifier = Modifier.size(35.dp), contentDescription = null, tint = if (task.finished) {
+                            Green300
+                        } else {
+                            Circle
+                        })
+                    }
+                    Text(text = "${task.id} ${task.name}", fontSize = 18.sp, modifier = Modifier.weight(4f))
+                    IconButton(onClick = { onDelete(index) }, modifier = Modifier
+                        .padding(10.dp)
+                        .size(30.dp)
+                        .weight(1f)) {
+                        Icon(painter = painterResource(id = R.drawable.baseline_delete_outline_30), contentDescription = null)
+                    }
                 }
             }
         }
@@ -137,8 +165,8 @@ fun DeleteTopBar(navController: NavHostController) {
 }
 
 @Composable
-fun BackTopBar(navController: NavHostController) {
-    TopAppBar(title = { Text(text = "StaDice", color = Green300, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)) }, elevation = 4.dp, backgroundColor = Green100, modifier = Modifier
+fun BackTopBar(navController: NavHostController, title: String) {
+    TopAppBar(title = { Text(text = title, color = Green300, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)) }, elevation = 4.dp, backgroundColor = Green100, modifier = Modifier
         .background(Body)
         .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)), actions = {}, navigationIcon = {
         IconButton(onClick = { navController.popBackStack() }) {
@@ -160,8 +188,10 @@ fun BottomBar(screenNavController: NavHostController) {
 }
 
 @Composable
-fun BottomFAB() {
-    FloatingActionButton(onClick = { /*TODO*/ }, contentColor = Green300, backgroundColor = Body, modifier = Modifier
+fun BottomFAB(viewModel: AppViewModel) {
+    FloatingActionButton(onClick = {
+        viewModel.insertTask("Task1")
+    }, contentColor = Green300, backgroundColor = Body, modifier = Modifier
         .width(80.dp)
         .height(80.dp)) {
         Icon(painter = painterResource(id = R.drawable.baseline_casino_40), contentDescription = null, tint = Green300)
@@ -205,7 +235,6 @@ fun RowScope.BottomItem(screen: Screen, currentDestination: NavDestination?, nav
         }
     })
 }
-
 
 @Preview(showBackground = true)
 @Composable
