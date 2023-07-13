@@ -48,7 +48,7 @@ class RandomAlarmReceiver : BroadcastReceiver() {
         notificationManager.createNotificationChannel(channel)
 
         val notificationBuilder =
-            NotificationCompat.Builder(context, "default").setSmallIcon(R.mipmap.ic_launcher).setContentTitle(if (priorityTask.id != -1) "今日は ${priorityTask.name} を取り組みましょう" else "タスクが登録されていません").setAutoCancel(true)
+            NotificationCompat.Builder(context, "default").setSmallIcon(R.drawable.icon).setContentTitle(if (priorityTask.id != -1) "今日は ${priorityTask.name} を取り組みましょう" else "タスクが登録されていません").setAutoCancel(true)
 
         notificationManager.notify(0, notificationBuilder.build())
     }
