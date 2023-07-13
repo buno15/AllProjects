@@ -13,6 +13,9 @@ interface TaskDao {
     @Query("select * from tasks")
     fun getAll(): LiveData<MutableList<Task>>
 
+    @Query("select * from tasks")
+    fun getAllNotLive(): MutableList<Task>
+
     @Insert
     fun insert(task: Task)
 

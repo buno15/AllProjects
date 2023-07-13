@@ -1,11 +1,17 @@
 package com.bunooboi.stadice
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,9 +39,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bunooboi.stadice.ui.theme.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -44,6 +48,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val viewModel: AppViewModel = viewModel()
+
+            setAlarm(LocalContext.current, viewModel)
 
             StadiceTheme {
                 // A surface container using the 'background' color from the theme
@@ -62,18 +68,42 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
 }
 
+private fun setAlarm(context: Context, viewModel: AppViewModel) {
+    val hour = viewModel.randomTime.value!!.hour
+    val minute = viewModel.randomTime.value!!.minute
+
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = System.currentTimeMillis()
+
+        if (get(Calendar.HOUR_OF_DAY) >= hour && get(Calendar.MINUTE) >= minute) {
+            add(Calendar.DATE, 1)
+        }
+
+        set(Calendar.HOUR_OF_DAY, hour)
+        set(Calendar.MINUTE, minute)
+        set(Calendar.SECOND, 0)
+    }
+
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, RandomAlarmReceiver::class.java)
+    val pendingIntent: PendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+
+    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+}
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: AppViewModel, context: Context) {
-    Scaffold(modifier = Modifier.background(color = Body), scaffoldState = rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Open)), topBar = { DeleteTopBar(navController) }, content = { padding ->
+    viewModel.loadPriorityTask(context)
+    viewModel.loadRandomTime(context)
+
+    Scaffold(modifier = Modifier.background(color = Body), scaffoldState = rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Open)), topBar = { MainTopBar(viewModel, context) }, content = { padding ->
         Column(modifier = Modifier.padding(padding)) {
             MainBodyContent(viewModel, context)
         }
-    }, bottomBar = { BottomBar(navController) }, floatingActionButtonPosition = FabPosition.Center, isFloatingActionButtonDocked = true, floatingActionButton = { BottomFAB(viewModel) })
+    }, bottomBar = { BottomBar(navController) }, floatingActionButtonPosition = FabPosition.Center, isFloatingActionButtonDocked = true, floatingActionButton = { BottomFAB(viewModel, context) })
 }
 
 @Composable
@@ -112,6 +142,7 @@ fun MainBodyContent(viewModel: AppViewModel, context: Context) {
 @Composable
 fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit = {}) {
     val tasks = viewModel.tasks.observeAsState(mutableListOf()).value
+    val priorityTask by viewModel.priorityTask.observeAsState(initial = Task(-1, "", false, Date()))
 
     LazyColumn(modifier = Modifier
         .background(Body)
@@ -121,9 +152,10 @@ fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit 
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
-                    .background(Color.White, RoundedCornerShape(10.dp))) {
+                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .then(if (task == priorityTask) Modifier.border(border = BorderStroke(width = 2.dp, color = Green300), shape = RoundedCornerShape(10.dp)) else Modifier)) {
                     IconButton(onClick = {
-                        val updatedTask = task.copy(finished = !task.finished, date = Date())
+                        val updatedTask = task.copy(finished = true, date = Date())
                         viewModel.updateTask(updatedTask)
                         Toast.makeText(context, "${task.name} を完了しました", Toast.LENGTH_SHORT).show()
                     }, modifier = Modifier
@@ -140,7 +172,7 @@ fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit 
                             Circle
                         })
                     }
-                    Text(text = "${task.id} ${task.name}", fontSize = 18.sp, modifier = Modifier.weight(4f))
+                    Text(text = "${task.name}", fontSize = 18.sp, modifier = Modifier.weight(4f))
                     IconButton(onClick = { onDelete(index) }, modifier = Modifier
                         .padding(10.dp)
                         .size(30.dp)
@@ -154,11 +186,22 @@ fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit 
 }
 
 @Composable
-fun DeleteTopBar(navController: NavHostController) {
+fun MainTopBar(viewModel: AppViewModel, context: Context) {
+    val randomTime = viewModel.randomTime.observeAsState(RandomTime(0, 0)).value
+
+    val timePickerDialog = TimePickerDialog(LocalContext.current, { _, hour: Int, minute: Int ->
+        randomTime.hour = hour
+        randomTime.minute = minute
+        viewModel.saveRandomTime(randomTime, context = context)
+        setAlarm(context = context, viewModel)
+    }, randomTime.hour, randomTime.minute, true)
+
     TopAppBar(title = { Text(text = "StaDice", color = Green300, modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp)) }, elevation = 4.dp, backgroundColor = Green100, modifier = Modifier
         .background(Body)
         .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)), actions = {
-        IconButton(onClick = { navController.navigate("add") }, modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp)) {
+        IconButton(onClick = {
+            timePickerDialog.show()
+        }, modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp)) {
             Icon(painter = painterResource(id = R.drawable.baseline_edit_notifications_30), contentDescription = null, tint = Green300)
         }
     })
@@ -188,9 +231,15 @@ fun BottomBar(screenNavController: NavHostController) {
 }
 
 @Composable
-fun BottomFAB(viewModel: AppViewModel) {
+fun BottomFAB(viewModel: AppViewModel, context: Context) {
     FloatingActionButton(onClick = {
-        viewModel.insertTask("Task1")
+        viewModel.setPriorityTaskRandom()
+        viewModel.savePriorityTask(viewModel.priorityTask.value!!, context)
+        if (viewModel.priorityTask.value!!.id == -1) {
+            Toast.makeText(context, "タスクが登録されていません", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "今日は ${viewModel.priorityTask.value!!.name} を取り組みましょう", Toast.LENGTH_SHORT).show()
+        }
     }, contentColor = Green300, backgroundColor = Body, modifier = Modifier
         .width(80.dp)
         .height(80.dp)) {

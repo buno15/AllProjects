@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.bunooboi.stadice.ui.theme.Body
 import com.bunooboi.stadice.ui.theme.Green300
 import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun HistoryScreen(navController: NavHostController, viewModel: AppViewModel) {
@@ -42,31 +43,26 @@ fun HistoryBodyContent(viewModel: AppViewModel) {
 
         val tasks = viewModel.tasks.observeAsState(mutableListOf()).value
 
-        HistoryList(tasks = tasks) { selectedIndex = it }
-
-        if (selectedIndex >= 0) {
-            AlertDialog(onDismissRequest = { selectedIndex = -1 }, confirmButton = {
-                TextButton(onClick = { selectedIndex = -1 }) {
-                    Text("OK")
-                }
-            }, text = { Text("Index $selectedIndex is clicked.") })
-        }
+        HistoryList(tasks = tasks, viewModel) { selectedIndex = it }
     }
 }
 
 @Composable
-fun HistoryList(tasks: List<Task>, onClickItem: (Int) -> Unit = {}) {
+fun HistoryList(tasks: List<Task>, viewModel: AppViewModel, onClickItem: (Int) -> Unit = {}) {
     val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     LazyColumn(modifier = Modifier
         .background(Body)
-        .fillMaxSize(), verticalArrangement = Arrangement.spacedBy(5.dp), contentPadding = PaddingValues(5.dp)) {
+        .fillMaxSize(), contentPadding = PaddingValues(5.dp)) {
         itemsIndexed(tasks) { index, task ->
             if (task.finished) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, start = 15.dp, end = 15.dp)
                     .background(Color.White, RoundedCornerShape(10.dp))) {
-                    IconButton(onClick = { onClickItem(index) }, modifier = Modifier
+                    IconButton(onClick = {
+                        val updatedTask = task.copy(finished = false, date = Date())
+                        viewModel.updateTask(updatedTask)
+                    }, modifier = Modifier
                         .padding(10.dp)
                         .size(40.dp)
                         .weight(1f)) {
