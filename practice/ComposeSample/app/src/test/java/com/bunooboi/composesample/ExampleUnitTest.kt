@@ -1,17 +1,31 @@
 package com.bunooboi.composesample
 
+import io.mockk.*
+import io.mockk.impl.annotations.SpyK
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Before
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+
+interface SampleRepository {
+    suspend fun fetchData(): String
+}
+
 class ExampleUnitTest {
+    private lateinit var mockRepository: SampleRepository
+
+    @Before
+    fun setUp() {
+        mockRepository = mockk()
+    }
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun testFetchData() = runBlocking {
+        coEvery { mockRepository.fetchData() } returns "Mocked Data"
+        val result = mockRepository.fetchData()
+        assertEquals("Mocked Data", result)
+        coVerify { mockRepository.fetchData() }
     }
 }

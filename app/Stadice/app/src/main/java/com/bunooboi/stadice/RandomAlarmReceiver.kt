@@ -13,7 +13,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bunooboi.stadice.database.AppDatabase
-import com.bunooboi.stadice.database.RoomApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,7 +29,7 @@ class RandomAlarmReceiver : BroadcastReceiver() {
         loadRandomTime(context)
         setAlarm(context)
 
-        val dao = RoomApplication.database.taskDao()
+        val dao = MainApplication.database.taskDao()
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
                 tasks = dao.getAllNotLive()

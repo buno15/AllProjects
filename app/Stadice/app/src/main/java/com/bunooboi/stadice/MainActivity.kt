@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,6 +31,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -39,15 +42,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bunooboi.stadice.ui.theme.*
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            val viewModel: AppViewModel = viewModel()
+            val viewModel: AppViewModel = hiltViewModel()
 
             setAlarm(LocalContext.current, viewModel)
 
@@ -96,8 +101,8 @@ private fun setAlarm(context: Context, viewModel: AppViewModel) {
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: AppViewModel, context: Context) {
-    viewModel.loadPriorityTask(context)
-    viewModel.loadRandomTime(context)
+    viewModel.loadPriorityTask()
+    viewModel.loadRandomTime()
 
     Scaffold(modifier = Modifier.background(color = Body), scaffoldState = rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Open)), topBar = { MainTopBar(viewModel, context) }, content = { padding ->
         Column(modifier = Modifier.padding(padding)) {
@@ -192,7 +197,7 @@ fun MainTopBar(viewModel: AppViewModel, context: Context) {
     val timePickerDialog = TimePickerDialog(LocalContext.current, { _, hour: Int, minute: Int ->
         randomTime.hour = hour
         randomTime.minute = minute
-        viewModel.saveRandomTime(randomTime, context = context)
+        viewModel.saveRandomTime(randomTime)
         setAlarm(context = context, viewModel)
     }, randomTime.hour, randomTime.minute, true)
 
@@ -234,7 +239,7 @@ fun BottomBar(screenNavController: NavHostController) {
 fun BottomFAB(viewModel: AppViewModel, context: Context) {
     FloatingActionButton(onClick = {
         viewModel.setPriorityTaskRandom()
-        viewModel.savePriorityTask(viewModel.priorityTask.value!!, context)
+        viewModel.savePriorityTask(viewModel.priorityTask.value!!)
         if (viewModel.priorityTask.value!!.id == -1) {
             Toast.makeText(context, "タスクが登録されていません", Toast.LENGTH_SHORT).show()
         } else {

@@ -1,9 +1,12 @@
-package com.bunooboi.stadice.database
+package com.bunooboi.stadice
 
 import android.app.Application
 import androidx.room.Room
+import com.bunooboi.stadice.database.AppDatabase
+import dagger.hilt.android.HiltAndroidApp
 
-class RoomApplication : Application() {
+@HiltAndroidApp
+class MainApplication : Application() {
     companion object {
         lateinit var database: AppDatabase
     }

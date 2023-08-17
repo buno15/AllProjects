@@ -1,25 +1,47 @@
 package com.bunooboi.stadice
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.bunooboi.stadice.database.RoomApplication
+import android.app.Application
+import androidx.lifecycle.*
+import com.bunooboi.stadice.data.SharedPreferencesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 import kotlin.math.max
 
-class AppViewModel : ViewModel() {
-    private val dao = RoomApplication.database.taskDao()
+@HiltViewModel
+class AppViewModel @Inject constructor(private val preferenceRepository: SharedPreferencesRepository) : ViewModel() {
+    val dao = MainApplication.database.taskDao()
     var tasks: LiveData<MutableList<Task>> = dao.getAll()
 
-    private val _priorityTask = MutableLiveData<Task>(Task(-1, "", false, Date()))
+    private val _priorityTask = MutableLiveData(Task(-1, "", false, Date()))
     val priorityTask: LiveData<Task> = _priorityTask
 
-    private val _randomTime = MutableLiveData<RandomTime>(RandomTime(9, 0))
+    private val _randomTime = MutableLiveData(RandomTime(9, 0))
     val randomTime: LiveData<RandomTime> = _randomTime
+
+
+    fun savePriorityTask(task: Task) {
+        viewModelScope.launch {
+            preferenceRepository.savePriorityTask(task)
+        }
+    }
+
+    fun loadPriorityTask() {
+        viewModelScope.launch {
+            _priorityTask.value = preferenceRepository.loadPriorityTask()
+        }
+    }
+
+    fun saveRandomTime(time: RandomTime) {
+        viewModelScope.launch { preferenceRepository.saveRandomTime(time) }
+    }
+
+    fun loadRandomTime() {
+        viewModelScope.launch { _randomTime.value = preferenceRepository.loadRandomTime() }
+    }
+
 
     fun setPriorityTaskRandom() {
         val unfinishedTasks = tasks.value!!.filter { !it.finished }
@@ -28,40 +50,6 @@ class AppViewModel : ViewModel() {
         } else {
             _priorityTask.value = unfinishedTasks.random()
         }
-    }
-
-    fun savePriorityTask(task: Task, context: Context) {
-        val sharedPreferences = context.getSharedPreferences("Stadice", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("id", task.id)
-        editor.putString("name", task.name)
-        editor.putBoolean("finished", task.finished)
-        editor.putLong("date", task.date.time)
-        editor.apply()
-    }
-
-    fun loadPriorityTask(context: Context) {
-        val sharedPreferences = context.getSharedPreferences("Stadice", Context.MODE_PRIVATE)
-        val id = sharedPreferences.getInt("id", -1)
-        val name = sharedPreferences.getString("name", "")
-        val finished = sharedPreferences.getBoolean("finished", false)
-        val date = Date(sharedPreferences.getLong("date", 0))
-        _priorityTask.value = Task(id, name!!, finished, date)
-    }
-
-    fun saveRandomTime(time: RandomTime, context: Context) {
-        val sharedPreferences = context.getSharedPreferences("Stadice", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("randomHour", time.hour)
-        editor.putInt("randomMinute", time.minute)
-        editor.apply()
-    }
-
-    fun loadRandomTime(context: Context) {
-        val sharedPreferences = context.getSharedPreferences("Stadice", Context.MODE_PRIVATE)
-        val randomHour = sharedPreferences.getInt("randomHour", 9)
-        val randomMinute = sharedPreferences.getInt("randomMinute", 0)
-        _randomTime.value = RandomTime(randomHour, randomMinute)
     }
 
 
@@ -74,7 +62,9 @@ class AppViewModel : ViewModel() {
     }
 
     fun insertTask(name: String) {
-        viewModelScope.launch(Dispatchers.IO) { dao.insert(Task(getIdIndex(), name, false, Date())) }
+        val newTask = Task(getIdIndex(), name, false, Date())
+        viewModelScope.launch(Dispatchers.IO) { dao.insert(newTask) }
+        tasks.value!!.add(newTask)
     }
 
     fun updateTask(task: Task) {
