@@ -11,7 +11,7 @@ import com.bunooboi.stadice.Task
 @Dao
 interface TaskDao {
     @Query("select * from tasks")
-    fun getAll(): LiveData<MutableList<Task>>
+    fun getAll(): List<Task>
 
     @Query("select * from tasks")
     fun getAllNotLive(): MutableList<Task>

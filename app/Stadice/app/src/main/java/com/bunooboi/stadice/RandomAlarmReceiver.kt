@@ -56,8 +56,6 @@ class RandomAlarmReceiver : BroadcastReceiver() {
         val hour = randomTime.hour
         val minute = randomTime.minute
 
-        println("$hour:$minute yesyes")
-
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
 

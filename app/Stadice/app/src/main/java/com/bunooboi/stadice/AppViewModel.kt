@@ -1,7 +1,7 @@
 package com.bunooboi.stadice
 
-import android.app.Application
 import androidx.lifecycle.*
+import com.bunooboi.stadice.data.RoomRepository
 import com.bunooboi.stadice.data.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -11,9 +11,8 @@ import javax.inject.Inject
 import kotlin.math.max
 
 @HiltViewModel
-class AppViewModel @Inject constructor(private val preferenceRepository: SharedPreferencesRepository) : ViewModel() {
-    val dao = MainApplication.database.taskDao()
-    var tasks: LiveData<MutableList<Task>> = dao.getAll()
+class AppViewModel @Inject constructor(private val preferenceRepository: SharedPreferencesRepository, private val roomRepository: RoomRepository) : ViewModel() {
+    var tasks: MutableLiveData<MutableList<Task>> = MutableLiveData(mutableListOf())
 
     private val _priorityTask = MutableLiveData(Task(-1, "", false, Date()))
     val priorityTask: LiveData<Task> = _priorityTask
@@ -21,6 +20,9 @@ class AppViewModel @Inject constructor(private val preferenceRepository: SharedP
     private val _randomTime = MutableLiveData(RandomTime(9, 0))
     val randomTime: LiveData<RandomTime> = _randomTime
 
+    init {
+        viewModelScope.launch {}
+    }
 
     fun savePriorityTask(task: Task) {
         viewModelScope.launch {
@@ -61,17 +63,32 @@ class AppViewModel @Inject constructor(private val preferenceRepository: SharedP
         return max + 1
     }
 
-    fun insertTask(name: String) {
-        val newTask = Task(getIdIndex(), name, false, Date())
-        viewModelScope.launch(Dispatchers.IO) { dao.insert(newTask) }
-        tasks.value!!.add(newTask)
+    fun insertAndRefreshTask(name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newTask = Task(getIdIndex(), name, false, Date())
+            roomRepository.insertTask(newTask)
+            refreshTasks()
+        }
     }
 
-    fun updateTask(task: Task) {
-        viewModelScope.launch(Dispatchers.IO) { dao.update(task) }
+    fun updateAndRefreshTask(task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.updateTask(task)
+            refreshTasks()
+        }
     }
 
-    fun deleteTask(task: Task) {
-        viewModelScope.launch(Dispatchers.IO) { dao.delete(task) }
+    fun deleteAndRefreshTask(task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.deleteTask(task)
+            refreshTasks()
+        }
+    }
+
+    fun refreshTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = roomRepository.selectTasks().toMutableList()
+            tasks.postValue(data)
+        }
     }
 }

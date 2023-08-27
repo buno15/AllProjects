@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bunooboi.stadice.ui.theme.Body
 import com.bunooboi.stadice.ui.theme.Green300
@@ -40,10 +39,30 @@ fun HistoryBodyContent(viewModel: AppViewModel) {
         .background(Body)
         .padding(bottom = 10.dp)) {
         var selectedIndex by remember { mutableStateOf(-1) }
+        var showDialog by remember { mutableStateOf(false) }
 
         val tasks = viewModel.tasks.observeAsState(mutableListOf()).value
 
-        HistoryList(tasks = tasks, viewModel) { selectedIndex = it }
+        HistoryList(tasks = tasks, viewModel) {
+            selectedIndex = it
+            showDialog = true
+        }
+
+        if (showDialog) {
+            AlertDialog(onDismissRequest = { showDialog = false }, confirmButton = {
+                Button(onClick = {
+                    val updatedTask = tasks[selectedIndex].copy(finished = false, date = Date())
+                    viewModel.updateAndRefreshTask(updatedTask)
+                    showDialog = false
+                }, colors = ButtonDefaults.textButtonColors(backgroundColor = Green300, contentColor = Color.White)) {
+                    Text("OK")
+                }
+            }, dismissButton = {
+                TextButton(onClick = { showDialog = false }, colors = ButtonDefaults.textButtonColors(contentColor = Green300)) {
+                    Text("NO")
+                }
+            }, text = { Text("${tasks[selectedIndex].name} を未完了にしますか？") })
+        }
     }
 }
 
@@ -60,8 +79,7 @@ fun HistoryList(tasks: List<Task>, viewModel: AppViewModel, onClickItem: (Int) -
                     .padding(top = 10.dp, start = 15.dp, end = 15.dp)
                     .background(Color.White, RoundedCornerShape(10.dp))) {
                     IconButton(onClick = {
-                        val updatedTask = task.copy(finished = false, date = Date())
-                        viewModel.updateTask(updatedTask)
+                        onClickItem(index)
                     }, modifier = Modifier
                         .padding(10.dp)
                         .size(40.dp)

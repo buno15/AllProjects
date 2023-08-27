@@ -11,11 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +48,11 @@ fun AddBodyContent(viewModel: AppViewModel, context: Context) {
                 name = it
             }, label = { Text(text = "タスク名") }, modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp), singleLine = true, colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = Color.White, textColor = Color.Black, focusedBorderColor = Green300, focusedLabelColor = Green300, unfocusedBorderColor = Green200, unfocusedLabelColor = Green200, cursorColor = Green300), keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }))
+                .padding(horizontal = 30.dp), singleLine = true, colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = Color.White, textColor = Color.Black, focusedBorderColor = Green300, focusedLabelColor = Green300, unfocusedBorderColor = Green200, unfocusedLabelColor = Green200, cursorColor = Green300), keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = {
+                viewModel.insertAndRefreshTask(name)
+                Toast.makeText(context, "タスクを追加しました", Toast.LENGTH_SHORT).show()
+                name = ""
+            }))
         }
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -60,9 +61,8 @@ fun AddBodyContent(viewModel: AppViewModel, context: Context) {
                 if (name == "" || name == " ") {
                     Toast.makeText(context, "タスク名を入力してください", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.insertTask(name)
+                    viewModel.insertAndRefreshTask(name)
                     Toast.makeText(context, "タスクを追加しました", Toast.LENGTH_SHORT).show()
-                    keyboardController?.hide()
                     name = ""
                 }
             }, modifier = Modifier

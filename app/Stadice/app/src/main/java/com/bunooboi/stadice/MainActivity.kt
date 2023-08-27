@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -101,6 +98,7 @@ private fun setAlarm(context: Context, viewModel: AppViewModel) {
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: AppViewModel, context: Context) {
+    viewModel.refreshTasks()
     viewModel.loadPriorityTask()
     viewModel.loadRandomTime()
 
@@ -130,7 +128,7 @@ fun MainBodyContent(viewModel: AppViewModel, context: Context) {
         if (showDialog) {
             AlertDialog(onDismissRequest = { showDialog = false }, confirmButton = {
                 Button(onClick = {
-                    viewModel.deleteTask(tasks[selectedIndex])
+                    viewModel.deleteAndRefreshTask(tasks[selectedIndex])
                     showDialog = false
                 }, colors = ButtonDefaults.textButtonColors(backgroundColor = Green300, contentColor = Color.White)) {
                     Text("OK")
@@ -161,7 +159,7 @@ fun TaskList(viewModel: AppViewModel, context: Context, onDelete: (Int) -> Unit 
                     .then(if (task == priorityTask) Modifier.border(border = BorderStroke(width = 2.dp, color = Green300), shape = RoundedCornerShape(10.dp)) else Modifier)) {
                     IconButton(onClick = {
                         val updatedTask = task.copy(finished = true, date = Date())
-                        viewModel.updateTask(updatedTask)
+                        viewModel.updateAndRefreshTask(updatedTask)
                         Toast.makeText(context, "${task.name} を完了しました", Toast.LENGTH_SHORT).show()
                     }, modifier = Modifier
                         .padding(10.dp)
