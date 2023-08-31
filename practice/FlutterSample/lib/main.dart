@@ -1,64 +1,73 @@
 import 'package:flutter/material.dart';
 
-import 'next_page.dart';
+import 'add_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyTodoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyTodoApp extends StatelessWidget {
+  const MyTodoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'My Todo App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TodoListPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class TodoListPage extends StatefulWidget {
+  const TodoListPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<TodoListPage> createState() => _TodoListPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  final myFocusNode = FocusNode();
-  late String name;
-  final myController = TextEditingController();
-
-  final items = List<String>.generate(100, (index) => "Item $index");
+class _TodoListPageState extends State<TodoListPage> {
+  List<String> todoList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-        actions: const [Icon(Icons.add), Icon(Icons.share)],
+        title: const Text("リスト一覧"),
+        actions: null,
       ),
-      body: Container(
-          width: double.infinity,
-          child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return ListTile(title: Text("${items[index]}"));
-              })),
+      body: Center(
+        child: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(todoList[index]),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return TodoAddPage();
+                  }));
+                },
+              ),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final newListText = await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return TodoAddPage();
+          }));
+          if (newListText != null) {
+            setState(() {
+              todoList.add(newListText);
+            });
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
