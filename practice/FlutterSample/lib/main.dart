@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyAuthPage(),
     );
@@ -39,96 +41,36 @@ class _MyAuthPageState extends State<MyAuthPage> {
   String loginUserPassword = "";
   String infoText = "";
 
+  String info = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: "メールアドレス"),
-                onChanged: (String value) {
-                  setState(() {
-                    newUserEmail = value;
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: "パスワード"),
-                onChanged: (String value) {
-                  setState(() {
-                    newUserPassword = value;
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      final FirebaseAuth auth = FirebaseAuth.instance;
-                      final UserCredential result = await auth.createUserWithEmailAndPassword(email: newUserEmail, password: newUserPassword);
-
-                      final User user = result.user!;
-                      setState(() {
-                        infoText = "登録OK：${user.email}";
-                      });
-                    } catch (e) {
-                      setState(() {
-                        infoText = "登録NG：${e.toString()}";
-                      });
-                    }
-                  },
-                  child: const Text("ユーザー登録")),
-              const SizedBox(
-                height: 32,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "メールアドレス"),
-                onChanged: (String value) {
-                  setState(() {
-                    loginUserEmail = value;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "パスワード"),
-                onChanged: (String value) {
-                  setState(() {
-                    loginUserPassword = value;
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              ElevatedButton(
+        child: Column(
+          children: <Widget>[
+            ElevatedButton(
                 onPressed: () async {
-                  try {
-                    final FirebaseAuth auth = FirebaseAuth.instance;
-                    final UserCredential result = await auth.signInWithEmailAndPassword(email: loginUserEmail, password: loginUserPassword);
-
-                    final User user = result.user!;
-                    setState(() {
-                      infoText = "ログインOK：${user.email}";
-                    });
-                  } catch (e) {
-                    setState(() {
-                      infoText = "ログインNG：${e.toString()}";
-                    });
-                  }
+                  await FirebaseFirestore.instance.collection("users").doc("id_abc").set({"name": "スズキ", "age": 40});
                 },
-                child: Text("ログイン"),
-              ),
-              Text(infoText),
-            ],
-          ),
+                child: Text("コレクション＋ドキュメント作成")),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc("id_abc")
+                    .collection("orders")
+                    .doc("id_123")
+                    .set({"price": 600, "date": "12/12"});
+              },
+              child: Text("サブコレクション＋ドキュメント作成"),
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance.collection("users").doc("id_abc").collection("orders").doc("id_123").delete();
+                },
+                child: Text("ドキュメント一覧取得")),
+          ],
         ),
       ),
     );
