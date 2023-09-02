@@ -47,30 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCqyEK65PvLIGX4jvS60RmGxUF7L4T8M2w',
-    appId: '1:980978823504:web:6cba98bd75e60cd473fc55',
-    messagingSenderId: '980978823504',
-    projectId: 'myapp-d0d81',
-    authDomain: 'myapp-d0d81.firebaseapp.com',
-    storageBucket: 'myapp-d0d81.appspot.com',
-    measurementId: 'G-5EF1PJMCR7',
+    apiKey: 'AIzaSyCTTwyJgTO9c1Hf_RwlhUeH90__9SHXzbw',
+    appId: '1:57773129831:web:380e7b41724d04082e94c2',
+    messagingSenderId: '57773129831',
+    projectId: 'mychatapp-4b0de',
+    authDomain: 'mychatapp-4b0de.firebaseapp.com',
+    storageBucket: 'mychatapp-4b0de.appspot.com',
+    measurementId: 'G-PC8H592QE7',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBHVsawbCOU9xIe7SYZEOBGdeyQHSNGnMQ',
-    appId: '1:980978823504:android:c0d1d04052ff4f5473fc55',
-    messagingSenderId: '980978823504',
-    projectId: 'myapp-d0d81',
-    storageBucket: 'myapp-d0d81.appspot.com',
+    apiKey: 'AIzaSyAFvOJDb4VImyw7gE9aDJR1JycPUvqs_cU',
+    appId: '1:57773129831:android:bb112e7a1f95d9432e94c2',
+    messagingSenderId: '57773129831',
+    projectId: 'mychatapp-4b0de',
+    storageBucket: 'mychatapp-4b0de.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDpiuCZabUJf2SvTW5JRqcjGcl1GcF5KxM',
-    appId: '1:980978823504:ios:e6dc8afbca7b41d073fc55',
-    messagingSenderId: '980978823504',
-    projectId: 'myapp-d0d81',
-    storageBucket: 'myapp-d0d81.appspot.com',
-    iosClientId: '980978823504-g3eq7p1564l4882glo6v9mm9iq7bmh3k.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD1SmHV2rSqP4CEcBUbW7YEtOX0DQS_VEk',
+    appId: '1:57773129831:ios:8c75b97d7d8643822e94c2',
+    messagingSenderId: '57773129831',
+    projectId: 'mychatapp-4b0de',
+    storageBucket: 'mychatapp-4b0de.appspot.com',
+    iosClientId: '57773129831-7eum487b6ga1u7bn1h00ot75iovu82kq.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterSample',
   );
 }
