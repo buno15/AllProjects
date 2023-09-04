@@ -6,26 +6,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/firebase_options.dart';
 
 import 'login_page.dart';
+import 'mymodel.dart';
 
 final userProvider = StateProvider((ref) {
   return FirebaseAuth.instance.currentUser;
 });
 
-final infoTextProvider = StateProvider.autoDispose((ref) {
-  return "";
+final infoTextProvider = StateNotifierProvider.autoDispose((ref) {
+  return Info();
 });
 
-final emailProvider = StateProvider.autoDispose((ref) {
-  return "";
+class Info extends StateNotifier<String> {
+  Info() : super("");
+
+  void setInfo(String value) {
+    state = value;
+  }
+}
+
+final emailProvider = StateNotifierProvider.autoDispose((ref) {
+  return Email();
 });
+
+class Email extends StateNotifier<String> {
+  Email() : super("");
+
+  void setEmail(String value) {
+    state = value;
+  }
+}
 
 final passwordProvider = StateProvider.autoDispose((ref) {
   return "";
 });
 
-final messageTextProvider = StateProvider.autoDispose((ref) {
-  return "";
+final messageTextProvider = StateNotifierProvider.autoDispose((ref) {
+  return Message();
 });
+
+class Message extends StateNotifier<String> {
+  Message() : super("");
+
+  void setMessage(String value) {
+    state = value;
+  }
+}
 
 final postsQueryProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance.collection("posts").orderBy("date").snapshots();

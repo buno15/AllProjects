@@ -4,6 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'chat_page.dart';
 import 'main.dart';
+import 'mymodel.dart';
+
+final myModelProvider = Provider((ref) {
+  return const MyModel(name: "take", age: 1);
+});
 
 class LoginPage extends ConsumerWidget {
   @override
@@ -19,11 +24,12 @@ class LoginPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(ref.watch(myModelProvider).name),
               TextFormField(
                 decoration: const InputDecoration(labelText: "メールアドレス"),
                 initialValue: "kiyohiro0928@gmail.com",
                 onChanged: (String value) {
-                  ref.read(emailProvider.notifier).state = value;
+                  ref.read(emailProvider.notifier).setEmail(value);
                 },
               ),
               TextFormField(
@@ -36,7 +42,7 @@ class LoginPage extends ConsumerWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(8),
-                child: Text(infoText),
+                child: Text(infoText.toString()),
               ),
               Container(
                 width: double.infinity,
@@ -45,7 +51,7 @@ class LoginPage extends ConsumerWidget {
                     onPressed: () async {
                       try {
                         final FirebaseAuth auth = FirebaseAuth.instance;
-                        final result = await auth.createUserWithEmailAndPassword(email: email, password: password);
+                        final result = await auth.createUserWithEmailAndPassword(email: email.toString(), password: password);
 
                         ref.read(userProvider.notifier).state = result.user;
 
@@ -69,7 +75,7 @@ class LoginPage extends ConsumerWidget {
                     onPressed: () async {
                       try {
                         final FirebaseAuth auth = FirebaseAuth.instance;
-                        final result = await auth.signInWithEmailAndPassword(email: email, password: password);
+                        final result = await auth.signInWithEmailAndPassword(email: email.toString(), password: password);
                         await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
                           return ChatPage();
                         }));

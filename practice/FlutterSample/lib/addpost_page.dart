@@ -33,7 +33,7 @@ class AddPostPage extends ConsumerWidget {
                   onPressed: () async {
                     final date = DateTime.now().toLocal().toIso8601String();
                     final email = user.email;
-                    await FirebaseFirestore.instance.collection("posts").doc().set({"text": messageText, "email": email, "date": date});
+                    await FirebaseFirestore.instance.collection("posts").doc().set({"text": messageText.toString(), "email": email, "date": date});
                     Navigator.of(context).pop();
                   },
                 ),
