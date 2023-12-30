@@ -1,0 +1,41 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'todo.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_Todo _$$_TodoFromJson(Map<String, dynamic> json) => _$_Todo(
+      id: json['id'] as String,
+      description: json['description'] as String,
+      completed: json['completed'] as bool,
+    );
+
+Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
+      'id': instance.id,
+      'description': instance.description,
+      'completed': instance.completed,
+    };
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$asyncTodosHash() => r'c020cb6bd4a200711373319b4b0745fb094e667b';
+
+/// See also [AsyncTodos].
+@ProviderFor(AsyncTodos)
+final asyncTodosProvider =
+    AutoDisposeAsyncNotifierProvider<AsyncTodos, List<Todo>>.internal(
+  AsyncTodos.new,
+  name: r'asyncTodosProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$asyncTodosHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AsyncTodos = AutoDisposeAsyncNotifier<List<Todo>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
