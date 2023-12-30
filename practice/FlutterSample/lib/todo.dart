@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'todo.g.dart';
 part 'todo.freezed.dart';
+part 'todo.g.dart';
 
 @freezed
 class Todo with _$Todo {
