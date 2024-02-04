@@ -26,6 +26,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
       } else {
         _timer?.cancel();
         setState(() {
+          _countdown = 0;
         });
       }
     });
